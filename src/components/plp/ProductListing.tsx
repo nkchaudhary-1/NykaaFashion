@@ -51,7 +51,7 @@ interface Props {
  * full-width grid — filters open in a drawer, so the grid keeps all twelve columns. Skeleton → results, inline retry on
  * error, relaxed-filter suggestions on no match, progress + "Show more" at the end.
  */
-export function ProductListing({ pool, scopeKey, categoryScope = [], hide = [], source, intro, noun = "pieces", resultsHeading = "Results", features = [] }: Props) {
+export function ProductListing({ pool, scopeKey, categoryScope = [], hide = [], source, intro, noun = "products", resultsHeading = "Results", features = [] }: Props) {
   const sp = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -148,7 +148,7 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], hide = [], 
           {query.status === "error" && (
             <Grid>
               <Col span={{ base: 4, sm: 12 }}>
-                <ErrorState title="We couldn’t load these pieces" text="The connection dropped before the list arrived. Your filters are saved in the URL — try again." onRetry={query.retry} />
+                <ErrorState title="We couldn’t load these products" text="The connection dropped before the list arrived. Your filters are saved in the URL — try again." onRetry={query.retry} />
               </Col>
             </Grid>
           )}
@@ -235,7 +235,7 @@ function Results({ items, source, filters, pool, features, onClear, onRelax, nou
             Showing {plan.shown} of {total} {noun}
           </p>
           <div role="progressbar" aria-label={`${noun} shown`} aria-valuemin={0} aria-valuemax={total} aria-valuenow={plan.shown} className="mt-3 h-0.5 w-full max-w-[420px] bg-line">
-            <div className="h-full bg-ink transition-[width] duration-500 ease-editorial" style={{ width: `${(plan.shown / total) * 100}%` }} />
+            <div className="h-full bg-pink transition-[width] duration-500 ease-editorial" style={{ width: `${(plan.shown / total) * 100}%` }} />
           </div>
         </div>
         <div className="col-span-4 sm:col-span-6 sm:flex sm:justify-end">

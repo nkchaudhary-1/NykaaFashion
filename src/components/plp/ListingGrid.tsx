@@ -13,6 +13,7 @@ import { track } from "@/lib/track";
 import { signal } from "@/stores/intent";
 import type { Feature } from "./features";
 import type { Cell } from "./plan";
+import { themeSurface } from "./surfaces";
 
 /**
  * The listing grid: 4-up cards (3-up on tablets, 2-up on phones) with feature inserts placed by `planCells` so every row
@@ -73,8 +74,9 @@ function FeatureBody({ feature, product, source }: { feature: Feature; product?:
       </div>
     );
   }
+  const surface = themeSurface(feature.tone);
   return (
-    <div className={cn("flex h-full min-h-[300px] flex-col justify-between gap-8 p-6 sm:p-8 lg:p-10", feature.dark && "on-dark")} style={{ background: feature.bg, color: feature.fg }}>
+    <div className={cn("flex h-full min-h-[300px] flex-col justify-between gap-8 p-6 sm:p-8 lg:p-10", surface.cls, surface.dark && "on-dark")}>
       {feature.eyebrow && <p className="eyebrow">{feature.eyebrow}</p>}
       <div>
         <p className="max-w-[22ch] text-[24px] font-medium leading-[1.1] tracking-[-0.022em] sm:text-[28px] lg:text-[32px]">{feature.title}</p>

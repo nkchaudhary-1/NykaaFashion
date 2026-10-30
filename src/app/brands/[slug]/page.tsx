@@ -57,7 +57,7 @@ async function BrandContent({ params }: Pick<PageProps<"/brands/[slug]">, "param
             <LabelMonogram label={legible(label)} size="lg" />
             <h1 className="display-lg mt-8 text-balance">{label.name}</h1>
             <p className="display-xs mt-4 max-w-[34ch]">{label.tagline}</p>
-            <p className="mt-5 text-[13px] tabular-nums">{[label.origin, label.founded ? `est. ${label.founded}` : null, `${pool.length} pieces`].filter(Boolean).join(" · ")}</p>
+            <p className="mt-5 text-[13px] tabular-nums">{[label.origin, label.founded ? `est. ${label.founded}` : null, `${pool.length} products`].filter(Boolean).join(" · ")}</p>
             <p className="mt-6 max-w-[46ch] text-[15px] leading-relaxed">{label.story}</p>
             <LabelBadges label={label} className="mt-6" />
           </Col>
@@ -65,7 +65,7 @@ async function BrandContent({ params }: Pick<PageProps<"/brands/[slug]">, "param
           <Col span={{ base: 4, sm: 12, lg: 7 }} start={{ lg: 6 }} rowStart={{ lg: 1 }} className="-mx-[var(--gutter)] grid grid-cols-2 gap-x-[var(--gap)] self-end lg:mx-0 lg:grid-cols-7 lg:items-end">
             {shown.map((p, i) => (
               <Link key={p.id} href={`/p/${p.slug}`} aria-hidden tabIndex={-1} className={cn("group block overflow-hidden bg-sand", i === 0 ? "lg:col-span-4" : "lg:col-span-3")}>
-                <Img imgKey={p.variants[0].images[0]} alt="" sizes={i === 0 ? "(min-width:1024px) 30vw, 50vw" : "(min-width:1024px) 23vw, 50vw"} ratio="4/5" load={i === 0 ? "high" : undefined} className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.03]" />
+                <Img imgKey={p.variants[0].images[0]} alt="" sizes={i === 0 ? "(min-width:1024px) 30vw, 50vw" : "(min-width:1024px) 23vw, 50vw"} ratio="4/5" load="eager" className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.03]" />
               </Link>
             ))}
           </Col>

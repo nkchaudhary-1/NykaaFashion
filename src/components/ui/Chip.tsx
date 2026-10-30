@@ -4,10 +4,10 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 /**
- * Flat square chip — filters, suggestions, quick links. 40px tall (44px hit area on touch via `tap`), 1px border,
+ * Flat pill chip (as on the live site) — filters, suggestions, quick links. 40px tall (44px hit area on touch via `tap`), 1px border,
  * selected = solid ink. `onRemove`-style chips add an ✕ and a screen-reader "Remove" label.
  */
-const base = "tap inline-flex h-10 shrink-0 items-center gap-2 border px-4 text-[13.5px] font-medium transition-colors";
+const base = "tap inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-4 text-[13.5px] font-medium transition-colors";
 const state = (selected?: boolean) => (selected ? "border-ink bg-ink text-bone" : "border-line-strong bg-transparent text-ink hover:border-ink");
 
 export function Chip({ selected, removable, className, children, ...rest }: { selected?: boolean; removable?: boolean; children: ReactNode } & ButtonHTMLAttributes<HTMLButtonElement>) {

@@ -1,5 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
+import { Chip } from "@/components/ui/Chip";
 import { Checkbox, Switch } from "@/components/ui/Form";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { cn } from "@/lib/cn";
@@ -22,9 +23,9 @@ export function FilterPanel({ facets, filters, onChange, hide = [] }: { facets: 
       {(facets.responsible > 0 || facets.offers > 0) && (
         <div className="border-b border-line pb-3">
           {show("responsible") && facets.responsible > 0 && (
-            <Switch label="Responsible" hint={`${facets.responsible} pieces`} checked={filters.responsible} onChange={(v) => onChange({ ...filters, responsible: v }, { key: "responsible", on: v })} />
+            <Switch label="Responsible" hint={`${facets.responsible} products`} checked={filters.responsible} onChange={(v) => onChange({ ...filters, responsible: v }, { key: "responsible", on: v })} />
           )}
-          {show("offers") && facets.offers > 0 && <Switch label="On offer" hint={`${facets.offers} pieces`} checked={filters.offers} onChange={(v) => onChange({ ...filters, offers: v }, { key: "offers", on: v })} />}
+          {show("offers") && facets.offers > 0 && <Switch label="On offer" hint={`${facets.offers} products`} checked={filters.offers} onChange={(v) => onChange({ ...filters, offers: v }, { key: "offers", on: v })} />}
         </div>
       )}
 
@@ -61,13 +62,13 @@ export function FilterPanel({ facets, filters, onChange, hide = [] }: { facets: 
 
       {show("size") && facets.size.length > 0 && (
         <Disclosure title="Size" defaultOpen meta={filters.size.length ? `${filters.size.length} selected` : undefined}>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(4.25rem,1fr))] gap-2">
+          <div className="flex flex-wrap gap-2">
             {facets.size.map((s) => {
               const on = filters.size.includes(s.id);
               return (
-                <button key={s.id} type="button" aria-pressed={on} onClick={() => onChange({ ...filters, size: toggle(filters.size, s.id) }, { key: "size", value: s.id, on: !on })} className={cn("inline-flex h-11 items-center justify-center border px-2 text-[13px] tabular-nums transition-colors", on ? "border-ink bg-ink text-bone" : "border-line-strong text-ink hover:border-ink")}>
+                <Chip key={s.id} selected={on} onClick={() => onChange({ ...filters, size: toggle(filters.size, s.id) }, { key: "size", value: s.id, on: !on })} className="min-w-12 justify-center tabular-nums">
                   {s.id}
-                </button>
+                </Chip>
               );
             })}
           </div>
@@ -94,7 +95,7 @@ export function FilterPanel({ facets, filters, onChange, hide = [] }: { facets: 
       {show("label") && facets.label.length > 1 && (
         <Disclosure title="Label" defaultOpen={false} meta={filters.label.length ? `${filters.label.length} selected` : undefined}>
           {facets.label.length > 8 && (
-            <input type="search" aria-label="Search labels" placeholder="Search labels" value={labelQuery} onChange={(e) => setLabelQuery(e.target.value)} className="mb-2 h-10 w-full border border-line-strong bg-white px-3 text-[14px] focus:border-ink" />
+            <input type="search" aria-label="Search labels" placeholder="Search labels" value={labelQuery} onChange={(e) => setLabelQuery(e.target.value)} className="mb-2 h-11 w-full border-b-2 border-transparent bg-sand px-3 text-[14px] focus:border-pink" />
           )}
           <div className="-my-1 max-h-64 overflow-y-auto pr-1">
             {labels.map((l) => (

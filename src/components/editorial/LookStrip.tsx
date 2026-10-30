@@ -15,7 +15,7 @@ import { SaveButton } from "@/components/product/SaveButton";
 /**
  * "Shop this look" — an always-visible product list for a shoppable image (works on touch, where hover pins don't).
  * `row` (default) lays the pieces out across the page grid, 3 or 2 to a row, under a wide image;
- * `stack` is a single column for the 4-column side of an 8 + 4 look.
+ * `stack` is a single column for the 4-column side of an 8 + 4 look (and spreads across the page below desktop).
  */
 export function LookStrip({ imgKey, title = "In this image", label, variant = "row", className }: { imgKey: string; title?: string; label?: string; variant?: "row" | "stack"; className?: string }) {
   const items = imgPins(imgKey)
@@ -25,11 +25,13 @@ export function LookStrip({ imgKey, title = "In this image", label, variant = "r
   const stack = variant === "stack";
   const span = items.length === 2 ? 6 : 4;
   const list = items.map((p) => <LookItem key={p.id} product={p} stack={stack} />);
+  // `stack` is one column beside an 8-column image on desktop; below that the pieces sit across the page like the row variant
+  const across = items.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3";
   return (
     <section aria-label={label ?? title} className={cn(!stack && "mt-4", className)}>
       <p className="eyebrow mb-3 text-ink-3">{title}</p>
       {stack ? (
-        <ul className="flex flex-col gap-3">{list}</ul>
+        <ul className={cn("grid grid-cols-1 gap-x-[var(--gap)] gap-y-3 lg:grid-cols-1", across)}>{list}</ul>
       ) : (
         <Grid as="ul" className="gap-y-3">
           {items.map((p) => (
@@ -51,7 +53,7 @@ function LookItem({ product: p, stack }: { product: Product; stack: boolean }) {
       </Link>
       <div className="min-w-0 flex-1 pr-1">
         <p className="eyebrow truncate text-ink-3">{labelById[p.labelId].name}</p>
-        <Link href={`/p/${p.slug}`} className="link-u tap mt-1 block truncate text-[13.5px] text-ink">
+        <Link href={`/p/${p.slug}`} className="link-u tap mt-1 line-clamp-2 text-[13.5px] leading-snug text-ink">
           {p.name}
         </Link>
         <Price price={p.price} mrp={p.mrp} size="sm" className="mt-1" />

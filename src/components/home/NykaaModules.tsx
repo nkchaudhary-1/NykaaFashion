@@ -96,7 +96,7 @@ function SlideBody({ s, active, first }: { s: Slide; active: boolean; first: boo
   const copy = (
     <div className={text}>
       <p className="eyebrow">{s.kicker}</p>
-      <H className="display-lg mt-4 [&_em]:text-inherit">{s.title}</H>
+      <H className="display-xl mt-4 [&_em]:text-inherit">{s.title}</H>
       <p className={`mt-5 max-w-[40ch] text-[16px] leading-relaxed ${onDark ? "text-white" : "text-ink-2"}`}>{s.dek}</p>
       <div className="mt-7 flex flex-wrap items-center gap-3">
         <LinkButton href={s.cta.href} size="lg" iconRight={<ArrowRight size={16} />} onClick={() => track("home_module_click", { moduleType: "hero", via: s.id })}>
@@ -129,7 +129,7 @@ function SlideBody({ s, active, first }: { s: Slide; active: boolean; first: boo
         <div className="container-x py-8 sm:py-10">
           <div className="max-w-[560px] [&_.eyebrow]:text-pink-ink">
             <p className="eyebrow text-pink-ink">{s.kicker}</p>
-            <H className="display-md mt-3 [&_em]:text-inherit">{s.title}</H>
+            <H className="display-lg mt-3 [&_em]:text-inherit">{s.title}</H>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{s.dek}</p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <LinkButton href={s.cta.href} size="lg" iconRight={<ArrowRight size={16} />} tabIndex={active ? 0 : -1}>
@@ -270,7 +270,7 @@ export function CouponStrip() {
           <Col as="li" key={c.code} span={{ base: 4, sm: 6, lg: 3 }}>
             <div className="flex h-full items-center justify-between gap-4 border border-dashed border-pink bg-white p-4">
               <div className="min-w-0">
-                <p className="text-[16px] font-bold leading-tight text-pink-ink">{off(c)}</p>
+                <p className="text-[16px] font-bold leading-tight text-ink">{off(c)}</p>
                 <p className="mt-1 line-clamp-2 text-[12.5px] leading-snug text-ink-2">{c.description}</p>
               </div>
               <button type="button" onClick={() => copy(c.code)} aria-label={`Copy code ${c.code}`} className="tap inline-flex h-11 shrink-0 items-center gap-2 border border-ink px-3 text-[12px] font-bold tracking-[0.08em] tabular-nums transition-colors hover:bg-ink hover:text-white">
@@ -336,7 +336,7 @@ export function CelebrationTiles() {
                     <p className="text-[15px] font-semibold leading-tight">{t.title}</p>
                     <p className="mt-1 text-[12.5px] text-ink-3">{styles(t.n)}</p>
                   </div>
-                  {t.off > 0 && <span className="shrink-0 text-[12px] font-bold uppercase tracking-[0.04em] text-pink-ink">Up to {t.off}% off</span>}
+                  {t.off > 0 && <span className="shrink-0 text-[12px] font-bold uppercase tracking-[0.04em] text-emerald">Up to {t.off}% off</span>}
                 </div>
               </Link>
             </Reveal>
@@ -367,7 +367,7 @@ export function IconicBrands() {
                   {t.hon && <span className="mt-2 inline-block bg-pink px-2 py-1 text-[9.5px] font-bold uppercase leading-none tracking-[0.1em] text-white">House of Nykaa</span>}
                 </span>
                 <span>
-                  <span className="block text-[13px] font-bold uppercase tracking-[0.05em] text-pink-ink">{t.off > 0 ? `Up to ${t.off}% off` : "New arrivals"}</span>
+                  <span className="block text-[13px] font-bold uppercase tracking-[0.05em] text-emerald">{t.off > 0 ? `Up to ${t.off}% off` : "New arrivals"}</span>
                   <span className="mt-1.5 flex items-center justify-between text-[12.5px] text-ink-2">
                     {styles(t.n)} <ArrowRight size={16} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
@@ -413,7 +413,7 @@ export function DiwaliWardrobe() {
                   </div>
                   <div className="p-3">
                     <p className="text-[14px] font-semibold leading-tight">{t.title}</p>
-                    <p className="mt-1 text-[12px] text-ink-3">{t.off > 0 ? <span className="font-semibold text-pink-ink">Up to {t.off}% off</span> : styles(t.n)}</p>
+                    <p className="mt-1 text-[12px] text-ink-3">{t.off > 0 ? <span className="font-semibold text-emerald">Up to {t.off}% off</span> : styles(t.n)}</p>
                   </div>
                 </Link>
               </li>

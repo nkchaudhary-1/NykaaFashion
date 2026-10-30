@@ -28,12 +28,12 @@ export function CategoryRail({ label, eyebrow, items }: { label: string; eyebrow
     <nav aria-label={label} className="container-x pb-10 sm:pb-12">
       <Carousel>
         <div className="mb-5 flex items-end justify-between gap-6">
-          <p className="eyebrow text-ink-3">{eyebrow}</p>
+          <h2 className="text-[20px] font-semibold tracking-[-0.01em]">{eyebrow}</h2>
           {items.length > 6 && <CarouselArrows />}
         </div>
         <CarouselTrack label={label} density={density}>
           {items.map((s, i) => (
-            <BentoTile key={s.id} href={`/c/${s.id}`} imgKey={s.imgKey} title={s.name} meta={`${s.count} ${s.count === 1 ? "piece" : "pieces"}`} ratio={ratio} sizes={SIZES.tile} load={i < 3 ? "eager" : undefined} />
+            <BentoTile key={s.id} href={`/c/${s.id}`} imgKey={s.imgKey} title={s.name} meta={`${s.count} ${s.count === 1 ? "product" : "products"}`} ratio={ratio} sizes={SIZES.tile} load={i < 3 ? "eager" : undefined} />
           ))}
         </CarouselTrack>
       </Carousel>

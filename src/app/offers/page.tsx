@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Suspense } from "react";
 import { OffersTracker } from "@/components/editorial/Trackers";
 import { OfferCodes } from "@/components/commerce/OfferCodes";
@@ -8,6 +6,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/layout/Section";
 import { interleave, type Feature } from "@/components/plp/features";
 import { ProductListing } from "@/components/plp/ProductListing";
+import { ChipLink } from "@/components/ui/Chip";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GridSkeleton } from "@/components/ui/Skeleton";
 import { editById } from "@/data/edits";
@@ -31,20 +30,17 @@ export default function OffersPage() {
       <OffersTracker />
       <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Offers" }]} eyebrow="The Offer Edit" title={<>Fewer sales. <em>Better ones.</em></>} intro="A discount appears only where a price has genuinely moved. Browse the markdowns, or take a code to your bag." />
       <Section y="none" className="pb-[var(--section-y)]" aria-labelledby="codes">
-        <h2 id="codes" className="eyebrow mb-5 text-ink-3">
-          Coupon codes · simulated
+        <h2 id="codes" className="mb-5 text-[20px] font-semibold tracking-[-0.01em]">
+          Coupon codes <span className="ml-1 text-[14px] font-normal text-ink-3">· simulated</span>
         </h2>
         <OfferCodes
           aside={
-            <nav aria-label="Shortcuts" className="on-dark flex h-full min-h-[220px] flex-col justify-between gap-8 bg-ink p-5 text-bone sm:p-6">
-              <p className="eyebrow">Shortcuts</p>
-              <ul>
+            <nav aria-label="Shortcuts" className="flex h-full flex-col justify-center gap-4 rounded-[var(--radius-sm)] border border-line-strong bg-sand p-5 sm:p-6">
+              <p className="text-[17px] font-semibold">Shortcuts</p>
+              <ul className="flex flex-wrap gap-2">
                 {SHORTCUTS.map((s) => (
-                  <li key={s.href} className="border-t border-bone/30 first:border-t-0">
-                    <Link href={s.href} className="group flex min-h-12 items-center justify-between gap-4 text-[15px] font-medium">
-                      <span className="link-u">{s.label}</span>
-                      <ArrowRight size={16} aria-hidden className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
+                  <li key={s.href}>
+                    <ChipLink href={s.href}>{s.label}</ChipLink>
                   </li>
                 ))}
               </ul>

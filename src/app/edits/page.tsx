@@ -13,7 +13,7 @@ import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = { title: "Edits", description: "Curated destinations: Hidden Gems, Luxe, the Responsible Edit, Festive & Wedding and House of Nykaa." };
 
-const pieces = (n: number) => `${n} ${n === 1 ? "piece" : "pieces"}`;
+const products = (n: number) => `${n} ${n === 1 ? "product" : "products"}`;
 
 /**
  * The index of edits as an asymmetric bento — a different rhythm from the Home mosaic: a 7 + 5 row, then 4 + 4 + 4.
@@ -56,15 +56,17 @@ export default function EditsIndex() {
 
 function ShortcutTile({ edit }: { edit: Edit }) {
   return (
-    <Link href={`/edits/${edit.id}`} className="group flex h-full min-h-[200px] flex-col justify-between gap-6 border border-ink p-4 transition-colors hover:bg-ink hover:text-bone sm:p-5">
+    <Link href={`/edits/${edit.id}`} className="group flex h-full min-h-[200px] flex-col justify-between gap-6 border border-line-strong p-4 transition-colors hover:border-ink hover:bg-sand sm:p-5">
       <div>
-        <p className="eyebrow opacity-80">{edit.kicker}</p>
+        <p className="eyebrow opacity-80">
+          <span className="block leading-[1.3]">{edit.kicker}</span>
+        </p>
         <h3 className="display-xs mt-3 sm:text-[22px]">{edit.title}</h3>
         <p className="mt-3 text-[13.5px] leading-snug opacity-90">{edit.blurb}</p>
       </div>
       <p className="flex items-center justify-between text-[12px] font-semibold uppercase tracking-[0.09em]">
-        <span className="tabular-nums">{pieces(editProducts(edit).length)}</span>
-        <ArrowRight size={16} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
+        <span className="tabular-nums">{products(editProducts(edit).length)}</span>
+        <ArrowRight size={16} aria-hidden className="text-pink transition-transform duration-300 group-hover:translate-x-1" />
       </p>
     </Link>
   );

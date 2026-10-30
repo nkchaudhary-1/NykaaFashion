@@ -1,4 +1,4 @@
-import { THEMES, primaryEdits } from "@/data/edits";
+import { primaryEdits } from "@/data/edits";
 import { labelById } from "@/data/labels";
 import { matchesRule } from "@/data/queries";
 import type { Edit, Label, Product } from "@/data/types";
@@ -8,15 +8,12 @@ import type { Edit, Label, Product } from "@/data/types";
  * Plain serialisable data, so a server page can choose the features that suit its context and hand them to the listing.
  *  - hero   a product from the list itself, shown large (the list gives one up, so it is never shown twice)
  *  - tile   an image promo — a related edit, a label, a trending search
- *  - note   a flat info panel: a short headline and a line or two (a label's story, an edit's promise). Colours are CSS values — tokens
- *           such as var(--color-pink-tint) or an edit's THEMES colours — and `dark` says whether the text on it is light.
+ *  - note   a flat info panel: a short headline and a line or two (a label's story, an edit's promise), on an edit's surface (see surfaces.ts)
  */
 export type Feature =
   | { kind: "hero" }
   | { kind: "tile"; href: string; imgKey: string; title: string; meta?: string; position?: string; editId?: string }
-  | { kind: "note"; title: string; text: string; eyebrow?: string; bg: string; fg: string; dark?: boolean; href?: string; cta?: string };
-
-export const pieces = (n: number) => `${n} ${n === 1 ? "piece" : "pieces"}`;
+  | { kind: "note"; title: string; text: string; tone: Edit["theme"]; eyebrow?: string; href?: string; cta?: string };
 
 /**
  * Feature boxes are tall (6 columns × 2 rows) and crop a 4:5 product shot at the sides. That suits a garment on a hanger and cuts a
@@ -33,10 +30,10 @@ export function relatedEditTiles(pool: Product[], take = 2, skip: string[] = [])
     .filter((x) => x.n >= 3)
     .sort((a, b) => b.n - a.n)
     .slice(0, take)
-    .map(({ e, n }) => ({ kind: "tile" as const, href: `/edits/${e.id}`, imgKey: `scenes/edit-${e.id}-tall`, title: e.title, meta: `${e.kicker} · ${pieces(n)} here`, editId: e.id }));
+    .map(({ e }) => ({ kind: "tile" as const, href: `/edits/${e.id}`, imgKey: `scenes/edit-${e.id}-tall`, title: e.title, meta: e.blurb, editId: e.id }));
 }
 
-/** Labels with the most pieces in this pool, as image promos (a representative product from the label). */
+/** Labels with the most products in this pool, as image promos (a representative product from the label). */
 export function labelTiles(pool: Product[], take = 2, skip: string[] = []): Feature[] {
   const counts = new Map<string, number>();
   for (const p of pool) counts.set(p.labelId, (counts.get(p.labelId) ?? 0) + 1);
@@ -53,16 +50,14 @@ export function labelTiles(pool: Product[], take = 2, skip: string[] = []): Feat
     });
 }
 
-/** An edit's promise ("Artisan-led", "Small batch" …) as an info panel in the edit's own colour. */
+/** An edit's promise ("Artisan-led", "Small batch" …) as an info panel on the edit's own surface. */
 export function highlightNotes(edit: Edit, take = 1): Feature[] {
-  const t = THEMES[edit.theme];
-  const dark = edit.theme !== "sand" && edit.theme !== "hon";
-  return edit.highlights.slice(0, take).map((h) => ({ kind: "note" as const, eyebrow: edit.kicker, title: h.title, text: h.text, bg: t.bg, fg: t.fg, dark }));
+  return edit.highlights.slice(0, take).map((h) => ({ kind: "note" as const, tone: edit.theme, eyebrow: edit.kicker, title: h.title, text: h.text }));
 }
 
-/** A label's story as an info panel (token colours: soft pink on the white page). */
+/** A label's story as an info panel on the soft grey surface. */
 export function labelStoryNote(label: Label): Feature {
-  return { kind: "note", eyebrow: [label.origin, label.founded ? `est. ${label.founded}` : null].filter(Boolean).join(" · ") || "The label", title: label.tagline, text: label.story, bg: "var(--color-pink-tint)", fg: "var(--color-ink)" };
+  return { kind: "note", tone: "sand", eyebrow: [label.origin, label.founded ? `est. ${label.founded}` : null].filter(Boolean).join(" · ") || "The label", title: label.tagline, text: label.story };
 }
 
 /** Round-robin merge, so different kinds of feature alternate down the page. */

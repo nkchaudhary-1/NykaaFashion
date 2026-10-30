@@ -50,8 +50,8 @@ async function CategoryContent({ params }: Pick<PageProps<"/c/[...slug]">, "para
   const features: Feature[] = interleave(relatedEditTiles(pool, 2), [{ kind: "hero" }, { kind: "hero" }] as Feature[]);
   return (
     <>
-      <ListingHeader crumbs={[{ name: "Home", href: "/" }, ...categoryTrail(slug).map((c, i, a) => ({ name: c.name, href: i < a.length - 1 ? c.href : undefined }))]} title={cat.name} intro={cat.blurb} />
-      <CategoryRail label={subs.length > 0 ? `${cat.name} categories` : `More in ${parent?.name}`} eyebrow={subs.length > 0 ? "Shop by category" : `More in ${parent?.name}`} items={rail} />
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, ...categoryTrail(slug).map((c, i, a) => ({ name: c.name, href: i < a.length - 1 ? c.href : undefined }))]} title={cat.name} count={pool.length} intro={cat.blurb} />
+      <CategoryRail label={subs.length > 0 ? `Shop ${cat.name} by category` : `More in ${parent?.name}`} eyebrow={subs.length > 0 ? "Shop by category" : `More in ${parent?.name}`} items={rail} />
       <Suspense fallback={<div className="container-x"><GridSkeleton count={8} /></div>}>
         <ProductListing pool={pool} scopeKey={`cat:${id}`} categoryScope={slug} source={`cat:${id}`} features={features} />
       </Suspense>

@@ -10,11 +10,13 @@ The redesign keeps the live brand and reorganises it; it does not invent a new o
 
 | Kept from the live site | How it shows up |
 | --- | --- |
-| White surfaces, navy-black text, **Nykaa pink `#e80071`** | tokens in `globals.css`; pink = primary CTAs, active states, discount text, headline emphasis (`<em>`); small pink text on white/grey uses `pink-ink` `#c4005f` (AA) |
-| Navigation | Women · Men · Kids · Home · Brands · **More ▾** (Luxe, Hidden Gems, Responsible, Festive, House of Nykaa, Style Files), Offers, *Switch to Luxe*; phones: ☰ drawer + bottom nav Home · Shop · Brands · Wishlist · Bag |
+| White surfaces, slate text, **navy primary buttons**, **raspberry accent `#982854`**, **green savings**, **blue labels** | tokens in `globals.css`: `navy` = Add to Bag / Proceed to Buy, `pink` (the name is historical) = the raspberry for links, active underlines, badges and headline emphasis (`<em>`), `emerald` = discount % and savings, `blue` = "Responsible" / "Exclusive" labels, `maroon` = login band. The hot-pink `brand` `#FC2779` appears only in the supplied wordmark (`public/brand/nykaa-fashion-logo.svg`, inlined by `Logo`) |
+| Navigation | one main row — wordmark · Women · Men · Kids · Home · **More** (poster tiles: Luxe Edit, Hidden Gems, Responsible, Festive & Wedding, House of Nykaa, Style Files) · search · **Fashion \| Luxe** switch · Account / Wishlist / Cart — and under it the **department row** (What’s New, Sale, then categories; dropdowns open with "Shop All" in raspberry; hovering a department previews its row); a thin black utility strip (Track order, Help) above; phones: ☰ drawer + search field, bottom nav Home · Shop · Brands · Wishlist · Bag |
 | Homepage module stack | sale banner → category tiles → **Celebration-ready categories** → **Iconic brands, unreal savings** → **Build Diwali wardrobe** → curated destinations → SEO copy (titles as on the live page; counts and "up to X% off" stamps are computed from the catalogue) |
-| Listing pattern | brand (bold) → product name → price + struck MRP + pink "% off"; wishlist heart top-right; "House of Nykaa" badge on own labels |
+| Listing pattern | brand (bold) → product name (grey) → price + struck MRP + **green** "% off"; wishlist heart top-right; "House of Nykaa" badge on own labels; filter and size chips are pills |
 | Brand names | H&M, Puma, U.S. Polo Assn., Cider, Vero Moda and the House of Nykaa labels (Twenty Dresses, Nykd, RSVP, Pipa Bella, Gajra Gang, Likha) — **sample listings**, flagged as such |
+| Footer | black "Download our app" + helpline strip → link strip (Who are we · Help · Quicklinks · Follow us) → six-column directory (Women · Men · Kids · Luxe · Top Brands · House of Nykaa, two grid columns each); entries that the sample catalogue cannot back are left out, never dead-ended |
+| Dialogs | login modal with a maroon band and the white wordmark; bag drawer with Price Summary, savings banner and a sticky "Proceed to Buy" bar; size guide as a right-hand drawer |
 
 What changes is structure: one grid, a different composition per section, clearer hierarchy and spacing, flat and shadow-free.
 
@@ -22,10 +24,10 @@ What changes is structure: one grid, a different composition per section, cleare
 
 | Rule | What it means in code |
 | --- | --- |
-| **One typeface — Inter Display** | `next/font` Inter with the `opsz` axis; `body { font-variation-settings: "opsz" 32 }` selects the Display optical size. `--font-sans/-display/-mono` all point at it. Headings are weight 500, emphasis (`<em>`) is weight 300 — never italic, never a second family. No `font-mono`, `font-serif`, `font-display` utilities in components. |
-| **No shadows, anywhere** | No `shadow-*`, `ring-*`, `drop-shadow`, `text-shadow`, `backdrop-blur`, `filter`. Focus is a 2px outline. Overlays are separated by a 1px ink line + a flat `bg-ink/50` scrim. Tailwind's `ring` is a box-shadow — do not use it. |
+| **One typeface — Inter Display** | `next/font` Inter with the `opsz` axis; `body { font-variation-settings: "opsz" 32 }` selects the Display optical size. `--font-sans/-display/-mono` all point at it. Headings are weight 700, tightly tracked; emphasis (`<em>`) is upright and takes the raspberry accent — never italic, never a second family. No `font-mono`, `font-serif`, `font-display` utilities in components. |
+| **No shadows, anywhere** | No `shadow-*`, `ring-*`, `drop-shadow`, `text-shadow`, `backdrop-blur`, `filter`. (The live site lifts dropdowns and drawers with shadows; here they get a 1px border — an explicit requirement.) Focus is a 2px outline. Overlays are separated by a 1px ink line + a flat `bg-ink/50` scrim. Tailwind's `ring` is a box-shadow — do not use it. |
 | **Flat colour** | Solid fills from the token palette. No gradients (not even scrims over photos — put text on a flat panel or on a calm area of the image), no grain, no blend modes. |
-| **Square** | Corners are 0. Exceptions are things that are *circles by nature*: avatars, colour swatches, hot-spot pins, radio buttons, count badges. |
+| **Corners** | Controls take the live site’s 4px (a base rule on `button, input, select, textarea`); size chips, filter chips and toggles are pills (`rounded-full`); dialogs 16px; images, cards and tiles stay square. Circles by nature: avatars, colour swatches, hot-spot pins, radio buttons, count badges. |
 | **Hairlines** | 1px `border-line` for structure, `border-ink` for emphasis. Structure comes from borders and whitespace, not elevation. |
 
 ## 2. Tokens (`src/app/globals.css`)
@@ -37,7 +39,7 @@ What changes is structure: one grid, a different composition per section, cleare
 | `--gap` | `16px` <600 · `20px` ≥600 · `24px` ≥1024 | the *only* gap between grid columns and between neighbouring tiles |
 | `--edge` | `max(--gutter, (100vw − --maxw)/2 + --gutter)` | distance from the viewport edge to the content edge — use it to bleed a block off the screen while keeping its other edge on the grid |
 | `--section-y` | `clamp(56px, 7vw, 112px)` | vertical rhythm between sections |
-| `--header-h` | 112px ≥1024 · 104px below | sticky offsets (`--header-offset` follows the hide-on-scroll header) |
+| `--header-h` | measured from the header at runtime (≈109px ≥1024 with the department row, 104px below; the CSS value is the first-paint default) | sticky offsets (`--header-offset` follows the hide-on-scroll header) |
 | `--bottom-nav-h` | 60px | phones: bottom navigation (hidden on PDP and checkout) |
 
 ## 3. Columns

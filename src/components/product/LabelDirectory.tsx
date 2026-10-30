@@ -71,7 +71,7 @@ export function LabelDirectory() {
                         <span className="shrink-0 text-right text-[12px] tabular-nums leading-tight text-ink-3">
                           {COUNT[l.id] ?? 0}
                           <br />
-                          pieces
+                          products
                         </span>
                       </Link>
                     </li>

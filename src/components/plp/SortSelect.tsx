@@ -19,7 +19,7 @@ export function SortSelect({ value, onChange, className, variant = "inline" }: {
   ));
   if (variant === "button") {
     return (
-      <div className={cn("relative flex h-11 w-full items-center justify-between gap-2 border border-ink px-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-ink transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink hover:bg-sand", className)}>
+      <div className={cn("relative flex h-11 w-full items-center justify-between gap-2 rounded-[var(--radius-sm)] border border-ink px-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-ink transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink hover:bg-sand", className)}>
         <label htmlFor={id} className="sr-only">
           Sort by
         </label>

@@ -68,10 +68,10 @@ export function SearchResults() {
   const noResults = res.results.length === 0;
   return (
     <>
-      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} title={<>{noResults ? "No results for" : "Results for"} <span className="text-pink-ink">“{q}”</span></>}>
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} count={noResults ? undefined : res.results.length} noun="results" title={<>{noResults ? "No results for" : "Results for"} <span className="text-pink-ink">“{q}”</span></>}>
         <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2" aria-live="polite">
           {res.corrected && <p className="text-[14px] text-ink-2">Showing results for <strong className="font-medium text-ink">{res.corrected}</strong>.</p>}
-          {res.relaxed && <p className="text-[14px] text-ink-2">No piece matches every word — showing the closest matches.</p>}
+          {res.relaxed && <p className="text-[14px] text-ink-2">No product matches every word — showing the closest matches.</p>}
           {res.parsed.understood.length > 0 && (
             <>
               <span className="text-[12.5px] text-ink-3">Understood:</span>
@@ -90,7 +90,7 @@ export function SearchResults() {
   );
 }
 
-/** Nothing matched: say so plainly, then hand the shopper back to discovery — trending searches, edits, popular pieces. */
+/** Nothing matched: say so plainly, then hand the shopper back to discovery — trending searches, edits, popular products. */
 function NoResults() {
   return (
     <>
@@ -107,13 +107,15 @@ function NoResults() {
       </Section>
       <Section tone="paper" y="sm" className="border-y border-line">
         <SectionHeading eyebrow="Start from a point of view" title="Popular edits" href="/edits" hrefLabel="All edits" />
-        <Grid className="mt-10 gap-y-[var(--gap)]">
-          {primaryEdits.slice(0, 3).map((e) => (
-            <Col key={e.id} span={{ base: 4, sm: 4, lg: 4 }}>
-              <EditTile edit={e} source="search-empty" sizes="(min-width:600px) 33vw, 100vw" ratio="5/4" />
-            </Col>
-          ))}
-        </Grid>
+        <div className="mt-10">
+          <Carousel>
+            <CarouselTrack label="Popular edits" density="wide">
+              {primaryEdits.slice(0, 3).map((e, i) => (
+                <EditTile key={e.id} edit={e} source="search-empty" sizes="(min-width:1024px) 33vw, (min-width:600px) 45vw, 90vw" ratio="5/4" load={i < 2 ? "eager" : undefined} />
+              ))}
+            </CarouselTrack>
+          </Carousel>
+        </div>
       </Section>
       <Section y="sm">
         <SectionHeading eyebrow="Or browse" title="Popular right now" />
@@ -133,7 +135,7 @@ function SearchHome() {
     <>
       <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} eyebrow="Search" size="md" title="What are you looking for?" intro="Search a label, a fabric, an occasion — or try a phrase like “festive under 2000”.">
         <div className="mt-8">
-          <p className="eyebrow mb-4 text-ink-3">Trending searches</p>
+          <h2 className="mb-4 text-[20px] font-semibold tracking-[-0.01em]">Trending searches</h2>
           <ul aria-label="Trending searches" className="flex flex-wrap gap-2">
             <li>
               <ChipLink href={href("festive under 2000")} className="border-ink">
@@ -155,7 +157,7 @@ function SearchHome() {
             const n = productsInCategory(id).length;
             return (
               <Col key={id} span={{ base: 2, sm: 6, lg: 3 }}>
-                <BentoTile href={`/c/${id}`} imgKey={`scenes/cat-${id}`} title={categoryById[id].name} meta={`${n} pieces`} sizes={SIZES.tile} load={i < 2 ? "eager" : undefined} />
+                <BentoTile href={`/c/${id}`} imgKey={`scenes/cat-${id}`} title={categoryById[id].name} meta={`${n} products`} sizes={SIZES.tile} load={i < 2 ? "eager" : undefined} />
               </Col>
             );
           })}

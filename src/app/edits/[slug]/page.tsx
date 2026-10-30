@@ -102,7 +102,7 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
 
       <section id="pieces" aria-labelledby="pieces-h" className="scroll-mt-24 pb-4 pt-[var(--section-y)]">
         <div className="container-x mb-10">
-          <SectionHeading level={2} eyebrow="Shop the edit" title={<span id="pieces-h">The pieces.</span>} />
+          <SectionHeading level={2} eyebrow="Shop the edit" title={<span id="pieces-h">All products.</span>} />
         </div>
         <Suspense fallback={<div className="container-x"><GridSkeleton count={8} /></div>}>
           <ProductListing pool={pool} scopeKey={`edit:${edit.id}`} source={`edit:${edit.id}`} hide={edit.id === "responsible" ? ["responsible"] : edit.id === "the-offer-edit" ? ["offers"] : []} categoryScope={[]} resultsHeading={false} features={features} />
@@ -118,13 +118,15 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
 
       <Section tone="paper" y="sm" className="border-t border-line" aria-labelledby="more-edits">
         <SectionHeading level={2} eyebrow="Keep going" title={<span id="more-edits">More edits.</span>} href="/edits" hrefLabel="All edits" />
-        <Grid className="mt-10 gap-y-[var(--gap)]">
-          {more.map((e) => (
-            <Col key={e.id} span={{ base: 4, sm: 4, lg: 4 }}>
-              <EditTile edit={e} source="more-edits" sizes="(min-width:1024px) 33vw, (min-width:600px) 33vw, 100vw" ratio="5/4" />
-            </Col>
-          ))}
-        </Grid>
+        <div className="mt-10">
+          <Carousel>
+            <CarouselTrack label="More edits" density="wide">
+              {more.map((e) => (
+                <EditTile key={e.id} edit={e} source="more-edits" sizes="(min-width:1024px) 33vw, (min-width:600px) 45vw, 90vw" ratio="5/4" />
+              ))}
+            </CarouselTrack>
+          </Carousel>
+        </div>
       </Section>
     </>
   );

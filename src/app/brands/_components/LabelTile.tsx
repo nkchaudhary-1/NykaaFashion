@@ -26,7 +26,7 @@ export function LabelTile({ label, onDark, sizes = SIZES.tile, load, ratio = "4/
       </div>
       <p className={cn("mt-3 text-[15px] font-medium leading-tight tracking-[-0.01em]", onDark && "text-bone")}>{label.name}</p>
       <p className={cn("mt-1 truncate text-[12.5px] tabular-nums", onDark ? "text-bone" : "text-ink-3")}>
-        {[label.origin, `${n} ${n === 1 ? "piece" : "pieces"}`].filter(Boolean).join(" · ")}
+        {[label.origin, `${n} ${n === 1 ? "product" : "products"}`].filter(Boolean).join(" · ")}
       </p>
     </Link>
   );

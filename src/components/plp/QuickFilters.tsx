@@ -97,6 +97,8 @@ export function QuickFilters({ facets, filters, hide, poolSize, onChange, classN
     const measure = () => {
       const kids = Array.from(el.querySelectorAll<HTMLElement>("[data-qfg]"));
       if (!kids.length) return;
+      // not even the first group fits (narrow tablets): show none, the drawer has them all
+      if (kids[0].offsetWidth > el.clientWidth - 8) return setFit(0);
       const wrapped = kids.findIndex((k) => k.offsetTop > kids[0].offsetTop + 4);
       setFit(wrapped === -1 ? Infinity : wrapped);
     };
