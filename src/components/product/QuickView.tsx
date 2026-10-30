@@ -12,9 +12,8 @@ import { labelById } from "@/data/labels";
 import type { Product } from "@/data/types";
 import { cn } from "@/lib/cn";
 import { setUI, useUI } from "@/stores/ui";
-import { ColorPicker } from "./ColorSwatches";
 import { SaveButton } from "./SaveButton";
-import { SizeSelector } from "./SizeSelector";
+import { ColourChooser, SizeSelector } from "./SizeSelector";
 import { useProductSelection } from "./useSelection";
 
 export function QuickViewHost() {
@@ -69,7 +68,7 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
               <RatingLine rating={product.rating} count={product.ratingCount} />
             </div>
           </div>
-          {product.variants.length > 1 && <ColorPicker product={product} value={sel.variant} onChange={(i) => (sel.setVariant(i), setShot(0))} />}
+          {product.variants.length > 1 && <ColourChooser product={product} value={sel.variant} onChange={(i) => (sel.setVariant(i), setShot(0))} compact />}
           <SizeSelector product={product} sel={sel} groupRef={groupRef} compact />
           <div className="flex items-stretch gap-2">
             {sel.soldOutSize ? (
@@ -81,7 +80,7 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
                 Add to bag
               </Button>
             )}
-            <SaveButton product={product} variant={sel.variant} source="quickview" tone="plain" size={22} className="size-[52px] shrink-0 border border-ink" />
+            <SaveButton product={product} variant={sel.variant} source="quickview" tone="plain" size={22} className="size-12 shrink-0 border border-ink" />
           </div>
           <LinkButton href={`/p/${product.slug}`} variant="ghost" size="md" full iconRight={<ArrowRight size={15} />} onClick={close}>
             View full details

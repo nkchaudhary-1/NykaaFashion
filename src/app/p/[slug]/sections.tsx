@@ -1,39 +1,107 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Col, Grid } from "@/components/layout/Grid";
+import type { ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
-import { LabelMonogram } from "@/components/product/LabelMark";
 import { ProductCard } from "@/components/product/ProductCard";
-import { LinkButton } from "@/components/ui/Button";
 import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
-import { SIZES } from "@/components/ui/Img";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { editById } from "@/data/edits";
+import { Img, SIZES } from "@/components/ui/Img";
+import { products } from "@/data/catalog";
+import { categories, categoryById } from "@/data/categories";
 import { labelById } from "@/data/labels";
-import type { Edit, Label, Product } from "@/data/types";
-import { fromSameLabel, inSameEdit, similarTo } from "@/lib/recs";
+import { productsInCategory } from "@/data/queries";
+import type { Product } from "@/data/types";
+import { fromSameLabel, similarTo } from "@/lib/recs";
 
-// ── More from this label: a 4-up carousel (arrows in the heading), opening with the label itself ──
-export function MoreFromLabel({ product }: { product: Product }) {
-  const label = labelById[product.labelId];
-  const items = fromSameLabel(product, 8);
-  if (items.length === 0) return null;
+/**
+ * The rails under the product, in the live page's order: Similar Products → Customers Also Viewed → More From {brand} → More From {category}.
+ * Each section picks a different rhythm — a 4-up rail, a grey band of collage cards, a 4-up rail, a denser 6-up rail — and every rail keeps its
+ * arrows in the heading (desktop) and swipes on touch.
+ */
+
+/** Section title on the page grid: the title in columns 1–6, controls (rail arrows) in 7–12. */
+function RailHeading({ id, title, children }: { id: string; title: string; children?: ReactNode }) {
   return (
-    <Section tone="paper" aria-labelledby="more-label" className="border-y border-line">
+    <div className="grid-main items-end gap-y-4">
+      <h2 id={id} className="display-sm col-span-4 min-w-0 sm:col-span-12 lg:col-span-6 lg:row-start-1">
+        {title}
+      </h2>
+      {children && <div className="col-span-4 flex items-center justify-end gap-6 sm:col-span-12 lg:col-span-6 lg:col-start-7 lg:row-start-1">{children}</div>}
+    </div>
+  );
+}
+
+/** Rail of product cards: heading + arrows + a swipeable track. `density="product"` is 4-up on desktop (3 columns each), `"tile"` 6-up (2 columns each). */
+function Rail({ id, title, list, source, density = "product" }: { id: string; title: string; list: Product[]; source: string; density?: "product" | "tile" }) {
+  return (
+    <Carousel>
+      <RailHeading id={id} title={title}>
+        <CarouselArrows />
+      </RailHeading>
+      <div className="mt-6 sm:mt-8">
+        <CarouselTrack label={title} density={density}>
+          {list.map((p) => (
+            <div key={p.id} className="flex h-full flex-col">
+              <ProductCard product={p} source={source} sizes={density === "tile" ? SIZES.card : SIZES.rail} />
+            </div>
+          ))}
+        </CarouselTrack>
+      </div>
+    </Carousel>
+  );
+}
+
+/** Same-category pieces first, then the rest of the department. */
+const similarOf = (p: Product) => similarTo(p, 8, (x) => x.categoryPath[0] === p.categoryPath[0]);
+const sameCategory = (p: Product) => p.categoryPath.slice(0, 2).join("/");
+
+// ── Similar Products: a 4-up rail, the heart on each image ──
+export function SimilarProducts({ product }: { product: Product }) {
+  const list = similarOf(product);
+  if (list.length < 2) return null;
+  return (
+    <Section y="sm" tone="bone" aria-labelledby="similar" className="border-t border-line">
+      <Rail id="similar" title="Similar Products" list={list} source="pdp-similar" />
+    </Section>
+  );
+}
+
+// ── Customers Also Viewed: a grey band of white collage cards, one per related category ──
+const joinNames = (names: string[]) => (names.length < 2 ? names.join("") : `${names.slice(0, -1).join(", ")} & ${names[names.length - 1]}`);
+
+export function CustomersAlsoViewed({ product }: { product: Product }) {
+  const own = sameCategory(product);
+  const groups = categories
+    .filter((c) => c.parent === product.categoryPath[0])
+    .map((c) => ({ c, items: productsInCategory(c.id).filter((p) => !p.soldOut && p.id !== product.id).sort((a, b) => a.rank - b.rank) }))
+    .filter((g) => g.items.length >= 3)
+    .sort((a, b) => Number(b.c.id === own) - Number(a.c.id === own) || b.items.length - a.items.length)
+    .slice(0, 4);
+  if (groups.length < 2) return null;
+  return (
+    <Section y="sm" tone="sand" aria-labelledby="also-viewed">
       <Carousel>
-        <SectionHeading level={2} eyebrow="The label behind it" title={<span id="more-label">More from {label.name}.</span>} intro={label.story} href={`/brands/${label.id}`} hrefLabel="Meet the label">
-          <CarouselArrows />
-        </SectionHeading>
-        <div className="mt-10 sm:mt-14">
-          <CarouselTrack label={`More from ${label.name}`} density="product">
-            {[
-              <LabelTile key="label" label={label} />,
-              ...items.map((p) => (
-                <div key={p.id} className="flex h-full flex-col">
-                  <ProductCard product={p} source="pdp-label" sizes={SIZES.rail} />
-                </div>
-              )),
-            ]}
+        <RailHeading id="also-viewed" title="Customers Also Viewed" />
+        <div className="mt-6 sm:mt-8">
+          <CarouselTrack label="Customers also viewed" density="product">
+            {groups.map(({ c, items }) => {
+              const names = [...new Set(items.map((p) => labelById[p.labelId].name))].slice(0, 3);
+              return (
+                <Link key={c.id} href={`/c/${c.id}`} className="group flex h-full flex-col bg-white p-3 transition-colors hover:bg-paper sm:p-4">
+                  {/* one big picture and two small ones, the way the live cards collage a category */}
+                  <div className="grid grid-cols-3 grid-rows-2 gap-2">
+                    <div className="relative col-span-2 row-span-2 aspect-[4/5] overflow-hidden">
+                      <Img imgKey={items[0].variants[0].images[0]} alt="" sizes={SIZES.rail} ratio="fill" className="absolute inset-0 h-full" />
+                    </div>
+                    {items.slice(1, 3).map((p) => (
+                      <div key={p.id} className="relative overflow-hidden">
+                        <Img imgKey={p.variants[0].images[0]} alt="" sizes="96px" ratio="fill" className="absolute inset-0 h-full" />
+                      </div>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-[14px] font-bold leading-tight text-ink group-hover:text-pink">{categoryById[c.id]?.name ?? c.name}</p>
+                  <p className="mt-1 line-clamp-1 text-[12.5px] text-ink-3">{joinNames(names)}</p>
+                </Link>
+              );
+            })}
           </CarouselTrack>
         </div>
       </Carousel>
@@ -41,79 +109,27 @@ export function MoreFromLabel({ product }: { product: Product }) {
   );
 }
 
-/** The label as the first card: its own two colours, monogram, one line of voice, one link. */
-function LabelTile({ label }: { label: Label }) {
+// ── More From {brand}: a 4-up rail ──
+export function MoreFromLabel({ product }: { product: Product }) {
+  const label = labelById[product.labelId];
+  const list = fromSameLabel(product, 8);
+  if (list.length < 2) return null;
   return (
-    <Link href={`/brands/${label.id}`} className="group flex aspect-[4/5] flex-col justify-between p-5 sm:p-6" style={{ background: label.tone.bg, color: label.tone.fg }}>
-      <span className="eyebrow">The label</span>
-      <LabelMonogram label={label} size="lg" className="-ml-1 self-start" />
-      <span>
-        <span className="display-xs block">{label.name}</span>
-        <span className="mt-2 block text-[13.5px] leading-snug">{label.tagline}</span>
-        <span className="mt-5 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em]">
-          Meet the label <ArrowRight size={15} aria-hidden className="transition-transform duration-300 ease-editorial group-hover:translate-x-1" />
-        </span>
-      </span>
-    </Link>
-  );
-}
-
-// ── In the same edit: a flat colour panel in the edit's identity colour (4 columns) beside two product cards (4 columns each) ──
-const PANEL: Record<Edit["theme"], string> = {
-  gem: "on-dark bg-gem text-bone",
-  luxe: "on-dark bg-luxe text-bone",
-  resp: "on-dark bg-resp text-bone",
-  festive: "on-dark bg-festive text-bone",
-  hon: "bg-pink-tint text-ink",
-  ink: "on-dark bg-ink text-bone",
-  sand: "bg-sand text-ink",
-};
-const DARK = new Set<Edit["theme"]>(["gem", "luxe", "resp", "festive", "ink"]);
-
-export function EditBand({ product }: { product: Product }) {
-  const same = inSameEdit(product, 2);
-  if (!same) return null;
-  const edit = editById[same.editId];
-  return (
-    <Section aria-labelledby="same-edit">
-      <Grid className="gap-y-[var(--gap)]">
-        <Col span={{ base: 4, sm: 12, lg: 4 }} className={`flex flex-col p-6 sm:p-8 ${PANEL[edit.theme]}`}>
-          <p className="eyebrow">Curated · {edit.kicker}</p>
-          <h2 className="display-sm mt-5">
-            <span id="same-edit">In the {edit.title} edit.</span>
-          </h2>
-          <p className="mt-4 max-w-[40ch] text-[15px] leading-relaxed">{edit.blurb}</p>
-          <LinkButton href={`/edits/${edit.id}`} variant={DARK.has(edit.theme) ? "inverse" : "secondary"} size="lg" className="mt-8 self-start sm:mt-auto" iconRight={<ArrowRight size={16} />}>
-            Shop the edit
-          </LinkButton>
-        </Col>
-        {same.items.map((p) => (
-          <Col key={p.id} span={{ base: 2, sm: 6, lg: 4 }}>
-            <ProductCard product={p} source="pdp-same-edit" sizes={SIZES.half} />
-          </Col>
-        ))}
-      </Grid>
+    <Section y="sm" tone="bone" aria-labelledby="more-label">
+      <Rail id="more-label" title={`More From ${label.name}`} list={list} source="pdp-label" />
     </Section>
   );
 }
 
-// ── Similar pieces: a mixed-size grid — one feature (6 columns × 2 rows) beside four standard cards (3 columns) ──
-export function SimilarGrid({ product }: { product: Product }) {
-  const [feature, ...rest] = similarTo(product, 5, (x) => x.categoryPath[0] === product.categoryPath[0]);
-  if (!feature) return null;
+// ── More From {category}: a denser 6-up rail, skipping what the rails above already show ──
+export function MoreFromCategory({ product }: { product: Product }) {
+  const cat = sameCategory(product);
+  const shown = new Set([product.id, ...similarOf(product).map((p) => p.id), ...fromSameLabel(product, 8).map((p) => p.id)]);
+  const list = products.filter((p) => !p.soldOut && sameCategory(p) === cat && !shown.has(p.id)).sort((a, b) => a.rank - b.rank).slice(0, 12);
+  if (list.length < 3) return null;
   return (
-    <Section tone="paper" aria-labelledby="similar" className="border-y border-line">
-      <SectionHeading level={2} eyebrow="More to consider" title={<span id="similar">Similar pieces.</span>} />
-      <Grid className="mt-10 gap-y-10 sm:mt-14">
-        <Col span={{ base: 4, sm: 6, lg: 6 }} rows={{ sm: 2, lg: 2 }} className="flex flex-col">
-          <ProductCard product={feature} source="pdp-similar" sizes={SIZES.half} fill className="flex-1" />
-        </Col>
-        {rest.slice(0, 4).map((p) => (
-          <Col key={p.id} span={{ base: 2, sm: 3, lg: 3 }}>
-            <ProductCard product={p} source="pdp-similar" sizes={SIZES.cardWide} />
-          </Col>
-        ))}
-      </Grid>
+    <Section y="sm" tone="paper" aria-labelledby="more-category" className="border-y border-line">
+      <Rail id="more-category" title={`More From ${categoryById[cat]?.name ?? "this category"}`} list={list} source="pdp-category" density="tile" />
     </Section>
   );
 }

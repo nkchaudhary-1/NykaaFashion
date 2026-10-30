@@ -1,30 +1,32 @@
 "use client";
 import Link from "next/link";
-import { BellRing, RotateCcw, Scissors, Share2, Star, Tag, Truck } from "lucide-react";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { BadgePercent, BellRing, ClipboardList, Heart, Info, RotateCcw, Share2, Star, Store } from "lucide-react";
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Disclosure } from "@/components/ui/Disclosure";
+import { Img } from "@/components/ui/Img";
 import { Price } from "@/components/ui/Price";
 import { coupons, FREE_SHIPPING_THRESHOLD } from "@/data/commerce";
 import { inStockVariantIndex } from "@/data/catalog";
 import { labelById } from "@/data/labels";
-import type { Product } from "@/data/types";
+import { productsByLabel } from "@/data/queries";
+import type { Label, Product } from "@/data/types";
+import { saveWithFeedback } from "@/lib/actions";
 import { cn } from "@/lib/cn";
 import { peekFlip, playFlip } from "@/lib/flip";
 import { inr } from "@/lib/format";
 import { alternatives } from "@/lib/recs";
 import { track } from "@/lib/track";
+import { useIsSaved } from "@/stores/commerce";
 import { signal } from "@/stores/intent";
 import { setUI, toast } from "@/stores/ui";
-import { ColorPicker } from "./ColorSwatches";
 import { DeliveryCheck } from "./DeliveryCheck";
 import { Gallery } from "./Gallery";
-import { LabelBadges } from "./LabelMark";
+import { LabelMonogram } from "./LabelMark";
 import { ProductCard } from "./ProductCard";
-import { SaveButton } from "./SaveButton";
-import { SizeSelector } from "./SizeSelector";
+import { RatingReviews } from "./Reviews";
+import { ColourChooser, SizeSelector } from "./SizeSelector";
 import { useProductSelection } from "./useSelection";
 
 /** Height of the phone/tablet add-to-bag bar (without the safe-area inset) — also the offset toasts sit above. */
@@ -32,23 +34,21 @@ const STICKY_H = 72;
 const colourSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
 /**
- * Buy box, sticky from 600px up while the viewport is tall enough to hold it. It follows the header (`--header-offset` is the header's
- * height, or 0 once it has stepped away on scroll) and, if a short window can't fit it, scrolls inside itself rather than hiding the button.
- * The small negative margin / padding pair keeps focus outlines from being clipped by that scroll container.
+ * The picture stays in view while the long information column scrolls past it (from 600px, when the window is tall enough to hold it).
+ * It follows the header: `--header-offset` is the header's height, or 0 once the header has stepped away on scroll. On desktop the
+ * add-to-bag bar hangs under the header once the main button has gone — `--pdp-bar` is its height, so the picture steps down beneath it.
  */
-const BUY_BOX = [
+const STICKY_GALLERY = [
   "sm:self-start",
   "[@media(min-height:640px)]:sm:sticky",
-  "[@media(min-height:640px)]:sm:top-[calc(var(--header-offset)+12px)]",
-  "[@media(min-height:640px)]:sm:max-h-[calc(100svh-var(--header-offset)-24px)]",
-  "[@media(min-height:640px)]:sm:overflow-y-auto",
-  "[@media(min-height:640px)]:sm:-mx-1",
-  "[@media(min-height:640px)]:sm:px-1",
-  "[@media(min-height:640px)]:sm:scrollbar-none",
-  "[@media(min-height:640px)]:sm:transition-[top,max-height]",
+  "[@media(min-height:640px)]:sm:top-[calc(var(--header-offset)+var(--pdp-bar,0px)+16px)]",
+  "[@media(min-height:640px)]:sm:transition-[top]",
   "[@media(min-height:640px)]:sm:duration-500",
   "[@media(min-height:640px)]:sm:ease-editorial",
 ].join(" ");
+
+const sectionY = "mt-6 border-t border-line pt-6";
+const h2 = "text-[18px] font-semibold leading-tight";
 
 export function ProductDetail({ product }: { product: Product }) {
   const groupRef = useRef<HTMLDivElement>(null);
@@ -95,14 +95,25 @@ export function ProductDetail({ product }: { product: Product }) {
     [sel, product],
   );
 
-  // Phones / tablets: the add-to-bag bar shows whenever the main button is out of view. From 1024px the buy box is always in reach.
+  // The add-to-bag bar shows whenever the main button is out of view: phones and tablets always, desktop once it has scrolled above the fold.
   useEffect(() => {
     const el = ctaRef.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => setStickyOn(!e.isIntersecting));
+    const io = new IntersectionObserver(([e]) => {
+      const desktop = window.matchMedia("(min-width: 1024px)").matches;
+      setStickyOn(!e.isIntersecting && (!desktop || e.boundingClientRect.top < 0));
+    });
     io.observe(el);
     return () => io.disconnect();
   }, []);
+  useEffect(() => {
+    if (!stickyOn || !window.matchMedia("(min-width: 1024px)").matches) return;
+    const root = document.documentElement;
+    root.style.setProperty("--pdp-bar", `${STICKY_H}px`);
+    return () => {
+      root.style.removeProperty("--pdp-bar");
+    };
+  }, [stickyOn]);
   useEffect(() => {
     if (!stickyOn || !window.matchMedia("(max-width: 1023px)").matches) return;
     // Toasts sit above the bar, and the page gets room under it so the footer's last line is never covered.
@@ -127,228 +138,369 @@ export function ProductDetail({ product }: { product: Product }) {
     } catch (e) {
       if (e instanceof DOMException && e.name === "AbortError") return; // the shopper dismissed the share sheet
     }
-    try {
-      await navigator.clipboard.writeText(url);
-    } catch {
-      // clipboard permission refused (or an insecure origin): fall back to a transient selection
-      const ta = document.createElement("textarea");
-      ta.value = url;
-      ta.setAttribute("readonly", "");
-      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-    }
+    await copyText(url);
     toast({ title: "Link copied", description: product.name });
   }, [product.name]);
 
   const cta = sel.soldOutSize || product.soldOut ? "Notify me" : sel.size || product.sizes.length === 1 ? "Add to bag" : "Select a size";
   const act = () => (product.soldOut ? setUI({ notifyMe: { productId: product.id, size: sel.size ?? undefined } }) : sel.add("pdp"));
   const similar = product.soldOut ? alternatives(product, 2) : [];
+  const discount = product.mrp > product.price ? Math.round(((product.mrp - product.price) / product.mrp) * 100) : 0;
+  const tags = productTags(product, label);
 
   return (
     <>
       <section aria-label="Product" className="container-x pb-[var(--section-y)]">
         <Grid className="gap-y-8">
-          {/* Gallery: full-bleed swipe track on phones, image grid on the page columns from 600px (6 columns, 8 from 1024px). */}
-          <Col span={{ base: 4, sm: 6, lg: 8 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 1, lg: 1 }} className="-mx-[var(--gutter)] sm:mx-0">
-            <Gallery key={sel.variant} images={v.images} name={product.name} colorName={v.colorName} heroRef={heroRef} startIndex={sel.variant === inStockVariantIndex(product) ? startShot : 0} filler={<FactsPanel product={product} />} />
+          {/* Gallery: thumbnail rail + picture from 1024px (1 + 5 of the 12 columns), a full-width swipe track below; full bleed on phones. */}
+          <Col span={{ base: 4, sm: 6, lg: 6 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 1, lg: 1 }} className={cn("-mx-[var(--gutter)] sm:mx-0", STICKY_GALLERY)}>
+            <Gallery key={sel.variant} images={v.images} name={product.name} colorName={v.colorName} heroRef={heroRef} startIndex={sel.variant === inStockVariantIndex(product) ? startShot : 0} />
           </Col>
 
-          <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ sm: 7, lg: 9 }} rowStart={{ sm: 1, lg: 1 }} className={BUY_BOX}>
-            {/* Brand (bold) → product name → rating chip → price, the order shoppers scan a marketplace page in */}
+          {/* Information: label → brand → title → rating → price, then size and bag, delivery, coupons, product information, reviews, the brand. */}
+          <Col span={{ base: 4, sm: 6, lg: 6 }} start={{ sm: 7, lg: 7 }} rowStart={{ sm: 1, lg: 1 }}>
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-                  <Link href={`/brands/${label.id}`} className="tap text-[18px] font-semibold leading-tight text-ink transition-colors hover:text-pink-ink">
-                    {label.name}
-                  </Link>
-                  <LabelBadges label={label} />
-                  {product.responsible && !label.flags.responsible && <Badge tone="emerald">Responsible</Badge>}
-                  {product.isNew && <Badge tone="outline">New</Badge>}
-                </div>
-                <h1 className="mt-1.5 text-[17px] font-normal leading-snug text-ink-2 sm:text-[18px]">{product.name}</h1>
+                {tags.length > 0 && (
+                  <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] font-semibold uppercase leading-none tracking-[0.1em] text-blue">
+                    {tags.map((t, i) => (
+                      <Fragment key={t}>
+                        {i > 0 && <span aria-hidden className="h-3 w-px bg-blue/40" />}
+                        <span>{t}</span>
+                      </Fragment>
+                    ))}
+                  </p>
+                )}
+                <Link href={`/brands/${label.id}`} className={cn("tap block text-[22px] font-semibold leading-tight text-ink transition-colors hover:text-pink", tags.length > 0 && "mt-3")}>
+                  {label.name}
+                </Link>
+                <h1 className="mt-1.5 text-[16px] font-normal leading-snug text-ink-3">{product.name}</h1>
               </div>
               <button type="button" onClick={share} aria-label={`Share ${product.name}`} className="inline-flex size-11 shrink-0 items-center justify-center border border-line-strong text-ink transition-colors hover:border-ink hover:bg-sand">
                 <Share2 size={18} strokeWidth={1.5} />
               </button>
             </div>
 
-            <a href="#reviews" className="tap mt-3 inline-flex items-center gap-2 border border-line-strong px-2.5 py-1 text-[12.5px] leading-none transition-colors hover:border-ink">
-              <span className="inline-flex items-center gap-1 font-semibold tabular-nums text-ink">
-                {product.rating.toFixed(1)} <Star size={12} aria-hidden className="fill-ink text-ink" />
+            <a href="#reviews" className="tap mt-4 inline-flex items-stretch overflow-hidden rounded-[var(--radius-sm)] border border-line-strong text-[13.5px] transition-colors hover:border-ink">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 font-semibold tabular-nums">
+                {product.rating.toFixed(1)} <Star size={13} aria-hidden className="fill-ink text-ink" />
                 <span className="sr-only">out of 5 stars</span>
               </span>
-              <span aria-hidden className="h-3.5 w-px bg-line-strong" />
-              <span className="tabular-nums text-ink-3">{product.ratingCount.toLocaleString("en-IN")} ratings</span>
+              <span className="inline-flex items-center border-l border-line-strong px-3 py-1.5 tabular-nums text-ink-3">Based on {product.ratingCount.toLocaleString("en-IN")} ratings</span>
             </a>
 
-            <div className="mt-4">
-              <Price price={product.price} mrp={product.mrp} size="lg" className={cn(product.soldOut && "opacity-60")} />
+            <div className="mt-5">
+              <p className="flex flex-wrap items-baseline gap-x-3 tabular-nums">
+                <span className={cn("text-[26px] font-bold leading-none", product.soldOut ? "text-ink-3" : "text-ink")}>{inr(product.price)}</span>
+                {discount > 0 && (
+                  <>
+                    <span className="sr-only">, was {inr(product.mrp)}</span>
+                    <span className="text-[17px] font-semibold text-emerald">{discount}% Off</span>
+                  </>
+                )}
+              </p>
+              <p className="mt-2 text-[13px] tabular-nums text-ink-3">
+                {discount > 0 && (
+                  <>
+                    MRP <s>{inr(product.mrp)}</s>{" "}
+                  </>
+                )}
+                Inclusive of all taxes
+              </p>
             </div>
-            <p className="mt-1 text-[12px] text-ink-3">Inclusive of all taxes</p>
-            <p className="mt-3.5 max-w-[46ch] text-[14px] leading-[1.55] text-ink-2">{product.description}</p>
 
-            <div className="mt-4 space-y-5">
-              {product.variants.length > 1 && <ColorPicker product={product} value={sel.variant} onChange={switchColour} />}
-              {!product.soldOut && <SizeSelector product={product} sel={sel} groupRef={groupRef} />}
-            </div>
-
-            <div ref={ctaRef} className="mt-4 flex items-stretch gap-2">
-              {product.soldOut ? (
-                <Button full size="lg" variant="secondary" icon={<BellRing size={16} />} onClick={act}>
-                  Notify me
-                </Button>
-              ) : (
-                <Button full size="lg" variant={sel.soldOutSize ? "secondary" : "primary"} onClick={act} icon={sel.soldOutSize ? <BellRing size={16} /> : undefined}>
-                  {cta}
-                </Button>
+            <div className={sectionY}>
+              {product.variants.length > 1 && (
+                <div className="mb-6">
+                  <ColourChooser product={product} value={sel.variant} onChange={switchColour} />
+                </div>
               )}
-              <SaveButton product={product} variant={sel.variant} source="pdp" tone="plain" size={22} className="size-[52px] shrink-0 border border-ink" />
+              {!product.soldOut && <SizeSelector product={product} sel={sel} groupRef={groupRef} />}
+
+              {/* a size container: in a narrow information column (the 6 + 6 split just above 600px) the wishlist button folds to its heart */}
+              <div ref={ctaRef} className={cn("@container flex items-stretch gap-3", !product.soldOut && "mt-6")}>
+                <WishlistButton product={product} variant={sel.variant} />
+                {product.soldOut ? (
+                  <Button full size="lg" variant="secondary" icon={<BellRing size={16} />} onClick={act}>
+                    Notify me
+                  </Button>
+                ) : (
+                  <Button full size="lg" variant={sel.soldOutSize ? "secondary" : "primary"} onClick={act} icon={sel.soldOutSize ? <BellRing size={16} /> : undefined}>
+                    {cta}
+                  </Button>
+                )}
+              </div>
+              {product.soldOut && (
+                <p role="status" className="mt-4 border-l-2 border-ink pl-3 text-[13.5px] leading-snug text-ink-2">
+                  This piece is sold out. Leave your number or email and we’ll tell you the moment it’s back — or start with something similar below.
+                </p>
+              )}
+              {product.soldOut && similar.length > 0 && (
+                <section aria-label="Similar pieces available now" className="mt-8">
+                  <h2 className={cn(h2, "mb-4")}>Similar, available now</h2>
+                  <ul className="grid grid-cols-4 gap-x-[var(--gap)] sm:grid-cols-6 lg:grid-cols-6">
+                    {similar.map((p) => (
+                      <li key={p.id} className="col-span-2 sm:col-span-3">
+                        <ProductCard product={p} source="pdp-oos-similar" hideQuickView sizes="(min-width:1024px) 22vw, 45vw" />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
             </div>
-            {product.soldOut && (
-              <p role="status" className="mt-4 border-l-2 border-ink pl-3 text-[13.5px] leading-snug text-ink-2">
-                This piece is sold out. Leave your number or email and we’ll tell you the moment it’s back — or start with something similar below.
-              </p>
-            )}
 
-            {product.soldOut && similar.length > 0 && (
-              <section aria-label="Similar pieces available now" className="mt-8">
-                <h2 className="eyebrow mb-4 text-ink-3">Similar, available now</h2>
-                <ul className="grid grid-cols-4 gap-x-[var(--gap)] sm:grid-cols-6 lg:grid-cols-4">
-                  {similar.map((p) => (
-                    <li key={p.id} className="col-span-2 sm:col-span-3 lg:col-span-2">
-                      <ProductCard product={p} source="pdp-oos-similar" hideQuickView sizes="(min-width:1024px) 16vw, 45vw" />
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            <div className="mt-4 space-y-4">
-              <DeliveryCheck />
-              <Offers product={product} />
-              <TrustRow product={product} />
+            <div className={sectionY}>
+              <DeliveryCheck price={product.price} />
             </div>
-          </Col>
 
-          {/* Fit, fabric and shipping: flat accordions under the buy controls on phones, a 4 / 4 / 4 row under the gallery from 600px. */}
-          <Col span={{ base: 4, sm: 12, lg: 12 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 2, lg: 2 }} className="border-t border-line sm:mt-4 sm:grid sm:grid-cols-3 sm:items-start sm:gap-x-[var(--gap)]">
-            <Disclosure title="Details">
-              <ul className="list-disc space-y-1.5 pl-4 marker:text-ink-3">
-                {product.details.map((d) => (
-                  <li key={d}>{d}</li>
-                ))}
-              </ul>
-              {product.modelNote && <p className="mt-3 text-[13px] text-ink-3">{product.modelNote}.</p>}
-            </Disclosure>
-            <Disclosure title="Fabric & care">
-              <p>{product.fabric}.</p>
-              <ul className="mt-3 list-disc space-y-1.5 pl-4 marker:text-ink-3">
-                {product.care.map((c) => (
-                  <li key={c}>{c}</li>
-                ))}
-              </ul>
-            </Disclosure>
-            <Disclosure title="Shipping & returns">
-              <p>
-                Standard delivery is free above {inr(FREE_SHIPPING_THRESHOLD)}. Returns and refunds are illustrative in this prototype — see <Link href="/info/returns" className="underline underline-offset-4">returns &amp; refunds</Link>.
-              </p>
-            </Disclosure>
+            <div className={sectionY}>
+              <Coupons product={product} />
+            </div>
+
+            <div className={sectionY}>
+              <ProductInformation product={product} label={label} />
+            </div>
+
+            <div className={sectionY}>
+              <RatingReviews product={product} />
+            </div>
+
+            <div className={sectionY}>
+              <AboutLabel label={label} />
+            </div>
           </Col>
         </Grid>
       </section>
 
-      <StickyBar product={product} on={stickyOn} cta={cta} onClick={act} size={sel.size} sizeChosen={!!sel.size || product.sizes.length === 1} />
+      <StickyBar product={product} image={v.images[0]} variantName={v.colorName} on={stickyOn} cta={cta} onClick={act} size={sel.size} sizeChosen={!!sel.size || product.sizes.length === 1} />
     </>
   );
 }
 
-/** Fit, fabric and who made it — fills the empty half of the last image row when a colour has an even number of shots. */
-function FactsPanel({ product }: { product: Product }) {
-  const label = labelById[product.labelId];
-  const row = "text-[12.5px] leading-snug text-ink lg:text-[13.5px]";
-  const sub = "mt-1 text-[11.5px] leading-snug text-ink-3 lg:text-[12px]";
+/** The blue uppercase label line — what makes this piece special, from the sample data (flags, newness). */
+function productTags(product: Product, label: Label): string[] {
+  const out: string[] = [];
+  if (label.flags.houseOfNykaa) out.push("Exclusive");
+  if (product.responsible) out.push("Responsible");
+  if (label.flags.hiddenGem) out.push("Hidden Gem");
+  if (label.flags.luxe) out.push("Luxe");
+  if (product.isNew) out.push("Latest Style");
+  return out.slice(0, 3);
+}
+
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    // clipboard permission refused (or an insecure origin): fall back to a transient selection
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+}
+
+/**
+ * Outline heart button beside the bag button. The accessible name keeps "Save … to wishlist" / "Remove … from wishlist" after the visible words.
+ * Its parent is a size container; when that row is narrower than 21rem the words drop out and the button becomes a 48px square.
+ */
+function WishlistButton({ product, variant }: { product: Product; variant: number }) {
+  const saved = useIsSaved(product.id);
+  const [pop, setPop] = useState(0);
   return (
-    <div className="flex h-full flex-col justify-between overflow-hidden bg-sand p-4 lg:p-7">
-      <p className="eyebrow text-ink-3">The piece</p>
-      <dl className="space-y-4 lg:space-y-6">
-        <div>
-          <dt className="eyebrow text-ink-3">Fit</dt>
-          <dd className={cn("mt-2", row)}>{product.fit}</dd>
-          {product.modelNote && <dd className={cn(sub, "hidden lg:block")}>{product.modelNote}</dd>}
-        </div>
-        <div>
-          <dt className="eyebrow text-ink-3">Fabric</dt>
-          <dd className={cn("mt-2", row)}>{product.fabric}</dd>
-          <dd className={cn(sub, "hidden lg:block")}>{product.care[0]}</dd>
-        </div>
-        <div className="hidden lg:block">
-          <dt className="eyebrow text-ink-3">Made by</dt>
-          <dd className={cn("mt-2", row)}>{label.name}</dd>
-          {label.origin && <dd className={sub}>{label.origin}</dd>}
-        </div>
-      </dl>
-    </div>
+    <button
+      type="button"
+      aria-pressed={saved}
+      aria-label={saved ? `Wishlisted: Remove ${product.name} from wishlist` : `Add to Wishlist: Save ${product.name} to wishlist`}
+      onClick={() => {
+        saveWithFeedback(product, variant, "pdp");
+        setPop((n) => n + 1);
+      }}
+      className="inline-flex h-12 shrink-0 items-center justify-center gap-2 border border-ink px-4 text-[15px] font-semibold text-ink transition-colors hover:bg-sand @max-[21rem]:w-12 @max-[21rem]:px-0"
+    >
+      <Heart key={pop} size={18} strokeWidth={1.6} aria-hidden className={cn("transition-colors duration-200", saved ? "fill-pink stroke-pink" : "fill-transparent", pop > 0 && saved && "animate-pop")} />
+      <span className="@max-[21rem]:sr-only">{saved ? "Wishlisted" : "Add to Wishlist"}</span>
+    </button>
   );
 }
 
-/** The one coupon that suits this piece best (label-specific first), as a pink-tint highlight. Codes are the prototype's simulated ones. */
-function Offers({ product }: { product: Product }) {
+/** Up to two coupons that apply to this piece, label-specific first: title and terms on top, the code and Copy Code on a dashed ticket edge. Simulated codes. */
+function Coupons({ product }: { product: Product }) {
   const label = labelById[product.labelId];
-  const [best] = coupons
+  const [copied, setCopied] = useState<string | null>(null);
+  const list = coupons
     .filter((c) => !c.expired && (!c.appliesTo || label.flags[c.appliesTo]))
-    .sort((a, b) => Number(!!b.appliesTo) - Number(!!a.appliesTo));
-  if (!best) return null;
+    .sort((a, b) => Number(!!b.appliesTo) - Number(!!a.appliesTo))
+    .slice(0, 2);
+  if (list.length === 0) return null;
+  const copy = async (code: string) => {
+    await copyText(code);
+    setCopied(code);
+    signal("discount_interaction");
+    toast({ title: `Code ${code} copied`, description: "Apply it in your bag — simulated coupon." });
+    setTimeout(() => setCopied(null), 2200);
+  };
   return (
-    <section aria-labelledby="offers-h" className="flex items-start gap-3 bg-pink-tint px-3.5 py-3">
-      <Tag size={16} aria-hidden className="mt-0.5 shrink-0 text-pink-ink" />
-      <div className="min-w-0 text-[12.5px] leading-snug text-ink">
-        <h2 id="offers-h" className="sr-only">
-          Offer (simulated)
-        </h2>
-        <span className="font-semibold tabular-nums tracking-[0.04em] text-pink-ink">{best.code}</span> — {best.description} <span className="text-ink-3">Simulated.</span>
+    <section aria-labelledby="coupons-h" className="@container">
+      <h2 id="coupons-h" className={cn(h2, "flex flex-wrap items-baseline gap-x-2")}>
+        Coupons <span className="text-[13px] font-normal text-ink-3">• {list.length} available · simulated</span>
+      </h2>
+      {/* side by side only when the column is wide enough to hold two tickets (a container query, so it follows the column, not the window) */}
+      <ul className="mt-4 grid grid-cols-1 gap-3 @lg:grid-cols-2">
+        {list.map((c) => (
+          <li key={c.code} className="flex flex-col border border-line bg-paper">
+            <div className="flex flex-1 items-start gap-3 p-3.5">
+              <span className="inline-flex size-10 shrink-0 items-center justify-center border border-line bg-white text-pink">
+                <BadgePercent size={20} strokeWidth={1.5} aria-hidden />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[15px] font-semibold leading-tight">{c.title}</p>
+                <p className="mt-1 line-clamp-3 text-[12.5px] leading-snug text-ink-3">{c.description}</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between gap-3 border-t border-dashed border-line-strong px-3.5 py-2">
+              <span className="text-[13px] font-medium tabular-nums tracking-[0.06em] text-ink-2">{c.code}</span>
+              <button type="button" onClick={() => copy(c.code)} aria-label={`Copy code ${c.code}`} className="tap text-[14px] font-semibold text-pink transition-colors hover:text-pink-ink">
+                {copied === c.code ? "Copied" : "Copy Code"}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/** Four collapsed rows, each an icon + bold title + grey summary + chevron (the live page's "Product Information"). */
+function ProductInformation({ product, label }: { product: Product; label: Label }) {
+  const row = (Icon: typeof Info, title: string, sub: string): ReactNode => (
+    <span className="flex items-start gap-3.5 py-1">
+      <Icon size={20} strokeWidth={1.4} aria-hidden className="mt-0.5 shrink-0 text-ink-2" />
+      <span className="flex flex-col text-left">
+        <span className="text-[15px] font-semibold text-ink">{title}</span>
+        <span className="mt-0.5 text-[13.5px] font-normal text-ink-3">{sub}</span>
+      </span>
+    </span>
+  );
+  const list = "list-disc space-y-1.5 pl-5 marker:text-ink-3";
+  return (
+    <section aria-labelledby="info-h">
+      <h2 id="info-h" className={h2}>
+        Product Information
+      </h2>
+      <div className="mt-2 border-t border-line">
+        <Disclosure headingLevel={3} title={row(ClipboardList, "Product details", "Care instructions, Pack contains")}>
+          <ul className={list}>
+            {product.details.map((d) => (
+              <li key={d}>{d}</li>
+            ))}
+          </ul>
+          <p className="mt-4 font-semibold text-ink">Care instructions</p>
+          <ul className={cn(list, "mt-1.5")}>
+            {product.care.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+          <p className="mt-4">
+            <span className="font-semibold text-ink">Pack contains:</span> 1 × {product.name}
+          </p>
+        </Disclosure>
+        <Disclosure headingLevel={3} title={row(Info, "Know your product", "Description")}>
+          <p>{product.description}</p>
+          <p className="mt-3">
+            <span className="font-semibold text-ink">Fit:</span> {product.fit}.
+          </p>
+          <p className="mt-1.5">
+            <span className="font-semibold text-ink">Fabric:</span> {product.fabric}.
+          </p>
+          {product.modelNote && <p className="mt-1.5 text-ink-3">{product.modelNote}.</p>}
+        </Disclosure>
+        <Disclosure headingLevel={3} title={row(Store, "Vendor details", "Country of origin, Manufacturer details")}>
+          <p>
+            <span className="font-semibold text-ink">Brand:</span> {label.name}
+          </p>
+          {label.origin && (
+            <p className="mt-1.5">
+              <span className="font-semibold text-ink">Based in:</span> {label.origin}
+            </p>
+          )}
+          <p className="mt-1.5">
+            <span className="font-semibold text-ink">Country of origin:</span> India
+          </p>
+          <p className="mt-3 text-ink-3">Vendor details are sample content in this prototype.</p>
+        </Disclosure>
+        <Disclosure headingLevel={3} title={row(RotateCcw, "Return and exchange policy", "Know more about return and exchange")}>
+          <p>
+            Standard delivery is free above {inr(FREE_SHIPPING_THRESHOLD)}. Returns and refunds are illustrative in this prototype — see <Link href="/info/returns" className="font-semibold text-pink underline underline-offset-4 hover:text-pink-ink">returns &amp; refunds</Link>.
+          </p>
+        </Disclosure>
       </div>
     </section>
   );
 }
 
-function TrustRow({ product }: { product: Product }) {
-  const label = labelById[product.labelId];
-  const items = [
-    { icon: Truck, text: `Free delivery above ${inr(FREE_SHIPPING_THRESHOLD)}` },
-    { icon: RotateCcw, text: "Easy returns (illustrative)" },
-    { icon: Scissors, text: label.origin ? `From ${label.origin}` : `By ${label.name}` },
-  ];
+/** "About {brand}": logo tile, the story clamped to two lines with read more, and the brand's customer-rating count (summed from the sample catalogue). */
+function AboutLabel({ label }: { label: Label }) {
+  const [more, setMore] = useState(false);
+  const ratings = productsByLabel(label.id).reduce((n, p) => n + p.ratingCount, 0);
+  const stat = ratings >= 100 ? `${(Math.floor(ratings / 100) * 100).toLocaleString("en-IN")}+` : String(ratings);
   return (
-    <ul aria-label="Good to know" className="grid grid-cols-3 gap-3 border-t border-line pt-4">
-      {items.map(({ icon: Icon, text }) => (
-        <li key={text} className="flex items-start gap-2 text-[11.5px] leading-[1.35] text-ink-2">
-          <Icon size={16} strokeWidth={1.5} aria-hidden className="mt-px shrink-0 text-ink" />
-          <span>{text}</span>
-        </li>
-      ))}
-    </ul>
+    <section aria-labelledby="about-h">
+      <div className="flex items-start justify-between gap-5">
+        <div className="min-w-0">
+          <h2 id="about-h" className={h2}>
+            About {label.name}
+          </h2>
+          <p className={cn("mt-2.5 text-[13.5px] leading-relaxed text-ink-3", !more && "line-clamp-2")}>{label.story}</p>
+          <button type="button" aria-expanded={more} onClick={() => setMore((m) => !m)} className="link-u tap mt-1 text-[13.5px] font-semibold text-pink hover:text-pink-ink">
+            {more ? "read less" : "read more"}
+          </button>
+        </div>
+        <Link href={`/brands/${label.id}`} className="shrink-0 overflow-hidden border border-line">
+          <span className="sr-only">See the brand {label.name}</span>
+          <LabelMonogram label={label} size="md" />
+        </Link>
+      </div>
+      <p className="mt-5">
+        <span className="text-[22px] font-semibold tabular-nums">{stat}</span>
+        <span className="block text-[12.5px] text-ink-3">Customer ratings</span>
+      </p>
+    </section>
   );
 }
 
-/** Phones & tablets: a flat bar on the bottom edge (the bottom nav steps aside on product pages). Hairline on top, solid bone, safe-area aware. */
-function StickyBar({ product, on, cta, onClick, size, sizeChosen }: { product: Product; on: boolean; cta: string; onClick: () => void; size: string | null; sizeChosen: boolean }) {
+/** Phones & tablets: a flat bar on the bottom edge (the bottom nav steps aside on product pages). Desktop: a slim bar under the header once the main button has scrolled away. */
+function StickyBar({ product, image, on, cta, onClick, variantName, size, sizeChosen }: { product: Product; image: string; on: boolean; cta: string; onClick: () => void; variantName: string; size: string | null; sizeChosen: boolean }) {
   return (
     <div
       aria-hidden={!on}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-[39] border-t border-line bg-bone pb-[env(safe-area-inset-bottom)] transition-[transform,visibility] duration-500 ease-editorial lg:hidden",
-        on ? "visible translate-y-0" : "invisible translate-y-full",
+        "fixed inset-x-0 z-[39] border-line bg-bone transition-[transform,top,opacity,visibility] duration-500 ease-editorial",
+        "bottom-0 border-t pb-[env(safe-area-inset-bottom)] lg:bottom-auto lg:top-[var(--header-offset,var(--header-h))] lg:border-b lg:border-t-0 lg:pb-0",
+        on ? "visible translate-y-0" : "invisible translate-y-full lg:-translate-y-full lg:opacity-0",
       )}
     >
       <div className="container-x flex items-center gap-4" style={{ height: STICKY_H }}>
-        <div className="min-w-0 flex-1">
-          <Price price={product.price} mrp={product.mrp} size="md" showSavings={false} />
-          <p className="mt-0.5 truncate text-[12px] text-ink-3">{sizeChosen ? (size && size !== "One size" ? `Size ${size}` : "One size") : "Select a size"}</p>
+        <div className="hidden w-10 shrink-0 lg:block">
+          <Img imgKey={image} alt="" sizes="48px" ratio="4/5" />
         </div>
-        <Button tabIndex={on ? 0 : -1} size="lg" onClick={onClick} className="min-w-[160px] shrink-0" variant={product.soldOut ? "secondary" : "primary"}>
+        <div className="min-w-0 flex-1">
+          <p className="hidden truncate text-[14px] font-semibold lg:block">{product.name}</p>
+          <p className="hidden truncate text-[12px] text-ink-3 lg:block">
+            {variantName}
+            {size && size !== "One size" ? ` · ${size}` : ""}
+          </p>
+          <Price price={product.price} mrp={product.mrp} size="md" showSavings={false} className="lg:hidden" />
+          <p className="mt-0.5 truncate text-[12px] text-ink-3 lg:hidden">{sizeChosen ? (size && size !== "One size" ? `Size ${size}` : "One size") : "Select a size"}</p>
+        </div>
+        <div className="hidden lg:block">
+          <Price price={product.price} mrp={product.mrp} size="md" />
+        </div>
+        <Button tabIndex={on ? 0 : -1} size="lg" onClick={onClick} className="min-w-[160px] shrink-0" variant={product.soldOut || cta === "Notify me" ? "secondary" : "primary"}>
           {cta}
         </Button>
       </div>

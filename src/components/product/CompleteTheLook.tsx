@@ -5,13 +5,14 @@ import { useState } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
+import { ChipLink } from "@/components/ui/Chip";
 import { Img } from "@/components/ui/Img";
 import { Price } from "@/components/ui/Price";
 import { labelById } from "@/data/labels";
 import type { Product } from "@/data/types";
 import { cn } from "@/lib/cn";
 import { captureFlip } from "@/lib/flip";
-import { inr } from "@/lib/format";
+import { inr, titleCase } from "@/lib/format";
 import { styleWith } from "@/lib/recs";
 import { track } from "@/lib/track";
 import { toggleWishlist, wishlistStore } from "@/stores/commerce";
@@ -29,6 +30,14 @@ export function CompleteTheLook({ product }: { product: Product }) {
   if (pieces.length === 0) return null;
   const look = [product, ...pieces];
   const total = look.reduce((n, p) => n + p.price, 0);
+  // what the pieces have in common: tags (other than the category itself) that this piece shares with the rest of the look, most-shared first
+  const occasions = product.tags
+    .filter((t) => !product.categoryPath.includes(t))
+    .map((t) => ({ t, n: pieces.filter((p) => p.tags.includes(t)).length }))
+    .filter((x) => x.n > 0)
+    .sort((a, b) => b.n - a.n)
+    .slice(0, 4)
+    .map((x) => x.t);
   // with an odd number of photos the board's last cell holds the total, so the board is always a complete rectangle
   const totalInBoard = look.length % 2 === 1;
   const saveAll = () => {
@@ -59,6 +68,18 @@ export function CompleteTheLook({ product }: { product: Product }) {
             Complete the look.
           </h2>
           <p className="mt-5 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">Pieces that share an occasion and a point of view with this one.</p>
+          {occasions.length > 0 && (
+            <div className="mt-8">
+              <p className="mb-3 text-[13px] font-semibold text-ink">Shop by occasion</p>
+              <ul className="flex flex-wrap gap-2" aria-label="Occasions this look suits">
+                {occasions.map((t) => (
+                  <li key={t}>
+                    <ChipLink href={`/search?q=${encodeURIComponent(t)}`}>{titleCase(t)}</ChipLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </Col>
 
         <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 1 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }}>

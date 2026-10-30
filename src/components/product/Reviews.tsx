@@ -1,13 +1,10 @@
 "use client";
-import { PenLine, ThumbsUp } from "lucide-react";
+import { BadgeCheck, ChevronRight, PenLine, Star, ThumbsUp } from "lucide-react";
 import { useMemo, useState } from "react";
-import { Col, Grid } from "@/components/layout/Grid";
-import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
 import { Input, Select, Textarea } from "@/components/ui/Form";
-import { Overlay, OverlayBody, OverlayHeader } from "@/components/ui/Overlay";
+import { Overlay, OverlayBody } from "@/components/ui/Overlay";
 import { Stars } from "@/components/ui/Rating";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SimulatedTag } from "@/components/ui/Simulated";
 import { reviewsFor } from "@/data/reviews";
 import type { Product, Review } from "@/data/types";
@@ -18,22 +15,30 @@ import { useAuth } from "@/stores/account";
 import { prefsStore, toast, usePrefs } from "@/stores/ui";
 
 type Sort = "helpful" | "newest" | "high" | "low";
+const FIT = { small: "Runs small", true: "True to size", large: "Runs large" } as const;
+const date = (iso: string) => fmtDate(iso, { day: "2-digit", month: "2-digit", year: "numeric" });
 
-/** Reviews are pattern-only mock content (PRD §5.5): summary, fit signal, sort/filter, helpful votes, and a working "write a review". */
-export function Reviews({ product }: { product: Product }) {
+/**
+ * "Rating & Reviews" as on the live page — a grey summary strip (rating · ratings · reviews), the most helpful review and a
+ * "Read all Reviews" row that opens every review (sort, star filter, fit, helpful votes, write a review) in a right-hand drawer.
+ * Reviews are pattern-only mock content (PRD §5.5) and labelled as sample content.
+ */
+export function RatingReviews({ product }: { product: Product }) {
   const prefs = usePrefs();
   const { user } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [writing, setWriting] = useState(false);
   const [sort, setSort] = useState<Sort>("helpful");
   const [star, setStar] = useState(0);
-  const [shown, setShown] = useState(4);
-  const [writing, setWriting] = useState(false);
+  const [shown, setShown] = useState(5);
 
   const own = prefs.reviews.filter((r) => r.productId === product.id);
   const all = useMemo(() => [...own, ...reviewsFor(product.id)], [own, product.id]);
   const total = product.ratingCount + own.length;
+  const top = useMemo(() => [...all].sort((a, b) => b.helpful - a.helpful)[0], [all]);
   const dist = [5, 4, 3, 2, 1].map((n) => ({ n, pct: Math.round((all.filter((r) => r.rating === n).length / all.length) * 100) }));
-  const fit = { small: all.filter((r) => r.fit === "small").length, true: all.filter((r) => r.fit === "true").length, large: all.filter((r) => r.fit === "large").length };
-  const fitPos = ((fit.small * 0 + fit.true * 50 + fit.large * 100) / Math.max(1, all.length));
+  const fit = { small: all.filter((r) => r.fit === "small").length, large: all.filter((r) => r.fit === "large").length, true: all.filter((r) => r.fit === "true").length };
+  const fitPos = (fit.true * 50 + fit.large * 100) / Math.max(1, all.length);
 
   const list = useMemo(() => {
     const f = star ? all.filter((r) => r.rating === star) : all;
@@ -48,60 +53,91 @@ export function Reviews({ product }: { product: Product }) {
 
   const showFit = product.sizes.length > 1;
   return (
-    <Section id="reviews" aria-labelledby="reviews-h" className="scroll-mt-24">
-      <SectionHeading level={2} eyebrow="Reviews" title={<span id="reviews-h">What people say.</span>}>
+    <section id="reviews" aria-labelledby="reviews-h" className="scroll-mt-28">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 id="reviews-h" className="text-[18px] font-semibold">
+          Rating &amp; Reviews
+        </h2>
         <SimulatedTag>Sample content</SimulatedTag>
-        <Button variant="secondary" icon={<PenLine size={15} />} onClick={() => setWriting(true)}>
-          Write a review
-        </Button>
-      </SectionHeading>
+      </div>
 
-      {/* 4 + 8: the summary (rating, breakdown, fit) in the narrow column — it stays in view while the list grows — and the reviews in two columns */}
-      <Grid className="mt-10 gap-y-10 sm:mt-14">
-        <Col span={{ base: 4, sm: 12, lg: 4 }} start={{ lg: 1 }} rowStart={{ lg: 1 }} className="lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:self-start lg:transition-[top] lg:duration-500">
-          <div className="grid grid-cols-1 gap-y-8 sm:grid-cols-3 sm:gap-x-[var(--gap)] lg:grid-cols-1">
-            <div>
-              <p className="flex items-baseline gap-2 text-[44px] font-semibold leading-none tabular-nums tracking-[-0.03em]">
-                {product.rating.toFixed(1)} <span className="text-[18px] font-normal tracking-normal text-ink-3">/ 5</span>
-              </p>
-              <Stars value={product.rating} size={18} className="mt-4" />
-              <p className="mt-3 text-[13px] text-ink-3">out of 5 · {total.toLocaleString("en-IN")} ratings</p>
-            </div>
-            <ul className={cn("space-y-1", !showFit && "sm:col-span-2 lg:col-span-1")} aria-label="Rating breakdown">
-              {dist.map((d) => (
-                <li key={d.n}>
-                  <button type="button" onClick={() => setStar(star === d.n ? 0 : d.n)} aria-pressed={star === d.n} className={cn("flex w-full items-center gap-3 py-1.5 text-[13px] tabular-nums [@media(pointer:coarse)]:min-h-11", star === d.n ? "font-semibold text-pink-ink" : "text-ink-2 hover:text-ink")}>
-                    <span className="w-6 text-left">{d.n}★</span>
-                    <span className="h-1.5 flex-1 overflow-hidden bg-line">
-                      <span className={cn("block h-full", star === d.n ? "bg-pink" : "bg-ink")} style={{ width: `${d.pct}%` }} />
-                    </span>
-                    <span className="w-9 text-right text-ink-3">{d.pct}%</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-            {showFit && (
-              <div>
-                <p className="mb-4 text-[13px] font-medium">How it fits</p>
-                <div className="relative h-1.5 bg-line" role="img" aria-label={`Customers say it runs ${fitPos < 38 ? "small" : fitPos > 62 ? "large" : "true to size"}`}>
-                  <span className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 border-2 border-bone bg-ink" style={{ left: `${Math.min(92, Math.max(8, fitPos))}%` }} />
-                </div>
-                <div className="mt-2.5 flex justify-between text-[11.5px] text-ink-3">
-                  <span>Runs small</span>
-                  <span>True to size</span>
-                  <span>Runs large</span>
-                </div>
-              </div>
-            )}
+      <ul aria-label="Rating summary" className="mt-4 grid grid-cols-[1.5fr_1fr_1fr] items-center rounded-[var(--radius-sm)] bg-sand py-3.5">
+        <li className="flex items-center gap-2 px-4 text-[30px] font-semibold leading-none tabular-nums">
+          {product.rating.toFixed(1)} <Star size={22} aria-hidden className="fill-ink text-ink" />
+          <span className="sr-only">out of 5 average rating</span>
+        </li>
+        <li className="flex flex-col border-l border-line-strong px-4">
+          <span className="text-[16px] font-semibold tabular-nums">{total.toLocaleString("en-IN")}</span>
+          <span className="mt-0.5 text-[11.5px] text-ink-3">Ratings</span>
+        </li>
+        <li className="flex flex-col border-l border-line-strong px-4">
+          <span className="text-[16px] font-semibold tabular-nums">{all.length}</span>
+          <span className="mt-0.5 text-[11.5px] text-ink-3">Reviews</span>
+        </li>
+      </ul>
+
+      {top && (
+        <div className="mt-6">
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="text-[16px] font-semibold">Most Helpful Review</h3>
+            <button type="button" onClick={() => setWriting(true)} className="link-u tap inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-pink hover:text-pink-ink">
+              <PenLine size={14} aria-hidden /> Write a review
+            </button>
           </div>
-        </Col>
+          <ReviewCard r={top} voted={prefs.helpful.includes(top.id)} className="mt-3" />
+        </div>
+      )}
 
-        <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 5 }} rowStart={{ lg: 1 }}>
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-4">
+      <button type="button" onClick={() => setOpen(true)} className="mt-4 flex h-12 w-full items-center justify-between border border-line-strong px-4 text-[14px] font-semibold transition-colors hover:border-ink">
+        Read all Reviews
+        <ChevronRight size={18} aria-hidden />
+      </button>
+
+      <Overlay open={open} onClose={() => setOpen(false)} label="Ratings and reviews" side="right" panelClassName="sm:w-[min(100vw,560px)]">
+        <div className="shrink-0 border-b border-line px-5 pb-4 pt-5 pr-14 sm:px-6 sm:pr-16">
+          <h2 className="text-[26px] font-semibold leading-tight tracking-[-0.02em]">Rating &amp; Reviews</h2>
+          <p className="mt-1 truncate text-[13.5px] text-ink-3">{product.name}</p>
+        </div>
+        <OverlayBody>
+          <div className="flex items-center gap-5">
+            <p className="text-[44px] font-semibold leading-none tabular-nums tracking-[-0.03em]">{product.rating.toFixed(1)}</p>
+            <div>
+              <Stars value={product.rating} size={18} />
+              <p className="mt-1.5 text-[13px] text-ink-3">{total.toLocaleString("en-IN")} ratings · {all.length} reviews</p>
+            </div>
+          </div>
+          <ul className="mt-5 space-y-1" aria-label="Rating breakdown">
+            {dist.map((d) => (
+              <li key={d.n}>
+                <button type="button" onClick={() => setStar(star === d.n ? 0 : d.n)} aria-pressed={star === d.n} className={cn("flex w-full items-center gap-3 py-1.5 text-[13px] tabular-nums [@media(pointer:coarse)]:min-h-11", star === d.n ? "font-semibold text-pink-ink" : "text-ink-2 hover:text-ink")}>
+                  <span className="w-6 text-left">{d.n}★</span>
+                  <span className="h-1.5 flex-1 overflow-hidden bg-line">
+                    <span className={cn("block h-full", star === d.n ? "bg-pink" : "bg-ink")} style={{ width: `${d.pct}%` }} />
+                  </span>
+                  <span className="w-9 text-right text-ink-3">{d.pct}%</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          {showFit && (
+            <div className="mt-6">
+              <p className="mb-4 text-[13px] font-semibold">How it fits</p>
+              <div className="relative h-1.5 bg-line" role="img" aria-label={`Customers say it runs ${fitPos < 38 ? "small" : fitPos > 62 ? "large" : "true to size"}`}>
+                <span className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 border-2 border-white bg-ink" style={{ left: `${Math.min(92, Math.max(8, fitPos))}%` }} />
+              </div>
+              <div className="mt-2.5 flex justify-between text-[11.5px] text-ink-3">
+                <span>Runs small</span>
+                <span>True to size</span>
+                <span>Runs large</span>
+              </div>
+            </div>
+          )}
+
+          <div className="mt-7 flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
             <p className="text-[13px] text-ink-3" aria-live="polite">
               {star ? `${list.length} reviews with ${star}★` : `${all.length} reviews`}
               {star ? (
-                <button type="button" className="link-u tap ml-3 text-ink" onClick={() => setStar(0)}>
+                <button type="button" className="link-u tap ml-3 font-semibold text-pink hover:text-pink-ink" onClick={() => setStar(0)}>
                   Clear
                 </button>
               ) : null}
@@ -113,46 +149,79 @@ export function Reviews({ product }: { product: Product }) {
               <option value="low">Lowest rated</option>
             </Select>
           </div>
-          <ul className="grid grid-cols-1 gap-x-[var(--gap)] sm:grid-cols-2">
+          <ul>
             {list.slice(0, shown).map((r) => (
-              <ReviewItem key={r.id} r={r} voted={prefs.helpful.includes(r.id)} />
+              <li key={r.id} className="border-b border-line py-5">
+                <ReviewCard r={r} voted={prefs.helpful.includes(r.id)} />
+              </li>
             ))}
-            {list.length === 0 && <li className="border-t border-line py-10 text-[14px] text-ink-3 sm:col-span-2">No reviews with that rating yet.</li>}
+            {list.length === 0 && <li className="py-10 text-[14px] text-ink-3">No reviews with that rating yet.</li>}
           </ul>
           {shown < list.length && (
-            <Button variant="secondary" className="mt-8" onClick={() => setShown((n) => n + 4)}>
+            <Button variant="secondary" className="mt-6" onClick={() => setShown((n) => n + 5)}>
               Show more reviews
             </Button>
           )}
-        </Col>
-      </Grid>
+          <Button className="mt-6" full icon={<PenLine size={15} />} onClick={() => setWriting(true)}>
+            Write a review
+          </Button>
+        </OverlayBody>
+      </Overlay>
 
-      <Overlay open={writing} onClose={() => setWriting(false)} label="Write a review" side="center" panelClassName="sm:w-[min(94vw,600px)] sm:max-h-[92dvh]">
-        <OverlayHeader title="Write a review" sub={product.name} />
+      <Overlay open={writing} onClose={() => setWriting(false)} label="Write a review" side="center" z={75} panelClassName="sm:w-[min(94vw,600px)] sm:max-h-[92dvh]">
+        <div className="shrink-0 border-b border-line px-5 pb-4 pt-5 pr-14 sm:px-6">
+          <h2 className="text-[22px] font-semibold leading-tight tracking-[-0.01em]">Write a review</h2>
+          <p className="mt-1 truncate text-[13.5px] text-ink-3">{product.name}</p>
+        </div>
         <OverlayBody>
           <ReviewForm product={product} name={user?.name} onDone={() => setWriting(false)} />
         </OverlayBody>
       </Overlay>
-    </Section>
+    </section>
   );
 }
 
-function ReviewItem({ r, voted }: { r: Review; voted: boolean }) {
+/** One review: name, verified line and date, a rating chip, the text, what the buyer chose, and a helpful vote. */
+function ReviewCard({ r, voted, className }: { r: Review; voted: boolean; className?: string }) {
   return (
-    <li className="border-t border-line pb-8 pt-5">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <Stars value={r.rating} size={14} />
-        <p className="text-[14.5px] font-medium">{r.title}</p>
-        {r.own && <span className="inline-flex h-5 items-center bg-ink px-2 text-[10px] font-medium uppercase tracking-wider text-bone">Your review</span>}
+    <article className={className}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="flex items-center gap-2 text-[15px] font-medium">
+            {r.author}
+            {r.own && <span className="inline-flex h-5 items-center bg-ink px-2 text-[10px] font-semibold uppercase tracking-wider text-white">Your review</span>}
+          </p>
+          <p className="mt-1 text-[12px] leading-snug text-ink-3">
+            {r.verified && <BadgeCheck size={14} aria-hidden className="mr-1.5 inline align-[-3px]" />}
+            {r.verified ? "Verified buyer (sample)" : "Customer"} • Reviewed on: {date(r.date)}
+          </p>
+        </div>
+        <span className="inline-flex shrink-0 items-center gap-1 rounded-[var(--radius-sm)] border border-line-strong px-2 py-1 text-[13px] font-semibold tabular-nums">
+          <span className="sr-only">Rated </span>
+          {r.rating} <Star size={13} aria-hidden className="fill-ink text-ink" />
+          <span className="sr-only"> out of 5</span>
+        </span>
       </div>
-      <p className="mt-3 text-[14.5px] leading-relaxed text-ink-2">{r.body}</p>
-      <p className="mt-3 text-[12.5px] text-ink-3">
-        {r.author}{r.verified ? " · Verified buyer (sample)" : ""} · {fmtDate(r.date, { day: "numeric", month: "short", year: "numeric" })} · Bought size {r.size} · {r.fit === "true" ? "True to size" : r.fit === "small" ? "Runs small" : "Runs large"}
+      <p className="mt-3 text-[14px] leading-relaxed text-ink">
+        <span className="font-semibold">{r.title}.</span> {r.body}
       </p>
-      <button type="button" aria-pressed={voted} onClick={() => prefsStore.set((p) => ({ ...p, helpful: voted ? p.helpful.filter((x) => x !== r.id) : [...p.helpful, r.id] }))} className={cn("mt-3 inline-flex h-9 items-center gap-2 border px-3 text-[12.5px] [@media(pointer:coarse)]:h-11 transition-colors", voted ? "border-pink bg-pink-tint font-medium text-pink-ink" : "border-line-strong text-ink-2 hover:border-ink")}>
-        <ThumbsUp size={14} aria-hidden /> Helpful · {r.helpful + (voted ? 1 : 0)}
-      </button>
-    </li>
+      <p className="mt-2 text-[12.5px] text-ink-2">
+        Bought size {r.size} • {FIT[r.fit]}
+      </p>
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          aria-pressed={voted}
+          onClick={() => prefsStore.set((p) => ({ ...p, helpful: voted ? p.helpful.filter((x) => x !== r.id) : [...p.helpful, r.id] }))}
+          className={cn("inline-flex h-9 items-center gap-2 border px-3 text-[12.5px] font-semibold transition-colors [@media(pointer:coarse)]:h-11", voted ? "border-ink bg-sand text-ink" : "border-line-strong text-ink hover:border-ink")}
+        >
+          <ThumbsUp size={14} aria-hidden /> Helpful
+        </button>
+        <span className="text-[12px] text-ink-3">
+          {r.helpful + (voted ? 1 : 0)} {r.helpful + (voted ? 1 : 0) === 1 ? "person" : "people"} found this helpful
+        </span>
+      </div>
+    </article>
   );
 }
 
