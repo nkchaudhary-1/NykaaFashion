@@ -64,7 +64,9 @@ The **Prototype** panel (footer → “Prototype controls”, or the menu drawer
 
 ## Next steps (outside this prototype's scope)
 
-- [ ] **First-row SSR for listings.** Filters live in the URL, so results are computed after hydration; on a throttled phone (4x CPU, 1.6 Mbps) PLP LCP is ~3.2 s versus ~1.0 s on pages whose hero is in the HTML. Rendering the default first row on the server (or reading `searchParams` in a server component) is the fix.
+- [ ] **First-row SSR for listings.** Filters live in the URL, so results are computed after hydration; on a throttled phone (4x CPU, 1.6 Mbps) PLP, search and bag LCP is ~3.7–3.9 s versus ~1.1 s on pages whose hero is in the HTML. Rendering the default first row on the server (or reading `searchParams` in a server component) is the fix.
+- [ ] **Import the live catalogue.** The live site's CDN refuses this environment, so products, prices, ratings and banners are sample data. Supply an export (HAR / JSON / CSV, or saved pages) from a normal browser and replace `src/data/{catalog-defs,labels,home-content}.ts`; add Global Store, Revolve, Fitzone, Lingerie and Activewear if they should be browsable.
+- [ ] **Cart preview after "Add to Bag".** The live site drops the cart preview under the header Cart on add; here the bag drawer opens on desktop (the preview shows on hover). Saved-UPI quick-fill chips at checkout are also not built.
 - [ ] **Real photography.** Swap files in `public/img` and re-measure pin positions; the app needs no code change.
 - [ ] **Manual assistive-tech pass** (VoiceOver / NVDA) and a real-device touch pass — automated checks are not a conformance audit.
 - [ ] **Engine polish:** footwear and jewellery are stylised, boots/loafers/block heels have crude toe boxes, every sneaker style shares one outline, kids/men are proportion changes rather than separate construction, bag side faces and backpack straps are crude, tank/bodysuit/peplum hems are generic.
@@ -77,14 +79,20 @@ The **Prototype** panel (footer → “Prototype controls”, or the menu drawer
 
 ## QA log
 
-- `scripts/qa/journey.cjs` — 21-step end-to-end journey (home → edit → filter URL/back → PDP → size gate → bag → coupon → login → checkout → forced payment failure → success → tracking → addresses → search → no-results → sold-out/notify → story pin → deal intent → 404): **passes on desktop (1440×900) and mobile (390×844)**.
-- `scripts/qa/a11y.cjs` (axe-core, WCAG 2.1 A/AA + best-practice) — **0 violations on 23 pages at desktop and mobile** (public + signed-in surfaces). Found and fixed 71 violation types along the way (tab semantics, label-in-name, heading order, landmarks, definition lists, opacity-based low contrast, carousel keyboard access).
-- `scripts/qa/keyboard.cjs` — skip link, search combobox, overlay focus trap + focus return, mega menu from keyboard, size radios, carousel arrows, reduced motion: **all pass**.
-- `scripts/qa/overflow.cjs` — walks 23 routes (+ 4 signed-in) at 360 / 390 / 820 / 1280 plus the search and bag overlays and flags any element past the viewport: **none**. (It found 32 issues first: CSS grids that only declared breakpoint columns got an implicit auto track that stretched to max-content; every such grid now has a `grid-cols-1` base.)
-- Focus styling: the global `:focus-visible` ring lives in `@layer base`, so `outline-none` / `focus-visible:ring-*` utilities on components actually apply (inputs get a 2px ink underline or ring, round buttons keep their round ring).
-- Dev-mode smoke (`next dev`): 21 routes x desktop + mobile — no console errors or warnings, no error overlay (hydration included). Dev-only LCP warnings are false positives from the same image appearing several times on a page.
-- Touch-target audit (390px, 21 routes incl. signed-in): remaining sub-44px items are inline/footer text widths and `tap`-expanded links; heights meet 44px.
-- `scripts/qa/vitals.cjs` (production build, lab): LCP 170–900 ms and CLS ≤ 0.016 on 7 routes x mobile + desktop unthrottled; with mobile throttling (4x CPU, slow 4G) home / PDP / edit LCP ≈ 1.0–1.2 s, PLP ≈ 3.2 s (see Next steps). Initial JS ≈ 310–340 KB gzip (React + Next ≈ 140, Framer Motion ≈ 47, catalogue/stories data ≈ 50, icons ≈ 12). No long task over 50 ms except hydration (≤ 550 ms under 4x throttle).
-- `scripts/qa/image-audit.mjs` — 557 files: none flat, near-black, blown-out or orphaned; every meta entry has a file; all pins inside the frame (20 MB total, median 31 KB, max 134 KB).
-- Production build (`next build`, 212 static pages) ✅ · `npm run typecheck` ✅ · `npm run lint` ✅ · `npm run data:check` ✅
+Everything below runs with one command against a production server: `scripts/qa/prod.sh 3100 && npm run qa` (Playwright; `scripts/qa/all.sh`).
+
+- `scripts/contrast.mjs` — reads the tokens from `globals.css`; every text/background pair the UI draws is **≥ 4.5:1** (raspberry on white 7.6, green on grey 4.7, blue on its tint 4.8).
+- `scripts/qa/nav.cjs` — header (utility strip, department row, hover preview, dropdowns with "Shop All" first, What's New / Sale as real filtered listings, More tiles, Account menu + login modal, Fashion | Luxe), keyboard open / Tab / Esc on dropdowns and More, hide-on-scroll, bag drawer focus return; phone: menu drawer, shop sheet, bottom nav, search: **all pass**.
+- `scripts/qa/home.cjs` — sale banner controls, category / price / celebration / brand tiles, "Just landed" tabs, carousels (arrows, keyboard, touch peek), save + quick view, newsletter, footer links + Prototype controls, desktop and phone: **all pass**.
+- `scripts/qa/links.cjs` — every link reachable from the header, dropdowns, More, Account menu, mobile menu, shop sheet, footer and home resolves (136), and every filtered listing link (What's New, Sale, Western Wear, Luxe …) opens onto products (40): **all pass**.
+- `scripts/qa/flat.cjs` — no shadow / gradient / filter / blend anywhere (routes x 390 and 1280, overlays included), one family (Inter, opsz 32), corners only 4px · 8px · pill/circle · 16px: **clean**.
+- `scripts/qa/grid.cjs` — every sizeable image starts and ends on a column line (or bleeds to the edge) at 390 / 820 / 1280 / 1728: **clean**.
+- `scripts/qa/overflow.cjs` — every route at 360 / 390 / 820 / 1280 (+ search overlay, bag drawer on desktop): **no horizontal overflow**.
+- `scripts/qa/keyboard.cjs` — skip link, search combobox, bag drawer focus trap + return to Cart, department dropdown and More from the keyboard, size radios, carousels, quick view, reduced motion: **all pass**.
+- `scripts/qa/journey.cjs` — 21-step end-to-end journey (home → edit → filter URL/back → PDP → size gate → bag → coupon → login → checkout → forced payment failure → success → tracking → addresses → search → no-results → sold-out/notify → story pin → deal intent → 404): **passes on desktop (1440×900) and mobile (390×844)**, no console errors.
+- `scripts/qa/a11y.cjs` (axe-core, WCAG 2.1 A/AA + best-practice) — **0 violations on 23 pages at desktop and at mobile** (public + signed-in), plus the overlays and states each page agent audited (drawers, dialogs, login modal, checkout steps).
+- `scripts/qa/vitals.cjs` (production build, lab) — unthrottled LCP 144–460 ms, CLS 0, no long task over 55 ms on 7 routes x mobile + desktop. Throttled mobile (4x CPU, slow 4G): home / PDP / edit ≈ 1.1 s, story ≈ 2.0 s; PLP, search and bag ≈ 3.7–3.9 s because their first row is computed after hydration (see Next steps). Initial JS ≈ 340–376 KB gzip (the catalogue and data are in the bundle; the header and rails added ≈ 25 KB over the previous build).
+- `scripts/qa/image-audit.mjs` — 557 art files + the placeholder photographs: none flat, near-black, blown-out or orphaned; every meta entry has a file; all pins inside the frame.
+- `next build` (production, Cache Components) ✅ · `npm run typecheck` ✅ · `npm run lint` ✅ (0 errors, 0 warnings) · `npm run data:check` ✅ (112 products, 9 edits, 6 stories, 47 scenes)
 - Automated + keyboard checks are not a full WCAG conformance audit; manual screen-reader testing has not been done.
+- Not verified: anything against the live site (unreachable — see "Content status"); real-device touch behaviour.
