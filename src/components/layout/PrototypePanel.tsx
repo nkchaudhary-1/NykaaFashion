@@ -67,8 +67,10 @@ function IntentSection() {
   const lab = topKey(W.label);
   const ed = topKey(W.edit);
   const opts: Array<{ id: IntentOverride; name: string }> = [{ id: "auto", name: "Auto (from signals)" }, { id: "cold", name: "Cold start" }, { id: "returning", name: "Returning" }, { id: "deal", name: "Deal intent" }];
-  // What the home page is doing right now: the module order for this mode (minus a module you chose to hide below)
+  // What the home page is doing right now: the top of the module order for this mode (minus a module you chose to hide below).
+  // The first few positions are where the modes differ, so that is what is shown.
   const order = composeHome(mode).filter((s) => s.id !== failModule);
+  const TOP = 6;
   return (
     <Group n={1} id="p-intent" title="Session intent" aside={<SimulatedTag note="A localStorage heuristic that re-orders the homepage. It is not machine learning." />} className="space-y-4">
       <p className="border-l-2 border-ink pl-3 text-[13px] text-ink-2">
@@ -86,14 +88,15 @@ function IntentSection() {
         </div>
       </fieldset>
       <div>
-        <p className="eyebrow mb-2 text-ink-3">Homepage order now</p>
+        <p className="eyebrow mb-2 text-ink-3">Top of the homepage now</p>
         <ol aria-label="Homepage module order" className="flex flex-wrap gap-1.5 text-[12px]">
-          {order.map((s, i) => (
+          {order.slice(0, TOP).map((s, i) => (
             <li key={s.id} className={cn("inline-flex h-7 items-center gap-1.5 border px-2", i === 0 ? "border-ink bg-ink text-bone" : "border-line-strong text-ink-2", s.promoted && "border-pink-ink")}>
               <span className="tabular-nums opacity-70">{i + 1}</span>
               {HOME_MODULES.find((m) => m.id === s.id)?.name}
             </li>
           ))}
+          {order.length > TOP && <li className="inline-flex h-7 items-center px-1 tabular-nums text-ink-3">+{order.length - TOP} more</li>}
         </ol>
       </div>
       <dl className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-line pt-4 text-[12.5px]">

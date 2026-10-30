@@ -175,13 +175,10 @@ export function ProductDetail({ product }: { product: Product }) {
               </button>
             </div>
 
-            <a
-              href="#reviews"
-              aria-label={`Rated ${product.rating.toFixed(1)} out of 5 from ${product.ratingCount.toLocaleString("en-IN")} ratings — read the reviews`}
-              className="tap mt-3 inline-flex items-center gap-2 border border-line-strong px-2.5 py-1 text-[12.5px] leading-none transition-colors hover:border-ink"
-            >
+            <a href="#reviews" className="tap mt-3 inline-flex items-center gap-2 border border-line-strong px-2.5 py-1 text-[12.5px] leading-none transition-colors hover:border-ink">
               <span className="inline-flex items-center gap-1 font-semibold tabular-nums text-ink">
                 {product.rating.toFixed(1)} <Star size={12} aria-hidden className="fill-ink text-ink" />
+                <span className="sr-only">out of 5 stars</span>
               </span>
               <span aria-hidden className="h-3.5 w-px bg-line-strong" />
               <span className="tabular-nums text-ink-3">{product.ratingCount.toLocaleString("en-IN")} ratings</span>
