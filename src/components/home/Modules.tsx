@@ -135,8 +135,8 @@ export function NewInByTaste({ personalised }: { personalised: boolean }) {
   return (
     <div className="container-x py-16 sm:py-24">
       <SectionHeading eyebrow={personalised ? "New in · by your taste" : "New in · editors’ picks"} title="Just landed." href="/edits/new-in" hrefLabel="All new in" />
-      <Tabs items={TABS} value={tab} onChange={setTab} label="New in categories" className="mt-8" />
-      <div className="mt-10" key={tab}>
+      <Tabs items={TABS} value={tab} onChange={setTab} label="New in categories" className="mt-8" panelId="newin-panel" />
+      <div className="mt-10" key={tab} role="tabpanel" id="newin-panel" aria-label={`New in — ${TABS.find((t) => t.id === tab)?.label}`}>
         <ProductRail products={list} label="New in" source="home-newin" />
       </div>
     </div>

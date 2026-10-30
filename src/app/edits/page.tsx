@@ -24,11 +24,11 @@ export default function EditsIndex() {
               <Reveal>
                 <Link href={`/edits/${e.id}`} className="group grid overflow-hidden md:min-h-[420px] md:grid-cols-2" style={{ background: t.bg, color: t.fg }}>
                   <div className={cn("flex flex-col justify-center gap-5 p-8 sm:p-14", flip && "md:order-2")}>
-                    <p className="eyebrow opacity-75">{e.kicker}</p>
+                    <p className="eyebrow opacity-90">{e.kicker}</p>
                     <h2 className="display-lg">{e.title}</h2>
-                    <p className="max-w-[44ch] text-[15px] leading-relaxed opacity-85">{e.narrative}</p>
+                    <p className="max-w-[44ch] text-[15px] leading-relaxed opacity-90">{e.narrative}</p>
                     <p className="mt-2 inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.14em]">
-                      Shop the edit <span className="tabular-nums opacity-70">{editProducts(e).length}</span>
+                      Shop the edit <span className="tabular-nums opacity-90">{editProducts(e).length}</span>
                       <ArrowRight size={16} className="transition-transform duration-300 ease-editorial group-hover:translate-x-1.5" aria-hidden />
                     </p>
                   </div>

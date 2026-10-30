@@ -110,11 +110,10 @@ export function Header() {
               type="button"
               onClick={() => setUI({ searchOpen: true })}
               className="hidden h-11 w-[clamp(220px,22vw,340px)] items-center gap-3 border border-line-strong bg-paper px-4 text-left text-[13.5px] text-ink-3 transition-colors hover:border-ink xl:flex"
-              aria-label="Search"
             >
               <Search size={17} aria-hidden className="text-ink" />
               <span className="flex-1 truncate">Search labels, edits, styles</span>
-              <kbd className="hidden rounded border border-line-strong px-1.5 py-0.5 font-sans text-[10.5px] text-ink-3 2xl:block">/</kbd>
+              <kbd aria-hidden className="hidden rounded border border-line-strong px-1.5 py-0.5 font-sans text-[10.5px] text-ink-3 2xl:block">/</kbd>
             </button>
             <IconButton label="Search" onClick={() => setUI({ searchOpen: true })} className="xl:hidden">
               <Search size={21} strokeWidth={1.5} />
@@ -172,7 +171,7 @@ function AccountMenu() {
   return (
     <div ref={ref} className="relative" onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
       <button type="button" aria-label={`Account menu for ${user.name}`} aria-expanded={open} aria-haspopup="menu" onClick={() => setOpen((o) => !o)} className="inline-flex size-11 items-center justify-center rounded-full transition-colors hover:bg-sand">
-        <span className="inline-flex size-8 items-center justify-center rounded-full bg-ink text-[11px] font-semibold tracking-wide text-bone">{initials(user.name)}</span>
+        <span aria-hidden data-initials={initials(user.name)} className="inline-flex size-8 items-center justify-center rounded-full bg-ink text-[11px] font-semibold tracking-wide text-bone before:content-[attr(data-initials)]" />
       </button>
       <AnimatePresence>
         {open && (

@@ -10,11 +10,11 @@ import { setUI } from "@/stores/ui";
 import { SaveButton } from "@/components/product/SaveButton";
 
 /** "Shop this look" — always-visible product list for a shoppable image (works on touch, where hover pins don't). */
-export function LookStrip({ imgKey, title = "In this image" }: { imgKey: string; title?: string }) {
+export function LookStrip({ imgKey, title = "In this image", label }: { imgKey: string; title?: string; label?: string }) {
   const ids = imgPins(imgKey).map((p) => p.id);
   if (!ids.length) return null;
   return (
-    <section aria-label={title} className="mt-4">
+    <section aria-label={label ?? title} className="mt-4">
       <p className="eyebrow mb-3 text-ink-3">{title}</p>
       <ul className="grid gap-3 sm:grid-cols-3">
         {ids.map((id) => {
@@ -34,7 +34,7 @@ export function LookStrip({ imgKey, title = "In this image" }: { imgKey: string;
               </div>
               <div className="flex shrink-0 flex-col items-end justify-between">
                 <SaveButton product={p} source="look" tone="plain" size={18} className="-mr-1.5 -mt-1.5 size-9" />
-                <button type="button" onClick={() => setUI({ quickView: { productId: id } })} aria-label={`Quick view ${p.name}`} className="inline-flex h-9 items-center gap-1.5 px-1 text-[11px] font-medium uppercase tracking-[0.1em] text-ink hover:underline">
+                <button type="button" onClick={() => setUI({ quickView: { productId: id } })} aria-label={`Quick add ${p.name}`} className="inline-flex h-9 items-center gap-1.5 px-1 text-[11px] font-medium uppercase tracking-[0.1em] text-ink hover:underline">
                   <Eye size={13} aria-hidden /> Quick add
                 </button>
               </div>

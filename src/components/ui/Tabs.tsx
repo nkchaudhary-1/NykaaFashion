@@ -9,7 +9,8 @@ export interface TabItem {
 }
 
 /** Accessible tablist (roving tabindex + arrow keys). Panels are rendered by the caller. */
-export function Tabs({ items, value, onChange, label, className, variant = "underline" }: { items: TabItem[]; value: string; onChange: (id: string) => void; label: string; className?: string; variant?: "underline" | "pill" }) {
+/** With `panelId` this is a real tablist (caller renders the matching role="tabpanel"); without it, a group of toggle buttons (filters). */
+export function Tabs({ items, value, onChange, label, className, variant = "underline", panelId }: { items: TabItem[]; value: string; onChange: (id: string) => void; label: string; className?: string; variant?: "underline" | "pill"; panelId?: string }) {
   const base = useId();
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
   const onKey = (e: KeyboardEvent, i: number) => {
@@ -27,7 +28,7 @@ export function Tabs({ items, value, onChange, label, className, variant = "unde
     onChange(items[j].id);
   };
   return (
-    <div role="tablist" aria-label={label} className={cn("scrollbar-none flex gap-1 overflow-x-auto", variant === "underline" && "border-b border-line", className)}>
+    <div role={panelId ? "tablist" : "group"} aria-label={label} className={cn("scrollbar-none flex gap-1 overflow-x-auto", variant === "underline" && "border-b border-line", className)}>
       {items.map((t, i) => {
         const active = t.id === value;
         return (
@@ -36,13 +37,10 @@ export function Tabs({ items, value, onChange, label, className, variant = "unde
             ref={(el) => {
               refs.current[i] = el;
             }}
-            role="tab"
-            id={`${base}-${t.id}`}
-            aria-selected={active}
-            aria-controls={`${base}-panel`}
-            tabIndex={active ? 0 : -1}
+            {...(panelId
+              ? { role: "tab", id: `${base}-${t.id}`, "aria-selected": active, "aria-controls": panelId, tabIndex: active ? 0 : -1, onKeyDown: (e: KeyboardEvent) => onKey(e, i) }
+              : { "aria-pressed": active })}
             onClick={() => onChange(t.id)}
-            onKeyDown={(e) => onKey(e, i)}
             className={cn(
               "relative inline-flex min-h-11 shrink-0 items-center gap-1.5 whitespace-nowrap px-4 text-[13px] font-medium transition-colors",
               variant === "underline"
@@ -58,5 +56,4 @@ export function Tabs({ items, value, onChange, label, className, variant = "unde
     </div>
   );
 }
-export const tabPanelProps = (base: string) => ({ role: "tabpanel", id: `${base}-panel` });
 export type { ReactNode };

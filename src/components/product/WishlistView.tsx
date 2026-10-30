@@ -46,6 +46,7 @@ export function WishlistView() {
   }
   return (
     <div className="container-x">
+      <h2 className="sr-only">Saved pieces</h2>
       <ul className={GRID_CLASS}>
         {rows.map(({ item, product }) => (
           <li key={product.id} className="min-w-0">

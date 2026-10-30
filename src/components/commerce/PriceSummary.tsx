@@ -7,7 +7,8 @@ import type { Breakdown } from "@/lib/pricing";
 export function PriceSummary({ b, className, deliveryLabel, children }: { b: Breakdown; className?: string; deliveryLabel?: string; children?: ReactNode }) {
   const row = "flex items-baseline justify-between gap-4 py-1.5 text-[14px]";
   return (
-    <dl className={cn("tabular-nums", className)}>
+    <div className={cn("tabular-nums", className)}>
+      <dl>
       <div className={row}>
         <dt className="text-ink-2">Bag total{b.itemCount ? ` (${b.itemCount} ${b.itemCount === 1 ? "item" : "items"})` : ""}</dt>
         <dd>{inr(b.mrpTotal)}</dd>
@@ -38,9 +39,10 @@ export function PriceSummary({ b, className, deliveryLabel, children }: { b: Bre
         <dt className="text-[15px] font-medium">Total</dt>
         <dd className="text-[20px] font-medium">{inr(b.total)}</dd>
       </div>
+      </dl>
       <p className="mt-1 text-right text-[12px] text-ink-3">Inclusive of all taxes</p>
       {b.youSave > 0 && <p className="mt-3 bg-emerald-tint px-3 py-2.5 text-[13px] font-medium text-emerald">You’re saving {inr(b.youSave)} on this order</p>}
       {children}
-    </dl>
+    </div>
   );
 }

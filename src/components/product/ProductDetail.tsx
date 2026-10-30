@@ -141,7 +141,7 @@ export function ProductDetail({ product }: { product: Product }) {
 
           {product.soldOut && similar.length > 0 && (
             <section aria-label="Similar pieces available now" className="mt-8">
-              <p className="eyebrow mb-4 text-ink-3">Similar, available now</p>
+              <h2 className="eyebrow mb-4 text-ink-3">Similar, available now</h2>
               <ul className="grid grid-cols-3 gap-3">
                 {similar.map((p) => (
                   <li key={p.id}>

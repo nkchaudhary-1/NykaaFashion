@@ -66,7 +66,19 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
       </ul>
 
       <div className="group/gal relative order-1 min-w-0 sm:order-2" ref={heroRef}>
-        <div ref={track} onScroll={onScroll} role="group" aria-roledescription="carousel" aria-label={`${name} images`} className="scrollbar-none flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [@media(hover:hover)_and_(pointer:fine)]:overflow-x-hidden">
+        <div
+          ref={track}
+          onScroll={onScroll}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+            e.preventDefault();
+            goTo(index + (e.key === "ArrowRight" ? 1 : -1));
+          }}
+          role="group"
+          aria-roledescription="carousel"
+          aria-label={`${name} images — use arrow keys to browse`}
+          className="scrollbar-none flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain focus-visible:outline-offset-[-3px] [@media(hover:hover)_and_(pointer:fine)]:overflow-x-hidden">
           {images.map((k, i) => (
             <div
               key={k}

@@ -195,9 +195,9 @@ export function CheckoutFlow() {
           </section>
 
           {/* ── 2 Payment ─────────────────────────────── */}
-          <section aria-labelledby="s-pay" className={cn("border border-line bg-paper", step < 1 && "opacity-55")}>
+          <section aria-labelledby="s-pay" className="border border-line bg-paper">
             <header className="flex items-center justify-between gap-4 px-5 py-5 sm:px-7">
-              <h2 id="s-pay" className="display-xs flex items-center gap-3">
+              <h2 id="s-pay" className={cn("display-xs flex items-center gap-3", step < 1 && "text-ink-3")}>
                 <span className={cn("inline-flex size-7 items-center justify-center rounded-full border text-[12px]", step > 1 ? "border-ink bg-ink text-bone" : step === 1 ? "border-ink" : "border-line-strong text-ink-3")}>{step > 1 ? <Check size={14} /> : 2}</span>
                 Payment
               </h2>
@@ -249,9 +249,9 @@ export function CheckoutFlow() {
           </section>
 
           {/* ── 3 Review ──────────────────────────────── */}
-          <section aria-labelledby="s-rev" className={cn("border border-line bg-paper", step < 2 && "opacity-55")}>
+          <section aria-labelledby="s-rev" className="border border-line bg-paper">
             <header className="px-5 py-5 sm:px-7">
-              <h2 id="s-rev" className="display-xs flex items-center gap-3">
+              <h2 id="s-rev" className={cn("display-xs flex items-center gap-3", step < 2 && "text-ink-3")}>
                 <span className={cn("inline-flex size-7 items-center justify-center rounded-full border text-[12px]", step === 2 ? "border-ink" : "border-line-strong text-ink-3")}>3</span>
                 Review &amp; place order
               </h2>

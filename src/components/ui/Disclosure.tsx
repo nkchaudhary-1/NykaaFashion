@@ -22,7 +22,7 @@ export function Disclosure({ title, children, defaultOpen = false, className, he
       </H>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div id={id} role="region" initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }} className="overflow-hidden">
+          <motion.div id={id} initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }} className="overflow-hidden">
             <div className="pb-5 text-[14px] leading-relaxed text-ink-2">{children}</div>
           </motion.div>
         )}

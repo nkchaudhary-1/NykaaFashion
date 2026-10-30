@@ -105,16 +105,17 @@ export function ProductCard({ product: p, priority, source = "grid", variant = 0
         {!hideQuickView && !p.soldOut && (
           <button
             type="button"
+            aria-label={`Quick view ${p.name}`}
             onClick={() => setUI({ quickView: { productId: p.id, variant } })}
             className="absolute inset-x-2 bottom-2 hidden h-10 translate-y-2 items-center justify-center gap-2 bg-white/95 text-[11px] font-medium uppercase tracking-[0.12em] text-ink opacity-0 shadow-sm backdrop-blur transition-[opacity,transform,background-color] duration-300 ease-editorial hover:bg-white focus-visible:translate-y-0 focus-visible:opacity-100 group-hover/card:translate-y-0 group-hover/card:opacity-100 lg:flex"
           >
-            <Eye size={14} aria-hidden /> Quick view<span className="sr-only">: {p.name}</span>
+            <Eye size={14} aria-hidden /> Quick view
           </button>
         )}
       </div>
 
-      <Link href={`/p/${p.slug}`} draggable={false} onClick={open} className="flex flex-1 flex-col pt-3 outline-offset-4" aria-label={`${label.name}, ${p.name}${p.soldOut ? ", sold out" : ""}`}>
-        <p className="eyebrow truncate text-ink-3">{label.name}</p>
+      <Link href={`/p/${p.slug}`} draggable={false} onClick={open} className="flex flex-1 flex-col pt-3 outline-offset-4">
+        <p className="eyebrow truncate text-ink-3">{p.soldOut && <span className="sr-only">Sold out: </span>}{label.name}</p>
         <h3 className="mt-1.5 line-clamp-2 text-[14px] font-normal leading-[1.3] text-ink">{p.name}</h3>
         <div className="mt-auto pt-1.5">
           <Price price={p.price} mrp={p.mrp} size="md" className={cn(p.soldOut && "opacity-60")} />

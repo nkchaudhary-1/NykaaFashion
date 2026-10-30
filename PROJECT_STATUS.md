@@ -53,7 +53,7 @@ The **Prototype** panel (bottom-right) lets a reviewer force intent states, add 
 
 - [ ] Swap placeholder renders for the art engine's output (`npm run art:manifest && npm run art:render`) and review at desktop + mobile.
 - [ ] Visual QA sweep of every route at 390 / 820 / 1280 / 1728 widths with real imagery.
-- [ ] Accessibility audit pass (axe-style checks, keyboard walk-through of overlays, contrast re-check on imagery overlays).
+- [x] Accessibility audit pass (axe + keyboard) — see QA log. Still to do: contrast re-check on text over real imagery.
 - [ ] Performance pass on production build (bundle size, LCP images, `image-meta.json` payload).
 - [ ] Optional: `Reveal` stagger tuning, hero parallax, FLIP polish.
 
@@ -65,4 +65,7 @@ The **Prototype** panel (bottom-right) lets a reviewer force intent states, add 
 ## QA log
 
 - `scripts/qa/journey.cjs` — 21-step end-to-end journey (home → edit → filter URL/back → PDP → size gate → bag → coupon → login → checkout → forced payment failure → success → tracking → addresses → search → no-results → sold-out/notify → story pin → deal intent → 404): **passes on desktop (1440×900) and mobile (390×844)**.
-- `npm run typecheck` ✅ · `npm run lint` ✅ · `npm run data:check` ✅
+- `scripts/qa/a11y.cjs` (axe-core, WCAG 2.1 A/AA + best-practice) — **0 violations on 23 pages at desktop and mobile** (public + signed-in surfaces). Found and fixed 71 violation types along the way (tab semantics, label-in-name, heading order, landmarks, definition lists, opacity-based low contrast, carousel keyboard access).
+- `scripts/qa/keyboard.cjs` — skip link, search combobox, overlay focus trap + focus return, mega menu from keyboard, size radios, carousel arrows, reduced motion: **all pass**.
+- Production build (`next build`, 212 static pages) ✅ · `npm run typecheck` ✅ · `npm run lint` ✅ · `npm run data:check` ✅
+- Automated + keyboard checks are not a full WCAG conformance audit; manual screen-reader testing has not been done.

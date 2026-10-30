@@ -82,7 +82,7 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
           <h2 id="pieces-h" className="display-md">The pieces.</h2>
         </div>
         <Suspense fallback={<div className="container-x"><GridSkeleton count={8} /></div>}>
-          <ProductListing pool={pool} scopeKey={`edit:${edit.id}`} source={`edit:${edit.id}`} hide={edit.id === "responsible" ? ["responsible"] : edit.id === "the-offer-edit" ? ["offers"] : []} categoryScope={[]} />
+          <ProductListing pool={pool} scopeKey={`edit:${edit.id}`} source={`edit:${edit.id}`} hide={edit.id === "responsible" ? ["responsible"] : edit.id === "the-offer-edit" ? ["offers"] : []} categoryScope={[]} resultsHeading={false} />
         </Suspense>
       </section>
 

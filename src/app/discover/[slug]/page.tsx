@@ -59,7 +59,7 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
 
       <div className="container-x">
         <ShoppableImage imgKey={story.cover.wide} alt={`${story.title} — cover`} sizes={SIZES.full} priority ratio="16/9" />
-        <LookStrip imgKey={story.cover.wide} title="Shop the cover" />
+        <LookStrip imgKey={story.cover.wide} title="Shop the cover" label="Shop the cover" />
       </div>
 
       <div className="mt-16 space-y-10 sm:mt-24 sm:space-y-14">
@@ -83,7 +83,7 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
                 <figure key={i} className="container-x">
                   <ShoppableImage imgKey={b.scene} alt={b.caption} sizes={SIZES.full} ratio="3/2" />
                   <figcaption className="mt-3 text-[13px] text-ink-3">{b.caption}</figcaption>
-                  <LookStrip imgKey={b.scene} />
+                  <LookStrip imgKey={b.scene} label={`Shop: ${b.caption}`} />
                 </figure>
               );
             case "rail":
@@ -105,7 +105,7 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
             <p className="mt-4 max-w-[44ch] text-[15px] text-ink-2">{next.dek}</p>
             <LinkButton href={`/discover/${next.id}`} size="lg" className="mt-8">Read next</LinkButton>
           </div>
-          <StoryCard story={next} variant="wide" source="next-story" className="[&>div:last-child]:hidden" />
+          <StoryCard story={next} variant="wide" as="h2" source="next-story" textOnlyForAT />
         </div>
         <p className="mt-10 text-[13px] text-ink-3">All people, studios and quotes in these stories are fictional prototype content. <Link href="/discover" className="underline underline-offset-4">All stories</Link></p>
       </section>

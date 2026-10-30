@@ -35,13 +35,15 @@ interface Props {
   /** shown above the toolbar (e.g. "understood as" chips) */
   intro?: ReactNode;
   noun?: string;
+  /** visually hidden h2 above the results (keeps heading order); false when the page already has one */
+  resultsHeading?: string | false;
 }
 
 /**
  * Shared listing: URL-encoded filters/sort (shareable, back-safe — PRD §6.1), skeleton → results,
  * inline retry on error, relaxed-filter suggestions on no match, end-of-results.
  */
-export function ProductListing({ pool, scopeKey, categoryScope = [], layout = "grid", hide = [], source, intro, noun = "pieces" }: Props) {
+export function ProductListing({ pool, scopeKey, categoryScope = [], layout = "grid", hide = [], source, intro, noun = "pieces", resultsHeading = "Results" }: Props) {
   const sp = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -111,12 +113,14 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], layout = "g
 
       <div className="mt-6 grid gap-x-12 lg:mt-8 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)]">
         <aside aria-label="Filters" className="hidden lg:block">
+          <h2 className="sr-only">Filters</h2>
           <div className="sticky top-[calc(var(--header-h)+16px)] max-h-[calc(100dvh-var(--header-h)-32px)] overflow-y-auto pr-3 [scrollbar-width:thin]">
             <FilterPanel facets={facets} filters={filters} onChange={onChange} hide={showCats} />
           </div>
         </aside>
 
         <section aria-label="Results" className="min-w-0 pb-4">
+          {resultsHeading !== false && <h2 className="sr-only">{resultsHeading}</h2>}
           {query.status === "error" && <ErrorState title="We couldn’t load these pieces" text="The connection dropped before the list arrived. Your filters are saved in the URL — try again." onRetry={query.retry} />}
           {query.status === "loading" && !query.data && <GridSkeleton count={8} columnsClass={LISTING_GRID} />}
           {query.data && query.status !== "error" && (

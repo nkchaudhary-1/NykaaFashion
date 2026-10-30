@@ -45,8 +45,8 @@ export function FilterPanel({ facets, filters, onChange, hide = [] }: { facets: 
               const f = facets.price.find((x) => x.id === r.id);
               const active = filters.price === r.id;
               return (
-                <label key={r.id} className={cn("flex min-h-9 cursor-pointer items-center gap-3 py-1 text-[14px]", f && f.count === 0 && !active && "opacity-45")}>
-                  <input type="radio" name="price" className="peer sr-only" checked={active} onChange={() => onChange({ ...filters, price: active ? null : r.id }, { key: "price", value: r.id, on: !active })} onClick={() => active && onChange({ ...filters, price: null }, { key: "price", on: false })} />
+                <label key={r.id} className={cn("flex min-h-9 items-center gap-3 py-1 text-[14px]", f && f.count === 0 && !active ? "cursor-not-allowed" : "cursor-pointer")}>
+                  <input type="radio" name="price" className="peer sr-only" checked={active} disabled={!!f && f.count === 0 && !active} onChange={() => onChange({ ...filters, price: active ? null : r.id }, { key: "price", value: r.id, on: !active })} onClick={() => active && onChange({ ...filters, price: null }, { key: "price", on: false })} />
                   <span aria-hidden className="inline-flex size-[18px] shrink-0 items-center justify-center rounded-full border border-ink-3 bg-white peer-checked:border-ink peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink">
                     <span className={cn("size-2.5 rounded-full bg-ink transition-transform", active ? "scale-100" : "scale-0")} />
                   </span>
