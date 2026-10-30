@@ -165,8 +165,10 @@ body {
   .on-dark em { color: inherit; }
 }
 
-/* Controls take the live site's 4px corner; pills (size chips, toggles) opt in with rounded-full. */
-button, input, select, textarea { border-radius: var(--radius-sm); }
+/* Controls take the live site's 4px corner; pills (size chips, toggles) and circles opt in with rounded-full. Layered, so utilities win. */
+@layer base {
+  button, input, select, textarea { border-radius: var(--radius-sm); }
+}
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
 img { -webkit-user-drag: none; }

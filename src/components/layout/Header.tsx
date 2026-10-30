@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronRight, CreditCard, Heart, MapPin, Menu, Package, Search, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState, type FocusEvent, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import { CountBadge, IconButton } from "@/components/ui/Button";
 import { productBySlug } from "@/data/catalog";
 import { DEPTS, DEPT_TABS, SEARCH_PLACEHOLDER, deptOfPath, type Dept } from "@/data/nav";
@@ -44,7 +44,6 @@ export function Header() {
   const [hidden, setHidden] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const skipFocusOpen = useRef(false); // Esc returns focus to the trigger without re-opening its panel
   const wishlistCount = useStore(wishlistStore).length;
   const bagCount = useStore(bagStore).lines.reduce((n, l) => n + l.qty, 0);
 
@@ -110,24 +109,6 @@ export function Header() {
       patch({ open: id });
     }
   };
-  const itemHandlers = (id: string | null) => ({
-    onMouseEnter: () => schedule(() => patch({ open: id }), id ? 90 : 0),
-    onFocus: () => {
-      if (skipFocusOpen.current) skipFocusOpen.current = false;
-      else patch({ open: id });
-    },
-    onBlur: (e: FocusEvent<HTMLLIElement>) => {
-      if (!e.currentTarget.contains(e.relatedTarget as Node)) close();
-    },
-    onKeyDown: (e: KeyboardEvent<HTMLLIElement>) => {
-      if (e.key !== "Escape" || !id || open !== id) return;
-      e.stopPropagation();
-      skipFocusOpen.current = true;
-      close();
-      e.currentTarget.querySelector("a")?.focus();
-    },
-  });
-
   const searchBtn = (width: string) =>
     cn("flex h-11 items-center gap-3 rounded-t-[var(--radius-sm)] border-b-2 bg-sand px-4 text-left text-[15px] text-ink-3 transition-colors hover:bg-paper", width, searchOpen ? "border-pink" : "border-line-strong");
   const searchLabel = <span className="truncate">{SEARCH_PLACEHOLDER}</span>;
@@ -177,7 +158,14 @@ export function Header() {
                     </li>
                   );
                 })}
-                <li className="h-full" {...itemHandlers("more")}>
+                <NavLi
+                  id="more"
+                  open={open === "more"}
+                  className="h-full"
+                  onHoverIntent={() => schedule(() => patch({ open: "more" }), 90)}
+                  onOpenPanel={() => patch({ open: "more" })}
+                  onClosePanel={close}
+                >
                   <Link
                     href="/edits"
                     aria-expanded={open === "more"}
@@ -199,7 +187,7 @@ export function Header() {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </li>
+                </NavLi>
               </ul>
             </nav>
 
@@ -233,7 +221,15 @@ export function Header() {
                     const hasPanel = !!t.items?.length;
                     const here = !t.href.includes("?") && (pathname === t.href || pathname.startsWith(`${t.href}/`));
                     return (
-                      <li key={id} className="relative" {...itemHandlers(hasPanel ? id : null)}>
+                      <NavLi
+                        key={id}
+                        id={hasPanel ? id : null}
+                        open={open === id}
+                        className="relative"
+                        onHoverIntent={() => schedule(() => patch({ open: hasPanel ? id : null }), hasPanel ? 90 : 0)}
+                        onOpenPanel={() => patch({ open: hasPanel ? id : null })}
+                        onClosePanel={close}
+                      >
                         <Link
                           href={t.href}
                           aria-current={here ? "page" : undefined}
@@ -253,7 +249,7 @@ export function Header() {
                             </motion.div>
                           )}
                         </AnimatePresence>
-                      </li>
+                      </NavLi>
                     );
                   })}
                 </ul>
@@ -263,6 +259,33 @@ export function Header() {
         )}
       </div>
     </header>
+  );
+}
+
+/** A nav item that owns a hover/focus panel: hover intent, keyboard focus opens it, Tab walks into it, Esc closes it and keeps focus on the trigger. */
+function NavLi({ id, open, className, onHoverIntent, onOpenPanel, onClosePanel, children }: { id: string | null; open: boolean; className?: string; onHoverIntent: () => void; onOpenPanel: () => void; onClosePanel: () => void; children: ReactNode }) {
+  const skipFocusOpen = useRef(false); // Esc returns focus to the trigger without re-opening its panel
+  return (
+    <li
+      className={className}
+      onMouseEnter={onHoverIntent}
+      onFocus={() => {
+        if (skipFocusOpen.current) skipFocusOpen.current = false;
+        else onOpenPanel();
+      }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) onClosePanel();
+      }}
+      onKeyDown={(e) => {
+        if (e.key !== "Escape" || !id || !open) return;
+        e.stopPropagation();
+        skipFocusOpen.current = true;
+        onClosePanel();
+        e.currentTarget.querySelector("a")?.focus();
+      }}
+    >
+      {children}
+    </li>
   );
 }
 

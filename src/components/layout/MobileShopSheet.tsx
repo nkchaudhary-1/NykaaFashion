@@ -6,6 +6,7 @@ import { Img, SIZES } from "@/components/ui/Img";
 import { Overlay, OverlayBody, OverlayHeader } from "@/components/ui/Overlay";
 import { Tabs } from "@/components/ui/Tabs";
 import { categories, topCategories } from "@/data/categories";
+import { deptNewIn, deptSale, type Dept } from "@/data/nav";
 import { productsInCategory } from "@/data/queries";
 import { setUI, useUI } from "@/stores/ui";
 
@@ -32,6 +33,15 @@ export function MobileShopSheet() {
           <Link href={`/c/${top}`} onClick={close} className="flex min-h-12 items-center justify-between border-b border-ink pb-3 text-[17px] font-medium tracking-[-0.015em]">
             Shop all {topName.toLowerCase()} <ArrowRight size={18} aria-hidden />
           </Link>
+          <ul className="mt-4 flex gap-2">
+            {[["What’s New", deptNewIn(top as Dept)], ["Sale", deptSale(top as Dept)]].map(([label, href]) => (
+              <li key={href}>
+                <Link href={href} onClick={close} className="tap inline-flex h-10 items-center rounded-full border border-line-strong px-4 text-[13.5px] font-medium text-ink hover:border-ink">
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
           <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-6">
             {subs.map((c) => {
               const rep = productsInCategory(c.id).find((p) => !p.soldOut) ?? productsInCategory(c.id)[0];
@@ -40,7 +50,7 @@ export function MobileShopSheet() {
                   <Link href={`/c/${c.id}`} onClick={close} className="block">
                     <div className="bg-sand">{rep && <Img imgKey={rep.variants[0].images[0]} alt="" sizes={SIZES.thumb} ratio="1/1" />}</div>
                     <p className="mt-2 text-[14px] font-medium leading-snug">{c.name}</p>
-                    <p className="text-[12px] tabular-nums text-ink-3">{productsInCategory(c.id).length} pieces</p>
+                    <p className="text-[12px] tabular-nums text-ink-3">{productsInCategory(c.id).length} products</p>
                   </Link>
                 </li>
               );

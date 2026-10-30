@@ -1,7 +1,7 @@
-// Design-rule audit on the rendered DOM: no shadows, no gradients, no blur/filters, one font family (Inter), square corners.
+// Design-rule audit on the rendered DOM: no shadows, no gradients, no blur/filters, one font family (Inter), corners limited to the 4px control radius, pills/circles and 16px dialogs.
 //   node scripts/qa/flat.cjs [baseUrl] [--routes /,/c/women] [--widths 390,1280] [--overlays]
-// Exit code 1 on any shadow / gradient / filter / font finding. Radius findings are printed as warnings (avatars, swatches,
-// pins, radios and count badges are allowed — everything else should be square).
+// Exit code 1 on any shadow / gradient / filter / font finding. Radius findings are printed as warnings: allowed are ≤8px (4px controls, 8px panels),
+// fully rounded pills and circles, and the 16px dialog corner — anything else is reported.
 const { chromium } = require("playwright");
 const BASE = process.argv.find((a) => a.startsWith("http")) ?? "http://localhost:3200";
 const flag = (n, d) => { const i = process.argv.indexOf(n); return i > -1 ? process.argv[i + 1] : d; };
@@ -47,9 +47,10 @@ const probe = () => {
     // corners
     const r = el.getBoundingClientRect();
     const rad = Math.max(...["borderTopLeftRadius", "borderTopRightRadius", "borderBottomLeftRadius", "borderBottomRightRadius"].map((k) => parseFloat(cs[k]) || 0));
-    if (rad >= 3) {
-      const small = r.width <= 64 && r.height <= 64; // avatar / swatch / pin / radio / badge
-      if (!small && el.tagName !== "IMG") add(found.radius, name(el), `${Math.round(r.width)}×${Math.round(r.height)} r=${Math.round(rad)}`);
+    // allowed: the 4px control corner and 8px panel corner, pills / circles (fully rounded), the 16px dialog corner; anything else is flagged
+    if (rad > 8.5 && el.tagName !== "IMG") {
+      const pill = rad >= Math.min(r.width, r.height) / 2 - 1;
+      if (!pill && Math.round(rad) !== 16) add(found.radius, name(el), `${Math.round(r.width)}×${Math.round(r.height)} r=${Math.round(rad)}`);
     }
   });
   found.fonts = Array.from(new Set(Array.from(document.fonts).filter((f) => f.status === "loaded").map((f) => f.family.replace(/["']/g, ""))));
@@ -68,9 +69,13 @@ const fmt = (list) => list.slice(0, 6).map((x) => `      ${x.k} ×${x.n}  ${x.ex
     const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, isMobile: mobile, hasTouch: mobile });
     const page = await ctx.newPage();
     const check = async (label) => {
-      const r = await page.evaluate(probe);
+      // a route may redirect on the client after load (e.g. /checkout with an empty bag): settle and probe again
+      let r;
+      for (let attempt = 0; attempt < 3 && !r; attempt++) {
+        try { r = await page.evaluate(probe); } catch (e) { if (!/context was destroyed|navigation/i.test(String(e))) throw e; await page.waitForLoadState("networkidle"); await page.waitForTimeout(300); }
+      }
       const bad = r.shadow.length + r.gradient.length + r.filter.length + r.font.length;
-      const nonInter = r.fonts.filter((f) => !/inter/i.test(f));
+      const nonInter = r.fonts.filter((f) => !/inter/i.test(f) && !/^__nextjs/.test(f)); // the dev-server overlay ships its own face; production has none
       if (bad || nonInter.length) {
         hard++;
         console.log(`✗ ${w}px ${label}`);

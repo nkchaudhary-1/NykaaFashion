@@ -26,17 +26,18 @@ export const DEPTS: Array<{ id: Dept; label: string }> = [
 const WESTERN = ["women/dresses", "women/tops", "women/bottoms", "women/knitwear", "women/jackets"];
 export const WESTERNWEAR_HREF = `/c/women?cat=${encodeURIComponent(WESTERN.join(","))}`;
 
-const newIn = (d: Dept) => `/c/${d}?sort=new`;
-const onSale = (d: Dept) => `/c/${d}?offers=1&sort=discount`;
+/** Department-wide "What’s New" and "Sale" — real filtered listings (?sort=new, ?offers=1&sort=discount). */
+export const deptNewIn = (d: Dept) => `/c/${d}?sort=new`;
+export const deptSale = (d: Dept) => `/c/${d}?offers=1&sort=discount`;
 
 const whatsNew = (d: Dept, cats: Array<[label: string, id: string]>): NavTab => ({
   label: "What’s New",
-  href: newIn(d),
+  href: deptNewIn(d),
   items: cats.map(([label, id]) => ({ label, href: `/c/${id}?sort=new` })),
 });
 const sale = (d: Dept): NavTab => ({
   label: "Sale",
-  href: onSale(d),
+  href: deptSale(d),
   items: [
     { label: "Under ₹2,000", href: `/c/${d}?offers=1&price=0-2000` },
     { label: "Under ₹3,000", href: `/c/${d}?offers=1&price=0-3000` },

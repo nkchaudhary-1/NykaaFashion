@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
-import { ChevronRight, FlaskConical, LogOut, Package, User } from "lucide-react";
+import { ChevronRight, CreditCard, FlaskConical, LogOut, MapPin, Package } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { Overlay, OverlayBody } from "@/components/ui/Overlay";
 import { categories, topCategories } from "@/data/categories";
 import { primaryEdits } from "@/data/edits";
-import { initials } from "@/lib/format";
+import { deptNewIn, deptSale, type Dept } from "@/data/nav";
 import { logout, useAuth } from "@/stores/account";
 import { setUI, useUI } from "@/stores/ui";
 import { Logo } from "./Logo";
@@ -29,23 +29,22 @@ export function MobileMenu() {
       </div>
       <OverlayBody>
         {ready && user ? (
-          <div className="border border-ink p-4">
-            <div className="flex items-center gap-3">
-              <span aria-hidden data-initials={initials(user.name)} className="inline-flex size-10 items-center justify-center rounded-full bg-ink text-[12px] font-semibold text-bone before:content-[attr(data-initials)]" />
-              <div className="min-w-0">
-                <p className="truncate text-[15px] font-medium">{user.name}</p>
-                <p className="truncate text-[12.5px] text-ink-3">{user.email}</p>
-              </div>
-            </div>
-            <div className="mt-3 grid grid-cols-2 gap-2 text-[13px]">
-              <Link href="/account" onClick={close} className="inline-flex min-h-11 items-center gap-2 border border-line-strong px-3"><User size={15} /> Profile</Link>
-              <Link href="/account/orders" onClick={close} className="inline-flex min-h-11 items-center gap-2 border border-line-strong px-3"><Package size={15} /> Orders</Link>
+          <div className="border-b border-line pb-5">
+            <p className="text-[22px] leading-tight">Hi {user.name.split(" ")[0]}</p>
+            <p className="mt-1 text-[13px] tracking-[0.12em] text-ink-3">{user.mobile}</p>
+            <div className="mt-4 grid grid-cols-3 gap-2 text-[13px]">
+              <Link href="/account/orders" onClick={close} className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-[var(--radius-sm)] border border-line-strong px-2"><Package size={15} aria-hidden /> Orders</Link>
+              <Link href="/account/addresses" onClick={close} className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-[var(--radius-sm)] border border-line-strong px-2"><MapPin size={15} aria-hidden /> Addresses</Link>
+              <Link href="/account/payments" onClick={close} className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-[var(--radius-sm)] border border-line-strong px-2"><CreditCard size={15} aria-hidden /> Payments</Link>
             </div>
           </div>
         ) : (
-          <Link href="/login" onClick={close} className="flex min-h-12 items-center justify-between border border-ink px-4 text-[14px] font-semibold uppercase tracking-[0.08em]">
-            Sign in or create account <ChevronRight size={16} aria-hidden />
-          </Link>
+          <div className="border-b border-line pb-5">
+            <p className="text-[14px] leading-relaxed text-ink-3">Becoming a Nykaa Fashion member comes with easy order tracking, rewards, offers and more.</p>
+            <button type="button" onClick={() => (close(), setUI({ loginOpen: true }))} className="mt-3 inline-flex min-h-11 items-center gap-1 text-[16px] font-semibold text-pink">
+              Login/Signup Now <ChevronRight size={18} aria-hidden />
+            </button>
+          </div>
         )}
 
         <p className={group}>Shop</p>
@@ -53,6 +52,8 @@ export function MobileMenu() {
           <Disclosure key={top.id} title={<span className="text-[15px] font-medium">{top.name}</span>} headingLevel={3}>
             <ul className="-mt-1">
               <li><Link href={`/c/${top.id}`} onClick={close} className={`${row} font-medium`}>All {top.name.toLowerCase()} <ChevronRight size={16} aria-hidden /></Link></li>
+              <li><Link href={deptNewIn(top.id as Dept)} onClick={close} className={`${row} text-ink-2`}>What’s New <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link></li>
+              <li><Link href={deptSale(top.id as Dept)} onClick={close} className={`${row} text-ink-2`}>Sale <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link></li>
               {categories.filter((c) => c.parent === top.id).map((c) => (
                 <li key={c.id}><Link href={`/c/${c.id}`} onClick={close} className={`${row} text-ink-2`}>{c.name} <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link></li>
               ))}
