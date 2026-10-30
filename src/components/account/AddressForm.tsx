@@ -55,19 +55,19 @@ export function AddressForm({ initial, defaults, onSaved, onCancel }: { initial?
 
   return (
     <form onSubmit={submit} noValidate className="space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Input label="Full name" autoComplete="name" value={d.name} onChange={(e) => set("name", e.target.value)} error={errors.name} />
         <Input label="Mobile number" inputMode="numeric" autoComplete="tel-national" maxLength={10} prefix="+91" value={d.mobile} onChange={(e) => set("mobile", e.target.value.replace(/\D/g, ""))} error={errors.mobile} />
       </div>
-      <div className="grid gap-5 sm:grid-cols-[180px_1fr]">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-[180px_1fr]">
         <Input label="Pincode" inputMode="numeric" autoComplete="postal-code" maxLength={6} value={d.pincode} onChange={(e) => onPin(e.target.value)} error={errors.pincode} hint="Try 400050 or 560034" />
         <Input label="Flat / house no., building, street" autoComplete="address-line1" value={d.line1} onChange={(e) => set("line1", e.target.value)} error={errors.line1} />
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Input label="Area / locality" autoComplete="address-line2" optional value={d.line2 ?? ""} onChange={(e) => set("line2", e.target.value)} />
         <Input label="Landmark" optional value={d.landmark ?? ""} onChange={(e) => set("landmark", e.target.value)} />
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Input label="City" autoComplete="address-level2" value={d.city} onChange={(e) => set("city", e.target.value)} error={errors.city} />
         <Select label="State" autoComplete="address-level1" value={d.state} onChange={(e) => set("state", e.target.value)} error={errors.state}>
           <option value="">Select state</option>

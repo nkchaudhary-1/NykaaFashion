@@ -95,7 +95,7 @@ function SearchPanel() {
   const chip = "inline-flex h-10 items-center gap-2 rounded-full border border-line-strong px-4 text-[13.5px] text-ink transition-colors hover:border-ink hover:bg-sand";
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="container-x flex h-[72px] shrink-0 items-center gap-3 border-b border-line">
+      <div className="container-x flex h-[72px] shrink-0 items-center gap-3 border-b border-line transition-[border-color,box-shadow] focus-within:border-ink focus-within:shadow-[0_1px_0_0_var(--color-ink)]">
         <Search size={20} className="shrink-0 text-ink" aria-hidden />
         <input
           data-autofocus
@@ -127,7 +127,7 @@ function SearchPanel() {
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         <div className="container-x py-6 sm:py-8">
           {!dq.trim() ? (
-            <div className="grid gap-9 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+            <div className="grid grid-cols-1 gap-9 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
               <div className="space-y-8">
                 {recentSearches.length > 0 && (
                   <section aria-labelledby="recent-h">
@@ -180,7 +180,7 @@ function SearchPanel() {
               </div>
               <section aria-labelledby="edits-h">
                 <h2 id="edits-h" className="eyebrow mb-3 text-ink-3">Start with an edit</h2>
-                <ul className="grid gap-2.5">
+                <ul className="grid grid-cols-1 gap-2.5">
                   {primaryEdits.map((e) => (
                     <li key={e.id}>
                       <button type="button" onClick={() => go(`/edits/${e.id}`)} className="group flex w-full items-center gap-4 border border-line bg-paper p-3 text-left transition-colors hover:border-ink">

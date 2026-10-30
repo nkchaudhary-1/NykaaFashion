@@ -25,7 +25,7 @@ export function AddressesView() {
       {addresses.length === 0 ? (
         <EmptyState visual={<MapPin size={40} strokeWidth={1} className="mx-auto text-ink-3" aria-hidden />} title="No saved addresses yet" text="Save an address now and checkout will be one step shorter." actions={<Button size="lg" onClick={() => setEditing("new")}>Add your first address</Button>} className="py-14" />
       ) : (
-        <ul className="mt-8 grid gap-4 md:grid-cols-2">
+        <ul className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
           {addresses.map((a) => (
             <li key={a.id} className="flex flex-col justify-between gap-5 border border-line bg-paper p-6">
               <div>

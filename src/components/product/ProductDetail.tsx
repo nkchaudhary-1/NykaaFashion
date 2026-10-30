@@ -91,7 +91,7 @@ export function ProductDetail({ product }: { product: Product }) {
 
   return (
     <div className="container-x pb-14">
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16 xl:gap-24">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16 xl:gap-24">
         <Gallery key={sel.variant} images={v.images} name={product.name} colorName={v.colorName} heroRef={heroRef} startIndex={sel.variant === inStockVariantIndex(product) ? startShot : 0} />
 
         <div className="lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
@@ -159,7 +159,7 @@ export function ProductDetail({ product }: { product: Product }) {
           {/* Decision-confidence block (PRD §5.5): fit, fabric and the label's story ahead of any spec dump. */}
           <section aria-labelledby="confidence" className="mt-8">
             <h2 id="confidence" className="sr-only">Fit, fabric and story</h2>
-            <dl className="grid gap-5 border-b border-line pb-6 sm:grid-cols-3">
+            <dl className="grid grid-cols-1 gap-5 border-b border-line pb-6 sm:grid-cols-3">
               <div>
                 <dt className="eyebrow text-ink-3">Fit</dt>
                 <dd className="mt-2 text-[13.5px] leading-snug text-ink">{product.fit}</dd>

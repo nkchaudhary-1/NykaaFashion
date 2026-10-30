@@ -46,7 +46,7 @@ export function DeliveryCheck() {
             placeholder="Enter pincode"
             value={value}
             onChange={(e) => (setDraft(e.target.value.replace(/\D/g, "")), setTouched(false))}
-            className="h-11 w-full border border-line-strong bg-white pl-10 pr-3 text-[14px] tabular-nums focus:border-ink focus:outline-none"
+            className="h-11 w-full border border-line-strong bg-white pl-10 pr-3 text-[14px] tabular-nums focus:border-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-ink"
           />
         </div>
         <Button type="submit" variant="secondary" size="md">

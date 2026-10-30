@@ -20,7 +20,7 @@ function Values() {
   ];
   return (
     <div className="container-x py-16 sm:py-20">
-      <ul className="grid gap-10 border-t border-line pt-12 sm:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-10 border-t border-line pt-12 sm:grid-cols-3">
         {items.map(({ Icon, t, d }) => (
           <li key={t} className="flex gap-4">
             <Icon size={22} strokeWidth={1.3} aria-hidden className="mt-1 shrink-0" />

@@ -38,7 +38,7 @@ async function BrandContent({ params }: Pick<PageProps<"/brands/[slug]">, "param
     <>
       <header className="container-x pb-10 pt-6 sm:pb-14 sm:pt-8">
         <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Labels", href: "/brands" }, { name: label.name }]} className="mb-10" />
-        <div className="grid gap-10 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,28rem)] lg:items-end lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,28rem)] lg:items-end lg:gap-14">
           <LabelMonogram label={label} size="lg" className="lg:size-40 lg:text-[76px]" />
           <div>
             <LabelBadges label={label} className="mb-5" />
@@ -55,7 +55,7 @@ async function BrandContent({ params }: Pick<PageProps<"/brands/[slug]">, "param
       {siblings.length > 0 && (
         <section className="container-x py-16 sm:py-24" aria-labelledby="more-labels">
           <SectionHeading level={2} eyebrow="Keep exploring" title={<span id="more-labels">More labels like this.</span>} href="/brands" hrefLabel="All labels" />
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {siblings.map((l) => (
               <li key={l.id}>
                 <Link href={`/brands/${l.id}`} className="group flex h-full items-center gap-4 border border-line bg-paper p-5 transition-colors hover:border-ink">

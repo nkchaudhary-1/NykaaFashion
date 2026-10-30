@@ -30,7 +30,7 @@ export function NewsletterForm() {
       <label htmlFor="nl" className="eyebrow mb-3 block text-bone/55">
         The Style Files letter
       </label>
-      <div className="flex border-b border-bone/40 focus-within:border-bone">
+      <div className="flex border-b border-bone/40 transition-[border-color,box-shadow] focus-within:border-bone focus-within:shadow-[0_1px_0_0_var(--color-bone)]">
         <input id="nl" type="email" autoComplete="email" placeholder="Your email" value={email} onChange={(e) => (setEmail(e.target.value), setError(null))} aria-invalid={error ? true : undefined} aria-describedby={error ? "nl-err" : undefined} className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-bone placeholder:text-bone/45 focus:outline-none" />
         <button type="submit" aria-label="Subscribe" className="inline-flex size-12 items-center justify-center text-bone transition-transform hover:translate-x-0.5">
           <ArrowRight size={19} />

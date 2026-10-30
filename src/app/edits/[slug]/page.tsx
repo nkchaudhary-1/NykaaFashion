@@ -89,7 +89,7 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
       {related.length > 0 && (
         <section aria-labelledby="rel-stories" className="container-x py-16 sm:py-24">
           <SectionHeading level={2} eyebrow="From the Style Files" title={<span id="rel-stories">Read the story.</span>} href="/discover" hrefLabel="All stories" />
-          <div className="mt-10 grid gap-8 md:grid-cols-2">
+          <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2">
             {related.map((s) => (
               <StoryCard key={s.id} story={s} variant="wide" source={`edit:${edit.id}`} />
             ))}
@@ -99,7 +99,7 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
 
       <section aria-labelledby="more-edits" className="container-x pb-8 pt-10">
         <SectionHeading level={2} eyebrow="Keep going" title={<span id="more-edits">More edits.</span>} href="/edits" hrefLabel="All edits" />
-        <ul className="mt-10 grid gap-x-6 gap-y-10 sm:grid-cols-3">
+        <ul className="mt-10 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
           {more.map((e) => (
             <li key={e.id}>
               <EditTile edit={e} source="more-edits" sizes="(min-width:600px) 33vw, 100vw" />

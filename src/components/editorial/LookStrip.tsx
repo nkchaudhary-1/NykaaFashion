@@ -16,7 +16,7 @@ export function LookStrip({ imgKey, title = "In this image", label }: { imgKey: 
   return (
     <section aria-label={label ?? title} className="mt-4">
       <p className="eyebrow mb-3 text-ink-3">{title}</p>
-      <ul className="grid gap-3 sm:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {ids.map((id) => {
           const p = productById[id];
           if (!p) return null;

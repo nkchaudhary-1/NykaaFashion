@@ -28,7 +28,7 @@ export default function PrototypePage() {
     <>
       <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Prototype notes" }]} eyebrow="Read me first" title={<>What’s real, <em>what’s simulated.</em></>} intro="A curation-first redesign of Nykaa Fashion’s discovery experience, built from the product brief. It is a front-end prototype: every control does something real against mock data — and anything that would need a backend is clearly labelled." />
       <div className="container-x pb-24">
-        <div className="grid gap-16 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-24">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-24">
           <div className="space-y-16">
             <section aria-labelledby="thesis">
               <h2 id="thesis" className="display-sm">The thesis</h2>

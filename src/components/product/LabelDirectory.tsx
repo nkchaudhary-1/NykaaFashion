@@ -28,7 +28,7 @@ export function LabelDirectory() {
   return (
     <div className="container-x pb-8">
       <Tabs items={FILTERS.map((x) => ({ ...x, count: labels.filter((l) => x.id === "all" || l.flags[x.id as keyof typeof l.flags]).length }))} value={f} onChange={setF} label="Filter labels" variant="pill" className="mb-10 pb-1" />
-      <div className="grid gap-x-16 gap-y-12 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-16 gap-y-12 lg:grid-cols-2">
         {groups.map(([letter, list]) => (
           <section key={letter} aria-labelledby={`l-${letter}`}>
             <h2 id={`l-${letter}`} className="display-md border-b border-ink pb-3">{letter}</h2>

@@ -42,7 +42,7 @@ export function CouponBox({ lines, applied, error }: { lines: PricedLine[]; appl
         <form onSubmit={(e) => (e.preventDefault(), apply(code))} noValidate className="mt-4">
           <div className="flex gap-2">
             <label htmlFor="coupon-code" className="sr-only">Coupon code</label>
-            <input id="coupon-code" value={code} onChange={(e) => (setCode(e.target.value.toUpperCase()), setMsg(null))} placeholder="Enter code" autoCapitalize="characters" autoComplete="off" aria-invalid={msg ? true : undefined} aria-describedby={msg ? "coupon-err" : undefined} className={cn("h-11 min-w-0 flex-1 border bg-white px-4 font-mono text-[14px] uppercase tracking-widest focus:border-ink focus:outline-none", msg ? "border-danger" : "border-line-strong")} />
+            <input id="coupon-code" value={code} onChange={(e) => (setCode(e.target.value.toUpperCase()), setMsg(null))} placeholder="Enter code" autoCapitalize="characters" autoComplete="off" aria-invalid={msg ? true : undefined} aria-describedby={msg ? "coupon-err" : undefined} className={cn("h-11 min-w-0 flex-1 border bg-white px-4 font-mono text-[14px] uppercase tracking-widest focus:border-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-ink", msg ? "border-danger" : "border-line-strong")} />
             <Button type="submit" variant="secondary" disabled={!code.trim()}>Apply</Button>
           </div>
           {(msg || error) && <p id="coupon-err" role="alert" className="mt-2 text-[13px] font-medium text-danger">{msg ?? error}</p>}

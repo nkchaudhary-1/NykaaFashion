@@ -31,14 +31,14 @@ export function ProfileView() {
   const stat = "border border-line bg-paper p-5";
   return (
     <div className="space-y-12">
-      <ul className="grid gap-4 sm:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <li className={stat}><Link href="/account/orders" className="block"><p className="display-md tabular-nums">{orders.length}</p><p className="mt-1 text-[13px] text-ink-2">Orders</p></Link></li>
         <li className={stat}><Link href="/account/addresses" className="block"><p className="display-md tabular-nums">{addresses.length}</p><p className="mt-1 text-[13px] text-ink-2">Saved addresses</p></Link></li>
         <li className={stat}><Link href="/wishlist" className="block"><p className="display-md tabular-nums">{wishlist}</p><p className="mt-1 text-[13px] text-ink-2">Saved pieces</p></Link></li>
       </ul>
       <section aria-labelledby="pf">
         <h2 id="pf" className="display-sm">Your details</h2>
-        <form onSubmit={save} noValidate className="mt-8 grid max-w-2xl gap-5 sm:grid-cols-2">
+        <form onSubmit={save} noValidate className="mt-8 grid grid-cols-1 max-w-2xl gap-5 sm:grid-cols-2">
           <Input label="Full name" autoComplete="name" value={v.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} error={errors.name} />
           <Input label="Email" type="email" autoComplete="email" value={v.email} onChange={(e) => setDraft({ ...draft, email: e.target.value })} error={errors.email} />
           <Input label="Mobile number" value={formatMobile(user.mobile)} readOnly disabled hint="Your sign-in. Not editable in this prototype." />

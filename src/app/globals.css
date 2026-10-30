@@ -125,12 +125,15 @@ body {
 
 ::selection { background: var(--color-pink); color: #fff; }
 
-:focus-visible {
-  outline: 2px solid var(--color-ink);
-  outline-offset: 3px;
-  border-radius: 2px;
+/* Layered so component-level utilities (outline-none, focus-visible:ring-*, outline-offset-*) can refine it.
+   The outline follows each element's own radius — no forced border-radius, which flattened round buttons. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+  .on-dark :focus-visible, [data-theme="dark"] :focus-visible { outline-color: #fff; }
 }
-.on-dark :focus-visible, [data-theme="dark"] :focus-visible { outline-color: #fff; }
 
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }

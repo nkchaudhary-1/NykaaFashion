@@ -45,7 +45,7 @@ export function CategoryMega({ top, onNavigate }: { top: "women" | "men" | "kids
           Shop all {top} <ArrowUpRight size={14} />
         </Link>
       </div>
-      <div className="grid content-start gap-9">
+      <div className="grid grid-cols-1 content-start gap-9">
         <div>
           <p className="eyebrow mb-4 text-ink-3">Edits</p>
           <ul>

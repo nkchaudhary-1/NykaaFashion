@@ -26,13 +26,13 @@ export function HelpCentre() {
     toast({ title: "Message saved", description: "Simulated — stored on this device only." });
   };
   return (
-    <div className="container-x grid gap-16 pb-20 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-24">
+    <div className="container-x grid grid-cols-1 gap-16 pb-20 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-24">
       <section aria-labelledby="faq">
         <h2 id="faq" className="display-sm mb-6">Questions, answered.</h2>
         <div className="border-t border-line">
           {FAQS.map((q, i) => (<Disclosure key={q.q} title={q.q} defaultOpen={i === 0}><p>{q.a}</p></Disclosure>))}
         </div>
-        <ul className="mt-10 grid gap-3 sm:grid-cols-3 text-[14px]">
+        <ul className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3 text-[14px]">
           {[["/info/shipping", "Shipping & delivery"], ["/info/returns", "Returns & refunds"], ["/account/orders", "Track an order"]].map(([href, label]) => (
             <li key={href}><Link href={href} className="flex h-14 items-center justify-between border border-line px-4 hover:border-ink">{label} <span aria-hidden>→</span></Link></li>
           ))}

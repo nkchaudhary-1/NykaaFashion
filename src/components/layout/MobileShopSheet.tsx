@@ -32,7 +32,7 @@ export function MobileShopSheet() {
             </ul>
           </Disclosure>
         ))}
-        <ul className="mt-6 grid gap-1 border-t border-line pt-4">
+        <ul className="mt-6 grid grid-cols-1 gap-1 border-t border-line pt-4">
           {[
             ["/edits/new-in", "New in"],
             ["/brands", "All labels A–Z"],

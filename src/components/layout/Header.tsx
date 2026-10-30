@@ -77,7 +77,7 @@ export function Header() {
   return (
     <header className={cn("sticky top-0 z-40 transition-transform duration-500 ease-editorial", hidden && !open && "-translate-y-full")} onMouseLeave={() => schedule(null, 140)}>
       <div className={cn("relative border-b bg-bone/95 backdrop-blur-md transition-[border-color,box-shadow] duration-300", scrolled || open ? "border-line" : "border-transparent")}>
-        <div className="container-x flex h-[var(--header-h)] items-center gap-4 lg:gap-8">
+        <div className="container-x flex h-[var(--header-h)] items-center gap-2 sm:gap-4 lg:gap-8">
           <Logo className="shrink-0" />
 
           <nav aria-label="Primary" className="ml-2 hidden lg:block" onKeyDown={(e) => e.key === "Escape" && close()}>
@@ -105,7 +105,7 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ml-auto flex items-center sm:gap-1">
             <button
               type="button"
               onClick={() => setUI({ searchOpen: true })}

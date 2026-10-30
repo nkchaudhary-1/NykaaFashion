@@ -37,7 +37,7 @@ export function ConfirmationView({ id }: { id: string }) {
         </div>
       </header>
 
-      <div className="container-x grid gap-12 pb-16 lg:grid-cols-[minmax(0,1fr)_400px] xl:gap-20">
+      <div className="container-x grid grid-cols-1 gap-12 pb-16 lg:grid-cols-[minmax(0,1fr)_400px] xl:gap-20">
         <div className="space-y-12">
           <section aria-labelledby="oi"><h2 id="oi" className="display-xs mb-5">In this order</h2><OrderItemsList order={order} /></section>
           <section aria-labelledby="ot"><h2 id="ot" className="display-xs mb-6">What happens next <span className="ml-2 align-middle text-[12px] font-sans text-ink-3">(simulated)</span></h2><OrderTimeline order={order} /></section>

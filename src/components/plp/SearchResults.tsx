@@ -59,7 +59,7 @@ export function SearchResults() {
         <div className="container-x pb-12">
           <EmptyState title="Nothing matched — yet" text="Try fewer words, a different spelling, or start from an edit." actions={<>{TRENDING_SEARCHES.slice(0, 4).map((t) => (<Link key={t} href={`/search?q=${encodeURIComponent(t)}`} className="inline-flex h-10 items-center rounded-full border border-line-strong px-4 text-[13.5px] hover:border-ink">{t}</Link>))}</>} className="pb-10 pt-6" />
           <h2 className="eyebrow mb-6 text-ink-3">Popular edits</h2>
-          <ul className="grid gap-6 sm:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {primaryEdits.slice(0, 3).map((e) => (
               <li key={e.id}><EditTile edit={e} source="search-empty" sizes="(min-width:600px) 33vw, 100vw" /></li>
             ))}

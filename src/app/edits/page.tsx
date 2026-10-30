@@ -22,7 +22,7 @@ export default function EditsIndex() {
           return (
             <li key={e.id}>
               <Reveal>
-                <Link href={`/edits/${e.id}`} className="group grid overflow-hidden md:min-h-[420px] md:grid-cols-2" style={{ background: t.bg, color: t.fg }}>
+                <Link href={`/edits/${e.id}`} className="group grid grid-cols-1 overflow-hidden md:min-h-[420px] md:grid-cols-2" style={{ background: t.bg, color: t.fg }}>
                   <div className={cn("flex flex-col justify-center gap-5 p-8 sm:p-14", flip && "md:order-2")}>
                     <p className="eyebrow opacity-90">{e.kicker}</p>
                     <h2 className="display-lg">{e.title}</h2>
@@ -44,7 +44,7 @@ export default function EditsIndex() {
       <section aria-labelledby="computed" className="container-x pb-8">
         <p className="eyebrow mb-3 text-ink-3">Computed — never hand-tagged</p>
         <h2 id="computed" className="display-md">Shortcuts by price & date.</h2>
-        <ul className="mt-10 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {computedEdits.map((e) => (
             <li key={e.id}>
               <EditTile edit={e} source="edits-index" sizes="(min-width:1024px) 25vw, (min-width:600px) 50vw, 100vw" />

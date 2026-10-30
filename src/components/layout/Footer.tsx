@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <footer className="mt-24 bg-luxe text-bone sm:mt-32">
       <div className="container-x pb-10 pt-16 sm:pt-20">
-        <div className="grid gap-14 lg:grid-cols-[1.1fr_2fr] lg:gap-20">
+        <div className="grid grid-cols-1 gap-14 lg:grid-cols-[1.1fr_2fr] lg:gap-20">
           <div>
             <Logo onDark />
             <p className="display-sm mt-8 max-w-[18ch] text-bone">

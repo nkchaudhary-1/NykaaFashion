@@ -111,7 +111,7 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], layout = "g
         </div>
       )}
 
-      <div className="mt-6 grid gap-x-12 lg:mt-8 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)]">
+      <div className="mt-6 grid grid-cols-1 gap-x-12 lg:mt-8 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)]">
         <aside aria-label="Filters" className="hidden lg:block">
           <h2 className="sr-only">Filters</h2>
           <div className="sticky top-[calc(var(--header-h)+16px)] max-h-[calc(100dvh-var(--header-h)-32px)] overflow-y-auto pr-3 [scrollbar-width:thin]">

@@ -55,7 +55,7 @@ export function Reviews({ product }: { product: Product }) {
         </Button>
       </div>
 
-      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-20">
+      <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-20">
         <div>
           <p className="flex items-end gap-3">
             <span className="display-lg leading-none">{product.rating.toFixed(1)}</span>
@@ -175,7 +175,7 @@ function ReviewForm({ product, name, onDone }: { product: Product; name?: string
       </fieldset>
       <Input label="Title" value={title} onChange={(e) => setTitle(e.target.value)} error={errors.title} maxLength={80} />
       <Textarea label="Your review" value={body} onChange={(e) => setBody(e.target.value)} error={errors.body} hint="How does it fit? How does the fabric feel?" />
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {product.sizes.length > 1 && (
           <Select label="Size you bought" value={size} onChange={(e) => setSize(e.target.value)}>
             {product.sizes.map((s) => (<option key={s}>{s}</option>))}

@@ -98,7 +98,7 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
       </div>
 
       <section aria-labelledby="nx" className="container-x mt-24 border-t border-ink pb-8 pt-14">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:items-center">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:items-center">
           <div>
             <p className="eyebrow text-ink-3">Next in the Style Files</p>
             <h2 id="nx" className="display-md mt-4">{next.title}</h2>

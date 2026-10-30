@@ -32,7 +32,7 @@ export function PdpSkeleton() {
   return (
     <div role="status" aria-label="Loading product" className="container-x pb-16 pt-6">
       <Skeleton className="h-3 w-64" />
-      <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16">
+      <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16">
         <div className="grid grid-cols-[72px_1fr] gap-4">
           <div className="hidden space-y-3 sm:block">
             {[0, 1, 2].map((i) => (

@@ -19,6 +19,16 @@ async function step(name, fn) {
   }
 }
 const eq = (a, b, what) => { if (a !== b) throw new Error(`${what}: expected ${JSON.stringify(b)}, got ${JSON.stringify(a)}`); };
+// Wait for programmatic scrolling (scroll-to-error, FLIP landing) to stop so a click doesn't hit a moving target.
+const settle = async (page) => {
+  let last = -1, same = 0;
+  for (let i = 0; i < 40 && same < 4; i++) {
+    const y = await page.evaluate(() => Math.round(window.scrollY));
+    same = y === last ? same + 1 : 0;
+    last = y;
+    await page.waitForTimeout(50);
+  }
+};
 
 (async () => {
   const browser = await chromium.launch();
@@ -86,7 +96,10 @@ const eq = (a, b, what) => { if (a !== b) throw new Error(`${what}: expected ${J
   });
 
   await step("Choose size, add to bag → bag shows the item", async () => {
-    await page.getByRole("radio", { name: /^Size M/ }).check({ force: true });
+    await settle(page);
+    // Click the visible tile (the label), as a shopper would — the radio input itself is visually hidden.
+    await page.locator("label").filter({ has: page.getByRole("radio", { name: /^Size M/ }) }).click();
+    eq(await page.getByRole("radio", { name: /^Size M/ }).isChecked(), true, "size M selected");
     await page.getByRole("button", { name: "Add to bag" }).first().click();
     if (mobile) {
       await page.getByText("Added to your bag").waitFor();
@@ -219,9 +232,11 @@ const eq = (a, b, what) => { if (a !== b) throw new Error(`${what}: expected ${J
   });
 
   await step("404 page is editorial and navigable", async () => {
+    const before = problems.length;
     const r = await page.goto(BASE + "/this-does-not-exist", { waitUntil: "networkidle" });
     eq(r.status(), 404, "status");
     await page.getByRole("heading", { level: 1 }).getByText(/lost/i).waitFor();
+    problems.splice(before); // the 404 response and its console line are the point of this step, not a problem
   });
 
   const real = problems.filter((p) => !/Download the React DevTools|favicon/.test(p));

@@ -33,7 +33,7 @@ export function FeaturedEdits() {
   return (
     <div className="container-x py-16 sm:py-24">
       <SectionHeading eyebrow="Edits" title={<>Start with a point of view.</>} intro="Curated destinations, not category pages. Each edit has a narrative, a set of labels and a short list of things worth owning." href="/edits" hrefLabel="All edits" />
-      <ul className="mt-10 grid gap-x-8 gap-y-14 md:grid-cols-3">
+      <ul className="mt-10 grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-3">
         {lead.map((e, i) => (
           <li key={e.id} className={cn(i === 1 && "md:mt-14")}>
             <Reveal delay={i * 90}>
@@ -42,7 +42,7 @@ export function FeaturedEdits() {
           </li>
         ))}
       </ul>
-      <div className="mt-14 grid gap-px border border-line bg-line sm:grid-cols-2">
+      <div className="mt-14 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2">
         {["festive", "house-of-nykaa"].map((id) => {
           const e = editById[id];
           return (
@@ -90,7 +90,7 @@ export function OccasionEdit() {
   }, []);
   return (
     <div className="container-x py-16 sm:py-24">
-      <div className="grid overflow-hidden lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <div className="grid grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <div className="relative isolate flex min-h-[460px] flex-col justify-end bg-festive text-bone grain">
           <Img imgKey="scenes/edit-festive-tall" alt="" sizes={SIZES.half} ratio="4/5" className="absolute inset-0 h-full w-full opacity-90 mix-blend-luminosity" />
           <div className="relative z-[1] bg-gradient-to-t from-festive via-festive/85 to-transparent p-8 pt-40 sm:p-12 sm:pt-56">
@@ -149,7 +149,7 @@ export function StoryStrip({ lead }: { lead?: Story }) {
   return (
     <div className="container-x py-16 sm:py-24">
       <SectionHeading eyebrow="Style Files" title="Stories worth the scroll." intro="Shop the story: every image is shoppable, every look is built from pieces you can add without leaving the page." href="/discover" hrefLabel="Read all stories" />
-      <div className="mt-10 grid gap-x-8 gap-y-12 lg:grid-cols-[1.5fr_1fr_1fr]">
+      <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-12 lg:grid-cols-[1.5fr_1fr_1fr]">
         <Reveal>
           <StoryCard story={first} variant="wide" source="home-stories" />
         </Reveal>
@@ -169,7 +169,7 @@ export function BrandSpotlight({ labelId, excludeId, eyebrow = "Label spotlight"
   const items = productsByLabel(labelId).filter((p) => !p.soldOut && p.id !== excludeId).slice(0, 3);
   return (
     <div className="container-x pb-8 pt-4 sm:pb-12">
-      <div className="grid gap-10 border-t border-ink pt-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
+      <div className="grid grid-cols-1 gap-10 border-t border-ink pt-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
         <div>
           <p className="eyebrow text-ink-3">{eyebrow}</p>
           <div className="mt-6 flex items-center gap-5">

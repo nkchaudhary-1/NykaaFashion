@@ -71,7 +71,7 @@ export function LoginFlow() {
   };
 
   return (
-    <div className="container-x grid gap-0 pb-20 pt-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20 lg:pt-8">
+    <div className="container-x grid grid-cols-1 gap-0 pb-20 pt-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20 lg:pt-8">
       <div className="relative hidden lg:block">
         <div className="arch sticky top-[calc(var(--header-h)+24px)] overflow-hidden">
           <Img imgKey="scenes/auth-side" alt="" sizes={SIZES.half} ratio="4/5" priority />

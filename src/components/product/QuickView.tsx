@@ -37,7 +37,7 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
   const close = () => setUI({ quickView: null });
   return (
     <OverlayBody className="p-0 sm:p-0">
-      <div className="grid sm:grid-cols-[1fr_1fr]">
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr]">
         <div className="relative bg-sand">
           <Img imgKey={v.images[Math.min(shot, v.images.length - 1)]} alt={`${product.name} in ${v.colorName}`} sizes={SIZES.half} ratio="4/5" priority />
           <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2">

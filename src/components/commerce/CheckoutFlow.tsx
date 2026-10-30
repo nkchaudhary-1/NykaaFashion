@@ -146,7 +146,7 @@ export function CheckoutFlow() {
         <strong>Simulated checkout.</strong> No payment is taken and no order is placed with anyone. Don’t enter real card details — use the test values shown.
       </SimulatedNotice>
 
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px] xl:gap-20">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px] xl:gap-20">
         <div className="space-y-6">
           {/* ── 1 Address ─────────────────────────────── */}
           <section aria-labelledby="s-addr" className="border border-line bg-paper">
@@ -160,7 +160,7 @@ export function CheckoutFlow() {
             {step === 0 ? (
               <div className="border-t border-line px-5 py-6 sm:px-7">
                 {addresses.length > 0 && !adding && (
-                  <div role="radiogroup" aria-label="Delivery address" className="grid gap-3">
+                  <div role="radiogroup" aria-label="Delivery address" className="grid grid-cols-1 gap-3">
                     {addresses.map((a) => (
                       <Radio key={a.id} name="address" checked={address?.id === a.id} onChange={() => patchCheckout({ addressId: a.id })} label={<span className="flex items-center gap-2">{a.name}<span className="inline-flex h-5 items-center bg-sand px-2 text-[10px] font-medium uppercase tracking-wider text-ink-2">{a.type}</span>{a.isDefault && <span className="text-[11px] text-ink-3">Default</span>}</span>} sub={<AddressLine a={a} />} />
                     ))}
@@ -179,7 +179,7 @@ export function CheckoutFlow() {
                   <fieldset className="mt-9">
                     <legend className="mb-3 text-[14px] font-medium">Delivery speed</legend>
                     {area && !area.ok && <p role="alert" className="mb-3 text-[13px] font-medium text-danger">We don’t deliver to {address.pincode} yet.</p>}
-                    <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       <Radio name="delivery" checked={co.delivery === "standard"} onChange={() => patchCheckout({ delivery: "standard" })} label="Standard" sub={`Delivery by ${eta(stdDays)}`} right={price.itemCount && priceBag(lines, { coupon, delivery: "standard" }).shipping === 0 ? "Free" : inr(STANDARD_SHIPPING)} />
                       <Radio name="delivery" checked={co.delivery === "express"} onChange={() => patchCheckout({ delivery: "express" })} label="Express" sub={`Delivery by ${eta(Math.max(1, stdDays - 2))}`} right={inr(EXPRESS_SHIPPING)} />
                     </div>
@@ -205,7 +205,7 @@ export function CheckoutFlow() {
             </header>
             {step === 1 && (
               <div className="border-t border-line px-5 py-6 sm:px-7">
-                <div role="radiogroup" aria-label="Payment method" className="grid gap-3">
+                <div role="radiogroup" aria-label="Payment method" className="grid grid-cols-1 gap-3">
                   {METHODS.map(({ id, label, sub, Icon }) => {
                     const disabled = id === "cod" && !codAllowed;
                     return (
@@ -215,7 +215,7 @@ export function CheckoutFlow() {
                           <div className="border-x border-b border-ink bg-white px-5 pb-5 pt-5">
                             {id === "upi" && <Input label="UPI ID" autoComplete="off" placeholder="name@okbank" value={upi} onChange={(e) => (setUpi(e.target.value), setPerr({}))} error={perr.upi} hint="Test: any valid ID succeeds · fail@upi is declined" />}
                             {id === "card" && (
-                              <div className="grid gap-4 sm:grid-cols-2">
+                              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <Input fieldClassName="sm:col-span-2" label="Card number" inputMode="numeric" autoComplete="off" placeholder="4242 4242 4242 4242" value={card.number} onChange={(e) => (setCard({ ...card, number: formatCard(e.target.value) }), setPerr({}))} error={perr.number} hint="Test: 4242 4242 4242 4242 succeeds · 4000 0000 0000 0002 is declined" />
                                 <Input fieldClassName="sm:col-span-2" label="Name on card" autoComplete="off" value={card.name} onChange={(e) => (setCard({ ...card, name: e.target.value }), setPerr({}))} error={perr.cname} />
                                 <Input label="Expiry (MM/YY)" inputMode="numeric" autoComplete="off" placeholder="12/30" maxLength={5} value={card.expiry} onChange={(e) => (setCard({ ...card, expiry: formatExpiry(e.target.value) }), setPerr({}))} error={perr.expiry} />
@@ -330,7 +330,7 @@ function CheckoutSkeleton() {
   return (
     <div className="container-x pb-20" role="status" aria-label="Loading checkout">
       <Skeleton className="mb-10 h-7 w-72" />
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
         <div className="space-y-6"><Skeleton className="h-64 w-full" /><Skeleton className="h-20 w-full" /><Skeleton className="h-20 w-full" /></div>
         <Skeleton className="h-96 w-full" />
       </div>

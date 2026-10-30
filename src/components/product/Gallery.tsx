@@ -53,7 +53,7 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
   };
 
   return (
-    <div className="grid gap-4 sm:grid-cols-[72px_minmax(0,1fr)]">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-[72px_minmax(0,1fr)]">
       {/* thumbnails (≥ sm) */}
       <ul className="order-2 hidden gap-3 sm:order-1 sm:flex sm:flex-col" aria-label="Product images">
         {images.map((k, i) => (

@@ -11,7 +11,7 @@ export function EditHeader({ edit, count }: { edit: Edit; count: number }) {
   const dark = edit.theme !== "sand" && edit.theme !== "hon";
   return (
     <header className={cn("grain relative isolate overflow-hidden", dark && "on-dark")} style={{ background: t.bg, color: t.fg }}>
-      <div className="container-x grid gap-10 pb-0 pt-6 sm:pt-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16">
+      <div className="container-x grid grid-cols-1 gap-10 pb-0 pt-6 sm:pt-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16">
         <div className="relative z-[1] pb-12 lg:pb-20">
           <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Edits", href: "/edits" }, { name: edit.title }]} className={cn("mb-10 sm:mb-14 [&_a]:text-inherit [&_a]:opacity-90", dark ? "text-bone/70" : "text-ink-3")} />
           <p className="eyebrow flex items-center gap-3 opacity-90">
@@ -24,7 +24,7 @@ export function EditHeader({ edit, count }: { edit: Edit; count: number }) {
             <span className="tabular-nums">{count}</span> pieces <ArrowDown size={14} aria-hidden />
           </p>
           {edit.highlights.length > 0 && (
-            <dl className="mt-12 grid max-w-3xl gap-x-8 gap-y-6 border-t border-current/20 pt-8 sm:grid-cols-3">
+            <dl className="mt-12 grid grid-cols-1 max-w-3xl gap-x-8 gap-y-6 border-t border-current/20 pt-8 sm:grid-cols-3">
               {edit.highlights.map((h) => (
                 <div key={h.title}>
                   <dt className="text-[14px] font-medium">{h.title}</dt>

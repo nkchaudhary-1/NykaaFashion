@@ -34,7 +34,7 @@ export function AccountShell({ children }: { children: ReactNode }) {
           <h1 className="display-lg mt-3">Hello, {user.name.split(" ")[0]}.</h1>
         </>
       )}
-      <div className="mt-10 grid gap-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
+      <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
         {gated || !user ? (
           <Skeleton className="hidden h-64 w-full lg:block" />
         ) : (

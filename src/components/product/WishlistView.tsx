@@ -36,7 +36,7 @@ export function WishlistView() {
           actions={<><LinkButton href="/discover" size="lg">Read the Style Files</LinkButton><LinkButton href="/edits" variant="secondary" size="lg">Explore the edits</LinkButton></>}
         />
         <h2 className="eyebrow mb-6 mt-4 text-ink-3">Start here</h2>
-        <ul className="grid gap-6 sm:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {primaryEdits.slice(0, 3).map((e) => (<li key={e.id}><EditTile edit={e} source="wishlist-empty" sizes="(min-width:600px) 33vw, 100vw" /></li>))}
         </ul>
         <h2 className="eyebrow mb-6 mt-16 text-ink-3">Popular right now</h2>

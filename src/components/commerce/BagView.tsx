@@ -27,7 +27,7 @@ export function BagView() {
 
   if (!ready) {
     return (
-      <div className="container-x grid gap-12 pb-16 lg:grid-cols-[minmax(0,1fr)_400px]" role="status" aria-label="Loading your bag">
+      <div className="container-x grid grid-cols-1 gap-12 pb-16 lg:grid-cols-[minmax(0,1fr)_400px]" role="status" aria-label="Loading your bag">
         <div className="space-y-6">
           {[0, 1].map((i) => (
             <div key={i} className="flex gap-4">
@@ -66,7 +66,7 @@ export function BagView() {
 
   return (
     <>
-      <div className="container-x grid gap-12 pb-16 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px] xl:gap-20">
+      <div className="container-x grid grid-cols-1 gap-12 pb-16 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px] xl:gap-20">
         <div>
           <FreeShippingBar remaining={price.freeShippingRemaining} />
           <ul className="mt-6">
