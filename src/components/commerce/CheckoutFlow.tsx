@@ -144,8 +144,8 @@ export function CheckoutFlow() {
 
   // Phones & tablets: the summary is a flat disclosure — on top while choosing address and payment, then just above the pay button.
   const summaryDisclosure = (
-    <Disclosure title={<span className="text-[15px]">Order summary · <span className="tabular-nums">{inr(price.total)}</span></span>} className="border border-line bg-paper px-5 [&>h2]:py-1" headingLevel={2}>
-      <SummaryBody lines={lines} price={price} />
+    <Disclosure title={<span className="text-[16px] font-semibold">Order summary · <span className="tabular-nums">{inr(price.total)}</span></span>} className="rounded-[var(--radius-sm)] border border-line-strong bg-white px-4 [&>h2]:py-1" headingLevel={2}>
+      <SummaryBody lines={lines} price={price} bare />
     </Disclosure>
   );
 
@@ -287,10 +287,7 @@ export function CheckoutFlow() {
 
         <Col span={{ base: 4, sm: 12, lg: 5 }} start={{ lg: 8 }} rowStart={{ lg: 1 }} className="hidden lg:block">
           <aside aria-label="Order summary" className="sticky top-[calc(var(--header-offset)+16px)] transition-[top] duration-500 ease-editorial">
-            <div className="border border-ink bg-paper p-6 xl:p-8">
-              <h2 className="display-xs mb-5">Order summary</h2>
-              <SummaryBody lines={lines} price={price} />
-            </div>
+            <SummaryBody lines={lines} price={price} />
           </aside>
         </Col>
       </Grid>
@@ -301,14 +298,14 @@ export function CheckoutFlow() {
 /** One step of the flow: a square numbered marker, the title, and "Change" once it is done. The current step is outlined in ink. */
 function StepCard({ id, n, title, state, onChange, children }: { id: string; n: number; title: string; state: "done" | "current" | "todo"; onChange?: () => void; children?: ReactNode }) {
   return (
-    <section id={`step-${n}`} aria-labelledby={id} className={cn("border bg-paper", state === "current" ? "border-ink" : "border-line")}>
+    <section id={`step-${n}`} aria-labelledby={id} className={cn("rounded-[var(--radius-sm)] border bg-white", state === "current" ? "border-ink" : "border-line-strong")}>
       <header className="flex items-center justify-between gap-3 px-5 py-4 sm:px-7 sm:py-5">
-        <h2 id={id} className={cn("display-xs flex items-center gap-3.5", state === "todo" && "text-ink-3")}>
+        <h2 id={id} className={cn("flex items-center gap-3.5 text-[18px] font-semibold tracking-[-0.01em]", state === "todo" && "text-ink-3")}>
           <StepMark n={n} state={state} className="size-8 text-[13px]" />
           {title}
         </h2>
         {onChange && (
-          <button type="button" onClick={onChange} className="tap inline-flex h-10 shrink-0 items-center gap-1.5 px-2 text-[12px] font-semibold uppercase tracking-[0.09em] transition-colors hover:bg-sand [@media(pointer:coarse)]:h-11">
+          <button type="button" onClick={onChange} className="tap inline-flex h-10 shrink-0 items-center gap-1.5 px-2 text-[15px] font-semibold text-pink transition-colors hover:bg-sand [@media(pointer:coarse)]:h-11">
             <Pencil size={13} aria-hidden /> Change
           </button>
         )}
@@ -318,19 +315,19 @@ function StepCard({ id, n, title, state, onChange, children }: { id: string; n: 
   );
 }
 
-function SummaryBody({ lines, price }: { lines: ReturnType<typeof useBag>["lines"]; price: ReturnType<typeof priceBag> }) {
+function SummaryBody({ lines, price, bare }: { lines: ReturnType<typeof useBag>["lines"]; price: ReturnType<typeof priceBag>; bare?: boolean }) {
   return (
     <>
-      <ul className="mb-5 flex gap-2 overflow-x-auto pb-1" aria-label="Items">
+      <ul className="mb-4 flex gap-2 overflow-x-auto pb-1" aria-label="Items">
         {lines.map((l) => (
-          <li key={l.id} className="relative w-14 shrink-0">
+          <li key={l.id} className="relative w-14 shrink-0 border border-line">
             <Img imgKey={l.variantData.images[0]} alt={l.product.name} sizes="56px" ratio="4/5" />
-            {l.qty > 1 && <span className="absolute -right-1 -top-1 inline-flex size-5 items-center justify-center rounded-full bg-ink text-[10px] text-bone">{l.qty}</span>}
+            {l.qty > 1 && <span className="absolute -right-1.5 -top-1.5 inline-flex size-5 items-center justify-center rounded-full bg-navy text-[10px] font-semibold text-white">{l.qty}</span>}
           </li>
         ))}
       </ul>
-      <PriceSummary b={price} />
-      <Link href="/bag" className="link-u tap mt-4 inline-block text-[12.5px] font-medium">Edit bag</Link>
+      <PriceSummary b={price} bare={bare} />
+      <Link href="/bag" className="link-u tap mt-3 inline-block text-[14px] font-semibold text-pink">Edit bag</Link>
     </>
   );
 }

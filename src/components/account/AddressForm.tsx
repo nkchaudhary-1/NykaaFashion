@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { mobileDigits } from "@/components/account/digits";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, Input, Select } from "@/components/ui/Form";
 import { INDIAN_STATES, lookupPincode } from "@/data/commerce";
@@ -57,10 +58,10 @@ export function AddressForm({ initial, defaults, onSaved, onCancel }: { initial?
     <form onSubmit={submit} noValidate className="space-y-5">
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Input label="Full name" autoComplete="name" value={d.name} onChange={(e) => set("name", e.target.value)} error={errors.name} />
-        <Input label="Mobile number" inputMode="numeric" autoComplete="tel-national" maxLength={10} prefix="+91" value={d.mobile} onChange={(e) => set("mobile", e.target.value.replace(/\D/g, ""))} error={errors.mobile} />
+        <Input label="Mobile number" inputMode="numeric" autoComplete="tel-national" prefix="+91" value={d.mobile} onChange={(e) => set("mobile", mobileDigits(e.target.value))} error={errors.mobile} />
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <Input label="Pincode" inputMode="numeric" autoComplete="postal-code" maxLength={6} value={d.pincode} onChange={(e) => onPin(e.target.value)} error={errors.pincode} hint="Try 400050 or 560034" />
+        <Input label="Pincode" inputMode="numeric" autoComplete="postal-code" value={d.pincode} onChange={(e) => onPin(e.target.value)} error={errors.pincode} hint="Try 400050 or 560034" />
         <Input fieldClassName="sm:col-span-2" label="Flat / house no., building, street" autoComplete="address-line1" value={d.line1} onChange={(e) => set("line1", e.target.value)} error={errors.line1} />
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">

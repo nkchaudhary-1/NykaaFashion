@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, ShoppingBag } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { BagLineRow } from "@/components/commerce/BagLine";
-import { CouponForm, CouponOffers } from "@/components/commerce/CouponBox";
+import { BuyBar } from "@/components/commerce/BuyBar";
+import { CouponOffers, CouponsAndOffers } from "@/components/commerce/CouponBox";
 import { FreeShippingBar } from "@/components/commerce/FreeShippingBar";
 import { PriceSummary } from "@/components/commerce/PriceSummary";
+import { TrustStrip } from "@/components/commerce/TrustStrip";
 import { Col, Grid } from "@/components/layout/Grid";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/layout/Section";
@@ -22,7 +24,6 @@ import { productById } from "@/data/catalog";
 import { editById } from "@/data/edits";
 import { editProducts } from "@/data/queries";
 import type { Product } from "@/data/types";
-import { inr } from "@/lib/format";
 import { priceBag } from "@/lib/pricing";
 import { popular, styleWith } from "@/lib/recs";
 import { useHydrated, useStore } from "@/lib/store";
@@ -55,14 +56,19 @@ export function BagView() {
   const key = lines.map((l) => l.productId).join(",");
   const complements = useMemo(() => complementsFor(key ? key.split(",") : []), [key]);
 
-  // Below 1024px a sticky checkout bar sits over the bottom navigation; tell the toast region how tall it is so toasts stack above it.
+  // Below 1024px the buy bar sticks above the bottom navigation; tell the toast region how tall it is so toasts stack above it.
+  const bar = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!hasLines) return;
+    const el = bar.current;
+    if (!hasLines || !el) return;
     const mq = window.matchMedia("(max-width: 1023.98px)");
-    const set = () => document.documentElement.style.setProperty("--sticky-h", mq.matches ? "76px" : "0px");
+    const set = () => document.documentElement.style.setProperty("--sticky-h", mq.matches ? `${el.offsetHeight}px` : "0px");
     set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
     mq.addEventListener("change", set);
     return () => {
+      ro.disconnect();
       mq.removeEventListener("change", set);
       document.documentElement.style.removeProperty("--sticky-h");
     };
@@ -91,60 +97,52 @@ export function BagView() {
     <>
       <PageHeader title="Your bag" size="md" crumbs={CRUMBS} className={HEADER} intro={`${count} ${count === 1 ? "piece" : "pieces"} in your bag. Offers and delivery are worked out below — nothing is charged.`} />
 
-      {/* 8 / 4 — lines and offers on the left, a sticky coupon + order summary on the right (it spans both rows so it stays in view). */}
+      {/* 8 / 4 — lines, then coupons and offers, on the left; a sticky Price Summary on the right (it spans both rows so it stays in view).
+          Below 1024px the order is the live bag's: lines → Coupons and Offers → Price Summary → the buy bar. */}
       <div className="container-x pb-[var(--section-y)]">
-        <Grid className="gap-y-12">
+        <Grid className="gap-y-10">
           <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 1 }}>
             <FreeShippingBar remaining={price.freeShippingRemaining} />
-            <ul aria-label="Items in your bag" className="mt-6 border-t border-ink">
+            <ul aria-label="Items in your bag" className="mt-4 border-t border-line">
               {lines.map((l) => (
                 <BagLineRow key={l.id} line={l} />
               ))}
             </ul>
-            <Link href="/edits" className="link-u tap mt-6 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.1em]">
-              Continue shopping <ArrowRight size={14} aria-hidden />
+            <Link href="/edits" className="link-u tap mt-5 inline-flex items-center gap-2 text-[15px] font-semibold text-pink">
+              Continue shopping <ArrowRight size={16} aria-hidden />
             </Link>
           </Col>
 
-          <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 2 }}>
-            <CouponOffers lines={lines} applied={coupon} error={price.couponError} />
+          <Col span={{ base: 4, sm: 6, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 2 }}>
+            <CouponsAndOffers lines={lines} applied={coupon} error={price.couponError} viewAll={{ href: "#offers" }} withInput />
+            <CouponOffers lines={lines} applied={coupon} error={price.couponError} className="mt-10" />
           </Col>
 
-          <Col span={{ base: 4, sm: 12, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }}>
-            {/* tablets: coupon + notice on the left half, the summary on the right half; desktop and phones: one stack */}
-            <aside aria-label="Order summary" className="space-y-4 sm:grid sm:grid-cols-12 sm:gap-x-[var(--gap)] sm:gap-y-4 sm:space-y-0 lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:block lg:space-y-4 lg:transition-[top] lg:duration-500 lg:ease-editorial">
-              <CouponForm lines={lines} applied={coupon} error={price.couponError} offersHref="#offers" className="sm:col-span-6 sm:row-start-1" />
-              <section aria-labelledby="sum-h" className="border border-line-strong bg-white p-5 sm:col-span-6 sm:col-start-7 sm:row-span-2 sm:row-start-1 sm:p-6">
-                <h2 id="sum-h" className="display-xs">Order summary</h2>
-                <PriceSummary b={price} className="mt-5" />
-                {blocked && (
-                  <p role="alert" className="mt-4 text-[13px] font-medium text-danger">
-                    Remove the unavailable item to continue to checkout.
-                  </p>
-                )}
-                <div className="mt-6 hidden lg:block">
-                  <LinkButton href="/checkout" size="lg" full aria-disabled={blocked} tabIndex={blocked ? -1 : undefined} onClick={(e) => blocked && e.preventDefault()} iconRight={<ArrowRight size={16} />}>
-                    Checkout · {inr(price.total)}
-                  </LinkButton>
-                </div>
-                <p className="mt-4 flex items-center gap-1.5 text-[12px] text-ink-3 lg:justify-center">
-                  <ShieldCheck size={14} aria-hidden /> Simulated checkout — no payment is taken
+          <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }}>
+            <aside aria-label="Order summary" className="space-y-4 lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:transition-[top] lg:duration-500 lg:ease-editorial">
+              <PriceSummary b={price} />
+              {blocked && (
+                <p role="alert" className="text-[13px] font-medium text-danger">
+                  Remove the unavailable item to continue to checkout.
                 </p>
-              </section>
-              <SimulatedNotice className="sm:col-span-6 sm:row-start-2">Coupons, delivery fees and totals are computed with the prototype’s mock rules.</SimulatedNotice>
+              )}
+              <div className="hidden lg:block">
+                <LinkButton href="/checkout" size="lg" full aria-label="Checkout · Proceed to Buy" aria-disabled={blocked || undefined} tabIndex={blocked ? -1 : undefined} onClick={(e) => blocked && e.preventDefault()} iconRight={<ArrowRight size={16} aria-hidden />}>
+                  Proceed to Buy
+                </LinkButton>
+              </div>
+              <p className="flex items-center gap-1.5 text-[12.5px] text-ink-3 lg:justify-center">
+                <ShieldCheck size={14} aria-hidden /> Simulated checkout — no payment is taken
+              </p>
+              <TrustStrip />
+              <SimulatedNotice>Coupons, delivery fees and totals are computed with the prototype’s mock rules.</SimulatedNotice>
             </aside>
           </Col>
         </Grid>
 
-        {/* phones & tablets: the total and the way forward stay on screen, just above the bottom navigation */}
-        <div className="sticky bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom))] z-30 -mx-[var(--gutter)] mt-12 flex items-center justify-between gap-4 border-t border-line-strong bg-white px-[var(--gutter)] py-3 lg:hidden">
-          <p className="min-w-0">
-            <span className="eyebrow block text-ink-3">Total</span>
-            <span className="mt-1 block text-[18px] font-medium tabular-nums">{inr(price.total)}</span>
-          </p>
-          <LinkButton href="/checkout" size="lg" aria-disabled={blocked} tabIndex={blocked ? -1 : undefined} onClick={(e) => blocked && e.preventDefault()} iconRight={<ArrowRight size={16} />}>
-            Checkout
-          </LinkButton>
+        {/* phones & tablets: the savings toggle, the amount to pay and "Proceed to Buy" stay on screen, just above the bottom navigation */}
+        <div ref={bar} className="sticky bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom))] z-30 -mx-[var(--gutter)] mt-10 border-t border-line-strong lg:hidden">
+          <BuyBar price={price} blocked={blocked} />
         </div>
       </div>
 

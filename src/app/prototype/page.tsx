@@ -138,7 +138,7 @@ export default function PrototypePage() {
       {/* North Star vs this build: a flat table across all 12 columns */}
       <Section aria-labelledby="stage">
         <SectionHeading level={2} eyebrow="Scope" title={<span id="stage">North Star vs this build</span>} />
-        <div className="mt-10 overflow-x-auto sm:mt-14">
+        <div role="region" aria-label="North Star versus this build" tabIndex={0} className="mt-10 overflow-x-auto outline-offset-4 sm:mt-14">
           <table className="w-full min-w-[640px] table-fixed border-collapse text-left text-[14.5px]">
             <caption className="sr-only">North Star versus the v1 prototype</caption>
             <thead>

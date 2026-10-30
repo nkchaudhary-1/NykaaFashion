@@ -21,7 +21,6 @@ import { categoryById } from "@/data/categories";
 import { editById } from "@/data/edits";
 import { labelById } from "@/data/labels";
 import { editProducts, productsByLabel, productsInCategory } from "@/data/queries";
-import { stories } from "@/data/stories";
 import type { Product, Story } from "@/data/types";
 import { inr } from "@/lib/format";
 import { imgPins } from "@/lib/img";

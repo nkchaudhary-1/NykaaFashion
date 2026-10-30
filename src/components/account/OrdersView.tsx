@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, PackageOpen } from "lucide-react";
+import { ChevronRight, PackageOpen } from "lucide-react";
 import { useState } from "react";
 import { OrderStatusBadge } from "@/components/account/OrderParts";
 import { Img } from "@/components/ui/Img";
@@ -58,8 +58,8 @@ export function OrderRow({ order: o }: { order: Order }) {
         </div>
         <div className={C_TOTAL}>
           <p className="text-[15px] font-medium tabular-nums">{inr(o.pricing.total)}</p>
-          <p className="mt-1.5 inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-pink-ink">
-            Track <ArrowRight size={13} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
+          <p className="mt-1.5 inline-flex items-center gap-1 text-[14px] font-semibold text-pink">
+            Track <ChevronRight size={16} strokeWidth={2.2} aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </p>
         </div>
       </Link>

@@ -41,7 +41,7 @@ export function labelTiles(pool: Product[], take = 2, skip: string[] = []): Feat
     .filter(([id]) => !skip.includes(id))
     .sort((a, b) => b[1] - a[1])
     .slice(0, take)
-    .map(([id, n]) => {
+    .map(([id]) => {
       const l = labelById[id];
       // a garment from further down the list, so the promo doesn't repeat the picture at the top of the grid
       const mine = pool.filter((p) => p.labelId === id && !p.soldOut).sort((a, b) => Number(isGarment(b)) - Number(isGarment(a)) || b.rank - a.rank);

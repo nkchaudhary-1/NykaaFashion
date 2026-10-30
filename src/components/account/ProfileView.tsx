@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { OrderRow } from "@/components/account/OrdersView";
 import { Button } from "@/components/ui/Button";
@@ -41,7 +41,7 @@ export function ProfileView() {
       <ul className="grid grid-cols-3 gap-[var(--gap)]">
         {stats.map((s) => (
           <li key={s.href}>
-            <Link href={s.href} className="group flex h-full flex-col justify-between gap-6 border border-line bg-paper p-4 transition-colors hover:border-ink sm:p-6">
+            <Link href={s.href} className="group flex h-full flex-col justify-between gap-6 rounded-[var(--radius-sm)] border border-line-strong bg-white p-4 transition-colors hover:border-ink sm:p-6">
               <ArrowUpRight size={18} aria-hidden className="self-end text-ink-3 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink" />
               <span>
                 <span className="display-md block tabular-nums">{s.n}</span>
@@ -56,7 +56,7 @@ export function ProfileView() {
         <section aria-labelledby="lo">
           <div className="flex items-end justify-between gap-4">
             <h2 id="lo" className="display-sm">Latest order</h2>
-            <Link href="/account/orders" className="link-u tap text-[12px] font-semibold uppercase tracking-[0.09em]">All orders</Link>
+            <Link href="/account/orders" className="link-u tap inline-flex items-center gap-1 text-[15px] font-semibold text-pink">View all <ChevronRight size={17} strokeWidth={2.2} aria-hidden /></Link>
           </div>
           <ul className="mt-6 border-t border-ink">
             <OrderRow order={orders[0]} />

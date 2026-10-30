@@ -116,8 +116,11 @@ const isMobile = (v: string) => /^[6-9]\d{9}$/.test(v);
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 
 export function normaliseTarget(raw: string): string {
-  const v = raw.trim().replace(/[\s-]/g, "").replace(/^\+?91/, "");
-  return /^\d+$/.test(v) ? v : raw.trim().toLowerCase();
+  const compact = raw.trim().replace(/[\s-]/g, "");
+  // drop the country code only when it is one: "+91…" always, a bare "91" only in front of a full ten digits (so 9198765432 stays a mobile)
+  const plus = /^\+91(\d+)$/.exec(compact);
+  const national = plus ? plus[1] : /^91\d{10}$/.test(compact) ? compact.slice(2) : compact;
+  return /^\d+$/.test(national) ? national : raw.trim().toLowerCase();
 }
 export function validateTarget(raw: string): string | null {
   const v = normaliseTarget(raw);

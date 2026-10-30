@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
+import { LoginModal } from "@/components/account/LoginModal";
 import { BagDrawer } from "@/components/layout/BagDrawer";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Footer } from "@/components/layout/Footer";
@@ -24,11 +25,11 @@ const inter = Inter({ subsets: ["latin", "latin-ext"], axes: ["opsz"], variable:
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: { default: "Nykaa Fashion — Style Files (redesign prototype)", template: "%s · Nykaa Fashion" },
-  description: "A curation-first redesign concept for Nykaa Fashion: Hidden Gems, Luxe, the Responsible Edit and House of Nykaa — discover by taste, not discount. Prototype: checkout, payments and personalisation are simulated.",
+  title: { default: "Nykaa Fashion — redesign prototype", template: "%s · Nykaa Fashion" },
+  description: "An improved Nykaa Fashion: the live brand, categories and brands, organised on a stricter grid with a clearer hierarchy. Prototype — checkout, payments, orders and personalisation are simulated.",
   robots: { index: false, follow: false },
 };
-export const viewport: Viewport = { themeColor: "#f5f1ea", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#ffffff", width: "device-width", initialScale: 1 };
 
 function HeaderFallback() {
   return (
@@ -61,6 +62,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <BottomNav />
           </Suspense>
           <BagDrawer />
+          <Suspense>
+            <LoginModal />
+          </Suspense>
           <SearchOverlay />
           <MobileShopSheet />
           <MobileMenu />

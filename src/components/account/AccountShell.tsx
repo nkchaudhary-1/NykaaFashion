@@ -1,27 +1,27 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Heart, LogOut, MapPin, Package, User } from "lucide-react";
-import type { ReactNode } from "react";
+import { CreditCard, Heart, LogOut, MapPin, Package, User } from "lucide-react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { cn } from "@/lib/cn";
 import { initials } from "@/lib/format";
-import { logout } from "@/stores/account";
+import { logout, useAuth } from "@/stores/account";
 import { toast } from "@/stores/ui";
 
 const NAV = [
   { href: "/account", label: "Profile", Icon: User },
   { href: "/account/orders", label: "Orders & tracking", Icon: Package },
   { href: "/account/addresses", label: "Addresses", Icon: MapPin },
+  { href: "/account/payments", label: "Saved payments", Icon: CreditCard },
   { href: "/wishlist", label: "Wishlist", Icon: Heart },
 ];
 
 /** One look for every nav entry: a flat square tab on phones and tablets, a full-width row on desktop. Current = pink tint with a pink edge. */
-const item = "relative flex shrink-0 items-center gap-2.5 whitespace-nowrap border text-[13.5px] font-medium transition-colors h-11 px-4 lg:h-12 lg:w-full lg:gap-3 lg:border-x-0 lg:border-t-0 lg:text-[14px]";
-const on = "border-pink bg-pink-tint text-pink-ink lg:border-line lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-[3px] lg:before:bg-pink lg:before:content-['']";
+const item = "relative flex shrink-0 items-center gap-2.5 whitespace-nowrap border text-[14px] font-medium transition-colors h-11 px-4 max-lg:rounded-[var(--radius-sm)] lg:h-12 lg:w-full lg:gap-3 lg:border-x-0 lg:border-t-0 lg:text-[15px]";
+const on = "border-pink bg-pink-tint text-pink lg:border-line lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-[3px] lg:before:bg-pink lg:before:content-['']";
 const off = "border-line-strong text-ink hover:border-ink lg:border-line lg:hover:bg-paper";
 
 /**
@@ -29,11 +29,24 @@ const off = "border-line-strong text-ink hover:border-ink lg:border-line lg:hove
  * Sub-pages nest their own grids inside the 9 columns, so their sub-columns still land on the page's columns.
  */
 export function AccountShell({ children }: { children: ReactNode }) {
-  const { ready, user } = useRequireAuth();
+  const { ready, user } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
+  // Signed-out visitors are sent to /login — except when they just pressed "Sign out" here, who go home.
+  const leaving = useRef(false);
+  useEffect(() => {
+    if (ready && !user && !leaving.current) router.replace(`/login?next=${encodeURIComponent(pathname)}`);
+  }, [ready, user, pathname, router]);
   // Children always render (hidden until signed in) so every segment is part of the prerendered shell.
   const gated = !ready || !user;
+  // On phones the sections are a scrolling tab row: keep the current one in view (sideways only — the page does not move).
+  const rail = useRef<HTMLUListElement>(null);
+  useEffect(() => {
+    const row = rail.current;
+    const cur = row?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!row || !cur || row.scrollWidth <= row.clientWidth) return;
+    row.scrollLeft = Math.max(0, cur.offsetLeft - (row.clientWidth - cur.offsetWidth) / 2);
+  }, [pathname, gated]);
   const active = (href: string) => (href === "/account" ? pathname === "/account" : pathname.startsWith(href));
   return (
     <>
@@ -66,7 +79,7 @@ export function AccountShell({ children }: { children: ReactNode }) {
                   </div>
                 </div>
                 <nav aria-label="Account sections">
-                  <ul className="scrollbar-none -mx-[var(--gutter)] flex gap-2 overflow-x-auto px-[var(--gutter)] lg:mx-0 lg:block lg:overflow-visible lg:border-t lg:border-ink lg:px-0">
+                  <ul ref={rail} className="scrollbar-none relative -mx-[var(--gutter)] flex gap-2 overflow-x-auto px-[var(--gutter)] lg:mx-0 lg:block lg:overflow-visible lg:border-t lg:border-ink lg:px-0">
                     {NAV.map(({ href, label, Icon }) => (
                       <li key={href} className="shrink-0 lg:shrink">
                         <Link href={href} aria-current={active(href) ? "page" : undefined} className={cn(item, active(href) ? on : off, "lg:px-4")}>
@@ -75,7 +88,7 @@ export function AccountShell({ children }: { children: ReactNode }) {
                       </li>
                     ))}
                     <li className="shrink-0 lg:shrink">
-                      <button type="button" onClick={() => (logout(), toast({ title: "Signed out" }), router.push("/"))} className={cn(item, off, "lg:px-4 lg:text-left")}>
+                      <button type="button" onClick={() => ((leaving.current = true), logout(), toast({ title: "Signed out" }), router.push("/"))} className={cn(item, off, "lg:px-4 lg:text-left")}>
                         <LogOut size={17} strokeWidth={1.5} aria-hidden className="hidden lg:block" /> Sign out
                       </button>
                     </li>

@@ -75,7 +75,7 @@ function Inner({ onClose, label, side = "center", mobileSheet = true, className,
         aria-modal="true"
         aria-label={label}
         tabIndex={-1}
-        className={cn("fixed flex flex-col overflow-hidden bg-paper outline-none", pos[effective], panelClassName)}
+        className={cn("fixed flex flex-col overflow-hidden bg-white outline-none", pos[effective], panelClassName)}
         initial={hidden}
         animate={shown}
         exit={hidden}
@@ -107,4 +107,4 @@ export function OverlayHeader({ title, sub, className }: { title: string; sub?: 
 }
 /** `flush` drops the gutters for edge-to-edge content (cn() is a plain join, so padding can't be overridden by a class). */
 export const OverlayBody = ({ children, className, flush }: { children: ReactNode; className?: string; flush?: boolean }) => <div className={cn("min-h-0 flex-1 overflow-y-auto overscroll-contain", !flush && "px-5 py-5 sm:px-6", className)}>{children}</div>;
-export const OverlayFooter = ({ children, className }: { children: ReactNode; className?: string }) => <div className={cn("shrink-0 border-t border-line bg-paper px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6", className)}>{children}</div>;
+export const OverlayFooter = ({ children, className }: { children: ReactNode; className?: string }) => <div className={cn("shrink-0 border-t border-line bg-white px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6", className)}>{children}</div>;

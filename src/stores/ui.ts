@@ -9,12 +9,14 @@ export interface UIState {
   /** the phone/tablet navigation drawer (hamburger) */
   navOpen: boolean;
   protoOpen: boolean;
+  /** the sign-in modal (components/account/LoginModal) */
+  loginOpen: boolean;
   quickView: { productId: string; variant?: number } | null;
   sizeGuide: { productId: string } | null;
   notifyMe: { productId: string; size?: string } | null;
   reviewFor: string | null;
 }
-const UI_INITIAL: UIState = { bagOpen: false, searchOpen: false, menuOpen: false, navOpen: false, protoOpen: false, quickView: null, sizeGuide: null, notifyMe: null, reviewFor: null };
+const UI_INITIAL: UIState = { bagOpen: false, searchOpen: false, menuOpen: false, navOpen: false, protoOpen: false, loginOpen: false, quickView: null, sizeGuide: null, notifyMe: null, reviewFor: null };
 export const uiStore = createStore<UIState>("nf.ui", UI_INITIAL, { persist: false });
 export const useUI = () => useStore(uiStore);
 export const setUI = (patch: Partial<UIState>) => uiStore.set((p) => ({ ...p, ...patch }));
