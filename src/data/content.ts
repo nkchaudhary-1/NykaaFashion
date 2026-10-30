@@ -25,7 +25,7 @@ export const FAQS: Array<{ q: string; a: string }> = [
   { q: "How does the homepage adapt?", a: "The prototype looks at what you view, save and add on this device (stored locally) and re-orders the homepage. New visitors see curation first; returning visitors see a ‘picked for you’ rail; people who engage with offers see the offer edit rise. It is a heuristic, not machine learning." },
   { q: "Are payments real?", a: "No. Every payment method is simulated. No card, UPI or banking details are sent anywhere and no money moves. Use the test values shown at checkout." },
   { q: "Will my order arrive?", a: "No order is placed in this prototype. Order tracking is simulated so you can review the experience of order states." },
-  { q: "How do I reset the prototype?", a: "Open the Prototype panel (bottom-left on desktop) and choose Reset all data. This clears your bag, wishlist, account and signals from this browser." },
+  { q: "How do I reset the prototype?", a: "Open the Prototype panel (footer → Prototype controls, or the menu on phones) and choose Reset all data. This clears your bag, wishlist, account and signals from this browser." },
   { q: "What do ‘Hidden Gems’ and ‘Luxe’ mean?", a: "Hidden Gems are independent, artisan-led labels chosen by our editors. Luxe is a short list of ateliers working in silk, leather and couture embroidery." },
   { q: "What is the Responsible Edit?", a: "A standing edit of pieces made with natural dyes, certified organic or recycled fibres, or by handloom and artisan makers who are named and paid fairly." },
   { q: "How do I find my size?", a: "Every product has a size guide with a quick ‘find my size’ calculator. Fit notes and what the model is wearing are shown on each page." },
@@ -55,11 +55,11 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     ],
   },
   about: {
-    title: "About the Style Files",
-    intro: "Why this redesign exists.",
+    title: "About Us",
+    intro: "What this prototype is.",
     sections: [
-      { h: "Taste over discount", p: ["Most fashion marketplaces default to a discount grid. This redesign makes curation the default way to discover — Hidden Gems, Luxe, the Responsible Edit and House of Nykaa sit alongside Shop in the primary navigation."] },
-      { h: "A prototype", p: ["All products, labels and stories are fictional prototype content. House of Nykaa label names are used as named in the product brief."] },
+      { h: "An improved Nykaa Fashion", p: ["This is a design prototype, not the live store. It keeps the Nykaa Fashion identity — the header and footer, the department navigation, the colours, the module titles and the brand names — and reorganises it: one strict grid, a clearer hierarchy, and different layouts for different content."] },
+      { h: "Sample content", p: ["Products, prices, ratings, discounts, stories and people in this prototype are sample data. Checkout, payments, sign-in, orders and personalisation are simulated and labelled as such — nothing is sold and nothing is stored outside your browser."] },
     ],
   },
   contact: {

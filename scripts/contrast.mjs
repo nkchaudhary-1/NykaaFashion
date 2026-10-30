@@ -1,20 +1,33 @@
-// WCAG contrast check for design-token text/background pairs. Usage: node scripts/contrast.mjs
+// WCAG contrast check for design-token text/background pairs, read straight from src/app/globals.css so it cannot go stale.
+//   node scripts/contrast.mjs        (exit code 1 if any pair is below 4.5:1)
+import { readFileSync } from "node:fs";
+
+const css = readFileSync(new URL("../src/app/globals.css", import.meta.url), "utf8");
+const T = Object.fromEntries([...css.matchAll(/--color-([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})/g)].map((m) => [m[1], m[2].toLowerCase()]));
+
 const lin = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
 const lum = (h) => { const n = parseInt(h.slice(1), 16); return 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255); };
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
-const T = { bone: '#f5f1ea', paper: '#fbf9f5', white: '#ffffff', sand: '#ebe4d9', ink: '#16120f', ink2: '#4a433c', ink3: '#675e54', pink: '#e80071', pinkInk: '#ac0057', pinkTint: '#fbe6ef', emerald: '#0b6a4b', emeraldTint: '#e0efe7', amber: '#7d4f08', amberTint: '#f6e9cc', danger: '#b0221a', dangerTint: '#fcebe9', gem: '#a2432a', gemTint: '#f2dfd4', goldInk: '#7a5c24', goldTint: '#efe5d0', gold: '#b69255', luxe: '#1c1814', resp: '#4d6646', respTint: '#e1e9db', festive: '#7a1936', festiveTint: '#f4dedb', marigold: '#e3a31a' };
+
+// [foreground, background] — every combination the UI actually draws as text. `brand` (the logo magenta) is artwork, not text, so it is not listed.
 const pairs = [
-  ['ink', 'bone'], ['ink2', 'bone'], ['ink3', 'bone'], ['ink3', 'paper'], ['ink3', 'white'], ['ink3', 'sand'],
-  ['pinkInk', 'bone'], ['pinkInk', 'white'], ['pinkInk', 'pinkTint'], ['white', 'pink'], ['white', 'pinkInk'], ['ink', 'pink'],
-  ['emerald', 'bone'], ['emerald', 'white'], ['emerald', 'emeraldTint'], ['amber', 'amberTint'], ['amber', 'bone'],
-  ['danger', 'bone'], ['danger', 'white'], ['danger', 'dangerTint'], ['gem', 'bone'], ['gem', 'gemTint'], ['white', 'gem'],
-  ['goldInk', 'goldTint'], ['goldInk', 'bone'], ['gold', 'luxe'], ['white', 'luxe'], ['resp', 'bone'], ['resp', 'respTint'], ['white', 'resp'],
-  ['festive', 'bone'], ['white', 'festive'], ['marigold', 'festive'], ['festive', 'festiveTint'], ['bone', 'ink'], ['white', 'ink'],
+  ["ink", "white"], ["ink", "paper"], ["ink", "sand"], ["ink-2", "white"], ["ink-2", "sand"], ["ink-3", "white"], ["ink-3", "paper"], ["ink-3", "sand"],
+  ["white", "navy"], ["white", "ink"], ["white", "maroon"], ["white", "luxe"], ["gold", "luxe"],
+  ["pink", "white"], ["pink", "paper"], ["pink", "sand"], ["pink", "pink-tint"], ["white", "pink"], ["pink-ink", "white"], ["pink-ink", "pink-tint"], ["white", "pink-ink"],
+  ["emerald", "white"], ["emerald", "paper"], ["emerald", "sand"], ["emerald", "emerald-tint"],
+  ["blue", "white"], ["blue", "sand"], ["blue", "blue-tint"],
+  ["amber", "amber-tint"], ["amber", "white"], ["danger", "white"], ["danger", "danger-tint"],
+  ["gem", "white"], ["gem", "gem-tint"], ["white", "gem"], ["gold-ink", "gold-tint"], ["gold-ink", "white"],
+  ["resp", "white"], ["resp", "resp-tint"], ["white", "resp"], ["festive", "white"], ["white", "festive"], ["festive", "festive-tint"],
 ];
+
 let bad = 0;
 for (const [f, b] of pairs) {
+  if (!T[f] || !T[b]) { console.log(`SKIP  token missing: ${!T[f] ? f : b}`); continue; }
   const r = ratio(T[f], T[b]);
-  const ok = r >= 4.5; if (!ok) bad++;
-  console.log(`${ok ? 'PASS' : 'FAIL'}  ${r.toFixed(2).padStart(5)}  ${f} on ${b}`);
+  const ok = r >= 4.5;
+  if (!ok) bad++;
+  console.log(`${ok ? "PASS" : "FAIL"}  ${r.toFixed(2).padStart(5)}  ${f} ${T[f]} on ${b} ${T[b]}`);
 }
-console.log(bad ? `\n${bad} pair(s) below 4.5:1` : '\nAll pairs ≥ 4.5:1');
+console.log(bad ? `\n${bad} pair(s) below 4.5:1` : "\nAll pairs ≥ 4.5:1");
+process.exit(bad ? 1 : 0);

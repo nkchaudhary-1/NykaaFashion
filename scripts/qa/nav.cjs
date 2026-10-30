@@ -251,7 +251,7 @@ const settle = (p, ms = 450) => p.waitForTimeout(ms);
       await page.goto(BASE + "/p/poppy-smocked-midi-dress", { waitUntil: "networkidle" });
       must(!(await bottom.isVisible()), "bottom nav visible on PDP");
       // checkout needs a signed-in user with something in the bag
-      await page.getByRole("radio", { name: /^Size M/ }).click();
+      await page.getByRole("radio", { name: /^Size M/ }).check({ force: true });
       await page.getByRole("button", { name: "Add to bag" }).first().click();
       await settle(page, 500);
       await page.goto(BASE + "/login", { waitUntil: "networkidle" });
