@@ -76,7 +76,7 @@ Pick one per section; do not repeat the same one twice in a row on a page.
 6. **Lead + stack** — 7-column lead story beside two compact stories (5 columns). *Style Files.*
 7. **Panel + 2 features** — 4-column text panel and two 4-column product cards. *Label spotlight.*
 8. **Uniform 4-up product grid** — `span-3` cards, `gap-y` 40px. *Listings, wishlist.*
-9. **Sidebar layouts** — 8/4 (PDP gallery | buy box), 8/4 (bag | summary), 7/5 (checkout), 3/9 (account nav | content), 6/6 (login image | form).
+9. **Sidebar layouts** — 6/6 (PDP: a nested 6-col gallery — thumbnail rail in col 1, picture in cols 2–6, sticky — beside the info column in cols 7–12), 8/4 (bag | summary), 7/5 (checkout), 3/9 (account nav | content). The bag is also a right-hand drawer, the login a centred modal.
 10. **Editorial rows** — alternate 6/6, 4/4/4, 7/5, 5/7 and full-width image rows so no two consecutive rows share a rhythm. *Discover, story pages.*
 11. **Shoppable scene + list** — an 8-column scene with hot-spot pins beside a 4-column list of the pieces in it (rows stretch to the image height; on tablets the list becomes three span-4 cards under the scene). *Shop the look, story pages.*
 

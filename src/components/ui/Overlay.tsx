@@ -99,12 +99,12 @@ function Inner({ onClose, label, side = "center", mobileSheet = true, className,
 
 export function OverlayHeader({ title, sub, className }: { title: string; sub?: string; className?: string }) {
   return (
-    <header className={cn("shrink-0 border-b border-line px-5 pb-4 pt-4 pr-14 sm:px-6", className)}>
+    <div className={cn("shrink-0 border-b border-line px-5 pb-4 pt-4 pr-14 sm:px-6", className)}>
       <h2 className="display-xs">{title}</h2>
       {sub && <p className="mt-1 text-[13px] text-ink-3">{sub}</p>}
-    </header>
+    </div>
   );
 }
 /** `flush` drops the gutters for edge-to-edge content (cn() is a plain join, so padding can't be overridden by a class). */
 export const OverlayBody = ({ children, className, flush }: { children: ReactNode; className?: string; flush?: boolean }) => <div className={cn("min-h-0 flex-1 overflow-y-auto overscroll-contain", !flush && "px-5 py-5 sm:px-6", className)}>{children}</div>;
-export const OverlayFooter = ({ children, className }: { children: ReactNode; className?: string }) => <footer className={cn("shrink-0 border-t border-line bg-paper px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6", className)}>{children}</footer>;
+export const OverlayFooter = ({ children, className }: { children: ReactNode; className?: string }) => <div className={cn("shrink-0 border-t border-line bg-paper px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6", className)}>{children}</div>;

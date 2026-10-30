@@ -50,32 +50,6 @@ export function ListingPageSkeleton({ band }: { band?: boolean }) {
   );
 }
 
-/** Product page: gallery in columns 1–8 (a wide image, then two), buy box in 9–12. */
-export function PdpSkeleton() {
-  return (
-    <div role="status" aria-label="Loading product" className="container-x pb-16 pt-6">
-      <Skeleton className="h-3 w-64" />
-      <div className="grid-main mt-8 gap-y-10">
-        <div className="col-span-4 sm:col-span-12 lg:col-span-8">
-          <div className="grid-main lg:grid-cols-8">
-            <Skeleton className="col-span-4 aspect-[4/5] sm:col-span-12 lg:col-span-8 lg:aspect-[16/11]" />
-            <Skeleton className="col-span-2 hidden aspect-[4/5] sm:col-span-6 sm:block lg:col-span-4" />
-            <Skeleton className="col-span-2 hidden aspect-[4/5] sm:col-span-6 sm:block lg:col-span-4" />
-          </div>
-        </div>
-        <div className="col-span-4 sm:col-span-12 lg:col-span-4">
-          <Skeleton className="h-3 w-32" />
-          <Skeleton className="mt-4 h-10 w-4/5" />
-          <Skeleton className="mt-5 h-6 w-32" />
-          <Skeleton className="mt-10 h-11 w-full" />
-          <Skeleton className="mt-6 h-[52px] w-full" />
-        </div>
-      </div>
-      <span className="sr-only">Loading…</span>
-    </div>
-  );
-}
-
 /** Story: full-bleed cover band, then the reading column. */
 export function ArticleSkeleton() {
   return (

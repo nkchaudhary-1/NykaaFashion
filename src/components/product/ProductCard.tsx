@@ -120,7 +120,7 @@ export function ProductCard({ product: p, load, source = "grid", variant = 0, si
         <p className="truncate text-[13px] font-bold leading-tight text-ink">{p.soldOut && <span className="sr-only">Sold out: </span>}{label.name}</p>
         <h3 className="mt-1 line-clamp-2 text-[13.5px] font-normal leading-[1.35] text-ink-2">{p.name}</h3>
         <div className="mt-auto pt-1.5">
-          <Price price={p.price} mrp={p.mrp} size="md" className={cn(p.soldOut && "opacity-60")} />
+          <Price price={p.price} mrp={p.mrp} size="md" />
           <SwatchRow product={p} />
         </div>
       </Link>

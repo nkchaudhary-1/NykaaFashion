@@ -11,7 +11,7 @@ export function RecentlyViewed({ excludeId }: { excludeId?: string }) {
   if (items.length < 2) return null;
   return (
     <section aria-labelledby="rv" className="container-x pb-16 pt-4 sm:pb-24">
-      <SectionHeading level={2} eyebrow="Your history" title={<span id="rv">Recently viewed.</span>} />
+      <SectionHeading level={2} title={<span id="rv">Recently Viewed</span>} />
       <div className="mt-10">
         <ProductRail products={items} label="Recently viewed" source="recently-viewed" />
       </div>

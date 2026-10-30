@@ -41,7 +41,9 @@ export const productsByLabel = (labelId: string): Product[] => products.filter((
 export function categoryTrail(path: string[]): Array<{ id: string; name: string; href: string }> {
   return path.map((_, i) => {
     const id = path.slice(0, i + 1).join("/");
-    return { id, name: categoryById[id]?.name ?? path[i], href: `/c/${id}` };
+    // the Home department would read "Home › Home" in a breadcrumb that starts at the site root
+    const name = i === 0 && path[0] === "home" ? "Home & Living" : (categoryById[id]?.name ?? path[i]);
+    return { id, name, href: `/c/${id}` };
   });
 }
 
