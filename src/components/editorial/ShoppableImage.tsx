@@ -100,16 +100,19 @@ export function PinLayer({ imgKey, className, onPinOpen, position }: { imgKey: s
 
 /**
  * "Shop this look" — an always-visible product list for a shoppable image (it works on touch, where hover pins don't).
- * `layout="stack"` is one column of rows; `layout="strip"` is three columns from 1024px (each is exactly one `span-3` of the page grid
- * when the strip sits in a 9-column block). Local to the editorial pages so the list can follow the story's grid.
+ * `layout="stack"` is one column of rows beside an image (three across when it sits under one on a tablet); `layout="strip"` puts the products
+ * side by side from 768px, as many equal columns as there are products (2, 3 or 4), so each product takes whole page columns when the strip
+ * sits in a 12- or 9-column block. Local to the editorial pages so the list can follow the story's grid.
  */
-export function LookList({ imgKey, title = "In this image", label, layout = "stack", className }: { imgKey: string; title?: string; label?: string; layout?: "stack" | "strip"; className?: string }) {
-  const ids = Array.from(new Set(imgPins(imgKey).map((p) => p.id))).filter((id) => productById[id]);
+const STRIP_COLS = { 1: "md:grid-cols-1", 2: "md:grid-cols-2", 3: "md:grid-cols-3", 4: "md:grid-cols-2 lg:grid-cols-4" } as const;
+export function LookList({ imgKey, title = "In this image", label, layout = "stack", className }: { imgKey: string | string[]; title?: string; label?: string; layout?: "stack" | "strip"; className?: string }) {
+  const keys = Array.isArray(imgKey) ? imgKey : [imgKey];
+  const ids = Array.from(new Set(keys.flatMap((k) => imgPins(k).map((p) => p.id)))).filter((id) => productById[id]);
   if (!ids.length) return null;
   return (
     <section aria-label={label ?? title} className={className}>
       <p className="eyebrow mb-3 text-ink-3">{title}</p>
-      <ul className={cn("border-t border-ink", layout === "strip" && "lg:grid lg:grid-cols-3 lg:gap-x-[var(--gap)]")}>
+      <ul className={cn("border-t border-ink", layout === "strip" ? cn("md:grid md:gap-x-[var(--gap)]", STRIP_COLS[Math.min(4, ids.length) as 1 | 2 | 3 | 4]) : "md:grid md:grid-cols-3 md:gap-x-[var(--gap)] lg:block")}>
         {ids.map((id) => (
           <LookItem key={id} id={id} />
         ))}

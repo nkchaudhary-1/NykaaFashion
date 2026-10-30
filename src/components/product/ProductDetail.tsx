@@ -40,8 +40,8 @@ const colourSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "
 const BUY_BOX = [
   "sm:self-start",
   "[@media(min-height:640px)]:sm:sticky",
-  "[@media(min-height:640px)]:sm:top-[calc(var(--header-offset)+16px)]",
-  "[@media(min-height:640px)]:sm:max-h-[calc(100svh-var(--header-offset)-32px)]",
+  "[@media(min-height:640px)]:sm:top-[calc(var(--header-offset)+12px)]",
+  "[@media(min-height:640px)]:sm:max-h-[calc(100svh-var(--header-offset)-24px)]",
   "[@media(min-height:640px)]:sm:overflow-y-auto",
   "[@media(min-height:640px)]:sm:-mx-1",
   "[@media(min-height:640px)]:sm:px-1",
@@ -167,28 +167,28 @@ export function ProductDetail({ product }: { product: Product }) {
               {product.isNew && <Badge tone="outline">New</Badge>}
             </div>
 
-            <div className="mt-4 flex items-start justify-between gap-4">
+            <div className="mt-3.5 flex items-start justify-between gap-4">
               <h1 className="display-sm">{product.name}</h1>
               <button type="button" onClick={share} aria-label={`Share ${product.name}`} className="inline-flex size-11 shrink-0 items-center justify-center border border-line-strong text-ink transition-colors hover:bg-ink hover:text-bone">
                 <Share2 size={18} strokeWidth={1.5} />
               </button>
             </div>
-            <a href="#reviews" className="tap mt-3 inline-block">
-              <RatingLine rating={product.rating} count={product.ratingCount} />
-            </a>
 
-            <div className="mt-5">
+            <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1.5">
               <Price price={product.price} mrp={product.mrp} size="lg" className={cn(product.soldOut && "opacity-60")} />
-              <p className="mt-1 text-[12px] text-ink-3">Inclusive of all taxes</p>
+              <a href="#reviews" className="tap">
+                <RatingLine rating={product.rating} count={product.ratingCount} />
+              </a>
             </div>
-            <p className="mt-5 max-w-[46ch] text-[14.5px] leading-relaxed text-ink-2">{product.description}</p>
+            <p className="mt-1 text-[12px] text-ink-3">Inclusive of all taxes</p>
+            <p className="mt-3.5 max-w-[46ch] text-[14px] leading-[1.55] text-ink-2">{product.description}</p>
 
-            <div className="mt-6 space-y-6">
+            <div className="mt-4 space-y-5">
               {product.variants.length > 1 && <ColorPicker product={product} value={sel.variant} onChange={switchColour} />}
               {!product.soldOut && <SizeSelector product={product} sel={sel} groupRef={groupRef} />}
             </div>
 
-            <div ref={ctaRef} className="mt-6 flex items-stretch gap-2">
+            <div ref={ctaRef} className="mt-4 flex items-stretch gap-2">
               {product.soldOut ? (
                 <Button full size="lg" variant="secondary" icon={<BellRing size={16} />} onClick={act}>
                   Notify me
@@ -219,36 +219,36 @@ export function ProductDetail({ product }: { product: Product }) {
               </section>
             )}
 
-            <div className="mt-6 space-y-5">
+            <div className="mt-4 space-y-4">
               <DeliveryCheck />
               <Offers product={product} />
               <TrustRow product={product} />
             </div>
+          </Col>
 
-            {/* Flat accordions: structure comes from hairlines. Everything is collapsed so the box stays within a laptop viewport. */}
-            <div className="mt-6 border-t border-line">
-              <Disclosure title="Details">
-                <ul className="list-disc space-y-1.5 pl-4 marker:text-ink-3">
-                  {product.details.map((d) => (
-                    <li key={d}>{d}</li>
-                  ))}
-                </ul>
-                {product.modelNote && <p className="mt-3 text-[13px] text-ink-3">{product.modelNote}.</p>}
-              </Disclosure>
-              <Disclosure title="Fabric & care">
-                <p>{product.fabric}.</p>
-                <ul className="mt-3 list-disc space-y-1.5 pl-4 marker:text-ink-3">
-                  {product.care.map((c) => (
-                    <li key={c}>{c}</li>
-                  ))}
-                </ul>
-              </Disclosure>
-              <Disclosure title="Shipping & returns">
-                <p>
-                  Standard delivery is free above {inr(FREE_SHIPPING_THRESHOLD)}. Returns and refunds are illustrative in this prototype — see <Link href="/info/returns" className="underline underline-offset-4">returns &amp; refunds</Link>.
-                </p>
-              </Disclosure>
-            </div>
+          {/* Fit, fabric and shipping: flat accordions under the buy controls on phones, a 4 / 4 / 4 row under the gallery from 600px. */}
+          <Col span={{ base: 4, sm: 12, lg: 12 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 2, lg: 2 }} className="border-t border-line sm:mt-4 sm:grid sm:grid-cols-3 sm:items-start sm:gap-x-[var(--gap)]">
+            <Disclosure title="Details">
+              <ul className="list-disc space-y-1.5 pl-4 marker:text-ink-3">
+                {product.details.map((d) => (
+                  <li key={d}>{d}</li>
+                ))}
+              </ul>
+              {product.modelNote && <p className="mt-3 text-[13px] text-ink-3">{product.modelNote}.</p>}
+            </Disclosure>
+            <Disclosure title="Fabric & care">
+              <p>{product.fabric}.</p>
+              <ul className="mt-3 list-disc space-y-1.5 pl-4 marker:text-ink-3">
+                {product.care.map((c) => (
+                  <li key={c}>{c}</li>
+                ))}
+              </ul>
+            </Disclosure>
+            <Disclosure title="Shipping & returns">
+              <p>
+                Standard delivery is free above {inr(FREE_SHIPPING_THRESHOLD)}. Returns and refunds are illustrative in this prototype — see <Link href="/info/returns" className="underline underline-offset-4">returns &amp; refunds</Link>.
+              </p>
+            </Disclosure>
           </Col>
         </Grid>
       </section>
@@ -287,26 +287,22 @@ function FactsPanel({ product }: { product: Product }) {
   );
 }
 
-/** Up to two coupons that apply to this piece — label-specific ones first. The codes are the prototype's simulated ones. */
+/** The one coupon that suits this piece best (label-specific first). Codes are the prototype's simulated ones. */
 function Offers({ product }: { product: Product }) {
   const label = labelById[product.labelId];
-  const list = coupons
+  const [best] = coupons
     .filter((c) => !c.expired && (!c.appliesTo || label.flags[c.appliesTo]))
-    .sort((a, b) => Number(!!b.appliesTo) - Number(!!a.appliesTo))
-    .slice(0, 2);
-  if (list.length === 0) return null;
+    .sort((a, b) => Number(!!b.appliesTo) - Number(!!a.appliesTo));
+  if (!best) return null;
   return (
-    <section aria-labelledby="offers-h" className="border-t border-line pt-5">
-      <h2 id="offers-h" className="flex items-center gap-2 text-[13px] font-medium">
-        <Tag size={16} aria-hidden /> Offers <span className="text-[11px] font-normal uppercase tracking-[0.1em] text-ink-3">· simulated</span>
-      </h2>
-      <ul className="mt-3 space-y-2 text-[12.5px] leading-snug text-ink-2">
-        {list.map((c) => (
-          <li key={c.code}>
-            <span className="font-medium tabular-nums tracking-[0.04em] text-ink">{c.code}</span> — {c.description}
-          </li>
-        ))}
-      </ul>
+    <section aria-labelledby="offers-h" className="flex items-start gap-3 border-t border-line pt-4">
+      <Tag size={16} aria-hidden className="mt-0.5 shrink-0" />
+      <div className="min-w-0 text-[12.5px] leading-snug text-ink-2">
+        <h2 id="offers-h" className="sr-only">
+          Offer (simulated)
+        </h2>
+        <span className="font-medium tabular-nums tracking-[0.04em] text-ink">{best.code}</span> — {best.description} <span className="text-ink-3">Simulated.</span>
+      </div>
     </section>
   );
 }
@@ -319,11 +315,11 @@ function TrustRow({ product }: { product: Product }) {
     { icon: Scissors, text: label.origin ? `From ${label.origin}` : `By ${label.name}` },
   ];
   return (
-    <ul aria-label="Good to know" className="grid grid-cols-3 gap-3 border-t border-line pt-5">
+    <ul aria-label="Good to know" className="grid grid-cols-3 gap-3 border-t border-line pt-4">
       {items.map(({ icon: Icon, text }) => (
-        <li key={text} className="flex flex-col gap-2 text-[11.5px] leading-snug text-ink-2">
-          <Icon size={18} strokeWidth={1.5} aria-hidden className="text-ink" />
-          {text}
+        <li key={text} className="flex items-start gap-2 text-[11.5px] leading-[1.35] text-ink-2">
+          <Icon size={16} strokeWidth={1.5} aria-hidden className="mt-px shrink-0 text-ink" />
+          <span>{text}</span>
         </li>
       ))}
     </ul>

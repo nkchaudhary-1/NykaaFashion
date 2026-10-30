@@ -1,10 +1,13 @@
 "use client";
 import { PenLine, ThumbsUp } from "lucide-react";
 import { useMemo, useState } from "react";
+import { Col, Grid } from "@/components/layout/Grid";
+import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
 import { Input, Select, Textarea } from "@/components/ui/Form";
 import { Overlay, OverlayBody, OverlayHeader } from "@/components/ui/Overlay";
 import { Stars } from "@/components/ui/Rating";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SimulatedTag } from "@/components/ui/Simulated";
 import { reviewsFor } from "@/data/reviews";
 import type { Product, Review } from "@/data/types";
@@ -43,50 +46,64 @@ export function Reviews({ product }: { product: Product }) {
     return [...f].sort(by[sort]);
   }, [all, sort, star]);
 
+  const showFit = product.sizes.length > 1;
   return (
-    <section id="reviews" aria-labelledby="reviews-h" className="container-x scroll-mt-24 py-16 sm:py-24">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="eyebrow mb-3 flex items-center gap-3 text-ink-3">Reviews <SimulatedTag>Sample content</SimulatedTag></p>
-          <h2 id="reviews-h" className="display-md">What people say.</h2>
-        </div>
+    <Section id="reviews" aria-labelledby="reviews-h" className="scroll-mt-24">
+      <SectionHeading level={2} eyebrow="Reviews" title={<span id="reviews-h">What people say.</span>}>
+        <SimulatedTag>Sample content</SimulatedTag>
         <Button variant="secondary" icon={<PenLine size={15} />} onClick={() => setWriting(true)}>
           Write a review
         </Button>
-      </div>
+      </SectionHeading>
 
-      <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-20">
-        <div>
-          <p className="flex items-end gap-3">
-            <span className="display-lg leading-none">{product.rating.toFixed(1)}</span>
-            <span className="pb-1.5 text-[13px] text-ink-3">out of 5 · {total.toLocaleString("en-IN")} ratings</span>
-          </p>
-          <Stars value={product.rating} size={18} className="mt-3" />
-          <ul className="mt-6 space-y-2" aria-label="Rating breakdown">
-            {dist.map((d) => (
-              <li key={d.n}>
-                <button type="button" onClick={() => setStar(star === d.n ? 0 : d.n)} aria-pressed={star === d.n} className={cn("flex w-full items-center gap-3 py-1 text-[13px] tabular-nums [@media(pointer:coarse)]:min-h-11", star === d.n ? "font-medium text-ink" : "text-ink-2 hover:text-ink")}>
-                  <span className="w-6 text-left">{d.n}★</span>
-                  <span className="h-1.5 flex-1 overflow-hidden bg-line"><span className="block h-full bg-ink" style={{ width: `${d.pct}%` }} /></span>
-                  <span className="w-9 text-right text-ink-3">{d.pct}%</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-          {product.sizes.length > 1 && (
-            <div className="mt-8">
-              <p className="mb-3 text-[13px] font-medium">How it fits</p>
-              <div className="relative h-1.5 bg-line" role="img" aria-label={`Customers say it runs ${fitPos < 38 ? "small" : fitPos > 62 ? "large" : "true to size"}`}>
-                <span className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-bone bg-ink" style={{ left: `${Math.min(92, Math.max(8, fitPos))}%` }} />
-              </div>
-              <div className="mt-2 flex justify-between text-[11.5px] text-ink-3"><span>Runs small</span><span>True to size</span><span>Runs large</span></div>
+      {/* 4 + 8: the summary (rating, breakdown, fit) in the narrow column — it stays in view while the list grows — and the reviews in two columns */}
+      <Grid className="mt-10 gap-y-10 sm:mt-14">
+        <Col span={{ base: 4, sm: 12, lg: 4 }} start={{ lg: 1 }} rowStart={{ lg: 1 }} className="lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:self-start lg:transition-[top] lg:duration-500">
+          <div className="grid grid-cols-1 gap-y-8 sm:grid-cols-3 sm:gap-x-[var(--gap)] lg:grid-cols-1">
+            <div>
+              <p className="display-lg leading-none tabular-nums">{product.rating.toFixed(1)}</p>
+              <Stars value={product.rating} size={18} className="mt-4" />
+              <p className="mt-3 text-[13px] text-ink-3">out of 5 · {total.toLocaleString("en-IN")} ratings</p>
             </div>
-          )}
-        </div>
+            <ul className={cn("space-y-1", !showFit && "sm:col-span-2 lg:col-span-1")} aria-label="Rating breakdown">
+              {dist.map((d) => (
+                <li key={d.n}>
+                  <button type="button" onClick={() => setStar(star === d.n ? 0 : d.n)} aria-pressed={star === d.n} className={cn("flex w-full items-center gap-3 py-1.5 text-[13px] tabular-nums [@media(pointer:coarse)]:min-h-11", star === d.n ? "font-medium text-ink" : "text-ink-2 hover:text-ink")}>
+                    <span className="w-6 text-left">{d.n}★</span>
+                    <span className="h-1.5 flex-1 overflow-hidden bg-line">
+                      <span className="block h-full bg-ink" style={{ width: `${d.pct}%` }} />
+                    </span>
+                    <span className="w-9 text-right text-ink-3">{d.pct}%</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {showFit && (
+              <div>
+                <p className="mb-4 text-[13px] font-medium">How it fits</p>
+                <div className="relative h-1.5 bg-line" role="img" aria-label={`Customers say it runs ${fitPos < 38 ? "small" : fitPos > 62 ? "large" : "true to size"}`}>
+                  <span className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 border-2 border-bone bg-ink" style={{ left: `${Math.min(92, Math.max(8, fitPos))}%` }} />
+                </div>
+                <div className="mt-2.5 flex justify-between text-[11.5px] text-ink-3">
+                  <span>Runs small</span>
+                  <span>True to size</span>
+                  <span>Runs large</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </Col>
 
-        <div>
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
-            <p className="text-[13px] text-ink-3" aria-live="polite">{star ? `${list.length} reviews with ${star}★` : `${all.length} reviews`}{star ? <button type="button" className="link-u ml-3 text-ink" onClick={() => setStar(0)}>Clear</button> : null}</p>
+        <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 5 }} rowStart={{ lg: 1 }}>
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-4">
+            <p className="text-[13px] text-ink-3" aria-live="polite">
+              {star ? `${list.length} reviews with ${star}★` : `${all.length} reviews`}
+              {star ? (
+                <button type="button" className="link-u tap ml-3 text-ink" onClick={() => setStar(0)}>
+                  Clear
+                </button>
+              ) : null}
+            </p>
             <Select aria-label="Sort reviews" value={sort} onChange={(e) => setSort(e.target.value as Sort)} className="h-10 w-auto min-w-[170px] text-[13px]">
               <option value="helpful">Most helpful</option>
               <option value="newest">Newest</option>
@@ -94,19 +111,19 @@ export function Reviews({ product }: { product: Product }) {
               <option value="low">Lowest rated</option>
             </Select>
           </div>
-          <ul>
+          <ul className="grid grid-cols-1 gap-x-[var(--gap)] sm:grid-cols-2">
             {list.slice(0, shown).map((r) => (
               <ReviewItem key={r.id} r={r} voted={prefs.helpful.includes(r.id)} />
             ))}
-            {list.length === 0 && <li className="py-10 text-[14px] text-ink-3">No reviews with that rating yet.</li>}
+            {list.length === 0 && <li className="border-t border-line py-10 text-[14px] text-ink-3 sm:col-span-2">No reviews with that rating yet.</li>}
           </ul>
           {shown < list.length && (
-            <Button variant="secondary" className="mt-6" onClick={() => setShown((n) => n + 4)}>
+            <Button variant="secondary" className="mt-8" onClick={() => setShown((n) => n + 4)}>
               Show more reviews
             </Button>
           )}
-        </div>
-      </div>
+        </Col>
+      </Grid>
 
       <Overlay open={writing} onClose={() => setWriting(false)} label="Write a review" side="center" panelClassName="sm:w-[min(94vw,600px)] sm:max-h-[92dvh]">
         <OverlayHeader title="Write a review" sub={product.name} />
@@ -114,19 +131,19 @@ export function Reviews({ product }: { product: Product }) {
           <ReviewForm product={product} name={user?.name} onDone={() => setWriting(false)} />
         </OverlayBody>
       </Overlay>
-    </section>
+    </Section>
   );
 }
 
 function ReviewItem({ r, voted }: { r: Review; voted: boolean }) {
   return (
-    <li className="border-b border-line py-6">
+    <li className="border-t border-line pb-8 pt-5">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <Stars value={r.rating} size={14} />
         <p className="text-[14.5px] font-medium">{r.title}</p>
         {r.own && <span className="inline-flex h-5 items-center bg-ink px-2 text-[10px] font-medium uppercase tracking-wider text-bone">Your review</span>}
       </div>
-      <p className="mt-3 max-w-[64ch] text-[14.5px] leading-relaxed text-ink-2">{r.body}</p>
+      <p className="mt-3 text-[14.5px] leading-relaxed text-ink-2">{r.body}</p>
       <p className="mt-3 text-[12.5px] text-ink-3">
         {r.author}{r.verified ? " · Verified buyer (sample)" : ""} · {fmtDate(r.date, { day: "numeric", month: "short", year: "numeric" })} · Bought size {r.size} · {r.fit === "true" ? "True to size" : r.fit === "small" ? "Runs small" : "Runs large"}
       </p>

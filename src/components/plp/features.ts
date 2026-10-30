@@ -17,6 +17,13 @@ export type Feature =
 
 export const pieces = (n: number) => `${n} ${n === 1 ? "piece" : "pieces"}`;
 
+/**
+ * Feature boxes are tall (6 columns × 2 rows) and crop a 4:5 product shot at the sides. That suits a garment on a hanger and cuts a
+ * necklace, a bag or a stack of fabric in half — so heroes and label promos prefer garments.
+ */
+const GARMENT = /^(women\/(dresses|indianwear|tops|knitwear|bottoms|jackets)|men\/(shirts|tees|ethnic|trousers|jackets)|kids\/(girls|boys))/;
+export const isGarment = (p: Product) => GARMENT.test(p.categoryPath.join("/"));
+
 /** Edits whose rules overlap this pool the most — "related edit" promos for category pages. */
 export function relatedEditTiles(pool: Product[], take = 2, skip: string[] = []): Feature[] {
   return primaryEdits
@@ -38,7 +45,9 @@ export function labelTiles(pool: Product[], take = 2, skip: string[] = []): Feat
     .slice(0, take)
     .map(([id, n]) => {
       const l = labelById[id];
-      const rep = pool.find((p) => p.labelId === id && !p.soldOut) ?? pool.find((p) => p.labelId === id)!;
+      // a garment from further down the list, so the promo doesn't repeat the picture at the top of the grid
+      const mine = pool.filter((p) => p.labelId === id && !p.soldOut).sort((a, b) => Number(isGarment(b)) - Number(isGarment(a)) || b.rank - a.rank);
+      const rep = mine[0] ?? pool.find((p) => p.labelId === id)!;
       return { kind: "tile" as const, href: `/brands/${id}`, imgKey: rep.variants[0].images[0], title: l.name, meta: `${l.tagline}` };
     });
 }

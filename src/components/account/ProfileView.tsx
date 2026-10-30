@@ -75,7 +75,7 @@ export function ProfileView() {
             <option>Female</option><option>Male</option><option>Non-binary</option>
           </Select>
           <Input label="Date of birth" type="date" optional autoComplete="bday" value={v.dob} onChange={(e) => setDraft({ ...draft, dob: e.target.value })} />
-          <div className="flex flex-wrap items-start gap-3 sm:col-span-2 lg:col-span-1">
+          <div className="mt-3 flex flex-wrap items-center gap-3 sm:col-span-2 lg:col-span-3">
             <Button type="submit" size="lg" disabled={!dirty}>Save changes</Button>
             {dirty && <Button variant="ghost" size="lg" onClick={() => (setDraft({}), setErrors({}))}>Discard</Button>}
           </div>

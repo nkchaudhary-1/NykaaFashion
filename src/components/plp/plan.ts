@@ -1,5 +1,5 @@
 import type { Product } from "@/data/types";
-import type { Feature } from "./features";
+import { isGarment, type Feature } from "./features";
 
 /**
  * Where the feature inserts go in a product grid, computed so that rows stay complete at 2-up (phone), 3-up (tablet)
@@ -21,6 +21,8 @@ export const FIRST = 6;
 export const EVERY = 14;
 /** cards that must follow a feature so the cells beside it are all filled */
 const AFTER = 4;
+/** A hero is the first garment (in stock) among the next few pieces — see isGarment — falling back to the next piece in line. */
+const LOOKAHEAD = 8;
 
 export interface Place {
   side: "L" | "R";
@@ -40,11 +42,12 @@ function place(area: number, perRow: number): Place | null {
 }
 
 /**
- * `cardLimit` is how many product cards to show; a "hero" feature takes its product from the list on top of that,
- * so `shown` (products consumed) can be a little more than the card count.
+ * `cardLimit` is how many product cards to show; a "hero" feature takes its product out of the list on top of that,
+ * so `shown` (products used) is the card count plus the heroes.
  */
 export function planCells(items: Product[], features: Feature[], cardLimit: number): { cells: Cell[]; shown: number; cards: number } {
   const cells: Cell[] = [];
+  const taken = new Set<number>(); // indexes of items a hero has already used
   let i = 0;
   let cards = 0;
   let j = 0;
@@ -52,11 +55,20 @@ export function planCells(items: Product[], features: Feature[], cardLimit: numb
   let nPhone = 0;
   let nTablet = 0;
   let nDesktop = 0;
+  const heroAt = (from: number) => {
+    for (let h = from; h < Math.min(items.length, from + LOOKAHEAD); h++) if (!taken.has(h) && !items[h].soldOut && isGarment(items[h])) return h;
+    return from;
+  };
   while (i < items.length && cards < cardLimit) {
+    if (taken.has(i)) {
+      i++;
+      continue;
+    }
     if (cards === nextAt && j < features.length) {
       const feature = features[j];
       const takes = feature.kind === "hero" ? 1 : 0;
-      const follow = Math.min(cardLimit - cards, items.length - i - takes);
+      const left = items.length - i - Array.from(taken).filter((t) => t >= i).length;
+      const follow = Math.min(cardLimit - cards, left - takes);
       if (follow >= AFTER) {
         const phone = (cards + 2 * nPhone) % 2 === 0;
         const tablet = place(cards + 4 * nTablet, 3);
@@ -64,8 +76,13 @@ export function planCells(items: Product[], features: Feature[], cardLimit: numb
         if (phone) nPhone++;
         if (tablet) nTablet++;
         if (desktop) nDesktop++;
-        cells.push({ type: "feature", key: `f${j}`, feature, product: takes ? items[i] : undefined, phone, tablet, desktop });
-        i += takes;
+        let product: Product | undefined;
+        if (takes) {
+          const h = heroAt(i);
+          taken.add(h);
+          product = items[h];
+        }
+        cells.push({ type: "feature", key: `f${j}`, feature, product, phone, tablet, desktop });
         j++;
         nextAt += EVERY;
         continue;
@@ -76,5 +93,5 @@ export function planCells(items: Product[], features: Feature[], cardLimit: numb
     cards++;
     i++;
   }
-  return { cells, shown: i, cards };
+  return { cells, shown: cards + taken.size, cards };
 }

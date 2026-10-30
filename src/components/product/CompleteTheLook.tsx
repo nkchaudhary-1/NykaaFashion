@@ -1,23 +1,36 @@
 "use client";
-import { Heart, Plus } from "lucide-react";
-import { Fragment } from "react";
+import Link from "next/link";
+import { Eye, Heart } from "lucide-react";
+import { useState } from "react";
+import { Col, Grid } from "@/components/layout/Grid";
+import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
-import { SIZES } from "@/components/ui/Img";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Img } from "@/components/ui/Img";
+import { Price } from "@/components/ui/Price";
+import { labelById } from "@/data/labels";
 import type { Product } from "@/data/types";
+import { cn } from "@/lib/cn";
+import { captureFlip } from "@/lib/flip";
 import { inr } from "@/lib/format";
 import { styleWith } from "@/lib/recs";
 import { track } from "@/lib/track";
 import { toggleWishlist, wishlistStore } from "@/stores/commerce";
-import { toast } from "@/stores/ui";
-import { ProductCard } from "./ProductCard";
+import { setUI, toast } from "@/stores/ui";
+import { SaveButton } from "./SaveButton";
 
-/** "Complete the look" (PRD §5.5 styling context): complementary pieces matched on occasion, each a quick-add away. */
+/**
+ * "Complete the look" (PRD §5.5 styling context) on a 6 / 6 split: a shoppable look board on the left — this piece and the pieces that
+ * share its occasion as a 2 × 2 of numbered photos — and the matching list on the right (name, price, save, quick view, the total).
+ * Phones stack heading → board → list; tablets run the board as one row of four.
+ */
 export function CompleteTheLook({ product }: { product: Product }) {
   const pieces = styleWith(product, 3);
+  const [active, setActive] = useState<number | null>(null);
   if (pieces.length === 0) return null;
   const look = [product, ...pieces];
   const total = look.reduce((n, p) => n + p.price, 0);
+  // with an odd number of photos the board's last cell holds the total, so the board is always a complete rectangle
+  const totalInBoard = look.length % 2 === 1;
   const saveAll = () => {
     const saved = new Set(wishlistStore.get().map((i) => i.productId));
     let n = 0;
@@ -29,32 +42,100 @@ export function CompleteTheLook({ product }: { product: Product }) {
     track("product_save", { source: "complete-the-look", count: n });
     toast({ title: n ? `Saved ${n} pieces to your wishlist` : "Already in your wishlist", action: { label: "View", href: "/wishlist" } });
   };
+  const save = (
+    <Button variant={totalInBoard ? "inverse" : "secondary"} icon={<Heart size={15} />} onClick={saveAll}>
+      Save the look
+    </Button>
+  );
+  // two photos fill the row at 6 columns each on tablets; three or four sit four-across at 3 columns
+  const cell = look.length === 2 ? "col-span-2 sm:col-span-6 lg:col-span-3" : "col-span-2 sm:col-span-3 lg:col-span-3";
+
   return (
-    <section aria-labelledby="ctl" className="container-x py-16 sm:py-24">
-      <SectionHeading level={2} eyebrow="Styling" title={<span id="ctl">Complete the look.</span>} intro="Pieces that share an occasion and a point of view with this one." />
-      <ul className="mt-10 grid grid-cols-2 items-start gap-x-3 gap-y-8 lg:grid-cols-[repeat(4,minmax(0,1fr))] lg:gap-x-5">
-        {look.map((p, i) => (
-          <Fragment key={p.id}>
-            <li className="relative">
-              {i === 0 && <p className="eyebrow absolute -top-6 left-0 text-ink-3">This piece</p>}
-              <ProductCard product={p} source="complete-the-look" sizes={SIZES.cardWide} hideQuickView={i === 0} />
-              {i < look.length - 1 && (
-                <span aria-hidden className="absolute -right-3 top-[34%] z-10 hidden size-6 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border border-line-strong bg-bone lg:inline-flex">
-                  <Plus size={13} />
+    <Section tone="paper" aria-labelledby="ctl" className="border-y border-line">
+      <Grid className="gap-y-10">
+        <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }}>
+          <p className="eyebrow mb-4 text-ink-3">Styling</p>
+          <h2 id="ctl" className="display-md">
+            Complete the look.
+          </h2>
+          <p className="mt-5 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">Pieces that share an occasion and a point of view with this one.</p>
+        </Col>
+
+        <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 1 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }}>
+          <ul aria-label="The look, in photographs" className="grid grid-cols-4 gap-[var(--gap)] sm:grid-cols-12 lg:grid-cols-6">
+            {look.map((p, i) => {
+              const img = <Img imgKey={p.variants[0].images[0]} alt="" sizes="(min-width:1024px) 25vw, (min-width:600px) 25vw, 50vw" ratio="4/5" className={cn("transition-opacity duration-300", active !== null && active !== i && "opacity-55")} />;
+              return (
+                <li key={p.id} className={cn("relative", cell)}>
+                  {i === 0 ? (
+                    img
+                  ) : (
+                    <Link href={`/p/${p.slug}`} aria-hidden tabIndex={-1} draggable={false} onClick={(e) => captureFlip(p.id, e.currentTarget, 0, "complete-the-look")} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)} className="block">
+                      {img}
+                    </Link>
+                  )}
+                  <span aria-hidden className="pointer-events-none absolute left-2 top-2 inline-flex size-7 items-center justify-center rounded-full bg-white text-[12px] font-medium tabular-nums text-ink">
+                    {i + 1}
+                  </span>
+                </li>
+              );
+            })}
+            {totalInBoard && (
+              <li className={cn("flex aspect-[4/5] flex-col justify-between bg-ink p-5 text-bone sm:p-6", cell)}>
+                <p className="eyebrow">The whole look</p>
+                <div>
+                  <p className="display-sm tabular-nums">{inr(total)}</p>
+                  <p className="mt-2 text-[13px] text-bone">{look.length} pieces, one occasion.</p>
+                  <div className="on-dark mt-5">{save}</div>
+                </div>
+              </li>
+            )}
+          </ul>
+        </Col>
+
+        <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 2 }} className="lg:self-end">
+          <ol aria-label="Pieces in this look" className="border-t border-line">
+            {look.map((p, i) => (
+              <li key={p.id} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)} className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-line py-3.5 sm:flex-nowrap">
+                <span aria-hidden className="inline-flex size-7 shrink-0 items-center justify-center rounded-full border border-ink text-[12px] font-medium tabular-nums">
+                  {i + 1}
                 </span>
-              )}
-            </li>
-          </Fragment>
-        ))}
-      </ul>
-      <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
-        <p className="text-[14px] text-ink-2">
-          The whole look: <strong className="text-[18px] font-medium tabular-nums text-ink">{inr(total)}</strong>
-        </p>
-        <Button variant="secondary" icon={<Heart size={15} />} onClick={saveAll}>
-          Save the look
-        </Button>
-      </div>
-    </section>
+                <div className="min-w-0 flex-1">
+                  <p className="eyebrow truncate text-ink-3">
+                    {i === 0 && "This piece · "}
+                    {labelById[p.labelId].name}
+                  </p>
+                  {i === 0 ? (
+                    <p className="mt-1.5 line-clamp-2 text-[14.5px] leading-snug">{p.name}</p>
+                  ) : (
+                    <Link href={`/p/${p.slug}`} onClick={(e) => captureFlip(p.id, e.currentTarget, 0, "complete-the-look")} className="link-u mt-1.5 line-clamp-2 block text-[14.5px] leading-snug">
+                      {p.name}
+                    </Link>
+                  )}
+                </div>
+                {/* phones: the price drops under the name so long names keep their line; wider: it sits between name and actions */}
+                <Price price={p.price} mrp={p.mrp} size="md" showSavings={false} className="order-last w-full shrink-0 pl-11 sm:order-none sm:w-auto sm:pl-0" />
+                {i > 0 && (
+                  <div className="flex shrink-0 items-center">
+                    <SaveButton product={p} source="complete-the-look" tone="plain" size={18} />
+                    <button type="button" aria-label={`Quick view ${p.name}`} onClick={() => setUI({ quickView: { productId: p.id } })} className="inline-flex size-10 items-center justify-center text-ink transition-colors hover:bg-sand [@media(pointer:coarse)]:size-11">
+                      <Eye size={18} strokeWidth={1.6} aria-hidden />
+                    </button>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ol>
+          {!totalInBoard && (
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+              <p className="text-[14px] text-ink-2">
+                The whole look: <strong className="text-[18px] font-medium tabular-nums text-ink">{inr(total)}</strong>
+              </p>
+              {save}
+            </div>
+          )}
+        </Col>
+      </Grid>
+    </Section>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import { MapPin, Truck } from "lucide-react";
+import { Truck } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { COD_FEE, FREE_SHIPPING_THRESHOLD, lookupPincode } from "@/data/commerce";
@@ -29,13 +29,13 @@ export function DeliveryCheck() {
   };
 
   return (
-    <section aria-labelledby="deliv" className="border-t border-line pt-5">
-      <h2 id="deliv" className="flex items-center gap-2 text-[13px] font-medium">
-        <Truck size={16} aria-hidden /> Delivery
+    <section aria-labelledby="deliv" className="border-t border-line pt-4">
+      <h2 id="deliv" className="sr-only">
+        Delivery
       </h2>
-      <form onSubmit={submit} noValidate className="mt-3 flex gap-2">
+      <form onSubmit={submit} noValidate className="flex gap-2">
         <div className="relative min-w-0 flex-1">
-          <MapPin size={16} aria-hidden className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-3" />
+          <Truck size={16} aria-hidden className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink" />
           <input
             inputMode="numeric"
             maxLength={6}
@@ -53,7 +53,7 @@ export function DeliveryCheck() {
           Check
         </Button>
       </form>
-      <div id="pin-msg" aria-live="polite" className="mt-2.5 min-h-5 text-[12.5px] leading-snug">
+      <div id="pin-msg" aria-live="polite" className="mt-2 min-h-5 text-[12px] leading-snug">
         {formatError ? (
           <p role="alert" className="font-medium text-danger">Enter a valid 6-digit pincode.</p>
         ) : result?.ok ? (

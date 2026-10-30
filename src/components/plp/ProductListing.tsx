@@ -111,10 +111,17 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], hide = [], 
               Filter
               {count > 0 && <span className="ml-1 inline-flex size-5 items-center justify-center rounded-full border border-current text-[11px] font-semibold tabular-nums tracking-normal">{count}</span>}
             </Button>
-            <QuickFilters facets={facets} filters={filters} hide={hide} poolSize={pool.length} onChange={onChange} className="hidden min-w-0 flex-1 sm:flex" />
+            {/* visibility lives on wrappers: cn() is a plain join, so `hidden` would lose to a child's own display utility */}
+            <div className="hidden min-w-0 flex-1 sm:block">
+              <QuickFilters facets={facets} filters={filters} hide={hide} poolSize={pool.length} onChange={onChange} />
+            </div>
             {countLine("hidden sm:block")}
-            <SortSelect value={filters.sort} onChange={onSort} variant="button" className="sm:hidden" />
-            <SortSelect value={filters.sort} onChange={onSort} className="hidden sm:inline-flex" />
+            <div className="sm:hidden">
+              <SortSelect value={filters.sort} onChange={onSort} variant="button" />
+            </div>
+            <div className="hidden sm:block">
+              <SortSelect value={filters.sort} onChange={onSort} />
+            </div>
           </div>
         </div>
       </div>

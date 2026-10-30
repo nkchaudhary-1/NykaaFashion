@@ -301,12 +301,16 @@ export function CheckoutFlow() {
 function StepCard({ id, n, title, state, onChange, children }: { id: string; n: number; title: string; state: "done" | "current" | "todo"; onChange?: () => void; children?: ReactNode }) {
   return (
     <section aria-labelledby={id} className={cn("border bg-paper", state === "current" ? "border-ink" : "border-line")}>
-      <header className="flex items-center justify-between gap-4 px-5 py-4 sm:px-7 sm:py-5">
+      <header className="flex items-center justify-between gap-3 px-5 py-4 sm:px-7 sm:py-5">
         <h2 id={id} className={cn("display-xs flex items-center gap-3.5", state === "todo" && "text-ink-3")}>
           <StepMark n={n} state={state} className="size-8 text-[13px]" />
           {title}
         </h2>
-        {onChange && <Button variant="ghost" size="sm" icon={<Pencil size={13} />} onClick={onChange}>Change</Button>}
+        {onChange && (
+          <button type="button" onClick={onChange} className="tap inline-flex h-10 shrink-0 items-center gap-1.5 px-2 text-[12px] font-semibold uppercase tracking-[0.09em] transition-colors hover:bg-sand [@media(pointer:coarse)]:h-11">
+            <Pencil size={13} aria-hidden /> Change
+          </button>
+        )}
       </header>
       {children}
     </section>

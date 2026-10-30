@@ -10,6 +10,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { EmptyState } from "@/components/ui/States";
 import { stories } from "@/data/stories";
 import type { Story } from "@/data/types";
+import { cn } from "@/lib/cn";
 
 /** Topics are groups of story tags (the tags themselves are one-per-story, too fine to filter by). A story can sit in more than one topic. */
 const TOPICS: Array<{ id: string; label: string; tags: string[] }> = [
@@ -82,7 +83,8 @@ function RowView({ row, first }: { row: Row; first: boolean }) {
     case "sevenFive": {
       const mirrored = row.kind === "sevenFive";
       const sub = "lg:grid lg:grid-rows-subgrid";
-      const card = (s: Story, v: "tall" | "feature") => <StoryCard story={s} variant={v} as="h2" source={source} className="lg:row-span-2 lg:grid lg:grid-rows-subgrid" />;
+      // a portrait on phones, then square covers (the 7-column one a 1.4:1 landscape on desktop) so neither card towers over the other
+      const card = (s: Story, v: "tall" | "feature") => <StoryCard story={s} variant={v} as="h2" source={source} box={v === "tall" ? "aspect-[4/5] sm:aspect-square" : "aspect-[4/5] sm:aspect-square lg:aspect-auto"} className="lg:row-span-2 lg:grid lg:grid-rows-subgrid" />;
       return (
         <Grid className="gap-y-12 lg:gap-y-0">
           <Col as={Reveal} span={{ base: 4, sm: 6, lg: mirrored ? 7 : 5 }} rows={{ lg: 2 }} className={sub}>
@@ -96,13 +98,9 @@ function RowView({ row, first }: { row: Row; first: boolean }) {
     }
     case "banner":
       return (
-        <Grid>
-          <Col>
-            <Reveal>
-              <StoryCard story={a} variant="banner" as="h2" source={source} />
-            </Reveal>
-          </Col>
-        </Grid>
+        <Reveal>
+          <StoryCard story={a} variant="banner" as="h2" source={source} />
+        </Reveal>
       );
     case "half":
       return (
@@ -157,15 +155,18 @@ export function DiscoverIndex() {
         </div>
       </div>
 
-      <div className="container-x pt-10 sm:pt-14">
+      <div className="pt-10 sm:pt-14">
         {rows.length === 0 ? (
-          <EmptyState title="No stories here yet" text="We publish a new issue each season." actions={<Button onClick={() => setTopic("all")}>See all stories</Button>} />
-        ) : (
-          <div className="space-y-16 sm:space-y-20 lg:space-y-24">
-            {rows.map((row, i) => (
-              <RowView key={`${topic}-${i}`} row={row} first={i === 0} />
-            ))}
+          <div className="container-x">
+            <EmptyState title="No stories here yet" text="We publish a new issue each season." actions={<Button onClick={() => setTopic("all")}>See all stories</Button>} />
           </div>
+        ) : (
+          rows.map((row, i) => (
+            // a banner runs edge to edge; every other row sits in the container
+            <div key={`${topic}-${i}`} className={cn(i > 0 && "mt-16 sm:mt-20 lg:mt-24", row.kind !== "banner" && "container-x")}>
+              <RowView row={row} first={i === 0} />
+            </div>
+          ))
         )}
       </div>
 
@@ -179,7 +180,7 @@ export function DiscoverIndex() {
             <p className="mt-5 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">One long read, three pieces worth owning and no discount codes. This is a prototype: the sign-up is simulated, nothing is sent and your email stays on this device.</p>
           </Col>
           <Col span={{ base: 4, sm: 12, lg: 5 }} start={{ lg: 8 }} rowStart={{ lg: 1 }}>
-            <div className="on-dark bg-ink px-6 pb-8 text-bone sm:px-8">
+            <div className="on-dark flow-root bg-ink px-6 pb-8 text-bone sm:px-8">
               <NewsletterForm />
             </div>
           </Col>

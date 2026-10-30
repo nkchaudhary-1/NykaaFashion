@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { Suspense } from "react";
 import { EditHeader } from "@/components/editorial/EditHeader";
 import { EditTile } from "@/components/editorial/EditTile";
+import { LookStrip } from "@/components/editorial/LookStrip";
+import { ShoppableImage } from "@/components/editorial/ShoppableImage";
 import { StoryCard } from "@/components/editorial/StoryCard";
 import { EditOpenTracker } from "@/components/editorial/Trackers";
-import { LabelBadges, LabelMonogram } from "@/components/product/LabelMark";
+import { Col, Grid } from "@/components/layout/Grid";
+import { Section } from "@/components/layout/Section";
+import { highlightQuotes, interleave, labelTiles, type Feature } from "@/components/plp/features";
 import { ProductListing } from "@/components/plp/ProductListing";
+import { BentoTile } from "@/components/ui/BentoTile";
+import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
+import { SIZES } from "@/components/ui/Img";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GridSkeleton } from "@/components/ui/Skeleton";
 import { ListingPageSkeleton } from "@/components/ui/PageSkeletons";
@@ -42,71 +48,84 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
   for (const p of pool) labelCounts.set(p.labelId, (labelCounts.get(p.labelId) ?? 0) + 1);
   const labels = edit.primary ? Array.from(labelCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10) : [];
   const related = stories.filter((s) => s.editId === edit.id);
+  // The shoppable look: a scene from the edit's story (its pins list the pieces), when the edit has one.
+  const story = related[0];
+  const sceneBlock = story?.blocks.find((b) => b.t === "scene");
+  const look = story ? { story, scene: sceneBlock?.t === "scene" ? sceneBlock.scene : story.cover.wide, caption: sceneBlock?.t === "scene" ? sceneBlock.caption : story.title } : null;
   const more = primaryEdits.filter((e) => e.id !== edit.id).slice(0, 3);
+  // Grid inserts for this edit: one of its labels, a hero piece, the edit's own promise as a quote — then the next label.
+  const features: Feature[] = interleave<Feature>(labelTiles(pool, 2), [{ kind: "hero" }, { kind: "hero" }], highlightQuotes(edit, 2));
   return (
     <>
       <EditOpenTracker editId={edit.id} />
       <EditHeader edit={edit} count={pool.length} />
 
       {labels.length > 1 && (
-        <section aria-labelledby="makers" className="container-x py-14 sm:py-20">
-          <SectionHeading level={2} eyebrow="Label stories" title={<span id="makers">Meet the labels.</span>} intro="Every label in this edit, with the story behind it." href="/brands" hrefLabel="All labels" />
-          <ul className="scrollbar-none snap-x-rail -mx-[var(--gutter)] mt-10 flex gap-4 overflow-x-auto px-[var(--gutter)] pb-3">
-            {labels.map(([id, n]) => {
-              const l = labelById[id];
-              return (
-                <li key={id} className="w-[78vw] shrink-0 sm:w-[340px]">
-                  <Link href={`/brands/${id}`} className="group flex h-full flex-col gap-4 border border-line bg-paper p-6 transition-colors hover:border-ink">
-                    <div className="flex items-center gap-4">
-                      <LabelMonogram label={l} />
-                      <div className="min-w-0">
-                        <p className="display-xs truncate">{l.name}</p>
-                        <p className="text-[12.5px] text-ink-3">{l.origin}</p>
-                      </div>
-                    </div>
-                    <p className="line-clamp-3 text-[14px] leading-relaxed text-ink-2">{l.story}</p>
-                    <div className="mt-auto flex items-center justify-between pt-2">
-                      <LabelBadges label={l} />
-                      <span className="link-u text-[12px] font-medium uppercase tracking-[0.1em]">{n} in this edit</span>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
+        <Section y="sm" aria-labelledby="makers">
+          <Carousel>
+            <SectionHeading level={2} eyebrow="Label stories" title={<span id="makers">Meet the labels.</span>} intro="Every label in this edit, with the story behind it." href="/brands" hrefLabel="All labels">
+              <CarouselArrows />
+            </SectionHeading>
+            <div className="mt-10">
+              <CarouselTrack label="Labels in this edit" density="tile">
+                {labels.map(([id, n]) => {
+                  const l = labelById[id];
+                  const rep = pool.find((p) => p.labelId === id && !p.soldOut) ?? pool.find((p) => p.labelId === id)!;
+                  return <BentoTile key={id} href={`/brands/${id}`} imgKey={rep.variants[0].images[0]} title={l.name} meta={`${n} in this edit`} sizes={SIZES.tile} />;
+                })}
+              </CarouselTrack>
+            </div>
+          </Carousel>
+        </Section>
       )}
 
-      <section id="pieces" aria-labelledby="pieces-h" className="scroll-mt-24 pb-4 pt-10 sm:pt-14">
-        <div className="container-x mb-8">
-          <h2 id="pieces-h" className="display-md">The pieces.</h2>
+      {look && (
+        <Section tone="paper" y="sm" className="border-y border-line" aria-labelledby="look-h">
+          {/* 8 + 4: the shoppable scene beside a heading and the pieces in it */}
+          <Grid className="items-stretch gap-y-8">
+            <Col span={{ base: 4, sm: 12, lg: 8 }}>
+              <ShoppableImage imgKey={look.scene} alt={look.caption} sizes="(min-width:1024px) 66vw, 100vw" ratio="3/2" />
+              <p className="mt-3 text-[13px] text-ink-3">{look.caption}</p>
+            </Col>
+            <Col span={{ base: 4, sm: 12, lg: 4 }} className="flex flex-col justify-between gap-10">
+              <div>
+                <p className="eyebrow text-ink-3">{look.story.kicker}</p>
+                <h2 id="look-h" className="display-sm mt-4">
+                  Shop the look.
+                </h2>
+              </div>
+              <LookStrip imgKey={look.scene} variant="stack" title="In this image" label={`Shop: ${look.caption}`} />
+            </Col>
+          </Grid>
+        </Section>
+      )}
+
+      <section id="pieces" aria-labelledby="pieces-h" className="scroll-mt-24 pb-4 pt-[var(--section-y)]">
+        <div className="container-x mb-10">
+          <SectionHeading level={2} eyebrow="Shop the edit" title={<span id="pieces-h">The pieces.</span>} />
         </div>
         <Suspense fallback={<div className="container-x"><GridSkeleton count={8} /></div>}>
-          <ProductListing pool={pool} scopeKey={`edit:${edit.id}`} source={`edit:${edit.id}`} hide={edit.id === "responsible" ? ["responsible"] : edit.id === "the-offer-edit" ? ["offers"] : []} categoryScope={[]} resultsHeading={false} />
+          <ProductListing pool={pool} scopeKey={`edit:${edit.id}`} source={`edit:${edit.id}`} hide={edit.id === "responsible" ? ["responsible"] : edit.id === "the-offer-edit" ? ["offers"] : []} categoryScope={[]} resultsHeading={false} features={features} />
         </Suspense>
       </section>
 
-      {related.length > 0 && (
-        <section aria-labelledby="rel-stories" className="container-x py-16 sm:py-24">
-          <SectionHeading level={2} eyebrow="From the Style Files" title={<span id="rel-stories">Read the story.</span>} href="/discover" hrefLabel="All stories" />
-          <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2">
-            {related.map((s) => (
-              <StoryCard key={s.id} story={s} variant="wide" source={`edit:${edit.id}`} />
-            ))}
-          </div>
-        </section>
-      )}
+      {/* the edit's story, full-bleed: a different rhythm after the product grid */}
+      {related.map((s) => (
+        <div key={s.id} className="mt-[var(--section-y)]">
+          <StoryCard story={s} variant="banner" as="h2" source={`edit:${edit.id}`} />
+        </div>
+      ))}
 
-      <section aria-labelledby="more-edits" className="container-x pb-8 pt-10">
+      <Section tone="paper" y="sm" className="border-t border-line" aria-labelledby="more-edits">
         <SectionHeading level={2} eyebrow="Keep going" title={<span id="more-edits">More edits.</span>} href="/edits" hrefLabel="All edits" />
-        <ul className="mt-10 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
+        <Grid className="mt-10 gap-y-[var(--gap)]">
           {more.map((e) => (
-            <li key={e.id}>
-              <EditTile edit={e} source="more-edits" sizes="(min-width:600px) 33vw, 100vw" />
-            </li>
+            <Col key={e.id} span={{ base: 4, sm: 4, lg: 4 }}>
+              <EditTile edit={e} source="more-edits" sizes="(min-width:1024px) 33vw, (min-width:600px) 33vw, 100vw" ratio="5/4" />
+            </Col>
           ))}
-        </ul>
-      </section>
+        </Grid>
+      </Section>
     </>
   );
 }

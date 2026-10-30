@@ -28,38 +28,50 @@ export function QuickViewHost() {
   );
 }
 
+/** Two equal halves (6 + 6 of the 12 columns) on a flat dialog: the shot on the left, the same buy controls as the product page on the right. Stacked on phones. */
 function QuickViewBody({ product, initialVariant }: { product: Product; initialVariant: number }) {
   const groupRef = useRef<HTMLDivElement>(null);
   const sel = useProductSelection(product, initialVariant, groupRef);
   const [shot, setShot] = useState(0);
   const label = labelById[product.labelId];
   const v = product.variants[sel.variant];
+  const at = Math.min(shot, v.images.length - 1);
   const close = () => setUI({ quickView: null });
   return (
     <OverlayBody flush>
-      <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr]">
-        <div className="relative bg-sand">
-          <Img imgKey={v.images[Math.min(shot, v.images.length - 1)]} alt={`${product.name} in ${v.colorName}`} sizes={SIZES.half} ratio="4/5" load="eager" />
-          <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2">
-            {v.images.map((_, i) => (
-              <button key={i} type="button" aria-label={`Show image ${i + 1} of ${v.images.length}`} aria-pressed={shot === i} onClick={() => setShot(i)} className="inline-flex size-6 items-center justify-center">
-                <span className={cn("h-1.5 rounded-full transition-all", shot === i ? "w-6 bg-ink" : "w-1.5 bg-ink/40")} />
-              </button>
-            ))}
-          </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2">
+        <div className="bg-sand">
+          {/* phones keep the whole garment in view: the box is capped at under half the screen and the shot is letterboxed on the flat average colour */}
+          <Img imgKey={v.images[at]} alt={`${product.name} in ${v.colorName}`} sizes={SIZES.half} ratio="4/5" load="eager" className="max-sm:max-h-[44dvh]" imgClassName="max-sm:object-contain" />
+          {v.images.length > 1 && (
+            <div className="flex items-center justify-between gap-4 border-t border-line bg-paper px-4 sm:px-5">
+              <p aria-live="polite" className="text-[12px] tabular-nums text-ink-3">
+                Image {at + 1} of {v.images.length}
+              </p>
+              <div className="flex gap-1.5">
+                {v.images.map((_, i) => (
+                  <button key={i} type="button" aria-label={`Show image ${i + 1} of ${v.images.length}`} aria-pressed={at === i} onClick={() => setShot(i)} className="flex h-11 w-9 items-center">
+                    <span className={cn("block h-[3px] w-full transition-colors", at === i ? "bg-ink" : "bg-line-strong")} />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-        <div className="flex flex-col gap-5 p-5 pr-5 sm:p-8">
-          <div>
+        <div className="flex flex-col gap-5 p-5 sm:p-8">
+          <div className="pr-10 sm:pr-8">
             <Link href={`/brands/${label.id}`} onClick={close} className="eyebrow link-u tap text-ink-3">
               {label.name}
             </Link>
-            <h2 className="display-sm mt-2">{product.name}</h2>
-            <Price price={product.price} mrp={product.mrp} size="lg" className="mt-3" />
-            <RatingLine rating={product.rating} count={product.ratingCount} className="mt-2" />
+            <h2 className="display-sm mt-2.5">{product.name}</h2>
+            <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1.5">
+              <Price price={product.price} mrp={product.mrp} size="lg" />
+              <RatingLine rating={product.rating} count={product.ratingCount} />
+            </div>
           </div>
           {product.variants.length > 1 && <ColorPicker product={product} value={sel.variant} onChange={(i) => (sel.setVariant(i), setShot(0))} />}
           <SizeSelector product={product} sel={sel} groupRef={groupRef} compact />
-          <div className="mt-1 flex items-center gap-2">
+          <div className="flex items-stretch gap-2">
             {sel.soldOutSize ? (
               <Button full size="lg" variant="secondary" onClick={() => sel.add("quickview")}>
                 Notify me
@@ -69,7 +81,7 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
                 Add to bag
               </Button>
             )}
-            <SaveButton product={product} variant={sel.variant} source="quickview" tone="plain" className="shrink-0 border border-line-strong" />
+            <SaveButton product={product} variant={sel.variant} source="quickview" tone="plain" size={22} className="size-[52px] shrink-0 border border-line-strong" />
           </div>
           <LinkButton href={`/p/${product.slug}`} variant="ghost" size="md" full iconRight={<ArrowRight size={15} />} onClick={close}>
             View full details

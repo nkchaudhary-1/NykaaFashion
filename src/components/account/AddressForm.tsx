@@ -10,7 +10,7 @@ type Draft = Omit<Address, "id" | "isDefault"> & { isDefault: boolean };
 
 const blank = (name = "", mobile = ""): Draft => ({ name, mobile, line1: "", line2: "", landmark: "", pincode: "", city: "", state: "", type: "home", isDefault: false });
 
-/** Add / edit address with live pincode lookup (simulated) and per-field validation. */
+/** Add / edit address with live pincode lookup (simulated) and per-field validation. Rows are 2 or 3 equal columns; the type picker is a row of flat square chips. */
 export function AddressForm({ initial, defaults, onSaved, onCancel }: { initial?: Address; defaults?: { name?: string; mobile?: string }; onSaved: (a: Address) => void; onCancel?: () => void }) {
   const [d, setD] = useState<Draft>(initial ? { ...initial } : blank(defaults?.name, defaults?.mobile));
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -59,9 +59,9 @@ export function AddressForm({ initial, defaults, onSaved, onCancel }: { initial?
         <Input label="Full name" autoComplete="name" value={d.name} onChange={(e) => set("name", e.target.value)} error={errors.name} />
         <Input label="Mobile number" inputMode="numeric" autoComplete="tel-national" maxLength={10} prefix="+91" value={d.mobile} onChange={(e) => set("mobile", e.target.value.replace(/\D/g, ""))} error={errors.mobile} />
       </div>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-[180px_1fr]">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         <Input label="Pincode" inputMode="numeric" autoComplete="postal-code" maxLength={6} value={d.pincode} onChange={(e) => onPin(e.target.value)} error={errors.pincode} hint="Try 400050 or 560034" />
-        <Input label="Flat / house no., building, street" autoComplete="address-line1" value={d.line1} onChange={(e) => set("line1", e.target.value)} error={errors.line1} />
+        <Input fieldClassName="sm:col-span-2" label="Flat / house no., building, street" autoComplete="address-line1" value={d.line1} onChange={(e) => set("line1", e.target.value)} error={errors.line1} />
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Input label="Area / locality" autoComplete="address-line2" optional value={d.line2 ?? ""} onChange={(e) => set("line2", e.target.value)} />
@@ -78,7 +78,7 @@ export function AddressForm({ initial, defaults, onSaved, onCancel }: { initial?
         <legend className="mb-2 text-[12.5px] font-medium">Address type</legend>
         <div className="flex gap-2">
           {(["home", "work", "other"] as const).map((t) => (
-            <label key={t} className={cn("inline-flex h-11 min-w-20 cursor-pointer items-center justify-center rounded-full border px-5 text-[13.5px] capitalize transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink", d.type === t ? "border-ink bg-ink text-bone" : "border-line-strong text-ink-2 hover:border-ink")}>
+            <label key={t} className={cn("tap inline-flex h-11 min-w-24 cursor-pointer items-center justify-center border px-5 text-[13.5px] font-medium capitalize transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink", d.type === t ? "border-ink bg-ink text-bone" : "border-line-strong text-ink hover:border-ink")}>
               <input type="radio" name="addr-type" className="sr-only" checked={d.type === t} onChange={() => set("type", t)} />
               {t}
             </label>
