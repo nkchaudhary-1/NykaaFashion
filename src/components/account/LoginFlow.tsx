@@ -74,7 +74,7 @@ export function LoginFlow() {
     <div className="container-x grid grid-cols-1 gap-0 pb-20 pt-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20 lg:pt-8">
       <div className="relative hidden lg:block">
         <div className="arch sticky top-[calc(var(--header-h)+24px)] overflow-hidden">
-          <Img imgKey="scenes/auth-side" alt="" sizes={SIZES.half} ratio="4/5" priority />
+          <Img imgKey="scenes/auth-side" alt="" sizes={SIZES.half} ratio="4/5" load="high" />
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/60 to-transparent p-8 pt-24 text-bone">
             <p className="display-sm max-w-[16ch]">Discover by taste, not discount.</p>
           </div>
@@ -101,7 +101,7 @@ export function LoginFlow() {
               <Input label="Mobile number or email" autoComplete="username" inputMode="email" value={target} onChange={(e) => (setTarget(e.target.value), setError(null))} error={error} data-autofocus autoFocus hint="We’ll send a one-time code (simulated)." />
               <Button type="submit" size="lg" full>Send code</Button>
             </div>
-            <button type="button" onClick={() => (setTarget(DEMO_MOBILE), setError(null))} className="link-u mt-6 inline-block text-[13px] text-ink">
+            <button type="button" onClick={() => (setTarget(DEMO_MOBILE), setError(null))} className="link-u tap mt-6 inline-block text-[13px] text-ink">
               Use the demo account ({formatMobile(DEMO_MOBILE)})
             </button>
             <SimulatedNotice className="mt-8">Prototype sign-in. No SMS or email is sent and no password is stored — the code is always <strong>{PROTOTYPE_OTP}</strong>.</SimulatedNotice>

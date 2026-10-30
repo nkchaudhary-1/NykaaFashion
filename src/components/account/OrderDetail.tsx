@@ -33,7 +33,7 @@ export function OrderDetail({ id }: { id: string }) {
 
   return (
     <div>
-      <Link href="/account/orders" className="mb-6 inline-flex items-center gap-2 text-[13px] text-ink-2 hover:text-ink"><ArrowLeft size={15} aria-hidden /> All orders</Link>
+      <Link href="/account/orders" className="tap mb-6 inline-flex items-center gap-2 text-[13px] text-ink-2 hover:text-ink"><ArrowLeft size={15} aria-hidden /> All orders</Link>
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="eyebrow text-ink-3">Order</p>

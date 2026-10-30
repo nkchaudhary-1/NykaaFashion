@@ -92,7 +92,7 @@ function SearchPanel() {
     }
   };
 
-  const chip = "inline-flex h-10 items-center gap-2 rounded-full border border-line-strong px-4 text-[13.5px] text-ink transition-colors hover:border-ink hover:bg-sand";
+  const chip = "inline-flex h-11 items-center gap-2 rounded-full border border-line-strong px-4 text-[13.5px] text-ink transition-colors hover:border-ink hover:bg-sand";
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="container-x flex h-[72px] shrink-0 items-center gap-3 border-b border-line transition-[border-color,box-shadow] focus-within:border-ink focus-within:shadow-[0_1px_0_0_var(--color-ink)]">

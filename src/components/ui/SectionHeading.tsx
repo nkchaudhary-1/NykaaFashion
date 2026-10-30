@@ -14,7 +14,7 @@ export function SectionHeading({ eyebrow, title, intro, href, hrefLabel, classNa
       </div>
       {children}
       {href && (
-        <Link href={href} className={cn("link-u group inline-flex items-center gap-2 pb-1 text-[12px] font-medium uppercase tracking-[0.12em]", onDark ? "text-bone" : "text-ink")}>
+        <Link href={href} className={cn("link-u tap group inline-flex items-center gap-2 pb-1 text-[12px] font-medium uppercase tracking-[0.12em]", onDark ? "text-bone" : "text-ink")}>
           {hrefLabel ?? "View all"}
           <ArrowRight size={15} className="transition-transform duration-300 ease-editorial group-hover:translate-x-1" />
         </Link>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Eye } from "lucide-react";
 import { useRef, useState, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { Badge } from "@/components/ui/Badge";
-import { Img, SIZES } from "@/components/ui/Img";
+import { Img, SIZES, type LoadHint } from "@/components/ui/Img";
 import { Price } from "@/components/ui/Price";
 import { labelById } from "@/data/labels";
 import type { Product } from "@/data/types";
@@ -15,7 +15,7 @@ import { SaveButton } from "./SaveButton";
 
 interface Props {
   product: Product;
-  priority?: boolean;
+  load?: LoadHint;
   /** analytics/FLIP source tag */
   source?: string;
   /** which colour to show (wishlist remembers the saved colour) */
@@ -33,7 +33,7 @@ interface Props {
  * Taste-first product card (PRD §5.4): image-forward, label above name, price with discount ONLY when one exists,
  * no sale chrome by default. Multi-shot: hover swaps on mouse, swipe on touch. Save is always one tap.
  */
-export function ProductCard({ product: p, priority, source = "grid", variant = 0, sizes = SIZES.card, ratio = "4/5", className, hideQuickView, footer, onOpen }: Props) {
+export function ProductCard({ product: p, load, source = "grid", variant = 0, sizes = SIZES.card, ratio = "4/5", className, hideQuickView, footer, onOpen }: Props) {
   const label = labelById[p.labelId];
   const v = p.variants[Math.min(variant, p.variants.length - 1)];
   const [shot, setShot] = useState(0);
@@ -77,7 +77,7 @@ export function ProductCard({ product: p, priority, source = "grid", variant = 0
       >
         {/* Image link is a pointer convenience; the text link below is the one assistive tech announces. */}
         <Link href={`/p/${p.slug}`} aria-hidden tabIndex={-1} draggable={false} onClick={open} className="block">
-          <Img imgKey={v.images[0]} alt="" sizes={sizes} priority={priority} ratio={ratio} className={cn(p.soldOut && "opacity-70 saturate-50")} />
+          <Img imgKey={v.images[0]} alt="" sizes={sizes} load={load} ratio={ratio} className={cn(p.soldOut && "opacity-70 saturate-50")} />
           {hasAlt && (
             <span className={cn("absolute inset-0 block transition-opacity duration-500 ease-editorial", shot > 0 ? "opacity-100" : "opacity-0")}>
               <Img imgKey={v.images[Math.min(1, v.images.length - 1)]} alt="" sizes={sizes} ratio={ratio} className="h-full" />

@@ -36,6 +36,8 @@ interface Opts {
   bg2?: string;
   /** every item carries a shoppable pin */
   pins?: boolean;
+  /** size multiplier for scenes made of small objects (see SceneDef.scale) */
+  scale?: number;
 }
 
 function scene(key: string, format: Format, bg: string, motif: SceneDef["motif"], entries: Entry[], opts: Opts = {}): SceneDef {
@@ -49,7 +51,7 @@ function scene(key: string, format: Format, bg: string, motif: SceneDef["motif"]
     const cx = format === "wide" && safe === "right" ? 1 - s.cx : s.cx;
     return { product, v, cx, cy: s.cy, height: s.h, rot: s.rot, pin: !!opts.pins, z: i };
   });
-  return { key, w, h, bg, bg2: opts.bg2, motif, motifColor: opts.motifColor, safe, items };
+  return { key, w, h, bg, bg2: opts.bg2, motif, motifColor: opts.motifColor, safe, scale: opts.scale, items };
 }
 
 // Backdrop palette per edit identity.
@@ -89,8 +91,8 @@ export const scenes: SceneDef[] = [
   // ── Category tiles ──────────────────────────────────────────
   scene("cat-women", "tall", "#ecd9cf", "arch", ["twd-02", "lik-02"], { motifColor: "#dfc3b5" }),
   scene("cat-men", "tall", "#d9dcd2", "window", ["nor-02", "ora-03"], { motifColor: "#c9cdc0" }),
-  scene("cat-kids", "tall", "#f2e2b9", "circle", ["lit-01", "lit-02"], { motifColor: "#ecd08a" }),
-  scene("cat-home", "tall", BG.home, "steps", ["ran-01", "mit-02", "hea-01"], { motifColor: "#d9c9b0" }),
+  scene("cat-kids", "tall", "#f2e2b9", "circle", ["lit-01", "lit-02"], { motifColor: "#ecd08a", scale: 0.82 }),
+  scene("cat-home", "tall", BG.home, "steps", ["ran-01", "mit-02", "hea-01"], { motifColor: "#d9c9b0", scale: 1.45 }),
   scene("auth-side", "tall", "#e8d3c4", "arch", ["maa-03", "gaj-01"], { motifColor: "#d9b79f" }),
 
   // ── Story: The Block-Print Revival ──────────────────────────
@@ -103,7 +105,7 @@ export const scenes: SceneDef[] = [
   scene("story-diwali-wide", "wide", BG.festive, "circle", ["lik-03", "til-01", "gaj-01"], { pins: true, motifColor: "#e3b34a" }),
   scene("story-diwali-tall", "tall", BG.festive, "circle", ["lik-01", "til-01"], { pins: true, motifColor: "#e3b34a" }),
   scene("story-diwali-1", "land", "#efd9cd", "circle", ["lik-01", "lik-03", "gaj-01"], { pins: true, motifColor: "#e6bf6a" }),
-  scene("story-diwali-2", "land", "#ecd4c6", "arch", ["til-03", "gaj-02", "gaj-03"], { pins: true, motifColor: "#e0b99f" }),
+  scene("story-diwali-2", "land", "#ecd4c6", "arch", ["til-03", "gaj-02", "gaj-03"], { pins: true, motifColor: "#e0b99f", scale: 2.3 }),
 
   // ── Story: Quiet Luxe ───────────────────────────────────────
   scene("story-quiet-luxe-wide", "wide", BG.luxe, "window", ["mau-01", "mau-03", "ves-01"], { pins: true, motifColor: "#3a322b" }),
@@ -126,8 +128,8 @@ export const scenes: SceneDef[] = [
   // ── Story: The Slow Home ────────────────────────────────────
   scene("story-slow-home-wide", "wide", BG.home, "steps", ["ran-02", "mit-03", "hea-01"], { pins: true, motifColor: "#d9c9b0" }),
   scene("story-slow-home-tall", "tall", BG.home, "steps", ["ran-03", "mit-02"], { pins: true, motifColor: "#d9c9b0" }),
-  scene("story-slow-home-1", "land", "#eadfcd", "arch", ["ran-01", "mit-01", "hea-01"], { pins: true, motifColor: "#dccbb0" }),
-  scene("story-slow-home-2", "land", "#e6dac7", "window", ["hea-03", "mit-04", "hea-04"], { pins: true, motifColor: "#d6c4a8" }),
+  scene("story-slow-home-1", "land", "#eadfcd", "arch", ["ran-01", "mit-01", "hea-01"], { pins: true, motifColor: "#dccbb0", scale: 1.7 }),
+  scene("story-slow-home-2", "land", "#e6dac7", "window", ["hea-03", "mit-04", "hea-04"], { pins: true, motifColor: "#d6c4a8", scale: 1.6 }),
 ];
 
 export const sceneByKey: Record<string, SceneDef> = Object.fromEntries(scenes.map((s) => [s.key, s]));

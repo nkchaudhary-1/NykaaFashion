@@ -36,10 +36,10 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
   const v = product.variants[sel.variant];
   const close = () => setUI({ quickView: null });
   return (
-    <OverlayBody className="p-0 sm:p-0">
+    <OverlayBody flush>
       <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr]">
         <div className="relative bg-sand">
-          <Img imgKey={v.images[Math.min(shot, v.images.length - 1)]} alt={`${product.name} in ${v.colorName}`} sizes={SIZES.half} ratio="4/5" priority />
+          <Img imgKey={v.images[Math.min(shot, v.images.length - 1)]} alt={`${product.name} in ${v.colorName}`} sizes={SIZES.half} ratio="4/5" load="eager" />
           <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2">
             {v.images.map((_, i) => (
               <button key={i} type="button" aria-label={`Show image ${i + 1} of ${v.images.length}`} aria-pressed={shot === i} onClick={() => setShot(i)} className="inline-flex size-6 items-center justify-center">
@@ -50,7 +50,7 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
         </div>
         <div className="flex flex-col gap-5 p-5 pr-5 sm:p-8">
           <div>
-            <Link href={`/brands/${label.id}`} onClick={close} className="eyebrow link-u text-ink-3">
+            <Link href={`/brands/${label.id}`} onClick={close} className="eyebrow link-u tap text-ink-3">
               {label.name}
             </Link>
             <h2 className="display-sm mt-2">{product.name}</h2>

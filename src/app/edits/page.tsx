@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "Edits", description: "Curated destin
 export default function EditsIndex() {
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Edits" }]} eyebrow="Curation is the default" title={<>Five ways in. <em>No grid required.</em></>} intro="Edits are curated destinations with a narrative, a set of labels and a short list of things worth owning. They sit beside Shop in the navigation — because taste should be the first way to look, not the last." />
+      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Edits" }]} eyebrow="Curation is the default" title={<><span className="block">Five ways in.</span> <em>No grid required.</em></>} intro="Edits are curated destinations with a narrative, a set of labels and a short list of things worth owning. They sit beside Shop in the navigation — because taste should be the first way to look, not the last." />
       <ul className="container-x space-y-6 pb-16 sm:space-y-0 sm:pb-24">
         {primaryEdits.map((e, i) => {
           const t = THEMES[e.theme];
@@ -33,7 +33,7 @@ export default function EditsIndex() {
                     </p>
                   </div>
                   <div className="relative min-h-[300px] overflow-hidden">
-                    <Img imgKey={`scenes/edit-${e.id}-wide`} alt="" sizes={SIZES.half} ratio="16/9" priority={i < 2} className="absolute inset-0 h-full w-full transition-transform duration-[1200ms] ease-editorial group-hover:scale-[1.04]" />
+                    <Img imgKey={`scenes/edit-${e.id}-wide`} alt="" sizes={SIZES.half} ratio="16/9" load={i < 2 ? "eager" : undefined} className="absolute inset-0 h-full w-full transition-transform duration-[1200ms] ease-editorial group-hover:scale-[1.04]" />
                   </div>
                 </Link>
               </Reveal>

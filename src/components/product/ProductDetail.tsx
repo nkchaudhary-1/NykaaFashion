@@ -99,7 +99,7 @@ export function ProductDetail({ product }: { product: Product }) {
 
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <Link href={`/brands/${label.id}`} className="eyebrow link-u text-ink">{label.name}</Link>
+            <Link href={`/brands/${label.id}`} className="eyebrow link-u tap text-ink">{label.name}</Link>
             <LabelBadges label={label} />
             {product.responsible && !label.flags.responsible && <Badge tone="emerald">Responsible</Badge>}
             {product.isNew && <Badge tone="outline">New</Badge>}
@@ -110,7 +110,7 @@ export function ProductDetail({ product }: { product: Product }) {
               <Share2 size={19} strokeWidth={1.5} />
             </button>
           </div>
-          <a href="#reviews" className="mt-3 inline-block">
+          <a href="#reviews" className="tap mt-3 inline-block">
             <RatingLine rating={product.rating} count={product.ratingCount} />
           </a>
           <div className="mt-5">

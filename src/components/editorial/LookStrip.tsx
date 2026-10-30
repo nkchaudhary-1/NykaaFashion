@@ -27,14 +27,14 @@ export function LookStrip({ imgKey, title = "In this image", label }: { imgKey: 
               </Link>
               <div className="min-w-0 flex-1 pr-1">
                 <p className="eyebrow truncate text-ink-3">{labelById[p.labelId].name}</p>
-                <Link href={`/p/${p.slug}`} className="link-u mt-1 block truncate text-[13.5px] text-ink">
+                <Link href={`/p/${p.slug}`} className="link-u tap mt-1 block truncate text-[13.5px] text-ink">
                   {p.name}
                 </Link>
                 <Price price={p.price} mrp={p.mrp} size="sm" className="mt-1" />
               </div>
               <div className="flex shrink-0 flex-col items-end justify-between">
                 <SaveButton product={p} source="look" tone="plain" size={18} className="-mr-1.5 -mt-1.5 size-9" />
-                <button type="button" onClick={() => setUI({ quickView: { productId: id } })} aria-label={`Quick add ${p.name}`} className="inline-flex h-9 items-center gap-1.5 px-1 text-[11px] font-medium uppercase tracking-[0.1em] text-ink hover:underline">
+                <button type="button" onClick={() => setUI({ quickView: { productId: id } })} aria-label={`Quick add ${p.name}`} className="inline-flex h-9 items-center gap-1.5 px-1 text-[11px] [@media(pointer:coarse)]:h-11 font-medium uppercase tracking-[0.1em] text-ink hover:underline">
                   <Eye size={13} aria-hidden /> Quick add
                 </button>
               </div>

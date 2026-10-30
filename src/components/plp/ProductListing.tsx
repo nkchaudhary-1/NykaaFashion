@@ -193,7 +193,7 @@ function Results({ items, layout, source, filters, pool, onClear, onRelax, noun 
             return (
               <li key={p.id} className="mb-9 break-inside-avoid">
                 <Reveal delay={(i % 4) * 60}>
-                  <ProductCard product={p} source={source} priority={i < 8} ratio={ratio} />
+                  <ProductCard product={p} source={source} load={i < 4 ? "eager" : undefined} ratio={ratio} />
                 </Reveal>
               </li>
             );

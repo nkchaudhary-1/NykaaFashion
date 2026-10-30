@@ -8,7 +8,7 @@ export type ButtonSize = "sm" | "md" | "lg";
 
 const BASE =
   "relative inline-flex items-center justify-center gap-2 whitespace-nowrap select-none font-medium uppercase tracking-[0.1em] text-[12px] leading-none transition-[background-color,color,border-color,transform,opacity] duration-300 ease-editorial active:scale-[0.985] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45";
-const SIZES: Record<ButtonSize, string> = { sm: "h-9 px-4", md: "h-11 px-6", lg: "h-[52px] px-8 text-[12.5px]" };
+const SIZES: Record<ButtonSize, string> = { sm: "h-9 px-4 [@media(pointer:coarse)]:h-11", md: "h-11 px-6", lg: "h-[52px] px-8 text-[12.5px]" };
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: "bg-ink text-bone hover:bg-[#2f2822]",
   secondary: "border border-ink text-ink hover:bg-ink hover:text-bone",
@@ -76,7 +76,7 @@ export function CountBadge({ n, className }: { n: number; className?: string }) 
 /** Text link with an animated underline. */
 export function TextLink({ href, children, className, ...rest }: ComponentProps<typeof Link>) {
   return (
-    <Link href={href} className={cn("link-u inline-flex items-center gap-1.5 text-[13px] font-medium uppercase tracking-[0.1em]", className)} {...rest}>
+    <Link href={href} className={cn("link-u tap inline-flex items-center gap-1.5 text-[13px] font-medium uppercase tracking-[0.1em]", className)} {...rest}>
       {children}
     </Link>
   );

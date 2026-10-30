@@ -65,7 +65,7 @@ export function Reviews({ product }: { product: Product }) {
           <ul className="mt-6 space-y-2" aria-label="Rating breakdown">
             {dist.map((d) => (
               <li key={d.n}>
-                <button type="button" onClick={() => setStar(star === d.n ? 0 : d.n)} aria-pressed={star === d.n} className={cn("flex w-full items-center gap-3 py-1 text-[13px] tabular-nums", star === d.n ? "font-medium text-ink" : "text-ink-2 hover:text-ink")}>
+                <button type="button" onClick={() => setStar(star === d.n ? 0 : d.n)} aria-pressed={star === d.n} className={cn("flex w-full items-center gap-3 py-1 text-[13px] tabular-nums [@media(pointer:coarse)]:min-h-11", star === d.n ? "font-medium text-ink" : "text-ink-2 hover:text-ink")}>
                   <span className="w-6 text-left">{d.n}★</span>
                   <span className="h-1.5 flex-1 overflow-hidden bg-line"><span className="block h-full bg-ink" style={{ width: `${d.pct}%` }} /></span>
                   <span className="w-9 text-right text-ink-3">{d.pct}%</span>
@@ -130,7 +130,7 @@ function ReviewItem({ r, voted }: { r: Review; voted: boolean }) {
       <p className="mt-3 text-[12.5px] text-ink-3">
         {r.author}{r.verified ? " · Verified buyer (sample)" : ""} · {fmtDate(r.date, { day: "numeric", month: "short", year: "numeric" })} · Bought size {r.size} · {r.fit === "true" ? "True to size" : r.fit === "small" ? "Runs small" : "Runs large"}
       </p>
-      <button type="button" aria-pressed={voted} onClick={() => prefsStore.set((p) => ({ ...p, helpful: voted ? p.helpful.filter((x) => x !== r.id) : [...p.helpful, r.id] }))} className={cn("mt-3 inline-flex h-9 items-center gap-2 border px-3 text-[12.5px] transition-colors", voted ? "border-ink bg-ink text-bone" : "border-line-strong text-ink-2 hover:border-ink")}>
+      <button type="button" aria-pressed={voted} onClick={() => prefsStore.set((p) => ({ ...p, helpful: voted ? p.helpful.filter((x) => x !== r.id) : [...p.helpful, r.id] }))} className={cn("mt-3 inline-flex h-9 items-center gap-2 border px-3 text-[12.5px] [@media(pointer:coarse)]:h-11 transition-colors", voted ? "border-ink bg-ink text-bone" : "border-line-strong text-ink-2 hover:border-ink")}>
         <ThumbsUp size={14} aria-hidden /> Helpful · {r.helpful + (voted ? 1 : 0)}
       </button>
     </li>

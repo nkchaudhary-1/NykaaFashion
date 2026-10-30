@@ -36,7 +36,7 @@ export function EditHeader({ edit, count }: { edit: Edit; count: number }) {
         </div>
         <div className="relative z-[1] hidden self-end lg:block">
           <div className="arch overflow-hidden">
-            <Img imgKey={`scenes/edit-${edit.id}-tall`} alt="" sizes={SIZES.half} ratio="4/5" priority />
+            <Img imgKey={`scenes/edit-${edit.id}-tall`} alt="" sizes={SIZES.half} ratio="4/5" load="high" />
           </div>
         </div>
       </div>

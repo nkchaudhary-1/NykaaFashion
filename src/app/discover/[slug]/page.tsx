@@ -58,7 +58,7 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
       </header>
 
       <div className="container-x">
-        <ShoppableImage imgKey={story.cover.wide} alt={`${story.title} — cover`} sizes={SIZES.full} priority ratio="16/9" />
+        <ShoppableImage imgKey={story.cover.wide} alt={`${story.title} — cover`} sizes={SIZES.full} load="preload" ratio="16/9" />
         <LookStrip imgKey={story.cover.wide} title="Shop the cover" label="Shop the cover" />
       </div>
 

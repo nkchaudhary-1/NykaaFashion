@@ -212,10 +212,19 @@ img { -webkit-user-drag: none; }
   & a { text-decoration: underline; text-underline-offset: 3px; }
 }
 
-/* animated underline for text links */
+/* Touch: grow a small control's hit area to >= 44px without moving anything (invisible pseudo-element, coarse pointers only). */
+@utility tap {
+  position: relative;
+  @media (pointer: coarse) {
+    &::after { content: ""; position: absolute; inset: -12px -8px; }
+  }
+}
+
+/* animated underline for text links — origin is the content box so padding added for touch never detaches the line from the text */
 @utility link-u {
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
+  background-origin: content-box;
   background-position: 0 100%;
   background-size: 0% 1px;
   transition: background-size 0.4s var(--ease-editorial);

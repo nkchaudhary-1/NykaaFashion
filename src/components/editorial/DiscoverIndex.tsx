@@ -23,7 +23,7 @@ export function DiscoverIndex() {
         <EmptyState title="No stories here yet" text="We publish a new issue each season." actions={<Button onClick={() => setF("All")}>See all stories</Button>} />
       ) : (
         <>
-          <Reveal><StoryCard story={lead} variant="wide" as="h2" priority source="discover" sizes="(min-width:1024px) 70vw, 100vw" className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:items-end [&>div:last-child]:pt-0" /></Reveal>
+          <Reveal><StoryCard story={lead} variant="wide" as="h2" load="preload" source="discover" sizes="(min-width:1024px) 70vw, 100vw" className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:items-end [&>div:last-child]:pt-0" /></Reveal>
           {rest.length > 0 && (
             <ul className="mt-20 grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
               {rest.map((s, i) => (

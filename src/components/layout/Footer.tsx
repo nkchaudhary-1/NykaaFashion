@@ -23,7 +23,7 @@ export function Footer() {
                 <ul className="space-y-1">
                   {col.links.map((l) => (
                     <li key={l.href + l.label}>
-                      <Link href={l.href} className="link-u inline-block py-1.5 text-[14px] text-bone/85 hover:text-bone">
+                      <Link href={l.href} className="link-u inline-block py-1.5 text-[14px] text-bone/85 hover:text-bone [@media(pointer:coarse)]:py-3">
                         {l.label}
                       </Link>
                     </li>

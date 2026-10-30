@@ -37,7 +37,7 @@ export function FeaturedEdits() {
         {lead.map((e, i) => (
           <li key={e.id} className={cn(i === 1 && "md:mt-14")}>
             <Reveal delay={i * 90}>
-              <EditTile edit={e} priority={i === 0} />
+              <EditTile edit={e} />
             </Reveal>
           </li>
         ))}

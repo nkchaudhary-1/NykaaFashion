@@ -11,7 +11,7 @@ export function Breadcrumbs({ items, className }: { items: Array<{ name: string;
           return (
             <li key={`${it.name}-${i}`} className="flex items-center gap-1.5">
               {it.href && !last ? (
-                <Link href={it.href} className="link-u hover:text-ink">
+                <Link href={it.href} className="link-u tap hover:text-ink">
                   {it.name}
                 </Link>
               ) : (

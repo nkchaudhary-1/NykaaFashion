@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
-import { Img, SIZES } from "@/components/ui/Img";
+import { Img, SIZES, type LoadHint } from "@/components/ui/Img";
 import { THEMES } from "@/data/edits";
 import type { Story } from "@/data/types";
 import { cn } from "@/lib/cn";
 import { track } from "@/lib/track";
 import { signal } from "@/stores/intent";
 
-export function StoryCard({ story, variant = "tall", priority, className, source = "home", sizes, as: H = "h3", textOnlyForAT }: { story: Story; variant?: "tall" | "wide"; priority?: boolean; className?: string; source?: string; sizes?: string; as?: "h2" | "h3"; textOnlyForAT?: boolean }) {
+export function StoryCard({ story, variant = "tall", load, className, source = "home", sizes, as: H = "h3", textOnlyForAT }: { story: Story; variant?: "tall" | "wide"; load?: LoadHint; className?: string; source?: string; sizes?: string; as?: "h2" | "h3"; textOnlyForAT?: boolean }) {
   const t = THEMES[story.theme];
   return (
     <Link
@@ -19,7 +19,7 @@ export function StoryCard({ story, variant = "tall", priority, className, source
       className={cn("group block", className)}
     >
       <div className="relative overflow-hidden">
-        <Img imgKey={variant === "wide" ? story.cover.wide : story.cover.tall} alt="" sizes={sizes ?? (variant === "wide" ? SIZES.half : SIZES.tile)} ratio={variant === "wide" ? "16/9" : "4/5"} priority={priority} className="transition-transform duration-[1100ms] ease-editorial group-hover:scale-[1.03]" />
+        <Img imgKey={variant === "wide" ? story.cover.wide : story.cover.tall} alt="" sizes={sizes ?? (variant === "wide" ? SIZES.half : SIZES.tile)} ratio={variant === "wide" ? "16/9" : "4/5"} load={load} className="transition-transform duration-[1100ms] ease-editorial group-hover:scale-[1.03]" />
       </div>
       <div className={cn("pt-5", textOnlyForAT && "sr-only")}>
         <p className="eyebrow flex items-center gap-2 text-ink-3">

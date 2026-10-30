@@ -47,9 +47,9 @@ export function Rail({ children, label, className, itemClass = "w-[62vw] sm:w-[3
 export function ProductRail({ products, label, source, reasons }: { products: Product[]; label: string; source: string; reasons?: Record<string, string> }) {
   return (
     <Rail label={label}>
-      {products.map((p, i) => (
+      {products.map((p) => (
         <div key={p.id} className="flex h-full flex-col">
-          <ProductCard product={p} source={source} sizes={SIZES.rail} priority={i < 2} />
+          <ProductCard product={p} source={source} sizes={SIZES.rail} />
           {reasons?.[p.id] && <p className="mt-1 text-[11.5px] leading-snug text-ink-3">{reasons[p.id]}</p>}
         </div>
       ))}

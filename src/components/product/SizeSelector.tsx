@@ -30,7 +30,7 @@ export function SizeSelector({ product, sel, groupRef, compact }: { product: Pro
           Select size{sel.size && <>: <span className="font-medium text-ink">{sel.size}</span></>}
         </p>
         {guide && (
-          <button type="button" onClick={() => setUI({ sizeGuide: { productId: product.id } })} className="link-u inline-flex items-center gap-1.5 py-2 text-[12.5px] font-medium text-ink">
+          <button type="button" onClick={() => setUI({ sizeGuide: { productId: product.id } })} className="link-u tap inline-flex items-center gap-1.5 py-2 text-[12.5px] font-medium text-ink">
             <Ruler size={14} aria-hidden /> Size guide
           </button>
         )}

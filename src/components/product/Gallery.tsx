@@ -91,7 +91,7 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
               onPointerLeave={(e) => e.currentTarget.removeAttribute("data-zoom")}
               onClick={() => setLightbox(i)}
             >
-              <Img imgKey={k} alt={alt(i)} sizes="(min-width:1024px) 52vw, (min-width:600px) 80vw, 100vw" ratio="4/5" priority={i === 0} />
+              <Img imgKey={k} alt={alt(i)} sizes="(min-width:1024px) 52vw, (min-width:600px) 80vw, 100vw" ratio="4/5" load={i === 0 ? "preload" : undefined} />
             </div>
           ))}
         </div>
@@ -180,7 +180,7 @@ function LightboxInner({ images, start, alt, onClose }: { images: string[]; star
         }}
         style={{ backgroundColor: imgAvg(key) }}
       >
-        <Image src={imgSrc(key)} alt={alt(i)} fill sizes="100vw" priority className="object-contain transition-transform duration-300 ease-editorial" style={{ transform: zoom ? "scale(2.2)" : "none", transformOrigin: origin }} />
+        <Image src={imgSrc(key)} alt={alt(i)} fill sizes="100vw" loading="eager" className="object-contain transition-transform duration-300 ease-editorial" style={{ transform: zoom ? "scale(2.2)" : "none", transformOrigin: origin }} />
       </div>
       {images.length > 1 && (
         <>

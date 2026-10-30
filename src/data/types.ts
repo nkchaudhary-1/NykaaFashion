@@ -166,6 +166,8 @@ export interface SceneDef {
   motif: "arch" | "circle" | "window" | "steps" | "stripe" | "none";
   motifColor?: string;
   safe?: "left" | "right" | "none";
+  /** multiplies every item's size — for look-boards of small objects (jewellery, homeware) that would otherwise be lost in the frame */
+  scale?: number;
   items: SceneItem[];
   props?: Array<{ type: string; cx: number; cy: number; size: number; color?: string }>;
 }

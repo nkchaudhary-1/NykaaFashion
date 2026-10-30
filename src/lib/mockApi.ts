@@ -10,14 +10,23 @@ export type QueryStatus = "loading" | "ready" | "error";
  * The Prototype panel can add latency or force the next request to fail.
  */
 export function useMockQuery<T>(key: string, compute: () => T, delay = 380) {
-  const [state, setState] = useState<{ status: QueryStatus; data: T | undefined; key: string | null }>({ status: "loading", data: undefined, key: null });
+  // The first paint of a page needs no pretend round-trip — the route's own skeleton already covered the load, and holding
+  // results back would only delay the LCP. The delay is for *changes* (filters, sort), retries, and the Prototype
+  // panel's slow / failing network demos, which still start from a skeleton.
+  const [state, setState] = useState<{ status: QueryStatus; data: T | undefined; key: string | null }>(() => {
+    const p = prefsStore.get();
+    return p.slowNetwork || p.failNext ? { status: "loading", data: undefined, key: null } : { status: "ready", data: compute(), key };
+  });
   const [attempt, setAttempt] = useState(0);
   const computeRef = useRef(compute);
+  const settled = useRef(state.key); // the key whose data is already in state from the first render
   useEffect(() => {
     computeRef.current = compute;
   });
 
   useEffect(() => {
+    if (settled.current === key && attempt === 0) return;
+    settled.current = null;
     const prefs = prefsStore.get();
     const wait = prefs.slowNetwork ? delay + 1400 : delay;
     const t = setTimeout(() => {

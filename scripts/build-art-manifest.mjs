@@ -72,7 +72,7 @@ for (const s of scenes) {
     spec.bg = s.bg;
     const kind = d.art.kind;
     const hang = HANG.has(kind);
-    const height = Math.min(0.92, it.height * (SCALE[kind]?.(d.art) ?? 0.6));
+    const height = Math.min(0.92, it.height * (SCALE[kind]?.(d.art) ?? 0.6) * (s.scale ?? 1));
     const cy = hang ? TOP + height / 2 : FLOOR - height / 2;
     const out = { spec, cx: it.cx, cy: round(cy), height: round(height), anchor: hang ? "hang" : "floor", z: it.z };
     if (it.rot) out.rot = it.rot;
