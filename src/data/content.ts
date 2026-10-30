@@ -21,8 +21,8 @@ export const FEATURED_BY_TOP: Record<string, { scene: string; title: string; kic
 };
 
 export const FAQS: Array<{ q: string; a: string }> = [
-  { q: "Is this the real Nykaa Fashion?", a: "No. This is a design prototype built to explore a curation-first redesign. It uses mock data, simulated personalisation and a simulated checkout. Nothing here is a real order, payment or product." },
-  { q: "How does the homepage adapt?", a: "The prototype looks at what you view, save and add on this device (stored locally) and re-orders the homepage. New visitors see curation first; returning visitors see a ‘picked for you’ rail; people who engage with offers see the offer edit rise. It is a heuristic, not machine learning." },
+  { q: "Is this the real Nykaa Fashion?", a: "No. This is a design prototype of an improved Nykaa Fashion: it keeps the look, navigation and brand names of the live site and reorganises them on a stricter grid. Products, prices and stories are sample data; personalisation and checkout are simulated. Nothing here is a real order, payment or product." },
+  { q: "How does the homepage adapt?", a: "The prototype looks at what you view, save and add on this device (stored locally) and re-orders the homepage. New visitors see the sale banner, price shortcuts and category tiles first; returning visitors see a ‘picked for you’ rail; people who engage with offers see the offer band rise. It is a heuristic, not machine learning." },
   { q: "Are payments real?", a: "No. Every payment method is simulated. No card, UPI or banking details are sent anywhere and no money moves. Use the test values shown at checkout." },
   { q: "Will my order arrive?", a: "No order is placed in this prototype. Order tracking is simulated so you can review the experience of order states." },
   { q: "How do I reset the prototype?", a: "Open the Prototype panel (footer → Prototype controls, or the menu on phones) and choose Reset all data. This clears your bag, wishlist, account and signals from this browser." },

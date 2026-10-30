@@ -24,7 +24,7 @@ export default function EditsIndex() {
   const [lead, second, ...rest] = primaryEdits;
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Edits" }]} eyebrow="Curation is the default" title={<><span className="block">Five ways in.</span> <em>No grid required.</em></>} intro="Edits are curated destinations with a narrative, a set of labels and a short list of things worth owning. They sit beside Shop in the navigation — because taste should be the first way to look, not the last." />
+      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Edits" }]} eyebrow="Curated destinations" title={<><span className="block">Luxe, Hidden Gems</span> <em>&amp; more.</em></>} intro="Each destination has a story, a set of labels and a short list of things worth owning — the poster tiles under More in the navigation, in one place." />
       <Section y="none" className="pb-[var(--section-y)]">
         <Grid className="gap-y-[var(--gap)]">
           <Col span={{ base: 4, sm: 12, lg: 7 }} className="relative aspect-[5/4] sm:aspect-[16/9] lg:aspect-[7/6]">

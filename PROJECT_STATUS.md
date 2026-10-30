@@ -33,19 +33,20 @@ npm run art:manifest && npm run art:render                   # regenerate + rend
 |---|-----------|--------|
 | 01 | **Foundation** — architecture, tokens, type, global styles, responsive layout, reusable UI kit | ✅ done |
 | 02 | **Shopping discovery** — adaptive Home, live-structure header (department row, dropdowns, More tiles, Account menu), footer, search + suggestions, category/edit/label pages, PLP with URL-encoded filters & sort | ✅ done |
-| 03 | **Product experience** — PDP (gallery, zoom, FLIP, sizes, size guide, reviews, complete-the-look, recommendations), wishlist, quick view, notify-me | ✅ done |
-| 04 | **Commerce** — bag, qty, coupons, price maths, OTP login/registration, addresses, 3-step checkout, payment selection, simulated confirmation | ✅ done |
-| 05 | **Account** — profile, addresses, wishlist, order history, order detail, tracking timeline, cancel / return | ✅ done |
+| 03 | **Product experience** — PDP in the live structure (thumbnail rail + picture, info order, delivery, coupons, Product Information, Rating & Reviews, About the brand, four rails, Size Guide drawer, FLIP), wishlist, quick view, notify-me | ✅ done |
+| 04 | **Commerce** — bag drawer + page (Price Summary, savings banner, sticky Proceed to Buy), cart hover preview, coupons, price maths, login modal + OTP, addresses, 3-step checkout, payment selection, simulated confirmation | ✅ done |
+| 05 | **Account** — profile, addresses, saved payments (simulated), wishlist, order history, order detail, tracking timeline, cancel / return | ✅ done |
+| 07 | **Live-site fidelity (v3)** — 15 screenshots + the supplied wordmark became the source of truth: tokens, header, department row, More tiles, Account / Cart menus, footer, login modal, bag drawer, wishlist, PDP | ✅ done (content stays sample — see "Content status") |
 | 06 | **Final polish** — motion, loading/empty/error states, a11y, performance, responsive refinement | ✅ done (limits listed below) |
 | — | **Imagery** — procedural art engine (`scripts/art`): 25 product kinds, 47 editorial scenes with shoppable pins | ✅ done — all 557 images rendered and committed |
 
 ## Routes
 
-`/` · `/discover` · `/discover/[story]` · `/edits` · `/edits/[edit]` · `/c/[...category]` · `/brands` · `/brands/[label]` · `/p/[product]` · `/search?q=` · `/offers` · `/wishlist` · `/bag` · `/login` · `/checkout` · `/checkout/confirmation/[id]` · `/account` · `/account/orders` · `/account/orders/[id]` · `/account/addresses` · `/help` · `/info/[page]` · `/prototype` · 404 + error boundary.
+`/` · `/discover` · `/discover/[story]` · `/edits` · `/edits/[edit]` · `/c/[...category]` · `/brands` · `/brands/[label]` · `/p/[product]` · `/search?q=` · `/offers` · `/wishlist` · `/bag` · `/login` · `/checkout` · `/checkout/confirmation/[id]` · `/account` · `/account/orders` · `/account/orders/[id]` · `/account/addresses` · `/account/payments` · `/help` · `/info/[page]` (About, Careers, Press, Shipping & Return, Terms, Privacy, Responsible Disclosure, Sell …) · `/sitemap` · `/prototype` · 404 + error boundary.
 
 ## What is simulated (always labelled in the UI)
 
-Personalisation / intent engine (localStorage heuristics) · OTP sign-in (code is `123456`) · payments (test values shown; `fail@upi` and card `…0002` decline on purpose) · orders, tracking & returns · reviews · delivery estimates · coupons (`TASTE10`, `FIRSTEDIT`, `GEMS15`, `HOUSE200`) · back-in-stock alerts · analytics events (logged locally, PRD §8.1).
+Personalisation / intent engine (localStorage heuristics) · OTP sign-in (code is `123456`) · payments and saved payments (test values shown; `fail@upi` and card `…0002` decline on purpose; only a UPI ID or a card’s brand and last four digits are stored) · orders, tracking & returns · reviews · delivery estimates · coupons (`TASTE10`, `FIRSTEDIT`, `GEMS15`, `HOUSE200`) · back-in-stock alerts · analytics events (logged locally, PRD §8.1).
 
 The **Prototype** panel (footer → “Prototype controls”, or the menu drawer on phones) lets a reviewer force intent states, add latency, fail the next request, hide a home module (partial failure), read the event log, sign in as the demo account, and reset everything.
 

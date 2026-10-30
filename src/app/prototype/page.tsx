@@ -12,13 +12,13 @@ export const metadata: Metadata = { title: "Prototype notes", description: "What
 
 const ROWS: Array<[string, string, string]> = [
   ["Intent-adaptive default surface", "Real-time behavioural adaptation", "Simulated — cold / returning / deal via localStorage heuristics"],
-  ["All three user types", "Fully personalised per segment", "One adaptive surface; curation-first cold-start default"],
+  ["All three user types", "Fully personalised per segment", "One adaptive surface; sale banner, price shortcuts and category tiles lead on a cold start"],
   ["Editorial + personalisation", "Editorial + ML personalisation", "Editorial (real content) + a personalised rail (simulated scoring)"],
   ["Surface", "Responsive web → iOS app", "Responsive web (desktop + mobile) now; iOS later"],
 ];
 
 const JOURNEYS: Array<[string, string, string]> = [
-  ["Browser, cold start", "/", "Curation leads. Open a story, an edit, then a piece."],
+  ["Browser, cold start", "/", "The sale banner, price shortcuts and category tiles lead. Open a category, then a piece."],
   ["Deal-seeker", "/?ref=sale", "A sale-link arrival (or tapping the Offer module) promotes the discount path for the session."],
   ["Returning shopper", "/", "View or save three pieces — a ‘Picked for you’ rail appears."],
   ["Occasion shopper", "/edits/festive", "Festive & Wedding edit with narrative, labels and filters."],
@@ -71,7 +71,7 @@ const SIM: Array<{ tag: string; tone: "amber" | "neutral"; title: string; body: 
 export default function PrototypePage() {
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Prototype notes" }]} eyebrow="Read me first" title={<>What’s real, <em>what’s simulated.</em></>} intro="A curation-first redesign of Nykaa Fashion’s discovery experience, built from the product brief. It is a front-end prototype: every control does something real against mock data — and anything that would need a backend is clearly labelled." />
+      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Prototype notes" }]} eyebrow="Read me first" title={<>What’s real, <em>what’s simulated.</em></>} intro="An improved Nykaa Fashion — the live identity, reorganised on a stricter grid — built from the product brief and 15 screenshots of the live site. It is a front-end prototype: every control does something real against mock data — and anything that would need a backend is clearly labelled." />
 
       {/* The controls band: a flat ink panel — what to do (cols 7–12) and the button that does it (cols 1–5) */}
       <Section tone="ink" aria-labelledby="review" y="sm">
@@ -121,12 +121,12 @@ export default function PrototypePage() {
           <Col span={{ base: 4, sm: 12, lg: 4 }}>
             <p className="eyebrow mb-4 text-ink-3">Why this exists</p>
             <h2 id="thesis" className="display-sm">
-              The thesis
+              The approach
             </h2>
           </Col>
           <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ lg: 5 }} rowStart={{ lg: 1 }}>
             <p className="max-w-[44ch] text-[15.5px] leading-[1.7] text-ink-2">
-              Nykaa Fashion’s default way to discover is a discount-led category grid, while its real equity — Hidden Gems, Luxe, the Responsible edit, House of Nykaa and editorial — is buried. This redesign makes <strong className="font-medium text-ink">curation the default</strong>: Edits sit beside Shop and Discover in the primary navigation, the homepage leads with a point of view, and a discount is shown only where a price has genuinely moved.
+              Nykaa Fashion’s strengths are its breadth and its brands; the browsing experience around them is dense and uneven. This redesign <strong className="font-medium text-ink">keeps the identity</strong> — the navigation, colours, module titles and brand names — and changes the structure: one 12-column grid, a different composition per section, clearer hierarchy and spacing. Luxe, Hidden Gems, the Responsible edit and House of Nykaa stay one click away under More, and a discount is shown only where a price has genuinely moved.
             </p>
           </Col>
           <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }}>
