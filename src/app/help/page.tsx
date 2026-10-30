@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Help centre" };
 export default function HelpPage() {
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Help" }]} eyebrow="Help centre" title={<>How can we <em>help?</em></>} size="lg" />
+      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Help" }]} eyebrow="Help centre" title={<>How can we <em>help?</em></>} intro="Quick answers about orders, delivery and this prototype — or send us a message." size="lg" />
       <HelpCentre />
     </>
   );
