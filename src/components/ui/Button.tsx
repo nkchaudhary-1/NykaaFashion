@@ -7,13 +7,13 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "accent" | "inve
 export type ButtonSize = "sm" | "md" | "lg";
 
 const BASE =
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap select-none font-semibold uppercase tracking-[0.08em] text-[12px] leading-none transition-[background-color,color,border-color,transform,opacity] duration-300 ease-editorial active:scale-[0.985] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45";
-const SIZES: Record<ButtonSize, string> = { sm: "h-9 px-4 [@media(pointer:coarse)]:h-11", md: "h-11 px-6", lg: "h-[52px] px-8 text-[12.5px]" };
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap select-none rounded-[var(--radius-sm)] font-semibold text-[15px] leading-none transition-[background-color,color,border-color,transform,opacity] duration-300 ease-editorial active:scale-[0.985] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45";
+const SIZES: Record<ButtonSize, string> = { sm: "h-9 px-4 [@media(pointer:coarse)]:h-11", md: "h-11 px-6", lg: "h-12 px-8 text-[16px]" };
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "bg-pink text-white hover:bg-pink-ink",
+  primary: "bg-navy text-white hover:bg-ink",
   secondary: "border border-ink text-ink hover:bg-ink hover:text-white",
   ghost: "text-ink hover:bg-sand",
-  accent: "bg-ink text-white hover:bg-ink-2",
+  accent: "bg-pink text-white hover:bg-pink-ink",
   inverse: "bg-white text-ink hover:bg-sand",
   danger: "border border-danger text-danger hover:bg-danger hover:text-white",
   "outline-light": "border border-white/70 text-white hover:bg-white hover:text-ink",

@@ -128,7 +128,7 @@ const must = (c, m) => { if (!c) throw new Error(m); };
   await step("footer: link columns work; Prototype controls opens the panel", async () => {
     await home();
     const footer = page.locator("footer");
-    for (const [name, re] of [["Style Files", /\/discover/], ["Women", /\/c\/women/], ["Help centre", /\/help/]]) {
+    for (const [name, re] of [["Style Files", /\/discover/], ["Women’s Indianwear", /\/c\/women\/indianwear/], ["Help Center", /\/help/], ["Puma", /\/brands\/puma/]]) {
       await footer.getByRole("link", { name, exact: true }).first().click();
       await page.waitForURL(re);
       await home();

@@ -8,6 +8,7 @@ import { Overlay } from "@/components/ui/Overlay";
 import { Price } from "@/components/ui/Price";
 import { topCategories } from "@/data/categories";
 import { TRENDING_SEARCHES } from "@/data/content";
+import { SEARCH_PLACEHOLDER } from "@/data/nav";
 import { primaryEdits } from "@/data/edits";
 import { labelById } from "@/data/labels";
 import { cn } from "@/lib/cn";
@@ -95,32 +96,34 @@ function SearchPanel() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="border-b border-line transition-colors focus-within:border-ink">
+      <div className="border-b border-line">
         <div className="container-x flex h-[72px] items-center gap-3">
-          <Search size={20} className="shrink-0 text-ink" aria-hidden />
+          <div className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-t-[var(--radius-sm)] border-b-2 border-line-strong bg-sand px-4 transition-colors focus-within:border-pink">
+          <Search size={20} className="shrink-0 text-ink-3" aria-hidden />
           <input
             data-autofocus
             type="search"
             role="combobox"
-            aria-label="Search labels, edits and styles"
+            aria-label="Search for products, styles and brands"
             aria-expanded={items.length > 0}
             aria-controls={listId}
             aria-activedescendant={active >= 0 ? `${listId}-${active}` : undefined}
             aria-autocomplete="list"
             autoComplete="off"
             enterKeyHint="search"
-            placeholder="Search labels, edits, styles"
+            placeholder={SEARCH_PLACEHOLDER}
             value={q}
             onChange={(e) => (setQ(e.target.value), setActive(-1))}
             onKeyDown={onKey}
-            className="h-12 min-w-0 flex-1 bg-transparent text-[17px] text-ink placeholder:text-ink-3 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+            className="h-12 min-w-0 flex-1 bg-transparent text-[16px] text-ink placeholder:text-ink-3 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
           />
           {q && (
-            <button type="button" aria-label="Clear search" onClick={() => (setQ(""), setActive(-1))} className="inline-flex size-11 shrink-0 items-center justify-center text-ink-2 transition-colors hover:bg-sand hover:text-ink">
+            <button type="button" aria-label="Clear search" onClick={() => (setQ(""), setActive(-1))} className="-mr-3 inline-flex size-11 shrink-0 items-center justify-center text-ink-2 transition-colors hover:text-ink">
               <X size={18} />
             </button>
           )}
-          <button type="button" onClick={close} className="inline-flex h-11 shrink-0 items-center border border-ink px-4 text-[12px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:bg-ink hover:text-bone">
+          </div>
+          <button type="button" onClick={close} className="inline-flex h-11 shrink-0 items-center rounded-[var(--radius-sm)] border border-ink px-5 text-[14px] font-semibold text-ink transition-colors hover:bg-ink hover:text-white">
             Close
           </button>
         </div>

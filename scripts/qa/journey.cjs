@@ -59,8 +59,8 @@ const settle = async (page) => {
       await dlg.getByRole("link", { name: /Hidden Gems/ }).first().click();
     } else {
       await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "More", exact: true }).hover();
-      await page.locator("#mega-panel").waitFor();
-      await page.locator("#mega-panel").getByRole("link", { name: /Hidden Gems/ }).first().click();
+      await page.locator("#more-panel").waitFor();
+      await page.locator("#more-panel").getByRole("link", { name: /Hidden Gems/ }).first().click();
     }
     await page.waitForURL(/\/edits\/hidden-gems/);
     await page.getByRole("heading", { level: 1, name: "Hidden Gems" }).waitFor();

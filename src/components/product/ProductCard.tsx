@@ -90,7 +90,7 @@ export function ProductCard({ product: p, load, source = "grid", variant = 0, si
         {/* status — text labels, never colour alone */}
         <div className="pointer-events-none absolute left-2 top-2 flex flex-col items-start gap-1">
           {p.soldOut ? <Badge tone="ink">Sold out</Badge> : p.isNew ? <Badge tone="light">New</Badge> : null}
-          {p.responsible && !p.soldOut && <Badge tone="emerald">Responsible</Badge>}
+          {p.responsible && !p.soldOut && <Badge tone="blue">Responsible</Badge>}
         </div>
 
         {/* touch shot dots */}

@@ -1,12 +1,14 @@
 "use client";
 import { ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/cn";
 import { prefsStore, toast, usePrefs } from "@/stores/ui";
 
-export function NewsletterForm() {
+export function NewsletterForm({ className }: { className?: string }) {
   const { newsletter } = usePrefs();
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const spacing = className ?? "mt-8";
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
@@ -20,19 +22,19 @@ export function NewsletterForm() {
   };
   if (newsletter) {
     return (
-      <p className="mt-8 flex items-center gap-2 text-[14px] text-ink-2">
-        <Check size={16} className="text-pink" aria-hidden /> Subscribed as {newsletter} (simulated)
+      <p className={cn("flex items-center gap-2 text-[14px] text-ink-2", spacing)}>
+        <Check size={16} className="text-emerald" aria-hidden /> Subscribed as {newsletter} (simulated)
       </p>
     );
   }
   return (
-    <form onSubmit={submit} noValidate className="mt-8 max-w-sm">
-      <label htmlFor="nl" className="eyebrow mb-3 block text-ink-3">
+    <form onSubmit={submit} noValidate className={cn("max-w-sm", spacing)}>
+      <label htmlFor="nl" className="mb-3 block text-[13px] font-semibold text-ink">
         The Style Files letter
       </label>
-      <div className="flex border-b border-ink-3 transition-colors focus-within:border-ink focus-within:border-b-2">
-        <input id="nl" type="email" autoComplete="email" placeholder="Your email" value={email} onChange={(e) => (setEmail(e.target.value), setError(null))} aria-invalid={error ? true : undefined} aria-describedby={error ? "nl-err" : undefined} className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-ink placeholder:text-ink-3 focus:outline-none" />
-        <button type="submit" aria-label="Subscribe" className="inline-flex size-12 items-center justify-center bg-pink text-white transition-colors hover:bg-pink-ink">
+      <div className="flex rounded-t-[var(--radius-sm)] border-b-2 border-line-strong bg-white transition-colors focus-within:border-pink">
+        <input id="nl" type="email" autoComplete="email" placeholder="Your email" value={email} onChange={(e) => (setEmail(e.target.value), setError(null))} aria-invalid={error ? true : undefined} aria-describedby={error ? "nl-err" : undefined} className="h-12 min-w-0 flex-1 bg-transparent px-4 text-[15px] text-ink placeholder:text-ink-3 focus:outline-none" />
+        <button type="submit" aria-label="Subscribe" className="inline-flex size-12 items-center justify-center rounded-tr-[var(--radius-sm)] bg-navy text-white transition-colors hover:bg-ink">
           <ArrowRight size={19} />
         </button>
       </div>

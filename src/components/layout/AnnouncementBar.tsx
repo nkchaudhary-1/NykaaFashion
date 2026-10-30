@@ -1,26 +1,39 @@
 "use client";
 import Link from "next/link";
-import { X } from "lucide-react";
-import { FlaskConical } from "lucide-react";
+import { CircleHelp, FlaskConical, X } from "lucide-react";
 import { setPrefs, usePrefs } from "@/stores/ui";
 
+/** The thin black strip above the header (the live site carries "App Download" and "Help" here). It also holds the prototype notice, which can be dismissed. */
 export function AnnouncementBar() {
   const { announceDismissed } = usePrefs();
-  if (announceDismissed) return null;
   return (
-    <section aria-label="Prototype notice" className="relative bg-ink text-bone">
-      <div className="container-x flex min-h-9 items-center justify-center gap-2 py-2 pr-10 text-center text-[12px] leading-snug sm:text-[12.5px]">
-        <FlaskConical size={13} aria-hidden className="hidden shrink-0 text-gold sm:block" />
-        <p>
-          <span className="font-medium">Design prototype.</span> <span className="text-bone/75">Checkout, payments, orders and personalisation are simulated.</span>{" "}
-          <Link href="/prototype" className="link-u whitespace-nowrap font-medium text-bone">
-            How it works
+    <div className="bg-luxe text-white">
+      <div className="container-x flex min-h-9 items-center justify-between gap-4 text-[12px] leading-snug sm:text-[12.5px]">
+        {announceDismissed ? (
+          <span />
+        ) : (
+          <section aria-label="Prototype notice" className="flex min-w-0 items-center gap-2 py-1.5">
+            <FlaskConical size={13} aria-hidden className="hidden shrink-0 text-gold sm:block" />
+            <p className="min-w-0">
+              <span className="font-semibold">Design prototype.</span> <span className="text-white/75">Checkout, payments, orders and personalisation are simulated.</span>{" "}
+              <Link href="/prototype" className="link-u whitespace-nowrap font-medium text-white">
+                How it works
+              </Link>
+            </p>
+            <button type="button" aria-label="Dismiss announcement" onClick={() => setPrefs({ announceDismissed: true })} className="-my-2 inline-flex size-11 shrink-0 items-center justify-center text-white/70 hover:text-white">
+              <X size={15} />
+            </button>
+          </section>
+        )}
+        <nav aria-label="Utility" className="hidden shrink-0 items-center gap-6 lg:flex">
+          <Link href="/account/orders" className="hover:text-white/75">
+            Track order
           </Link>
-        </p>
+          <Link href="/help" className="inline-flex items-center gap-1.5 hover:text-white/75">
+            <CircleHelp size={14} aria-hidden /> Help
+          </Link>
+        </nav>
       </div>
-      <button type="button" aria-label="Dismiss announcement" onClick={() => setPrefs({ announceDismissed: true })} className="absolute right-1 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center text-bone/70 hover:text-bone sm:right-3">
-        <X size={15} />
-      </button>
-    </section>
+    </div>
   );
 }

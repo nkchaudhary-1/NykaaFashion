@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Tone = "neutral" | "ink" | "pink" | "emerald" | "amber" | "gold" | "danger" | "outline" | "light";
+type Tone = "neutral" | "ink" | "pink" | "emerald" | "blue" | "amber" | "gold" | "danger" | "outline" | "light";
 const TONES: Record<Tone, string> = {
   neutral: "bg-sand text-ink-2",
   ink: "bg-ink text-bone",
-  pink: "bg-pink-ink text-white",
+  pink: "bg-pink text-white",
   emerald: "bg-emerald-tint text-emerald",
+  blue: "bg-blue-tint text-blue",
   amber: "bg-amber-tint text-amber",
   gold: "bg-gold-tint text-gold-ink",
   danger: "bg-danger-tint text-danger",

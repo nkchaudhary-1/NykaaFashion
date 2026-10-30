@@ -3,7 +3,7 @@ import { inr } from "@/lib/format";
 
 /**
  * Price block. Discount chrome appears ONLY when a real discount exists (PRD §6.1).
- * Discount text is Nykaa pink (AA on white and grey) and always carries the "% off" words — never colour alone.
+ * Discount text is the live site's green (AA on white and grey) and always carries the "% off" words — never colour alone.
  */
 export function Price({ price, mrp, size = "md", className, showSavings = true }: { price: number; mrp: number; size?: "sm" | "md" | "lg"; className?: string; showSavings?: boolean }) {
   const discount = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
@@ -16,7 +16,7 @@ export function Price({ price, mrp, size = "md", className, showSavings = true }
           <s aria-hidden className={cn("font-normal text-ink-3", size === "lg" ? "text-[15px]" : "text-[12.5px]")}>
             {inr(mrp)}
           </s>
-          {showSavings && <span className={cn("font-semibold text-pink-ink", size === "lg" ? "text-[14px]" : "text-[12px]")}>{discount}% off</span>}
+          {showSavings && <span className={cn("font-semibold text-emerald", size === "lg" ? "text-[14px]" : "text-[12px]")}>{discount}% off</span>}
         </>
       )}
     </p>

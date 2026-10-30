@@ -55,7 +55,7 @@ const probe = () => {
     await page.waitForURL(/\/account$/);
     for (const p of AUTHED) await run(p);
     // overlays
-    for (const [name, open] of [["search", async () => { await page.goto(BASE + "/", { waitUntil: "networkidle" }); await page.keyboard.press("/"); }], ["bag drawer", async () => { await page.goto(BASE + "/", { waitUntil: "networkidle" }); await page.getByRole("button", { name: /^Bag/ }).first().click(); }]]) {
+    for (const [name, open] of [["search", async () => { await page.goto(BASE + "/", { waitUntil: "networkidle" }); await page.keyboard.press("/"); }], ["bag drawer", async () => { await page.goto(BASE + "/", { waitUntil: "networkidle" }); await page.getByRole("button", { name: /^Cart/ }).first().click(); }]]) {
       await open();
       await page.waitForTimeout(700);
       const r = await page.evaluate(() => {

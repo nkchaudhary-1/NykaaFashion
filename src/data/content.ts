@@ -82,6 +82,21 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     intro: "What this prototype stores.",
     sections: [{ h: "Local only", p: ["Your bag, wishlist, account, addresses, orders, browsing signals and prototype settings are stored in this browser using localStorage. Nothing is sent to a server. Use ‘Reset all data’ in the Prototype panel to clear it."] }],
   },
+  press: {
+    title: "Press",
+    intro: "There is no press office — this is a design prototype.",
+    sections: [{ h: "Questions about this prototype", p: ["The page exists because the live Nykaa Fashion footer has one. In this prototype it only explains that nothing here is a real announcement, release or press asset."] }],
+  },
+  "responsible-disclosure": {
+    title: "Responsible Disclosure",
+    intro: "How security reports would be handled on a real store.",
+    sections: [{ h: "In this prototype", p: ["There is no server, no customer data and nothing to report against: every bag, wishlist, account and order lives in your own browser. If you find a bug in the prototype, tell its author."] }],
+  },
+  sell: {
+    title: "Sell on Nykaa Fashion",
+    intro: "Seller onboarding is not part of this prototype.",
+    sections: [{ h: "Not available", p: ["The live site invites brands to sell on Nykaa Fashion. This redesign covers the shopper experience only, so there is no seller flow to try."] }],
+  },
 };
 
 export interface SizeGuide {

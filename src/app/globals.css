@@ -13,44 +13,54 @@
   --font-display: var(--font-sans);
   --font-mono: var(--font-sans);
 
-  /* neutrals — Nykaa Fashion: white page, soft grey surfaces, navy-black ink */
+  /* neutrals — sampled from the live Nykaa Fashion UI: white page, light grey-green surfaces, slate ink */
   --color-white: #ffffff;
   --color-bone: #ffffff; /* the page */
-  --color-paper: #fafafb; /* raised / alternate surface */
-  --color-sand: #f4f4f6; /* soft grey surface (panels, chips, hover) */
-  --color-stone: #e4e5ea; /* skeletons, pressed states */
-  --color-line: #e8e9ed;
-  --color-line-strong: #cdd0d7;
-  --color-ink: #001325;
-  --color-ink-2: #3a4658;
-  --color-ink-3: #626a7b;
+  --color-paper: #f7f8f8; /* raised / alternate surface */
+  --color-sand: #f0f4f4; /* soft surface (panels, inputs, hover) */
+  --color-stone: #e3e8e8; /* skeletons, pressed states */
+  --color-line: #e5e9e9;
+  --color-line-strong: #cdd3d3;
+  --color-ink: #1c2834;
+  --color-ink-2: #414d58;
+  --color-ink-3: #646868;
+  --color-navy: #001425; /* primary buttons: Add to Bag, Proceed to Buy, View bag */
 
-  /* brand — Nykaa pink: CTAs, active states, discounts, emphasis */
-  --color-pink: #e80071;
-  --color-pink-ink: #c4005f; /* pink as small text / hover on white */
-  --color-pink-tint: #fff0f6;
-  --color-pink-soft: #ffd6e8;
+  /* accent — the raspberry used for links, active underlines, badges and toggles on the live site (the bright magenta lives in the logo only) */
+  --color-pink: #982854;
+  --color-pink-ink: #7a1f43; /* hover / pressed */
+  --color-pink-tint: #faf0f4;
+  --color-pink-soft: #f1d6e1;
+  --color-brand: #fc2779; /* the NYKAA letters of the supplied wordmark */
+  --color-maroon: #6c1038; /* login header band */
 
-  /* status */
-  --color-emerald: #0b6a4b;
-  --color-emerald-tint: #e0f2ea;
+  /* status: green = discounts and savings, blue = "Responsible" / "Exclusive" labels */
+  --color-emerald: #357a41;
+  --color-emerald-tint: #e9f3ec;
+  --color-blue: #306ce4;
+  --color-blue-tint: #e8efff;
   --color-amber: #7d4f08;
   --color-amber-tint: #fbeccd;
   --color-danger: #b0221a;
   --color-danger-tint: #fcebe9;
 
-  /* curated destinations (Nykaa Fashion: Hidden Gems, Luxe, Responsible, festive, House of Nykaa) */
-  --color-gem: #9b1c55;
-  --color-gem-tint: #fbe3ee;
-  --color-luxe: #0e0e10;
+  /* curated destinations (Hidden Gems, Luxe, Responsible, festive, House of Nykaa) */
+  --color-gem: #6c1038;
+  --color-gem-tint: #f6e1ea;
+  --color-luxe: #101010;
   --color-gold: #c5a059;
   --color-gold-ink: #7a5c24;
   --color-gold-tint: #f6edd9;
   --color-resp: #2f6b4f;
   --color-resp-tint: #e1f0e8;
-  --color-festive: #8a1448;
+  --color-festive: #982854;
   --color-marigold: #ffb020;
-  --color-festive-tint: #fde4ee;
+  --color-festive-tint: #faf0f4;
+
+  /* corners — the live UI uses 4px controls, pill size chips / toggles, 16px dialogs; images and cards stay square */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
 
   /* breakpoints — mobile < 600 (4-col grid), tablet 600–1023 and desktop ≥ 1024 (12-col grid) */
   --breakpoint-sm: 37.5rem;
@@ -103,7 +113,7 @@
   --gap: 16px;
   --edge: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter))); /* where the container's content starts, for full-bleed bands */
   --section-y: clamp(56px, 7vw, 112px);
-  --header-h: 112px;
+  --header-h: 109px; /* the header measures itself at runtime (Header.tsx); this is the first-paint value */
   --header-offset: var(--header-h);
   --bottom-nav-h: 60px;
 }
@@ -155,6 +165,8 @@ body {
   .on-dark em { color: inherit; }
 }
 
+/* Controls take the live site's 4px corner; pills (size chips, toggles) opt in with rounded-full. */
+button, input, select, textarea { border-radius: var(--radius-sm); }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
 img { -webkit-user-drag: none; }
@@ -198,40 +210,40 @@ img { -webkit-user-drag: none; }
 
 /* ── Typography (Inter Display) ───────────────────────────────── */
 @utility display-xl {
-  font-weight: 600;
-  font-size: clamp(3rem, 7.6vw, 7.5rem);
-  line-height: 0.96;
+  font-weight: 700;
+  font-size: clamp(2.25rem, 5.2vw, 4.75rem);
+  line-height: 1;
   letter-spacing: -0.045em;
   text-wrap: balance;
   & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
 }
 @utility display-lg {
-  font-weight: 600;
-  font-size: clamp(2.5rem, 5.4vw, 5rem);
-  line-height: 1;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.4vw, 3rem);
+  line-height: 1.08;
   letter-spacing: -0.04em;
   text-wrap: balance;
   & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
 }
 @utility display-md {
-  font-weight: 600;
-  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-  line-height: 1.04;
+  font-weight: 700;
+  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+  line-height: 1.15;
   letter-spacing: -0.035em;
   text-wrap: balance;
   & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
 }
 @utility display-sm {
-  font-weight: 600;
-  font-size: clamp(1.375rem, 2vw, 1.875rem);
-  line-height: 1.1;
+  font-weight: 700;
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  line-height: 1.2;
   letter-spacing: -0.028em;
   text-wrap: balance;
   & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
 }
 @utility display-xs {
-  font-weight: 600;
-  font-size: 1.125rem;
+  font-weight: 700;
+  font-size: 1.0625rem;
   line-height: 1.2;
   letter-spacing: -0.018em;
   & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }

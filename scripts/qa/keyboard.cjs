@@ -41,8 +41,8 @@ const must = (cond, msg) => { if (!cond) throw new Error(msg); };
     await page.getByRole("dialog", { name: "Search" }).waitFor({ state: "detached" });
   });
 
-  await step("Bag drawer: focus trapped inside, Esc closes, focus returns to the bag button", async () => {
-    const bag = page.getByRole("button", { name: /^Bag/ }).first();
+  await step("Bag drawer: focus trapped inside, Esc closes, focus returns to the Cart button", async () => {
+    const bag = page.getByRole("button", { name: /^Cart/ }).first();
     await bag.focus();
     await page.keyboard.press("Enter");
     const dlg = page.getByRole("dialog", { name: "Shopping bag" });
@@ -53,17 +53,27 @@ const must = (cond, msg) => { if (!cond) throw new Error(msg); };
     await page.keyboard.press("Escape");
     await dlg.waitFor({ state: "detached" });
     await page.waitForTimeout(150);
-    must((await active()).includes("Bag"), `focus after close: ${await active()}`);
+    must((await active()).includes("Cart"), `focus after close: ${await active()}`);
   });
 
-  await step("Mega menu opens from keyboard focus and Esc closes it", async () => {
-    const women = page.getByRole("link", { name: "Women", exact: true }).first();
-    await women.focus();
-    await page.locator("#mega-panel").waitFor();
+  await step("Department dropdown opens from keyboard focus and Esc closes it", async () => {
+    const tab = page.getByRole("navigation", { name: /categories$/ }).getByRole("link", { name: "Western Wear" }).first();
+    await tab.focus();
+    await page.locator("#tab-women-2-panel").waitFor();
     await page.keyboard.press("Tab");
     must((await active()).length > 0, "no focus inside panel");
     await page.keyboard.press("Escape");
-    await page.locator("#mega-panel").waitFor({ state: "detached" });
+    await page.locator("#tab-women-2-panel").waitFor({ state: "detached" });
+  });
+
+  await step("More panel opens from keyboard focus and Esc closes it", async () => {
+    const more = page.getByRole("link", { name: "More", exact: true }).first();
+    await more.focus();
+    await page.locator("#more-panel").waitFor();
+    await page.keyboard.press("Tab");
+    must((await active()).length > 0, "no focus inside panel");
+    await page.keyboard.press("Escape");
+    await page.locator("#more-panel").waitFor({ state: "detached" });
   });
 
   await step("PDP: size radios are arrow-key selectable; add is gated with an announced error", async () => {
