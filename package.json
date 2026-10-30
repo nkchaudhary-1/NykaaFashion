@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "data:check": "node scripts/validate-data.mjs",
     "art:manifest": "node scripts/build-art-manifest.mjs",
     "art:placeholders": "node scripts/dev-placeholders.mjs",
