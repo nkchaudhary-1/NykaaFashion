@@ -1,43 +1,79 @@
 "use client";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, ShoppingBag } from "lucide-react";
+import { useEffect, useMemo } from "react";
 import { BagLineRow } from "@/components/commerce/BagLine";
 import { CouponBox } from "@/components/commerce/CouponBox";
 import { FreeShippingBar } from "@/components/commerce/FreeShippingBar";
 import { PriceSummary } from "@/components/commerce/PriceSummary";
+import { Col, Grid } from "@/components/layout/Grid";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Section } from "@/components/layout/Section";
+import { ProductCard } from "@/components/product/ProductCard";
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
-import { ProductRail } from "@/components/product/Rail";
+import { BentoTile } from "@/components/ui/BentoTile";
 import { LinkButton } from "@/components/ui/Button";
+import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
+import { SIZES } from "@/components/ui/Img";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SimulatedNotice } from "@/components/ui/Simulated";
-import { EmptyState } from "@/components/ui/States";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { productById } from "@/data/catalog";
+import { editById } from "@/data/edits";
+import { editProducts } from "@/data/queries";
+import type { Product } from "@/data/types";
 import { inr } from "@/lib/format";
 import { priceBag } from "@/lib/pricing";
-import { popular } from "@/lib/recs";
+import { popular, styleWith } from "@/lib/recs";
 import { useHydrated, useStore } from "@/lib/store";
 import { useBag, wishlistStore } from "@/stores/commerce";
+import { signal } from "@/stores/intent";
+
+const CRUMBS = [{ name: "Home", href: "/" }, { name: "Bag" }];
+const HEADER = "pb-8 sm:pb-10";
+
+/** Two complements for what is in the bag — one per line in turn (never something already bagged), padded with what is popular. */
+function complementsFor(ids: string[]): Product[] {
+  const inBag = new Set(ids);
+  const out: Product[] = [];
+  const push = (p: Product) => {
+    if (!inBag.has(p.id) && !out.some((o) => o.id === p.id)) out.push(p);
+  };
+  const per = ids.map((id) => productById[id]).filter(Boolean).map((p) => styleWith(p, 3));
+  for (let i = 0; i < 3; i++) for (const list of per) if (list[i]) push(list[i]);
+  popular(10).forEach(push);
+  return out.slice(0, 2);
+}
 
 export function BagView() {
   const ready = useHydrated();
-  const { lines, coupon } = useBag();
+  const { lines, count, coupon } = useBag();
   const wishlist = useStore(wishlistStore);
   const price = priceBag(lines, { coupon });
   const blocked = lines.some((l) => l.stock === 0);
+  const hasLines = ready && lines.length > 0;
+  const key = lines.map((l) => l.productId).join(",");
+  const complements = useMemo(() => complementsFor(key ? key.split(",") : []), [key]);
+
+  // Below 1024px a sticky checkout bar sits over the bottom navigation; tell the toast region how tall it is so toasts stack above it.
+  useEffect(() => {
+    if (!hasLines) return;
+    const mq = window.matchMedia("(max-width: 1023.98px)");
+    const set = () => document.documentElement.style.setProperty("--sticky-h", mq.matches ? "76px" : "0px");
+    set();
+    mq.addEventListener("change", set);
+    return () => {
+      mq.removeEventListener("change", set);
+      document.documentElement.style.removeProperty("--sticky-h");
+    };
+  }, [hasLines]);
 
   if (!ready) {
     return (
-      <div className="container-x grid grid-cols-1 gap-12 pb-16 lg:grid-cols-[minmax(0,1fr)_400px]" role="status" aria-label="Loading your bag">
-        <div className="space-y-6">
-          {[0, 1].map((i) => (
-            <div key={i} className="flex gap-4">
-              <Skeleton className="aspect-[4/5] w-[110px]" />
-              <div className="flex-1 space-y-3"><Skeleton className="h-3 w-24" /><Skeleton className="h-5 w-3/4" /><Skeleton className="h-4 w-1/3" /></div>
-            </div>
-          ))}
-        </div>
-        <Skeleton className="h-72 w-full" />
-      </div>
+      <>
+        <PageHeader title="Your bag" size="md" crumbs={CRUMBS} className={HEADER} />
+        <BagSkeleton />
+      </>
     );
   }
 
@@ -45,55 +81,175 @@ export function BagView() {
     const saved = wishlist.map((w) => productById[w.productId]).filter(Boolean).slice(0, 8);
     return (
       <>
-        <EmptyState
-          visual={<ShoppingBag size={44} strokeWidth={1} className="mx-auto text-ink-3" aria-hidden />}
-          title="Your bag is empty"
-          text="Nothing here yet. Start from an edit, or pick up where you left off."
-          actions={
-            <>
-              <LinkButton href="/edits" size="lg">Explore the edits</LinkButton>
-              <LinkButton href="/discover" variant="secondary" size="lg">Read the Style Files</LinkButton>
-            </>
-          }
-        />
-        <div className="container-x pb-20">
-          <h2 className="display-sm mb-8">{saved.length ? "From your wishlist" : "Popular right now"}</h2>
-          <ProductRail products={saved.length ? saved : popular(8)} label={saved.length ? "From your wishlist" : "Popular right now"} source="bag-empty" />
-        </div>
+        <PageHeader title="Your bag" size="md" crumbs={CRUMBS} className={HEADER} />
+        <EmptyBag saved={saved} />
       </>
     );
   }
 
   return (
     <>
-      <div className="container-x grid grid-cols-1 gap-12 pb-16 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px] xl:gap-20">
-        <div>
-          <FreeShippingBar remaining={price.freeShippingRemaining} />
-          <ul className="mt-6">
-            {lines.map((l) => (
-              <BagLineRow key={l.id} line={l} />
-            ))}
-          </ul>
-          <Link href="/edits" className="link-u mt-6 inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.12em]">
-            Continue shopping <ArrowRight size={14} aria-hidden />
-          </Link>
-        </div>
+      <PageHeader title="Your bag" size="md" crumbs={CRUMBS} className={HEADER} intro={`${count} ${count === 1 ? "piece" : "pieces"} in your bag. Offers and delivery are worked out below — nothing is charged.`} />
 
-        <aside aria-label="Order summary" className="space-y-5 lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
-          <CouponBox lines={lines} applied={coupon} error={price.couponError} />
-          <section aria-labelledby="sum-h" className="border border-line bg-paper p-5">
-            <h2 id="sum-h" className="mb-3 text-[14px] font-medium">Order summary</h2>
-            <PriceSummary b={price} />
-            {blocked && <p role="alert" className="mt-4 text-[13px] font-medium text-danger">Remove the unavailable item to continue to checkout.</p>}
-            <LinkButton href="/checkout" size="lg" full className="mt-5" aria-disabled={blocked} tabIndex={blocked ? -1 : undefined} onClick={(e) => blocked && e.preventDefault()} iconRight={<ArrowRight size={16} />}>
-              Checkout · {inr(price.total)}
-            </LinkButton>
-            <p className="mt-3 flex items-center justify-center gap-1.5 text-[12px] text-ink-3"><ShieldCheck size={14} aria-hidden /> Simulated checkout — no payment is taken</p>
-          </section>
-          <SimulatedNotice>Coupons, delivery fees and totals are computed with the prototype’s mock rules.</SimulatedNotice>
-        </aside>
+      {/* 8 / 4 — lines and offers on the left, a sticky order summary on the right (it spans both rows so it stays in view). */}
+      <div className="container-x pb-[var(--section-y)]">
+        <Grid className="gap-y-12">
+          <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 1 }}>
+            <FreeShippingBar remaining={price.freeShippingRemaining} />
+            <ul aria-label="Items in your bag" className="mt-6 border-t border-ink">
+              {lines.map((l) => (
+                <BagLineRow key={l.id} line={l} />
+              ))}
+            </ul>
+            <Link href="/edits" className="link-u tap mt-6 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.1em]">
+              Continue shopping <ArrowRight size={14} aria-hidden />
+            </Link>
+          </Col>
+
+          <Col span={{ base: 4, sm: 6, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 2 }}>
+            <CouponBox lines={lines} applied={coupon} error={price.couponError} />
+          </Col>
+
+          <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }}>
+            <aside aria-label="Order summary" className="lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:transition-[top] lg:duration-500 lg:ease-editorial">
+              <section aria-labelledby="sum-h" className="border border-ink bg-paper p-5 sm:p-6">
+                <h2 id="sum-h" className="display-xs">Order summary</h2>
+                <PriceSummary b={price} className="mt-5" />
+                {blocked && (
+                  <p role="alert" className="mt-4 text-[13px] font-medium text-danger">
+                    Remove the unavailable item to continue to checkout.
+                  </p>
+                )}
+                <div className="mt-6 hidden lg:block">
+                  <LinkButton href="/checkout" size="lg" full aria-disabled={blocked} tabIndex={blocked ? -1 : undefined} onClick={(e) => blocked && e.preventDefault()} iconRight={<ArrowRight size={16} />}>
+                    Checkout · {inr(price.total)}
+                  </LinkButton>
+                </div>
+                <p className="mt-4 flex items-center gap-1.5 text-[12px] text-ink-3 lg:justify-center">
+                  <ShieldCheck size={14} aria-hidden /> Simulated checkout — no payment is taken
+                </p>
+              </section>
+              <SimulatedNotice className="mt-4">Coupons, delivery fees and totals are computed with the prototype’s mock rules.</SimulatedNotice>
+            </aside>
+          </Col>
+        </Grid>
+
+        {/* phones & tablets: the total and the way forward stay on screen, just above the bottom navigation */}
+        <div className="sticky bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom))] z-30 -mx-[var(--gutter)] mt-12 flex items-center justify-between gap-4 border-t border-ink bg-paper px-[var(--gutter)] py-3 lg:hidden">
+          <p className="min-w-0">
+            <span className="eyebrow block text-ink-3">Total</span>
+            <span className="mt-1 block text-[18px] font-medium tabular-nums">{inr(price.total)}</span>
+          </p>
+          <LinkButton href="/checkout" size="lg" aria-disabled={blocked} tabIndex={blocked ? -1 : undefined} onClick={(e) => blocked && e.preventDefault()} iconRight={<ArrowRight size={16} />}>
+            Checkout
+          </LinkButton>
+        </div>
       </div>
+
+      {/* Panel + 2 features: a different rhythm from the rails around it */}
+      {complements.length > 0 && (
+        <Section tone="paper" className="border-y border-line">
+          <Grid className="gap-y-10">
+            <Col span={{ base: 4, sm: 12, lg: 4 }} className="flex flex-col">
+              <p className="eyebrow text-ink-3">Goes with your bag</p>
+              <h2 className="display-sm mt-5">Complete your order.</h2>
+              <p className="mt-4 max-w-[36ch] text-[15px] leading-relaxed text-ink-2">Pieces chosen to sit with what you’ve picked — same occasions, same eye for detail.</p>
+              <LinkButton href="/edits" variant="secondary" size="lg" className="mt-8 self-start" iconRight={<ArrowRight size={16} />}>
+                Explore the edits
+              </LinkButton>
+            </Col>
+            {complements.map((p) => (
+              <Col key={p.id} span={{ base: 2, sm: 6, lg: 4 }}>
+                <ProductCard product={p} source="bag-complete" sizes={SIZES.half} />
+              </Col>
+            ))}
+          </Grid>
+        </Section>
+      )}
       <RecentlyViewed />
     </>
+  );
+}
+
+const pieces = (n: number) => `${n} ${n === 1 ? "piece" : "pieces"}`;
+const SHORTCUTS = [
+  { id: "new-in", img: "scenes/edit-new-in-tall", title: "New in" },
+  { id: "hidden-gems", img: "scenes/edit-hidden-gems-tall", title: "Hidden Gems" },
+  { id: "the-offer-edit", img: "scenes/edit-the-offer-edit-tall", title: "The Offer Edit" },
+  { id: "under-1500", img: "scenes/edit-under-1500-tall", title: "Under ₹1,500" },
+];
+
+/** Empty bag: a 6-column message panel beside a 2×2 of shortcuts, then a rail of what you saved (or what is popular). */
+function EmptyBag({ saved }: { saved: Product[] }) {
+  const list = saved.length ? saved : popular(8);
+  const label = saved.length ? "From your wishlist" : "Popular right now";
+  return (
+    <>
+      <div className="container-x pb-[var(--section-y)]">
+        <Grid className="gap-y-[var(--gap)]">
+          <Col span={{ base: 4, sm: 12, lg: 6 }} rows={{ lg: 2 }} className="flex flex-col justify-between gap-12 border border-ink bg-paper p-6 sm:p-10">
+            <ShoppingBag size={40} strokeWidth={1.1} aria-hidden />
+            <div>
+              <h2 className="display-md">Your bag is empty</h2>
+              <p className="mt-4 max-w-[38ch] text-[15px] leading-relaxed text-ink-2">Nothing here yet. Start from an edit, or pick up where you left off.</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <LinkButton href="/edits" size="lg">Explore the edits</LinkButton>
+                <LinkButton href="/discover" variant="secondary" size="lg">Read the Style Files</LinkButton>
+              </div>
+            </div>
+          </Col>
+          {SHORTCUTS.map((s) => (
+            <Col key={s.id} span={{ base: 2, sm: 6, lg: 3 }}>
+              <BentoTile href={`/edits/${s.id}`} imgKey={s.img} title={s.title} meta={pieces(editProducts(editById[s.id]).length)} ratio="5/4" sizes={SIZES.tile} onClick={() => signal("edit_open", { editId: s.id })} />
+            </Col>
+          ))}
+        </Grid>
+      </div>
+      <Section tone="paper" className="border-y border-line">
+        <Carousel>
+          <SectionHeading eyebrow={saved.length ? "Saved for later" : "Start here"} title={`${label}.`}>
+            <CarouselArrows />
+          </SectionHeading>
+          <div className="mt-10">
+            <CarouselTrack label={label} density="product">
+              {list.map((p) => (
+                <div key={p.id} className="flex h-full flex-col">
+                  <ProductCard product={p} source="bag-empty" sizes={SIZES.rail} />
+                </div>
+              ))}
+            </CarouselTrack>
+          </div>
+        </Carousel>
+      </Section>
+    </>
+  );
+}
+
+function BagSkeleton() {
+  return (
+    <div className="container-x pb-16" role="status" aria-label="Loading your bag">
+      <Grid className="gap-y-10">
+        <Col span={{ base: 4, sm: 12, lg: 8 }}>
+          <Skeleton className="h-[72px] w-full" />
+          <div className="mt-6 border-t border-ink">
+            {[0, 1].map((i) => (
+              <div key={i} className="grid grid-cols-4 gap-x-[var(--gap)] border-b border-line py-6 sm:grid-cols-12 lg:grid-cols-8">
+                <div className="col-span-1 sm:col-span-2">
+                  <Skeleton className="aspect-[4/5]" />
+                </div>
+                <div className="col-span-3 space-y-3 sm:col-span-10 lg:col-span-6">
+                  <Skeleton className="h-3 w-24" />
+                  <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-4 w-1/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Col>
+        <Col span={{ base: 4, sm: 12, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }}>
+          <Skeleton className="h-72 w-full" />
+        </Col>
+      </Grid>
+    </div>
   );
 }

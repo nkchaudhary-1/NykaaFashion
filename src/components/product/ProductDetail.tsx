@@ -1,18 +1,20 @@
 "use client";
 import Link from "next/link";
-import { BellRing, Share2 } from "lucide-react";
+import { BellRing, RotateCcw, Scissors, Share2, Tag, Truck } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Col, Grid } from "@/components/layout/Grid";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Disclosure } from "@/components/ui/Disclosure";
-import { Img } from "@/components/ui/Img";
 import { Price } from "@/components/ui/Price";
 import { RatingLine } from "@/components/ui/Rating";
+import { coupons, FREE_SHIPPING_THRESHOLD } from "@/data/commerce";
 import { inStockVariantIndex } from "@/data/catalog";
 import { labelById } from "@/data/labels";
 import type { Product } from "@/data/types";
 import { cn } from "@/lib/cn";
 import { peekFlip, playFlip } from "@/lib/flip";
+import { inr } from "@/lib/format";
 import { alternatives } from "@/lib/recs";
 import { track } from "@/lib/track";
 import { signal } from "@/stores/intent";
@@ -25,6 +27,29 @@ import { ProductCard } from "./ProductCard";
 import { SaveButton } from "./SaveButton";
 import { SizeSelector } from "./SizeSelector";
 import { useProductSelection } from "./useSelection";
+
+/** Height of the phone/tablet add-to-bag bar (without the safe-area inset) — also the offset toasts sit above. */
+const STICKY_H = 72;
+const colourSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+/**
+ * Buy box, sticky from 600px up while the viewport is tall enough to hold it. It follows the header (`--header-offset` is the header's
+ * height, or 0 once it has stepped away on scroll) and, if a short window can't fit it, scrolls inside itself rather than hiding the button.
+ * The small negative margin / padding pair keeps focus outlines from being clipped by that scroll container.
+ */
+const BUY_BOX = [
+  "sm:self-start",
+  "[@media(min-height:640px)]:sm:sticky",
+  "[@media(min-height:640px)]:sm:top-[calc(var(--header-offset)+16px)]",
+  "[@media(min-height:640px)]:sm:max-h-[calc(100svh-var(--header-offset)-32px)]",
+  "[@media(min-height:640px)]:sm:overflow-y-auto",
+  "[@media(min-height:640px)]:sm:-mx-1",
+  "[@media(min-height:640px)]:sm:px-1",
+  "[@media(min-height:640px)]:sm:scrollbar-none",
+  "[@media(min-height:640px)]:sm:transition-[top,max-height]",
+  "[@media(min-height:640px)]:sm:duration-500",
+  "[@media(min-height:640px)]:sm:ease-editorial",
+].join(" ");
 
 export function ProductDetail({ product }: { product: Product }) {
   const groupRef = useRef<HTMLDivElement>(null);
@@ -53,187 +78,272 @@ export function ProductDetail({ product }: { product: Product }) {
     if (f && el) requestAnimationFrame(() => requestAnimationFrame(() => playFlip(product.id, el)));
   }, [product.id]);
 
-  // Sticky add-to-bag: always on touch layouts; on desktop only once the main CTA has scrolled away.
+  // Colour lives in the URL (?colour=madder) so a shared link opens on the same colour — read once on arrival, written on every switch.
+  useEffect(() => {
+    const want = new URLSearchParams(window.location.search).get("colour");
+    const i = want ? product.variants.findIndex((x) => colourSlug(x.colorName) === want) : -1;
+    if (i >= 0) sel.setVariant(i);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- arrival only
+  }, [product.id]);
+  const switchColour = useCallback(
+    (i: number) => {
+      sel.setVariant(i);
+      const url = new URL(window.location.href);
+      if (i === inStockVariantIndex(product)) url.searchParams.delete("colour");
+      else url.searchParams.set("colour", colourSlug(product.variants[i].colorName));
+      window.history.replaceState(window.history.state, "", url);
+    },
+    [sel, product],
+  );
+
+  // Phones / tablets: the add-to-bag bar shows whenever the main button is out of view. From 1024px the buy box is always in reach.
   useEffect(() => {
     const el = ctaRef.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => {
-      const desktop = window.matchMedia("(min-width: 1024px)").matches;
-      setStickyOn(!e.isIntersecting && (!desktop || e.boundingClientRect.top < 0));
-    });
+    const io = new IntersectionObserver(([e]) => setStickyOn(!e.isIntersecting));
     io.observe(el);
     return () => io.disconnect();
   }, []);
   useEffect(() => {
-    const mobile = window.matchMedia("(max-width: 1023px)").matches;
-    document.documentElement.style.setProperty("--sticky-h", stickyOn && mobile ? "76px" : "0px");
+    if (!stickyOn || !window.matchMedia("(max-width: 1023px)").matches) return;
+    // Toasts sit above the bar, and the page gets room under it so the footer's last line is never covered.
+    const root = document.documentElement;
+    const body = document.body;
+    const prev = body.style.paddingBottom;
+    root.style.setProperty("--sticky-h", `${STICKY_H}px`);
+    body.style.paddingBottom = `calc(${STICKY_H}px + env(safe-area-inset-bottom))`;
     return () => {
-      document.documentElement.style.removeProperty("--sticky-h");
+      root.style.removeProperty("--sticky-h");
+      body.style.paddingBottom = prev;
     };
   }, [stickyOn]);
 
   const share = useCallback(async () => {
     const url = window.location.href;
     try {
-      if (navigator.share) await navigator.share({ title: product.name, url });
-      else {
-        await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied", description: product.name });
+      if (navigator.share) {
+        await navigator.share({ title: product.name, url });
+        return;
       }
-    } catch {
-      /* user dismissed the share sheet */
+    } catch (e) {
+      if (e instanceof DOMException && e.name === "AbortError") return; // the shopper dismissed the share sheet
     }
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // clipboard permission refused (or an insecure origin): fall back to a transient selection
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    toast({ title: "Link copied", description: product.name });
   }, [product.name]);
 
   const cta = sel.soldOutSize || product.soldOut ? "Notify me" : sel.size || product.sizes.length === 1 ? "Add to bag" : "Select a size";
   const act = () => (product.soldOut ? setUI({ notifyMe: { productId: product.id, size: sel.size ?? undefined } }) : sel.add("pdp"));
-  const similar = product.soldOut ? alternatives(product, 3) : [];
+  const similar = product.soldOut ? alternatives(product, 2) : [];
 
   return (
-    <div className="container-x pb-14">
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16 xl:gap-24">
-        {/* The gallery is the sticky half: the buy box is the taller column, so the product stays in view while its fit, fabric and care are read. */}
-        <div className="min-w-0 lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
-          <Gallery key={sel.variant} images={v.images} name={product.name} colorName={v.colorName} heroRef={heroRef} startIndex={sel.variant === inStockVariantIndex(product) ? startShot : 0} />
-        </div>
+    <>
+      <section aria-label="Product" className="container-x pb-[var(--section-y)]">
+        <Grid className="gap-y-8">
+          {/* Gallery: full-bleed swipe track on phones, image grid on the page columns from 600px (6 columns, 8 from 1024px). */}
+          <Col span={{ base: 4, sm: 6, lg: 8 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 1, lg: 1 }} className="-mx-[var(--gutter)] sm:mx-0">
+            <Gallery key={sel.variant} images={v.images} name={product.name} colorName={v.colorName} heroRef={heroRef} startIndex={sel.variant === inStockVariantIndex(product) ? startShot : 0} filler={<FactsPanel product={product} />} />
+          </Col>
 
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <Link href={`/brands/${label.id}`} className="eyebrow link-u tap text-ink">{label.name}</Link>
-            <LabelBadges label={label} />
-            {product.responsible && !label.flags.responsible && <Badge tone="emerald">Responsible</Badge>}
-            {product.isNew && <Badge tone="outline">New</Badge>}
-          </div>
-          <div className="mt-4 flex items-start justify-between gap-4">
-            <h1 className="display-md text-balance">{product.name}</h1>
-            <button type="button" onClick={share} aria-label={`Share ${product.name}`} className="mt-1 inline-flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-sand">
-              <Share2 size={19} strokeWidth={1.5} />
-            </button>
-          </div>
-          <a href="#reviews" className="tap mt-3 inline-block">
-            <RatingLine rating={product.rating} count={product.ratingCount} />
-          </a>
-          <div className="mt-5">
-            <Price price={product.price} mrp={product.mrp} size="lg" className={cn(product.soldOut && "opacity-60")} />
-            <p className="mt-1 text-[12px] text-ink-3">Inclusive of all taxes</p>
-          </div>
-          <p className="mt-6 max-w-[52ch] text-[15px] leading-relaxed text-ink-2">{product.description}</p>
-
-          <div className="mt-8 space-y-7">
-            {product.variants.length > 1 && <ColorPicker product={product} value={sel.variant} onChange={sel.setVariant} />}
-            {!product.soldOut && <SizeSelector product={product} sel={sel} groupRef={groupRef} />}
-          </div>
-
-          <div ref={ctaRef} className="mt-8 flex items-stretch gap-3">
-            {product.soldOut ? (
-              <Button full size="lg" variant="secondary" icon={<BellRing size={16} />} onClick={act}>
-                Notify me
-              </Button>
-            ) : (
-              <Button full size="lg" variant={sel.soldOutSize ? "secondary" : "primary"} onClick={act} icon={sel.soldOutSize ? <BellRing size={16} /> : undefined}>
-                {cta}
-              </Button>
-            )}
-            <SaveButton product={product} variant={sel.variant} source="pdp" tone="plain" size={22} className="size-[52px] shrink-0 border border-line-strong" />
-          </div>
-          {product.soldOut && (
-            <p role="status" className="mt-4 border-l-2 border-ink pl-3 text-[13.5px] text-ink-2">
-              This piece is sold out. Leave your number or email and we’ll tell you the moment it’s back — or start with something similar below.
-            </p>
-          )}
-
-          {product.soldOut && similar.length > 0 && (
-            <section aria-label="Similar pieces available now" className="mt-8">
-              <h2 className="eyebrow mb-4 text-ink-3">Similar, available now</h2>
-              <ul className="grid grid-cols-3 gap-3">
-                {similar.map((p) => (
-                  <li key={p.id}>
-                    <ProductCard product={p} source="pdp-oos-similar" hideQuickView sizes="160px" />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          <div className="mt-8">
-            <DeliveryCheck />
-          </div>
-
-          {/* Decision-confidence block (PRD §5.5): fit, fabric and the label's story ahead of any spec dump. */}
-          <section aria-labelledby="confidence" className="mt-8">
-            <h2 id="confidence" className="sr-only">Fit, fabric and story</h2>
-            <dl className="grid grid-cols-1 gap-5 border-b border-line pb-6 sm:grid-cols-3">
-              <div>
-                <dt className="eyebrow text-ink-3">Fit</dt>
-                <dd className="mt-2 text-[13.5px] leading-snug text-ink">{product.fit}</dd>
-                {product.modelNote && <dd className="mt-1 text-[12px] leading-snug text-ink-3">{product.modelNote}</dd>}
-              </div>
-              <div>
-                <dt className="eyebrow text-ink-3">Fabric</dt>
-                <dd className="mt-2 text-[13.5px] leading-snug text-ink">{product.fabric}</dd>
-                <dd className="mt-1 text-[12px] leading-snug text-ink-3">{product.care[0]}</dd>
-              </div>
-              <div>
-                <dt className="eyebrow text-ink-3">Made by</dt>
-                <dd className="mt-2 text-[13.5px] leading-snug text-ink">{label.name}</dd>
-                <dd className="mt-1 text-[12px] leading-snug text-ink-3">{label.origin}</dd>
-              </div>
-            </dl>
-            <Disclosure title="Details" defaultOpen>
-              <ul className="list-disc space-y-1.5 pl-4 marker:text-ink-3">
-                {product.details.map((d) => (
-                  <li key={d}>{d}</li>
-                ))}
-              </ul>
-            </Disclosure>
-            <Disclosure title="Care">
-              <ul className="list-disc space-y-1.5 pl-4 marker:text-ink-3">
-                {product.care.map((c) => (
-                  <li key={c}>{c}</li>
-                ))}
-              </ul>
-            </Disclosure>
-            <Disclosure title={`About ${label.name}`}>
-              <p>{label.story}</p>
-              <Link href={`/brands/${label.id}`} className="link-u mt-3 inline-block text-[12px] font-medium uppercase tracking-[0.1em] text-ink">
-                See the label
+          <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ sm: 7, lg: 9 }} rowStart={{ sm: 1, lg: 1 }} className={BUY_BOX}>
+            <div className="flex flex-wrap items-center gap-2">
+              <Link href={`/brands/${label.id}`} className="eyebrow link-u tap text-ink">
+                {label.name}
               </Link>
-            </Disclosure>
-            <Disclosure title="Delivery & returns">
-              <p>Standard delivery is free above ₹1,999. Returns and refunds are illustrative in this prototype — see <Link href="/info/returns" className="underline underline-offset-4">returns &amp; refunds</Link>.</p>
-            </Disclosure>
-          </section>
-        </div>
-      </div>
+              <LabelBadges label={label} />
+              {product.responsible && !label.flags.responsible && <Badge tone="emerald">Responsible</Badge>}
+              {product.isNew && <Badge tone="outline">New</Badge>}
+            </div>
 
-      <StickyBar product={product} variantName={v.colorName} image={v.images[0]} on={stickyOn} cta={cta} onClick={act} sizeChosen={!!sel.size || product.sizes.length === 1} size={sel.size} />
+            <div className="mt-4 flex items-start justify-between gap-4">
+              <h1 className="display-sm">{product.name}</h1>
+              <button type="button" onClick={share} aria-label={`Share ${product.name}`} className="inline-flex size-11 shrink-0 items-center justify-center border border-line-strong text-ink transition-colors hover:bg-ink hover:text-bone">
+                <Share2 size={18} strokeWidth={1.5} />
+              </button>
+            </div>
+            <a href="#reviews" className="tap mt-3 inline-block">
+              <RatingLine rating={product.rating} count={product.ratingCount} />
+            </a>
+
+            <div className="mt-5">
+              <Price price={product.price} mrp={product.mrp} size="lg" className={cn(product.soldOut && "opacity-60")} />
+              <p className="mt-1 text-[12px] text-ink-3">Inclusive of all taxes</p>
+            </div>
+            <p className="mt-5 max-w-[46ch] text-[14.5px] leading-relaxed text-ink-2">{product.description}</p>
+
+            <div className="mt-6 space-y-6">
+              {product.variants.length > 1 && <ColorPicker product={product} value={sel.variant} onChange={switchColour} />}
+              {!product.soldOut && <SizeSelector product={product} sel={sel} groupRef={groupRef} />}
+            </div>
+
+            <div ref={ctaRef} className="mt-6 flex items-stretch gap-2">
+              {product.soldOut ? (
+                <Button full size="lg" variant="secondary" icon={<BellRing size={16} />} onClick={act}>
+                  Notify me
+                </Button>
+              ) : (
+                <Button full size="lg" variant={sel.soldOutSize ? "secondary" : "primary"} onClick={act} icon={sel.soldOutSize ? <BellRing size={16} /> : undefined}>
+                  {cta}
+                </Button>
+              )}
+              <SaveButton product={product} variant={sel.variant} source="pdp" tone="plain" size={22} className="size-[52px] shrink-0 border border-line-strong" />
+            </div>
+            {product.soldOut && (
+              <p role="status" className="mt-4 border-l-2 border-ink pl-3 text-[13.5px] leading-snug text-ink-2">
+                This piece is sold out. Leave your number or email and we’ll tell you the moment it’s back — or start with something similar below.
+              </p>
+            )}
+
+            {product.soldOut && similar.length > 0 && (
+              <section aria-label="Similar pieces available now" className="mt-8">
+                <h2 className="eyebrow mb-4 text-ink-3">Similar, available now</h2>
+                <ul className="grid grid-cols-4 gap-x-[var(--gap)] sm:grid-cols-6 lg:grid-cols-4">
+                  {similar.map((p) => (
+                    <li key={p.id} className="col-span-2 sm:col-span-3 lg:col-span-2">
+                      <ProductCard product={p} source="pdp-oos-similar" hideQuickView sizes="(min-width:1024px) 16vw, 45vw" />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            <div className="mt-6 space-y-5">
+              <DeliveryCheck />
+              <Offers product={product} />
+              <TrustRow product={product} />
+            </div>
+
+            {/* Flat accordions: structure comes from hairlines. Everything is collapsed so the box stays within a laptop viewport. */}
+            <div className="mt-6 border-t border-line">
+              <Disclosure title="Details">
+                <ul className="list-disc space-y-1.5 pl-4 marker:text-ink-3">
+                  {product.details.map((d) => (
+                    <li key={d}>{d}</li>
+                  ))}
+                </ul>
+                {product.modelNote && <p className="mt-3 text-[13px] text-ink-3">{product.modelNote}.</p>}
+              </Disclosure>
+              <Disclosure title="Fabric & care">
+                <p>{product.fabric}.</p>
+                <ul className="mt-3 list-disc space-y-1.5 pl-4 marker:text-ink-3">
+                  {product.care.map((c) => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
+              </Disclosure>
+              <Disclosure title="Shipping & returns">
+                <p>
+                  Standard delivery is free above {inr(FREE_SHIPPING_THRESHOLD)}. Returns and refunds are illustrative in this prototype — see <Link href="/info/returns" className="underline underline-offset-4">returns &amp; refunds</Link>.
+                </p>
+              </Disclosure>
+            </div>
+          </Col>
+        </Grid>
+      </section>
+
+      <StickyBar product={product} on={stickyOn} cta={cta} onClick={act} size={sel.size} sizeChosen={!!sel.size || product.sizes.length === 1} />
+    </>
+  );
+}
+
+/** Fit, fabric and who made it — fills the empty half of the last image row when a colour has an even number of shots. */
+function FactsPanel({ product }: { product: Product }) {
+  const label = labelById[product.labelId];
+  const row = "text-[12.5px] leading-snug text-ink lg:text-[13.5px]";
+  const sub = "mt-1 text-[11.5px] leading-snug text-ink-3 lg:text-[12px]";
+  return (
+    <div className="flex h-full flex-col justify-between overflow-hidden bg-sand p-4 lg:p-7">
+      <p className="eyebrow text-ink-3">The piece</p>
+      <dl className="space-y-4 lg:space-y-6">
+        <div>
+          <dt className="eyebrow text-ink-3">Fit</dt>
+          <dd className={cn("mt-2", row)}>{product.fit}</dd>
+          {product.modelNote && <dd className={cn(sub, "hidden lg:block")}>{product.modelNote}</dd>}
+        </div>
+        <div>
+          <dt className="eyebrow text-ink-3">Fabric</dt>
+          <dd className={cn("mt-2", row)}>{product.fabric}</dd>
+          <dd className={cn(sub, "hidden lg:block")}>{product.care[0]}</dd>
+        </div>
+        <div className="hidden lg:block">
+          <dt className="eyebrow text-ink-3">Made by</dt>
+          <dd className={cn("mt-2", row)}>{label.name}</dd>
+          {label.origin && <dd className={sub}>{label.origin}</dd>}
+        </div>
+      </dl>
     </div>
   );
 }
 
-function StickyBar({ product, image, on, cta, onClick, variantName, size, sizeChosen }: { product: Product; image: string; on: boolean; cta: string; onClick: () => void; variantName: string; size: string | null; sizeChosen: boolean }) {
+/** Up to two coupons that apply to this piece — label-specific ones first. The codes are the prototype's simulated ones. */
+function Offers({ product }: { product: Product }) {
+  const label = labelById[product.labelId];
+  const list = coupons
+    .filter((c) => !c.expired && (!c.appliesTo || label.flags[c.appliesTo]))
+    .sort((a, b) => Number(!!b.appliesTo) - Number(!!a.appliesTo))
+    .slice(0, 2);
+  if (list.length === 0) return null;
+  return (
+    <section aria-labelledby="offers-h" className="border-t border-line pt-5">
+      <h2 id="offers-h" className="flex items-center gap-2 text-[13px] font-medium">
+        <Tag size={16} aria-hidden /> Offers <span className="text-[11px] font-normal uppercase tracking-[0.1em] text-ink-3">· simulated</span>
+      </h2>
+      <ul className="mt-3 space-y-2 text-[12.5px] leading-snug text-ink-2">
+        {list.map((c) => (
+          <li key={c.code}>
+            <span className="font-medium tabular-nums tracking-[0.04em] text-ink">{c.code}</span> — {c.description}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function TrustRow({ product }: { product: Product }) {
+  const label = labelById[product.labelId];
+  const items = [
+    { icon: Truck, text: `Free delivery above ${inr(FREE_SHIPPING_THRESHOLD)}` },
+    { icon: RotateCcw, text: "Easy returns (illustrative)" },
+    { icon: Scissors, text: label.origin ? `From ${label.origin}` : `By ${label.name}` },
+  ];
+  return (
+    <ul aria-label="Good to know" className="grid grid-cols-3 gap-3 border-t border-line pt-5">
+      {items.map(({ icon: Icon, text }) => (
+        <li key={text} className="flex flex-col gap-2 text-[11.5px] leading-snug text-ink-2">
+          <Icon size={18} strokeWidth={1.5} aria-hidden className="text-ink" />
+          {text}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Phones & tablets: a flat bar on the bottom edge (the bottom nav steps aside on product pages). Hairline on top, solid bone, safe-area aware. */
+function StickyBar({ product, on, cta, onClick, size, sizeChosen }: { product: Product; on: boolean; cta: string; onClick: () => void; size: string | null; sizeChosen: boolean }) {
   return (
     <div
       aria-hidden={!on}
       className={cn(
-        "fixed inset-x-0 z-[39] border-line bg-bone/95 backdrop-blur-md transition-[transform,top,opacity,visibility] duration-500 ease-editorial",
-        "bottom-0 border-t pb-[env(safe-area-inset-bottom)] lg:bottom-auto lg:top-[var(--header-offset,var(--header-h))] lg:border-b lg:border-t-0 lg:pb-0",
-        // Hidden on desktop it parks behind the header, which leaves a strip showing above it at scroll 0 (over the announcement bar) — so also fade + hide it.
-        on ? "translate-y-0" : "translate-y-full lg:invisible lg:-translate-y-full lg:opacity-0 lg:pointer-events-none",
+        "fixed inset-x-0 bottom-0 z-[39] border-t border-line bg-bone pb-[env(safe-area-inset-bottom)] transition-[transform,visibility] duration-500 ease-editorial lg:hidden",
+        on ? "visible translate-y-0" : "invisible translate-y-full",
       )}
     >
-      <div className="container-x flex items-center gap-4 py-3">
-        <div className="hidden w-11 shrink-0 lg:block">
-          <Img imgKey={image} alt="" sizes="48px" ratio="4/5" />
-        </div>
+      <div className="container-x flex items-center gap-4" style={{ height: STICKY_H }}>
         <div className="min-w-0 flex-1">
-          <p className="hidden truncate text-[14px] lg:block">{product.name}</p>
-          <p className="hidden text-[12px] text-ink-3 lg:block">{variantName}{size && size !== "One size" ? ` · ${size}` : ""}</p>
-          <Price price={product.price} mrp={product.mrp} size="md" className="lg:hidden" showSavings={false} />
-          <p className="text-[12px] text-ink-3 lg:hidden">{sizeChosen ? (size && size !== "One size" ? `Size ${size}` : "One size") : "Select a size"}</p>
-        </div>
-        <div className="hidden lg:block">
-          <Price price={product.price} mrp={product.mrp} size="md" />
+          <Price price={product.price} mrp={product.mrp} size="md" showSavings={false} />
+          <p className="mt-0.5 truncate text-[12px] text-ink-3">{sizeChosen ? (size && size !== "One size" ? `Size ${size}` : "One size") : "Select a size"}</p>
         </div>
         <Button tabIndex={on ? 0 : -1} size="lg" onClick={onClick} className="min-w-[160px] shrink-0" variant={product.soldOut ? "secondary" : "primary"}>
           {cta}

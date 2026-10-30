@@ -11,7 +11,7 @@ export type FilterChange = (next: FilterState, meta: { key: FacetKey; value?: st
 
 const toggle = (list: string[], v: string) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
 
-/** Filter groups shared by the desktop rail and the mobile bottom sheet. Every change is encoded in the URL by the caller. */
+/** Filter groups for the drawer (left drawer on desktop, bottom sheet on phones). Every change is encoded in the URL by the caller. */
 export function FilterPanel({ facets, filters, onChange, hide = [] }: { facets: Facets; filters: FilterState; onChange: FilterChange; hide?: FacetKey[] }) {
   const [labelQuery, setLabelQuery] = useState("");
   const labels = useMemo(() => facets.label.filter((l) => l.name.toLowerCase().includes(labelQuery.toLowerCase())), [facets.label, labelQuery]);
@@ -61,11 +61,11 @@ export function FilterPanel({ facets, filters, onChange, hide = [] }: { facets: 
 
       {show("size") && facets.size.length > 0 && (
         <Disclosure title="Size" defaultOpen meta={filters.size.length ? `${filters.size.length} selected` : undefined}>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(4.25rem,1fr))] gap-2">
             {facets.size.map((s) => {
               const on = filters.size.includes(s.id);
               return (
-                <button key={s.id} type="button" aria-pressed={on} onClick={() => onChange({ ...filters, size: toggle(filters.size, s.id) }, { key: "size", value: s.id, on: !on })} className={cn("inline-flex h-10 min-w-11 items-center justify-center border px-2.5 text-[13px] tabular-nums transition-colors", on ? "border-ink bg-ink text-bone" : "border-line-strong text-ink hover:border-ink")}>
+                <button key={s.id} type="button" aria-pressed={on} onClick={() => onChange({ ...filters, size: toggle(filters.size, s.id) }, { key: "size", value: s.id, on: !on })} className={cn("inline-flex h-11 items-center justify-center border px-2 text-[13px] tabular-nums transition-colors", on ? "border-ink bg-ink text-bone" : "border-line-strong text-ink hover:border-ink")}>
                   {s.id}
                 </button>
               );
@@ -76,11 +76,11 @@ export function FilterPanel({ facets, filters, onChange, hide = [] }: { facets: 
 
       {show("color") && facets.color.length > 0 && (
         <Disclosure title="Colour" defaultOpen={false} meta={filters.color.length ? `${filters.color.length} selected` : undefined}>
-          <div className="grid grid-cols-1 gap-0.5">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-0.5">
             {facets.color.map((c) => {
               const on = filters.color.includes(c.id);
               return (
-                <button key={c.id} type="button" aria-pressed={on} onClick={() => onChange({ ...filters, color: toggle(filters.color, c.id) }, { key: "color", value: c.id, on: !on })} className="flex min-h-10 items-center gap-3 py-1 text-left text-[14px] text-ink">
+                <button key={c.id} type="button" aria-pressed={on} onClick={() => onChange({ ...filters, color: toggle(filters.color, c.id) }, { key: "color", value: c.id, on: !on })} className="flex min-h-11 items-center gap-3 py-1 text-left text-[14px] text-ink">
                   <Swatch hex={c.hex} selected={on} size={20} />
                   <span className={cn("flex-1", on && "font-medium")}>{c.name}</span>
                   <span className="text-[12px] tabular-nums text-ink-3">{c.count}</span>

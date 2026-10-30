@@ -21,7 +21,7 @@ export function PriceSummary({ b, className, deliveryLabel, children }: { b: Bre
       )}
       {b.couponDiscount > 0 && (
         <div className={row}>
-          <dt className="text-ink-2">Coupon <span className="font-mono text-[12px] tracking-wider">{b.couponCode}</span></dt>
+          <dt className="text-ink-2">Coupon <span className="text-[12.5px] font-medium tracking-[0.08em] text-ink">{b.couponCode}</span></dt>
           <dd className="text-emerald">− {inr(b.couponDiscount)}</dd>
         </div>
       )}

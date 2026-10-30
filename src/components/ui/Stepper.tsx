@@ -1,19 +1,42 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/cn";
 
+/** A square numbered marker: done = solid ink with a tick, current = ink outline, upcoming = hairline. No circles. */
+export function StepMark({ n, state, className }: { n: number; state: "done" | "current" | "todo"; className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "inline-flex size-7 shrink-0 items-center justify-center border text-[12px] font-medium tabular-nums transition-colors duration-300",
+        state === "done" ? "border-ink bg-ink text-bone" : state === "current" ? "border-ink bg-white text-ink" : "border-line-strong text-ink-3",
+        className,
+      )}
+    >
+      {state === "done" ? <Check size={14} strokeWidth={2.6} /> : n}
+    </span>
+  );
+}
+
+/**
+ * Checkout progress rail. The steps are equal columns separated by the page gap, so three steps land exactly on the
+ * 4 / 4 / 4 columns of the 12-column grid. A 2px bar tops each step (ink once reached), then a square marker and the label.
+ */
 export function Stepper({ steps, current, className }: { steps: string[]; current: number; className?: string }) {
   return (
-    <ol className={cn("flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.1em]", className)} aria-label="Checkout progress">
+    <ol aria-label="Checkout progress" className={cn("grid gap-x-[var(--gap)]", className)} style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
       {steps.map((s, i) => {
         const done = i < current;
         const active = i === current;
         return (
-          <li key={s} aria-current={active ? "step" : undefined} className="flex items-center gap-2">
-            <span className={cn("inline-flex size-6 items-center justify-center rounded-full border text-[11px] transition-colors duration-300", done ? "border-ink bg-ink text-bone" : active ? "border-ink text-ink" : "border-line-strong text-ink-3")}>
-              {done ? <Check size={13} strokeWidth={2.6} /> : i + 1}
+          <li key={s} aria-current={active ? "step" : undefined} className="min-w-0">
+            <span aria-hidden className={cn("block h-0.5 transition-colors duration-500", done || active ? "bg-ink" : "bg-line-strong")} />
+            <span className="mt-3 flex min-w-0 items-center gap-2.5">
+              <StepMark n={i + 1} state={done ? "done" : active ? "current" : "todo"} />
+              <span className={cn("truncate text-[11px] font-semibold uppercase tracking-[0.09em] sm:text-[12px]", active ? "text-ink" : done ? "text-ink-2" : "text-ink-3")}>
+                {s}
+                {(done || active) && <span className="sr-only">{done ? " (completed)" : " (current step)"}</span>}
+              </span>
             </span>
-            <span className={cn(active ? "text-ink" : done ? "text-ink-2" : "text-ink-3", !active && "hidden sm:inline")}>{s}</span>
-            {i < steps.length - 1 && <span aria-hidden className={cn("mx-1 h-px w-5 sm:w-10", done ? "bg-ink" : "bg-line-strong")} />}
           </li>
         );
       })}

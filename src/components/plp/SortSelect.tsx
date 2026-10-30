@@ -1,41 +1,52 @@
 "use client";
-import { ChevronDown } from "lucide-react";
+import { ArrowDownUp, ChevronDown } from "lucide-react";
 import { useId } from "react";
 import { SORTS, type SortKey } from "@/lib/filters";
 import { cn } from "@/lib/cn";
 
-export function SortSelect({ value, onChange, className, variant = "inline" }: { value: SortKey; onChange: (s: SortKey) => void; className?: string; variant?: "inline" | "pill" }) {
+const SHORT: Record<SortKey, string> = { curated: "Curated", new: "New in", "price-asc": "Low to high", "price-desc": "High to low", rating: "Rating", discount: "Discount" };
+
+/**
+ * Sort control — a native <select>, so touch devices get the platform picker.
+ * `inline` (tablet / desktop): "Sort by" + a flat 44px select. `button` (phones): sits beside Filter as an equal-width button.
+ */
+export function SortSelect({ value, onChange, className, variant = "inline" }: { value: SortKey; onChange: (s: SortKey) => void; className?: string; variant?: "inline" | "button" }) {
   const id = useId();
-  const current = SORTS.find((s) => s.id === value)!;
+  const options = SORTS.map((s) => (
+    <option key={s.id} value={s.id}>
+      {s.label}
+    </option>
+  ));
+  if (variant === "button") {
+    return (
+      <div className={cn("relative flex h-11 w-full items-center justify-between gap-2 border border-ink px-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-ink transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink hover:bg-sand", className)}>
+        <label htmlFor={id} className="sr-only">
+          Sort by
+        </label>
+        <span className="flex min-w-0 items-center gap-2">
+          <ArrowDownUp size={15} aria-hidden className="shrink-0" />
+          <span className="truncate">
+            Sort<span className="font-medium normal-case tracking-normal text-ink-2"> · {SHORT[value]}</span>
+          </span>
+        </span>
+        <ChevronDown size={14} aria-hidden className="shrink-0" />
+        <select id={id} value={value} onChange={(e) => onChange(e.target.value as SortKey)} className="absolute inset-0 h-full w-full cursor-pointer opacity-0">
+          {options}
+        </select>
+      </div>
+    );
+  }
   return (
     <div className={cn("relative inline-flex items-center", className)}>
-      <label htmlFor={id} className={cn(variant === "inline" ? "mr-2 text-[13px] text-ink-3" : "sr-only")}>
+      <label htmlFor={id} className="mr-3 whitespace-nowrap text-[13px] text-ink-3">
         Sort by
       </label>
-      {variant === "inline" ? (
-        <div className="relative">
-          <select id={id} value={value} onChange={(e) => onChange(e.target.value as SortKey)} className="h-11 appearance-none border border-line-strong bg-white pl-4 pr-10 text-[13.5px] text-ink hover:border-ink focus:border-ink">
-            {SORTS.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-          <ChevronDown size={16} aria-hidden className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" />
-        </div>
-      ) : (
-        <div className="relative flex h-12 items-center gap-1.5 px-5 text-[12px] font-medium uppercase tracking-[0.1em]">
-          Sort{value !== "curated" && <span className="text-ink-3 normal-case tracking-normal">· {current.label.split(":")[0]}</span>}
-          <ChevronDown size={14} aria-hidden />
-          <select id={id} value={value} onChange={(e) => onChange(e.target.value as SortKey)} className="absolute inset-0 h-full w-full cursor-pointer opacity-0">
-            {SORTS.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+      <div className="relative">
+        <select id={id} value={value} onChange={(e) => onChange(e.target.value as SortKey)} className="h-11 appearance-none border border-ink bg-transparent pl-4 pr-10 text-[13.5px] text-ink transition-colors hover:bg-sand focus:bg-sand">
+          {options}
+        </select>
+        <ChevronDown size={16} aria-hidden className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" />
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ import { createStore, useStore } from "@/lib/store";
 
 export const pinStore = createStore<string>("nf.pin", "");
 
-/** Simulated serviceability + delivery estimate (PRD §5.5 "pattern-only"). */
+/** Simulated serviceability + delivery estimate (PRD §5.5 "pattern-only"). One flat row: pincode field + Check, the answer underneath. */
 export function DeliveryCheck() {
   const saved = useStore(pinStore);
   const [draft, setDraft] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export function DeliveryCheck() {
   };
 
   return (
-    <section aria-labelledby="deliv" className="border-y border-line py-5">
+    <section aria-labelledby="deliv" className="border-t border-line pt-5">
       <h2 id="deliv" className="flex items-center gap-2 text-[13px] font-medium">
         <Truck size={16} aria-hidden /> Delivery
       </h2>
@@ -49,11 +49,11 @@ export function DeliveryCheck() {
             className="h-11 w-full border border-line-strong bg-white pl-10 pr-3 text-[14px] tabular-nums focus:border-ink"
           />
         </div>
-        <Button type="submit" variant="secondary" size="md">
+        <Button type="submit" variant="secondary" size="md" className="shrink-0 px-5">
           Check
         </Button>
       </form>
-      <div id="pin-msg" aria-live="polite" className="mt-3 min-h-5 text-[13px]">
+      <div id="pin-msg" aria-live="polite" className="mt-2.5 min-h-5 text-[12.5px] leading-snug">
         {formatError ? (
           <p role="alert" className="font-medium text-danger">Enter a valid 6-digit pincode.</p>
         ) : result?.ok ? (

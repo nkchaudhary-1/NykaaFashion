@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Banknote, Check, CreditCard, Landmark, Pencil, Plus, ShieldAlert, Smartphone, Wallet } from "lucide-react";
-import { useState } from "react";
+import { Banknote, CreditCard, Landmark, Pencil, Plus, ShieldAlert, Smartphone, Wallet } from "lucide-react";
+import { useState, type ReactNode } from "react";
 import { AddressForm } from "@/components/account/AddressForm";
 import { PriceSummary } from "@/components/commerce/PriceSummary";
+import { Col, Grid } from "@/components/layout/Grid";
 import { Button, LinkButton } from "@/components/ui/Button";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { Input, Radio, Select } from "@/components/ui/Form";
@@ -12,7 +13,7 @@ import { Img } from "@/components/ui/Img";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SimulatedNotice } from "@/components/ui/Simulated";
 import { EmptyState } from "@/components/ui/States";
-import { Stepper } from "@/components/ui/Stepper";
+import { StepMark, Stepper } from "@/components/ui/Stepper";
 import { COD_FEE, EXPRESS_SHIPPING, FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING, lookupPincode } from "@/data/commerce";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { DAY, nowMs, useNow } from "@/lib/clock";
@@ -138,31 +139,35 @@ export function CheckoutFlow() {
 
   const step = co.step;
   const selectedMethod = METHODS.find((m) => m.id === co.method);
+  const markState = (n: 0 | 1 | 2) => (step > n ? "done" : step === n ? "current" : "todo");
+
+  // Phones & tablets: the summary is a flat disclosure — on top while choosing address and payment, then just above the pay button.
+  const summaryDisclosure = (
+    <Disclosure title={<span className="text-[15px]">Order summary · <span className="tabular-nums">{inr(price.total)}</span></span>} className="border border-line bg-paper px-5 [&>h2]:py-1" headingLevel={2}>
+      <SummaryBody lines={lines} price={price} />
+    </Disclosure>
+  );
 
   return (
-    <div className="container-x pb-20">
-      <Stepper steps={STEPS} current={step} className="mb-10" />
-      <SimulatedNotice className="mb-10">
-        <strong>Simulated checkout.</strong> No payment is taken and no order is placed with anyone. Don’t enter real card details — use the test values shown.
-      </SimulatedNotice>
+    <div className="container-x pb-[var(--section-y)]">
+      <Stepper steps={STEPS} current={step} className="mb-8 sm:mb-10" />
 
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px] xl:gap-20">
-        <div className="space-y-6">
+      {/* 7 / 5 — the steps on the left, a sticky summary on the right (it becomes a disclosure below 1024px) */}
+      <Grid className="gap-y-6">
+        <Col span={{ base: 4, sm: 12, lg: 7 }} className="space-y-4 sm:space-y-6">
+          <SimulatedNotice>
+            <strong>Simulated checkout.</strong> No payment is taken and no order is placed with anyone. Don’t enter real card details — use the test values shown.
+          </SimulatedNotice>
+          {step < 2 && <div className="lg:hidden">{summaryDisclosure}</div>}
+
           {/* ── 1 Address ─────────────────────────────── */}
-          <section aria-labelledby="s-addr" className="border border-line bg-paper">
-            <header className="flex items-center justify-between gap-4 px-5 py-5 sm:px-7">
-              <h2 id="s-addr" className="display-xs flex items-center gap-3">
-                <span className={cn("inline-flex size-7 items-center justify-center rounded-full border text-[12px]", step > 0 ? "border-ink bg-ink text-bone" : "border-ink")}>{step > 0 ? <Check size={14} /> : 1}</span>
-                Address &amp; delivery
-              </h2>
-              {step > 0 && <Button variant="ghost" size="sm" icon={<Pencil size={13} />} onClick={() => goto(0)}>Change</Button>}
-            </header>
+          <StepCard id="s-addr" n={1} title="Address & delivery" state={markState(0)} onChange={step > 0 ? () => goto(0) : undefined}>
             {step === 0 ? (
               <div className="border-t border-line px-5 py-6 sm:px-7">
                 {addresses.length > 0 && !adding && (
-                  <div role="radiogroup" aria-label="Delivery address" className="grid grid-cols-1 gap-3">
+                  <div role="radiogroup" aria-label="Delivery address" className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {addresses.map((a) => (
-                      <Radio key={a.id} name="address" checked={address?.id === a.id} onChange={() => patchCheckout({ addressId: a.id })} label={<span className="flex items-center gap-2">{a.name}<span className="inline-flex h-5 items-center bg-sand px-2 text-[10px] font-medium uppercase tracking-wider text-ink-2">{a.type}</span>{a.isDefault && <span className="text-[11px] text-ink-3">Default</span>}</span>} sub={<AddressLine a={a} />} />
+                      <Radio key={a.id} name="address" checked={address?.id === a.id} onChange={() => patchCheckout({ addressId: a.id })} label={<span className="flex flex-wrap items-center gap-2">{a.name}<span className="inline-flex h-5 items-center bg-sand px-2 text-[10px] font-medium uppercase tracking-wider text-ink-2">{a.type}</span>{a.isDefault && <span className="text-[11px] text-ink-3">Default</span>}</span>} sub={<AddressLine a={a} />} />
                     ))}
                   </div>
                 )}
@@ -192,17 +197,10 @@ export function CheckoutFlow() {
             ) : (
               address && <p className="border-t border-line px-5 py-4 text-[14px] text-ink-2 sm:px-7"><strong className="font-medium text-ink">{address.name}</strong> · <AddressLine a={address} /> · <span className="capitalize">{co.delivery}</span> delivery</p>
             )}
-          </section>
+          </StepCard>
 
           {/* ── 2 Payment ─────────────────────────────── */}
-          <section aria-labelledby="s-pay" className="border border-line bg-paper">
-            <header className="flex items-center justify-between gap-4 px-5 py-5 sm:px-7">
-              <h2 id="s-pay" className={cn("display-xs flex items-center gap-3", step < 1 && "text-ink-3")}>
-                <span className={cn("inline-flex size-7 items-center justify-center rounded-full border text-[12px]", step > 1 ? "border-ink bg-ink text-bone" : step === 1 ? "border-ink" : "border-line-strong text-ink-3")}>{step > 1 ? <Check size={14} /> : 2}</span>
-                Payment
-              </h2>
-              {step > 1 && <Button variant="ghost" size="sm" icon={<Pencil size={13} />} onClick={() => goto(1)}>Change</Button>}
-            </header>
+          <StepCard id="s-pay" n={2} title="Payment" state={markState(1)} onChange={step > 1 ? () => goto(1) : undefined}>
             {step === 1 && (
               <div className="border-t border-line px-5 py-6 sm:px-7">
                 <div role="radiogroup" aria-label="Payment method" className="grid grid-cols-1 gap-3">
@@ -246,16 +244,10 @@ export function CheckoutFlow() {
               </div>
             )}
             {step > 1 && selectedMethod && <p className="border-t border-line px-5 py-4 text-[14px] text-ink-2 sm:px-7"><strong className="font-medium text-ink">{selectedMethod.label}</strong> · {detail()}</p>}
-          </section>
+          </StepCard>
 
           {/* ── 3 Review ──────────────────────────────── */}
-          <section aria-labelledby="s-rev" className="border border-line bg-paper">
-            <header className="px-5 py-5 sm:px-7">
-              <h2 id="s-rev" className={cn("display-xs flex items-center gap-3", step < 2 && "text-ink-3")}>
-                <span className={cn("inline-flex size-7 items-center justify-center rounded-full border text-[12px]", step === 2 ? "border-ink" : "border-line-strong text-ink-3")}>3</span>
-                Review &amp; place order
-              </h2>
-            </header>
+          <StepCard id="s-rev" n={3} title="Review & place order" state={markState(2)}>
             {step === 2 && (
               <div className="border-t border-line px-5 py-6 sm:px-7">
                 {status === "failed" && (
@@ -281,6 +273,7 @@ export function CheckoutFlow() {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-2 lg:hidden">{summaryDisclosure}</div>
                 <p className="mt-6 text-[13px] text-ink-3">By placing this simulated order you acknowledge it is a prototype: nothing is bought, shipped or charged.</p>
                 <Button size="lg" full className="mt-5 sm:w-auto sm:min-w-[320px]" loading={status === "processing"} disabled={unavailable} onClick={place}>
                   {status === "processing" ? "Processing…" : `Place order (simulated) · ${inr(price.total)}`}
@@ -288,20 +281,35 @@ export function CheckoutFlow() {
                 {status === "processing" && <p role="status" className="mt-3 text-[13px] text-ink-3">Contacting your (pretend) bank…</p>}
               </div>
             )}
-          </section>
-        </div>
+          </StepCard>
+        </Col>
 
-        <aside aria-label="Order summary" className="lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
-          <Disclosure title={<span className="text-[15px]">Order summary · {inr(price.total)}</span>} defaultOpen className="border border-line bg-paper px-5 [&>h3]:py-1 lg:hidden" headingLevel={2}>
-            <SummaryBody lines={lines} price={price} />
-          </Disclosure>
-          <div className="hidden border border-line bg-paper p-6 lg:block">
-            <h2 className="mb-4 text-[15px] font-medium">Order summary</h2>
-            <SummaryBody lines={lines} price={price} />
-          </div>
-        </aside>
-      </div>
+        <Col span={{ base: 4, sm: 12, lg: 5 }} start={{ lg: 8 }} rowStart={{ lg: 1 }} className="hidden lg:block">
+          <aside aria-label="Order summary" className="sticky top-[calc(var(--header-offset)+16px)] transition-[top] duration-500 ease-editorial">
+            <div className="border border-ink bg-paper p-6 xl:p-8">
+              <h2 className="display-xs mb-5">Order summary</h2>
+              <SummaryBody lines={lines} price={price} />
+            </div>
+          </aside>
+        </Col>
+      </Grid>
     </div>
+  );
+}
+
+/** One step of the flow: a square numbered marker, the title, and "Change" once it is done. The current step is outlined in ink. */
+function StepCard({ id, n, title, state, onChange, children }: { id: string; n: number; title: string; state: "done" | "current" | "todo"; onChange?: () => void; children?: ReactNode }) {
+  return (
+    <section aria-labelledby={id} className={cn("border bg-paper", state === "current" ? "border-ink" : "border-line")}>
+      <header className="flex items-center justify-between gap-4 px-5 py-4 sm:px-7 sm:py-5">
+        <h2 id={id} className={cn("display-xs flex items-center gap-3.5", state === "todo" && "text-ink-3")}>
+          <StepMark n={n} state={state} className="size-8 text-[13px]" />
+          {title}
+        </h2>
+        {onChange && <Button variant="ghost" size="sm" icon={<Pencil size={13} />} onClick={onChange}>Change</Button>}
+      </header>
+      {children}
+    </section>
   );
 }
 
@@ -317,7 +325,7 @@ function SummaryBody({ lines, price }: { lines: ReturnType<typeof useBag>["lines
         ))}
       </ul>
       <PriceSummary b={price} />
-      <Link href="/bag" className="link-u mt-4 inline-block text-[12.5px] font-medium">Edit bag</Link>
+      <Link href="/bag" className="link-u tap mt-4 inline-block text-[12.5px] font-medium">Edit bag</Link>
     </>
   );
 }
@@ -328,12 +336,18 @@ function AddressLine({ a }: { a: Address }) {
 
 function CheckoutSkeleton() {
   return (
-    <div className="container-x pb-20" role="status" aria-label="Loading checkout">
-      <Skeleton className="mb-10 h-7 w-72" />
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
-        <div className="space-y-6"><Skeleton className="h-64 w-full" /><Skeleton className="h-20 w-full" /><Skeleton className="h-20 w-full" /></div>
-        <Skeleton className="h-96 w-full" />
-      </div>
+    <div className="container-x pb-[var(--section-y)]" role="status" aria-label="Loading checkout">
+      <Skeleton className="mb-10 h-12 w-full" />
+      <Grid className="gap-y-6">
+        <Col span={{ base: 4, sm: 12, lg: 7 }} className="space-y-6">
+          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+        </Col>
+        <Col span={{ base: 4, sm: 12, lg: 5 }} start={{ lg: 8 }} rowStart={{ lg: 1 }} className="hidden lg:block">
+          <Skeleton className="h-96 w-full" />
+        </Col>
+      </Grid>
     </div>
   );
 }

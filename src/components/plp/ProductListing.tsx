@@ -1,26 +1,31 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SlidersHorizontal, X } from "lucide-react";
-import { useMemo, useState, type ReactNode } from "react";
-import { ProductCard } from "@/components/product/ProductCard";
-import { LISTING_GRID, ProductGrid } from "@/components/product/ProductGrid";
+import { SlidersHorizontal } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Col, Grid } from "@/components/layout/Grid";
 import { Button } from "@/components/ui/Button";
+import { Chip } from "@/components/ui/Chip";
+import { GRID_CLASS } from "@/components/product/ProductGrid";
 import { Overlay, OverlayBody, OverlayFooter, OverlayHeader } from "@/components/ui/Overlay";
-import { Reveal } from "@/components/ui/Reveal";
-import { EmptyState, ErrorState } from "@/components/ui/States";
+import { ErrorState } from "@/components/ui/States";
 import { GridSkeleton } from "@/components/ui/Skeleton";
+import { EditTile } from "@/components/editorial/EditTile";
 import { primaryEdits } from "@/data/edits";
 import type { Product } from "@/data/types";
-import { hashString } from "@/data/catalog";
+import { useIsDesktop } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/cn";
 import { activeChips, activeCount, applyFilters, computeFacets, parseFilters, relaxSuggestions, removeChip, serializeFilters, EMPTY_FILTERS, type FilterState } from "@/lib/filters";
 import { useMockQuery } from "@/lib/mockApi";
 import { track } from "@/lib/track";
 import { signal } from "@/stores/intent";
-import { EditTile } from "@/components/editorial/EditTile";
 import { FilterPanel, type FacetKey, type FilterChange } from "./FilterPanel";
+import type { Feature } from "./features";
+import { ListingGrid } from "./ListingGrid";
+import { planCells } from "./plan";
+import { QuickFilters } from "./QuickFilters";
 import { SortSelect } from "./SortSelect";
 
+/** Cards added by each "Show more". 24 is a whole number of rows at 2-, 3- and 4-up. */
 const PAGE = 24;
 
 interface Props {
@@ -29,27 +34,31 @@ interface Props {
   scopeKey: string;
   /** path of the current category; the category facet lists its children */
   categoryScope?: string[];
-  layout?: "grid" | "masonry";
   hide?: FacetKey[];
   source: string;
-  /** shown above the toolbar (e.g. "understood as" chips) */
+  /** shown above the toolbar */
   intro?: ReactNode;
   noun?: string;
   /** visually hidden h2 above the results (keeps heading order); false when the page already has one */
   resultsHeading?: string | false;
+  /** feature inserts for the grid, in order — chosen by the page from its context (see ./features) */
+  features?: Feature[];
 }
 
 /**
- * Shared listing: URL-encoded filters/sort (shareable, back-safe — PRD §6.1), skeleton → results,
- * inline retry on error, relaxed-filter suggestions on no match, end-of-results.
+ * Shared listing for categories, search, edits, labels and offers. Filter + sort state lives in the URL (shareable,
+ * back-safe — PRD §6.1). Layout: a sticky toolbar (Filter · quick chips · count · Sort), the applied filters, then a
+ * full-width grid — filters open in a drawer, so the grid keeps all twelve columns. Skeleton → results, inline retry on
+ * error, relaxed-filter suggestions on no match, progress + "Show more" at the end.
  */
-export function ProductListing({ pool, scopeKey, categoryScope = [], layout = "grid", hide = [], source, intro, noun = "pieces", resultsHeading = "Results" }: Props) {
+export function ProductListing({ pool, scopeKey, categoryScope = [], hide = [], source, intro, noun = "pieces", resultsHeading = "Results", features = [] }: Props) {
   const sp = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const desktop = useIsDesktop();
   const qs = sp.toString();
   const filters = useMemo(() => parseFilters(sp), [sp]);
-  const [sheet, setSheet] = useState(false);
+  const [drawer, setDrawer] = useState(false);
 
   const query = useMockQuery(`${scopeKey}?${qs}`, () => applyFilters(pool, filters), 360);
   const facets = useMemo(() => computeFacets(pool, filters, categoryScope), [pool, filters, categoryScope]);
@@ -76,73 +85,87 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], layout = "g
   const clearAll = () => push({ ...EMPTY_FILTERS, sort: filters.sort });
 
   const count = activeCount(filters);
-  const showCats = hide;
+  const nounOf = (n: number) => (n === 1 ? noun.replace(/s$/, "") : noun);
+  const ready = query.status === "ready" || !!query.data;
+  const countLine = (className: string) => (
+    <p className={cn("whitespace-nowrap text-[13.5px] text-ink-2", className)} aria-live="polite">
+      {ready ? (
+        <>
+          <span className="font-medium tabular-nums text-ink">{liveCount}</span> {nounOf(liveCount)}
+        </>
+      ) : (
+        <span className="text-ink-3">Loading…</span>
+      )}
+    </p>
+  );
 
   return (
-    <div className="container-x">
-      {intro}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-y border-line py-3.5 lg:border-t-0 lg:pb-5 lg:pt-0">
-        <p className="text-[13.5px] text-ink-2" aria-live="polite">
-          {query.status === "ready" || query.data ? <><span className="font-medium text-ink tabular-nums">{liveCount}</span> {liveCount === 1 ? noun.replace(/s$/, "") : noun}</> : <span className="text-ink-3">Loading…</span>}
-        </p>
-        <div className="hidden items-center gap-3 lg:flex">
-          <SortSelect value={filters.sort} onChange={onSort} />
-        </div>
-        <div className="flex items-center gap-2 lg:hidden">
-          <Button variant="secondary" size="md" icon={<SlidersHorizontal size={15} />} onClick={() => setSheet(true)} aria-haspopup="dialog">
-            Filter{count > 0 ? ` · ${count}` : ""}
-          </Button>
-          <SortSelect value={filters.sort} onChange={onSort} />
+    <div>
+      {intro && <div className="container-x">{intro}</div>}
+
+      {/* Sticky toolbar. It follows the header: --header-offset is the header's height while it is shown, 0 once it has slid away. */}
+      <div className="sticky top-[var(--header-offset,var(--header-h))] z-30 border-y border-line bg-bone transition-[top] duration-500 ease-editorial">
+        <div className="container-x">
+          <div className="grid grid-cols-2 gap-[var(--gap)] py-2 sm:flex sm:items-center sm:gap-x-5 sm:py-2.5">
+            <Button variant="secondary" size="md" icon={<SlidersHorizontal size={15} />} onClick={() => setDrawer(true)} aria-haspopup="dialog" aria-expanded={drawer} className="w-full sm:w-auto sm:shrink-0">
+              Filter
+              {count > 0 && <span className="ml-1 inline-flex size-5 items-center justify-center rounded-full border border-current text-[11px] font-semibold tabular-nums tracking-normal">{count}</span>}
+            </Button>
+            <QuickFilters facets={facets} filters={filters} hide={hide} poolSize={pool.length} onChange={onChange} className="hidden min-w-0 flex-1 sm:flex" />
+            {countLine("hidden sm:block")}
+            <SortSelect value={filters.sort} onChange={onSort} variant="button" className="sm:hidden" />
+            <SortSelect value={filters.sort} onChange={onSort} className="hidden sm:inline-flex" />
+          </div>
         </div>
       </div>
 
-      {chips.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 pb-1 pt-4" aria-label="Applied filters" role="group">
-          {chips.map((c) => (
-            <button key={`${c.key}-${c.value ?? ""}`} type="button" onClick={() => push(removeChip(filters, c))} className="group inline-flex h-9 items-center gap-2 rounded-full border border-ink bg-paper pl-4 pr-3 text-[13px] text-ink transition-colors hover:bg-ink hover:text-bone">
-              {c.label}
-              <X size={14} aria-hidden />
-              <span className="sr-only">Remove filter</span>
-            </button>
-          ))}
-          <button type="button" onClick={clearAll} className="link-u ml-1 px-1 py-2 text-[12.5px] font-medium uppercase tracking-[0.1em]">
-            Clear all
-          </button>
+      <div className="container-x">
+        <div className={cn("flex flex-wrap items-center gap-2 pt-4 sm:pt-5", chips.length === 0 && "sm:hidden")}>
+          {countLine("mr-2 sm:hidden")}
+          {chips.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2" aria-label="Applied filters" role="group">
+              {chips.map((c) => (
+                <Chip key={`${c.key}-${c.value ?? ""}`} removable onClick={() => push(removeChip(filters, c))}>
+                  {c.label}
+                </Chip>
+              ))}
+              <button type="button" onClick={clearAll} className="link-u tap ml-1 px-1 py-2 text-[12.5px] font-medium uppercase tracking-[0.1em]">
+                Clear all
+              </button>
+            </div>
+          )}
         </div>
-      )}
 
-      <div className="mt-6 grid grid-cols-1 gap-x-12 lg:mt-8 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)]">
-        <aside aria-label="Filters" className="hidden lg:block">
-          <h2 className="sr-only">Filters</h2>
-          <div className="sticky top-[calc(var(--header-h)+16px)] max-h-[calc(100dvh-var(--header-h)-32px)] overflow-y-auto pr-3 [scrollbar-width:thin]">
-            <FilterPanel facets={facets} filters={filters} onChange={onChange} hide={showCats} />
-          </div>
-        </aside>
-
-        <section aria-label="Results" className="min-w-0 pb-4">
+        <section aria-label="Results" className="min-w-0 pb-4 pt-6 sm:pt-8 lg:pt-10">
           {resultsHeading !== false && <h2 className="sr-only">{resultsHeading}</h2>}
-          {query.status === "error" && <ErrorState title="We couldn’t load these pieces" text="The connection dropped before the list arrived. Your filters are saved in the URL — try again." onRetry={query.retry} />}
-          {query.status === "loading" && !query.data && <GridSkeleton count={8} columnsClass={LISTING_GRID} />}
+          {query.status === "error" && (
+            <Grid>
+              <Col span={{ base: 4, sm: 12 }}>
+                <ErrorState title="We couldn’t load these pieces" text="The connection dropped before the list arrived. Your filters are saved in the URL — try again." onRetry={query.retry} />
+              </Col>
+            </Grid>
+          )}
+          {query.status === "loading" && !query.data && <GridSkeleton count={8} columnsClass={GRID_CLASS} />}
           {query.data && query.status !== "error" && (
             <div className={cn("transition-opacity duration-300", query.reloading && "pointer-events-none opacity-50")}>
-              <Results key={qs} items={query.data} layout={layout} source={source} filters={filters} pool={pool} onClear={clearAll} onRelax={(c) => push(removeChip(filters, c))} noun={noun} />
+              <Results key={qs} items={query.data} source={source} filters={filters} pool={pool} features={features} onClear={clearAll} onRelax={(c) => push(removeChip(filters, c))} noun={noun} />
             </div>
           )}
         </section>
       </div>
 
-      {/* Mobile filter sheet */}
-      <Overlay open={sheet} onClose={() => setSheet(false)} label="Filters" side="bottom" panelClassName="h-[88dvh]">
-        <OverlayHeader title="Filter & sort" />
+      {/* Filters: a drawer from the left on desktop, a bottom sheet below — the grid never loses columns to a sidebar. */}
+      <Overlay open={drawer} onClose={() => setDrawer(false)} label="Filters" side={desktop ? "left" : "bottom"} panelClassName={desktop ? undefined : "h-[88dvh]"}>
+        <OverlayHeader title="Filters" sub={count > 0 ? `${count} applied` : "Refine what you see"} />
         <OverlayBody>
-          <FilterPanel facets={facets} filters={filters} onChange={onChange} hide={showCats} />
+          <FilterPanel facets={facets} filters={filters} onChange={onChange} hide={hide} />
         </OverlayBody>
         <OverlayFooter className="grid grid-cols-[auto_1fr] gap-3">
           <Button variant="ghost" size="lg" onClick={clearAll} disabled={count === 0}>
-            Clear
+            Clear all
           </Button>
-          <Button size="lg" onClick={() => setSheet(false)}>
-            Show {liveCount} {liveCount === 1 ? noun.replace(/s$/, "") : noun}
+          <Button size="lg" onClick={() => setDrawer(false)}>
+            Show {liveCount} {nounOf(liveCount)}
           </Button>
         </OverlayFooter>
       </Overlay>
@@ -150,16 +173,29 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], layout = "g
   );
 }
 
-function Results({ items, layout, source, filters, pool, onClear, onRelax, noun }: { items: Product[]; layout: "grid" | "masonry"; source: string; filters: FilterState; pool: Product[]; onClear: () => void; onRelax: (c: ReturnType<typeof activeChips>[number]) => void; noun: string }) {
+function Results({ items, source, filters, pool, features, onClear, onRelax, noun }: { items: Product[]; source: string; filters: FilterState; pool: Product[]; features: Feature[]; onClear: () => void; onRelax: (c: ReturnType<typeof activeChips>[number]) => void; noun: string }) {
   const [limit, setLimit] = useState(PAGE);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const focusFrom = useRef<number | null>(null);
+
+  // After "Show more", move focus to the first new card so keyboard and screen-reader users land in the new content.
+  useEffect(() => {
+    if (focusFrom.current === null) return;
+    gridRef.current?.querySelector<HTMLElement>(`[data-card="${focusFrom.current}"] a:not([aria-hidden])`)?.focus();
+    focusFrom.current = null;
+  }, [limit]);
+
+  const plan = useMemo(() => planCells(items, features, limit), [items, features, limit]);
+  const next = useMemo(() => planCells(items, features, limit + PAGE), [items, features, limit]);
+
   if (items.length === 0) {
     const relax = relaxSuggestions(pool, filters);
     return (
-      <EmptyState
-        title="Nothing matches those filters"
-        text="Try relaxing one of them — or step into an edit and let someone else do the choosing."
-        actions={
-          <>
+      <Grid className="items-center gap-y-10 py-4 sm:py-8">
+        <Col span={{ base: 4, sm: 12, lg: 6 }}>
+          <h2 className="display-sm">Nothing matches those filters</h2>
+          <p className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">Try relaxing one of them — or step into an edit and let someone else do the choosing.</p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             {relax.map((r) => (
               <Button key={`${r.chip.key}-${r.chip.value ?? ""}`} variant="secondary" onClick={() => onRelax(r.chip)}>
                 Remove “{r.chip.label}” · {r.count}
@@ -168,53 +204,51 @@ function Results({ items, layout, source, filters, pool, onClear, onRelax, noun 
             <Button variant="ghost" onClick={onClear}>
               Clear all filters
             </Button>
-          </>
-        }
-        visual={
-          <ul className="grid grid-cols-2 gap-2 text-left">
-            {primaryEdits.slice(0, 2).map((e) => (
-              <li key={e.id}>
-                <EditTile edit={e} sizes="120px" source="no-results" />
-              </li>
-            ))}
-          </ul>
-        }
-        className="py-10"
-      />
+          </div>
+        </Col>
+        <Col span={{ base: 4, sm: 12, lg: 6 }} className="grid grid-cols-2 gap-x-[var(--gap)]">
+          {primaryEdits.slice(0, 2).map((e) => (
+            <EditTile key={e.id} edit={e} sizes="(min-width:1024px) 25vw, 50vw" source="no-results" />
+          ))}
+        </Col>
+      </Grid>
     );
   }
-  const shown = items.slice(0, limit);
+
+  const total = items.length;
+  const more = next.shown - plan.shown;
   return (
     <>
-      {layout === "masonry" ? (
-        <ul className="columns-2 gap-x-3 sm:columns-3 sm:gap-x-4 xl:columns-4 xl:gap-x-5 2xl:columns-5">
-          {shown.map((p, i) => {
-            const ratio = (["4/5", "3/4", "5/6"] as const)[hashString(p.id) % 3];
-            return (
-              <li key={p.id} className="mb-9 break-inside-avoid">
-                <Reveal delay={(i % 4) * 60}>
-                  <ProductCard product={p} source={source} load={i < 4 ? "eager" : undefined} ratio={ratio} />
-                </Reveal>
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <ProductGrid products={shown} source={source} columnsClass={LISTING_GRID} />
-      )}
-      <div className="mt-14 flex flex-col items-center gap-3 border-t border-line pt-10 text-center">
-        <p className="text-[13px] text-ink-3" aria-live="polite">
-          Showing {shown.length} of {items.length} {noun}
-        </p>
-        {shown.length < items.length ? (
-          <Button variant="secondary" size="lg" onClick={() => setLimit((l) => l + PAGE)}>
-            Show more
-          </Button>
-        ) : (
-          <p className="display-xs text-ink-2">You’ve seen them all.</p>
-        )}
+      <div ref={gridRef}>
+        <ListingGrid cells={plan.cells} source={source} />
+      </div>
+      <div className="mt-14 grid-main items-center gap-y-6 border-t border-line pt-8 lg:mt-16">
+        <div className="col-span-4 min-w-0 sm:col-span-6">
+          <p className="text-[13px] tabular-nums text-ink-2" aria-live="polite">
+            Showing {plan.shown} of {total} {noun}
+          </p>
+          <div role="progressbar" aria-label={`${noun} shown`} aria-valuemin={0} aria-valuemax={total} aria-valuenow={plan.shown} className="mt-3 h-0.5 w-full max-w-[420px] bg-line">
+            <div className="h-full bg-ink transition-[width] duration-500 ease-editorial" style={{ width: `${(plan.shown / total) * 100}%` }} />
+          </div>
+        </div>
+        <div className="col-span-4 sm:col-span-6 sm:flex sm:justify-end">
+          {more > 0 ? (
+            <Button
+              variant="secondary"
+              size="lg"
+              className="w-full sm:w-auto"
+              onClick={() => {
+                focusFrom.current = plan.cards;
+                setLimit((l) => l + PAGE);
+              }}
+            >
+              Show {more} more
+            </Button>
+          ) : (
+            <p className="display-xs text-ink-2">You’ve seen them all.</p>
+          )}
+        </div>
       </div>
     </>
   );
 }
-
