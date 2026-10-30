@@ -2,12 +2,13 @@
 import { ArrowUpRight, Clock, Search, TrendingUp, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDeferredValue, useEffect, useId, useMemo, useState } from "react";
+import { Chip } from "@/components/ui/Chip";
 import { Img } from "@/components/ui/Img";
 import { Overlay } from "@/components/ui/Overlay";
 import { Price } from "@/components/ui/Price";
 import { topCategories } from "@/data/categories";
 import { TRENDING_SEARCHES } from "@/data/content";
-import { THEMES, primaryEdits } from "@/data/edits";
+import { primaryEdits } from "@/data/edits";
 import { labelById } from "@/data/labels";
 import { cn } from "@/lib/cn";
 import { searchProducts, suggest } from "@/lib/search";
@@ -92,57 +93,58 @@ function SearchPanel() {
     }
   };
 
-  const chip = "inline-flex h-11 items-center gap-2 rounded-full border border-line-strong px-4 text-[13.5px] text-ink transition-colors hover:border-ink hover:bg-sand";
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="container-x flex h-[72px] shrink-0 items-center gap-3 border-b border-line transition-[border-color,box-shadow] focus-within:border-ink focus-within:shadow-[0_1px_0_0_var(--color-ink)]">
-        <Search size={20} className="shrink-0 text-ink" aria-hidden />
-        <input
-          data-autofocus
-          type="search"
-          role="combobox"
-          aria-label="Search labels, edits and styles"
-          aria-expanded={items.length > 0}
-          aria-controls={listId}
-          aria-activedescendant={active >= 0 ? `${listId}-${active}` : undefined}
-          aria-autocomplete="list"
-          autoComplete="off"
-          enterKeyHint="search"
-          placeholder="Search labels, edits, styles — try “festive under 2000”"
-          value={q}
-          onChange={(e) => (setQ(e.target.value), setActive(-1))}
-          onKeyDown={onKey}
-          className="h-12 min-w-0 flex-1 bg-transparent text-[17px] text-ink outline-none placeholder:text-ink-3 [&::-webkit-search-cancel-button]:hidden"
-        />
-        {q && (
-          <button type="button" aria-label="Clear search" onClick={() => (setQ(""), setActive(-1))} className="inline-flex size-10 items-center justify-center rounded-full text-ink-2 hover:bg-sand">
-            <X size={18} />
+      <div className="border-b border-line transition-colors focus-within:border-ink">
+        <div className="container-x flex h-[72px] items-center gap-3">
+          <Search size={20} className="shrink-0 text-ink" aria-hidden />
+          <input
+            data-autofocus
+            type="search"
+            role="combobox"
+            aria-label="Search labels, edits and styles"
+            aria-expanded={items.length > 0}
+            aria-controls={listId}
+            aria-activedescendant={active >= 0 ? `${listId}-${active}` : undefined}
+            aria-autocomplete="list"
+            autoComplete="off"
+            enterKeyHint="search"
+            placeholder="Search labels, edits, styles"
+            value={q}
+            onChange={(e) => (setQ(e.target.value), setActive(-1))}
+            onKeyDown={onKey}
+            className="h-12 min-w-0 flex-1 bg-transparent text-[17px] text-ink placeholder:text-ink-3 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+          />
+          {q && (
+            <button type="button" aria-label="Clear search" onClick={() => (setQ(""), setActive(-1))} className="inline-flex size-11 shrink-0 items-center justify-center text-ink-2 transition-colors hover:bg-sand hover:text-ink">
+              <X size={18} />
+            </button>
+          )}
+          <button type="button" onClick={close} className="inline-flex h-11 shrink-0 items-center border border-ink px-4 text-[12px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:bg-ink hover:text-bone">
+            Close
           </button>
-        )}
-        <button type="button" onClick={close} className="h-10 shrink-0 px-2 text-[12px] font-medium uppercase tracking-[0.12em] text-ink">
-          Close
-        </button>
+        </div>
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-        <div className="container-x py-6 sm:py-8">
+        <div className="container-x py-8 sm:py-10">
           {!dq.trim() ? (
-            <div className="grid grid-cols-1 gap-9 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
-              <div className="space-y-8">
+            <div className="grid-main gap-y-10">
+              <div className="col-span-4 space-y-9 sm:col-span-12 lg:col-span-6">
                 {recentSearches.length > 0 && (
                   <section aria-labelledby="recent-h">
                     <div className="mb-3 flex items-center justify-between">
                       <h2 id="recent-h" className="eyebrow text-ink-3">Recent</h2>
-                      <button type="button" onClick={() => prefsStore.set((p) => ({ ...p, recentSearches: [] }))} className="link-u text-[12px] text-ink-3">
+                      <button type="button" onClick={() => prefsStore.set((p) => ({ ...p, recentSearches: [] }))} className="link-u tap text-[12px] text-ink-3">
                         Clear
                       </button>
                     </div>
                     <ul className="flex flex-wrap gap-2">
                       {recentSearches.map((s) => (
                         <li key={s}>
-                          <button type="button" className={chip} onClick={() => go(`/search?q=${encodeURIComponent(s)}`, s)}>
+                          <Chip onClick={() => go(`/search?q=${encodeURIComponent(s)}`, s)}>
                             <Clock size={14} aria-hidden className="text-ink-3" /> {s}
-                          </button>
+                          </Chip>
                         </li>
                       ))}
                     </ul>
@@ -153,9 +155,9 @@ function SearchPanel() {
                   <ul className="flex flex-wrap gap-2">
                     {TRENDING_SEARCHES.map((s) => (
                       <li key={s}>
-                        <button type="button" className={chip} onClick={() => go(`/search?q=${encodeURIComponent(s)}`, s)}>
+                        <Chip onClick={() => go(`/search?q=${encodeURIComponent(s)}`, s)}>
                           <TrendingUp size={14} aria-hidden className="text-ink-3" /> {s}
-                        </button>
+                        </Chip>
                       </li>
                     ))}
                   </ul>
@@ -165,25 +167,21 @@ function SearchPanel() {
                   <ul className="flex flex-wrap gap-2">
                     {topCategories.map((c) => (
                       <li key={c.id}>
-                        <button type="button" className={chip} onClick={() => go(`/c/${c.id}`)}>
-                          {c.name}
-                        </button>
+                        <Chip onClick={() => go(`/c/${c.id}`)}>{c.name}</Chip>
                       </li>
                     ))}
                     <li>
-                      <button type="button" className={chip} onClick={() => go("/brands")}>
-                        All labels
-                      </button>
+                      <Chip onClick={() => go("/brands")}>All labels</Chip>
                     </li>
                   </ul>
                 </section>
               </div>
-              <section aria-labelledby="edits-h">
+              <section aria-labelledby="edits-h" className="col-span-4 sm:col-span-12 lg:col-span-6">
                 <h2 id="edits-h" className="eyebrow mb-3 text-ink-3">Start with an edit</h2>
-                <ul className="grid grid-cols-1 gap-2.5">
+                <ul className="grid grid-cols-1 border-t border-line">
                   {primaryEdits.map((e) => (
-                    <li key={e.id}>
-                      <button type="button" onClick={() => go(`/edits/${e.id}`)} className="group flex w-full items-center gap-4 border border-line bg-paper p-3 text-left transition-colors hover:border-ink">
+                    <li key={e.id} className="border-b border-line">
+                      <button type="button" onClick={() => go(`/edits/${e.id}`)} className="group flex w-full items-center gap-4 py-3 text-left transition-colors hover:bg-sand">
                         <span className="relative w-14 shrink-0">
                           <Img imgKey={`scenes/edit-${e.id}-tall`} alt="" sizes="64px" ratio="4/5" />
                         </span>
@@ -191,8 +189,7 @@ function SearchPanel() {
                           <span className="block text-[15px] font-medium">{e.title}</span>
                           <span className="block truncate text-[12.5px] text-ink-3">{e.blurb}</span>
                         </span>
-                        <span aria-hidden className="size-2.5 shrink-0 rounded-full" style={{ background: THEMES[e.theme].accent }} />
-                        <ArrowUpRight size={16} className="shrink-0 text-ink-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
+                        <ArrowUpRight size={16} className="mr-3 shrink-0 text-ink-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
                       </button>
                     </li>
                   ))}
@@ -200,40 +197,42 @@ function SearchPanel() {
               </section>
             </div>
           ) : (
-            <ul id={listId} role="listbox" aria-label="Search suggestions" className="mx-auto max-w-3xl">
-              {items.map((it, i) => {
-                const isActive = i === active;
-                const prev = items[i - 1];
-                const heading = !prev || prev.kind !== it.kind ? { term: "Suggestions", product: "Products", label: "Labels", category: "Categories", edit: "Edits", all: "" }[it.kind] : null;
-                return (
-                  <li key={it.id} role="presentation">
-                    {heading && <p className="eyebrow mb-1 mt-5 px-3 text-ink-3 first:mt-0">{heading}</p>}
-                    <button
-                      id={`${listId}-${i}`}
-                      role="option"
-                      aria-selected={isActive}
-                      type="button"
-                      onMouseEnter={() => setActive(i)}
-                      onClick={() => go(it.href, it.kind === "term" ? it.label : it.kind === "all" ? q.trim() : undefined)}
-                      className={cn("flex w-full items-center gap-4 px-3 py-2.5 text-left transition-colors", isActive ? "bg-sand" : "hover:bg-sand/60", it.kind === "all" && "mt-3 border-t border-line pt-4")}
-                    >
-                      {it.kind === "product" && it.productId ? <ProductThumb id={it.productId} /> : <Search size={16} className="shrink-0 text-ink-3" aria-hidden />}
-                      <span className="min-w-0 flex-1">
-                        <span className={cn("block truncate text-[15px]", it.kind === "all" && "font-medium")}>{it.label}</span>
-                        {it.sub && <span className="block truncate text-[12.5px] text-ink-3">{it.sub}</span>}
-                      </span>
-                      {it.kind === "product" && it.productId && <ProductPrice id={it.productId} />}
-                      <ArrowUpRight size={15} className="shrink-0 text-ink-3" aria-hidden />
-                    </button>
+            <div className="grid-main">
+              <ul id={listId} role="listbox" aria-label="Search suggestions" className="col-span-4 sm:col-span-12 lg:col-span-8 lg:col-start-3">
+                {items.map((it, i) => {
+                  const isActive = i === active;
+                  const prev = items[i - 1];
+                  const heading = !prev || prev.kind !== it.kind ? { term: "Suggestions", product: "Products", label: "Labels", category: "Categories", edit: "Edits", all: "" }[it.kind] : null;
+                  return (
+                    <li key={it.id} role="presentation">
+                      {heading && <p className="eyebrow mb-1 mt-6 px-3 text-ink-3 first:mt-0">{heading}</p>}
+                      <button
+                        id={`${listId}-${i}`}
+                        role="option"
+                        aria-selected={isActive}
+                        type="button"
+                        onMouseEnter={() => setActive(i)}
+                        onClick={() => go(it.href, it.kind === "term" ? it.label : it.kind === "all" ? q.trim() : undefined)}
+                        className={cn("flex min-h-12 w-full items-center gap-4 px-3 py-2.5 text-left transition-colors", isActive ? "bg-sand" : "hover:bg-sand", it.kind === "all" && "mt-3 border-t border-line pt-4")}
+                      >
+                        {it.kind === "product" && it.productId ? <ProductThumb id={it.productId} /> : <Search size={16} className="shrink-0 text-ink-3" aria-hidden />}
+                        <span className="min-w-0 flex-1">
+                          <span className={cn("block truncate text-[15px]", it.kind === "all" && "font-medium")}>{it.label}</span>
+                          {it.sub && <span className="block truncate text-[12.5px] text-ink-3">{it.sub}</span>}
+                        </span>
+                        {it.kind === "product" && it.productId && <ProductPrice id={it.productId} />}
+                        <ArrowUpRight size={15} className="shrink-0 text-ink-3" aria-hidden />
+                      </button>
+                    </li>
+                  );
+                })}
+                {items.length === 1 && (
+                  <li role="presentation" className="px-3 py-6 text-[14px] text-ink-3">
+                    No direct matches — see all results for ideas, or browse an edit.
                   </li>
-                );
-              })}
-              {items.length === 1 && (
-                <li role="presentation" className="px-3 py-6 text-[14px] text-ink-3">
-                  No direct matches — see all results for ideas, or browse an edit.
-                </li>
-              )}
-            </ul>
+                )}
+              </ul>
+            </div>
           )}
         </div>
       </div>

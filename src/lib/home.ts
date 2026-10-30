@@ -2,7 +2,7 @@ import type { IntentMode } from "@/stores/intent";
 
 // Adaptive home composition — PRD §5.1 / §6.1: "System reorders home modules from intent signal
 // (cold → curation; returning → rail; deal-intent → discount promoted)".
-export type HomeModuleId = "hero" | "categories" | "newin" | "edits" | "trending" | "rail" | "occasion" | "stories" | "brand" | "offers";
+export type HomeModuleId = "hero" | "categories" | "newin" | "edits" | "trending" | "look" | "rail" | "occasion" | "stories" | "brand" | "offers";
 
 export const HOME_MODULES: Array<{ id: HomeModuleId; name: string }> = [
   { id: "hero", name: "Editorial hero" },
@@ -10,6 +10,7 @@ export const HOME_MODULES: Array<{ id: HomeModuleId; name: string }> = [
   { id: "newin", name: "New in by taste" },
   { id: "edits", name: "Featured edits" },
   { id: "trending", name: "Most wanted" },
+  { id: "look", name: "Shop the look" },
   { id: "rail", name: "Picked for you" },
   { id: "occasion", name: "Festive edit" },
   { id: "stories", name: "Style Files" },
@@ -26,12 +27,12 @@ export interface HomeSlot {
 export function composeHome(mode: IntentMode): HomeSlot[] {
   switch (mode) {
     case "returning":
-      return [{ id: "hero" }, { id: "rail" }, { id: "newin" }, { id: "edits" }, { id: "categories" }, { id: "trending" }, { id: "occasion" }, { id: "brand" }, { id: "stories" }, { id: "offers" }];
+      return [{ id: "hero" }, { id: "rail" }, { id: "newin" }, { id: "edits" }, { id: "categories" }, { id: "trending" }, { id: "look" }, { id: "occasion" }, { id: "brand" }, { id: "stories" }, { id: "offers" }];
     case "deal":
-      return [{ id: "offers", promoted: true }, { id: "hero" }, { id: "rail" }, { id: "categories" }, { id: "newin" }, { id: "edits" }, { id: "trending" }, { id: "occasion" }, { id: "stories" }, { id: "brand" }];
+      return [{ id: "offers", promoted: true }, { id: "hero" }, { id: "rail" }, { id: "categories" }, { id: "newin" }, { id: "edits" }, { id: "trending" }, { id: "look" }, { id: "occasion" }, { id: "stories" }, { id: "brand" }];
     default:
       // Cold start: curation first, discount demoted to one quiet module (assumption in PRD §9.5).
-      return [{ id: "hero" }, { id: "categories" }, { id: "newin" }, { id: "edits" }, { id: "trending" }, { id: "occasion" }, { id: "stories" }, { id: "brand" }, { id: "offers" }];
+      return [{ id: "hero" }, { id: "categories" }, { id: "newin" }, { id: "edits" }, { id: "trending" }, { id: "look" }, { id: "occasion" }, { id: "stories" }, { id: "brand" }, { id: "offers" }];
   }
 }
 

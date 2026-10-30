@@ -62,12 +62,13 @@ Pick one per section; do not repeat the same one twice in a row on a page.
 8. **Uniform 4-up product grid** — `span-3` cards, `gap-y` 40px. *Listings, wishlist.*
 9. **Sidebar layouts** — 8/4 (PDP gallery | buy box), 8/4 (bag | summary), 7/5 (checkout), 3/9 (account nav | content), 6/6 (login image | form).
 10. **Editorial rows** — alternate 6/6, 4/4/4, 7/5, 5/7 and full-width image rows so no two consecutive rows share a rhythm. *Discover, story pages.*
+11. **Shoppable scene + list** — an 8-column scene with hot-spot pins beside a 4-column list of the pieces in it (rows stretch to the image height; on tablets the list becomes three span-4 cards under the scene). *Shop the look, story pages.*
 
 ## 6. Page map
 
 | Page | Structure |
 | --- | --- |
-| Home | Hero banner → edit chips → category bento → new-in carousel → edits bento (mirrored) → trending mixed grid → festive split banner + 4-up → story lead+stack → label spotlight → offer band → values → footer. Order adapts to intent (cold / returning / deal). |
+| Home | Hero banner → edit chips → category bento → new-in carousel → edits bento (mirrored) → trending mixed grid → shop-the-look scene + list → festive split banner + 4-up → story lead+stack → label spotlight → offer band → values → footer. Order adapts to intent (cold / returning / deal). |
 | Category / search / edit / label listings | Page heading → sub-category tile rail → sticky toolbar (Filter · quick chips · count · Sort) → full-width 4-up grid (3-up tablet, 2-up phone) with a 6×2 feature insert → "Show more". Filters open in a drawer so the grid keeps all 12 columns. |
 | Product | Gallery 8 cols (image grid: first image 8, then 4+4; phones: swipeable, full bleed) + sticky buy box 4 cols → details / delivery / reviews (4+8) → complete-the-look carousel → more-from-label carousel. Sticky add-to-bag bar on phones. |
 | Discover / stories | Asymmetric editorial rows; article = full-bleed cover, 7-column reading column (cols 3–9 / centred), wide shoppable images spanning 12 or 8+4. |

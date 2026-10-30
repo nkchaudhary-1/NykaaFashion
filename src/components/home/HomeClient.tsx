@@ -12,7 +12,7 @@ import { topKey, useIntent } from "@/stores/intent";
 import { usePrefs } from "@/stores/ui";
 import { EditChips, Hero } from "./Hero";
 import { ModuleShell } from "./ModuleShell";
-import { BrandSpotlight, CategoryMosaic, FeaturedEdits, NewInByTaste, OccasionEdit, OfferModule, PersonalizedRail, StoryStrip, TrendingGrid } from "./Modules";
+import { BrandSpotlight, CategoryMosaic, FeaturedEdits, NewInByTaste, OccasionEdit, OfferModule, PersonalizedRail, ShopTheLook, StoryStrip, TrendingGrid } from "./Modules";
 
 function Values() {
   const items = [
@@ -21,7 +21,7 @@ function Values() {
     { Icon: Gem, t: "Honest pricing", d: "A discount appears only where a price has genuinely moved." },
   ];
   return (
-    <Section y="sm">
+    <Section y="none" className="pt-10 sm:pt-14">
       <Grid as="ul" className="gap-y-10 border-t border-ink pt-10">
         {items.map(({ Icon, t, d }) => (
           <Col as="li" key={t} span={{ base: 4, sm: 4, lg: 4 }} className="flex gap-4">
@@ -45,6 +45,10 @@ export function HomeClient() {
   // Returning users get a hero chosen from their strongest edit; everyone else gets the lead story.
   const topEdit = topKey(intent.weights.edit);
   const heroStory = (mode !== "cold" && stories.find((s) => s.editId === topEdit)) || stories[0];
+  // One story per slot so no scene or headline repeats down the page: hero → Style Files (3) → Shop the look.
+  const others = stories.filter((s) => s.id !== heroStory.id);
+  const stripStories = others.slice(0, 3);
+  const lookStory = others[3] ?? others[others.length - 1];
   const topLabelId = topKey(intent.weights.label);
   const spotlight = mode !== "cold" && topLabelId && (labelById[topLabelId]?.flags.hiddenGem || labelById[topLabelId]?.flags.luxe) ? topLabelId : "ajrakh-and-ash";
 
@@ -63,6 +67,8 @@ export function HomeClient() {
         return <FeaturedEdits />;
       case "trending":
         return <TrendingGrid />;
+      case "look":
+        return lookStory ? <ShopTheLook story={lookStory} /> : null;
       case "rail":
         return <PersonalizedRail />;
       case "occasion":
@@ -70,7 +76,7 @@ export function HomeClient() {
       case "newin":
         return <NewInByTaste personalised={mode !== "cold"} />;
       case "stories":
-        return <StoryStrip lead={stories.find((s) => s.id !== heroStory.id)} />;
+        return <StoryStrip list={stripStories} />;
       case "brand":
         return <BrandSpotlight labelId={spotlight} />;
       case "offers":

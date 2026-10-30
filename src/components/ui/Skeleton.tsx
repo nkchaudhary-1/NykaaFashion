@@ -15,11 +15,14 @@ export function CardSkeleton() {
   );
 }
 
-export function GridSkeleton({ count = 8, className, columnsClass = "grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 sm:gap-x-4 lg:grid-cols-4 lg:gap-x-5 lg:gap-y-10" }: { count?: number; className?: string; columnsClass?: string }) {
+/** Same cells as ProductGrid: 2-up phones, 3-up tablets, 4-up desktop on the page grid. */
+export function GridSkeleton({ count = 8, className, columnsClass = "grid-main gap-y-10 lg:gap-y-14" }: { count?: number; className?: string; columnsClass?: string }) {
   return (
     <div role="status" aria-label="Loading products" className={cn(columnsClass, className)}>
       {Array.from({ length: count }).map((_, i) => (
-        <CardSkeleton key={i} />
+        <div key={i} className="col-span-2 min-w-0 sm:col-span-4 lg:col-span-3">
+          <CardSkeleton />
+        </div>
       ))}
       <span className="sr-only">Loading products…</span>
     </div>

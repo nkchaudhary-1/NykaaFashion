@@ -10,7 +10,7 @@ export function SimulatedTag({ children = "Simulated", note, className, onDark }
         {children}
       </span>
       {note && (
-        <span role="tooltip" className="pointer-events-none invisible absolute left-0 top-full z-30 mt-2 w-60 border border-line bg-paper p-3 text-[12px] font-normal normal-case leading-snug tracking-normal text-ink-2 opacity-0 shadow-lg transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+        <span role="tooltip" className="pointer-events-none invisible absolute left-0 top-full z-30 mt-2 w-60 border border-ink bg-paper p-3 text-[12px] font-normal normal-case leading-snug tracking-normal text-ink-2 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
           {note}
         </span>
       )}

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 export function LabelMonogram({ label, className, size = "md" }: { label: Label; className?: string; size?: "sm" | "md" | "lg" }) {
   const letters = label.name.replace(/[^A-Za-z& ]/g, "").split(/\s+/).filter((w) => w && w !== "&" && w.toLowerCase() !== "by").slice(0, 2).map((w) => w[0]).join("");
   return (
-    <span aria-hidden className={cn("inline-flex items-center justify-center font-display leading-none", size === "lg" ? "size-28 text-[56px]" : size === "md" ? "size-16 text-[32px]" : "size-10 text-[20px]", className)} style={{ background: label.tone.bg, color: label.tone.fg }}>
+    <span aria-hidden className={cn("inline-flex items-center justify-center font-medium leading-none", size === "lg" ? "size-28 text-[56px]" : size === "md" ? "size-16 text-[32px]" : "size-10 text-[20px]", className)} style={{ background: label.tone.bg, color: label.tone.fg }}>
       {letters}
     </span>
   );

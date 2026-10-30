@@ -65,12 +65,9 @@ export function IconButton({ label, children, className, badge, ...rest }: { lab
   );
 }
 
+/** The number is generated content (not DOM text), so the visible label of the button it sits on stays "Bag" and matches its accessible name. */
 export function CountBadge({ n, className }: { n: number; className?: string }) {
-  return (
-    <span aria-hidden className={cn("absolute inline-flex min-w-[17px] items-center justify-center rounded-full bg-pink-ink px-1 text-[10px] font-semibold leading-[17px] text-white", className ?? "right-1 top-1")}>
-      {n > 99 ? "99+" : n}
-    </span>
-  );
+  return <span aria-hidden data-n={n > 99 ? "99+" : String(n)} className={cn("absolute inline-flex min-w-[17px] items-center justify-center rounded-full bg-pink-ink px-1 text-[10px] font-semibold leading-[17px] text-white before:content-[attr(data-n)]", className ?? "right-1 top-1")} />;
 }
 
 /** Text link with an animated underline. */

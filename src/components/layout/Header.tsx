@@ -40,6 +40,7 @@ export function Header() {
   const setOpen = useCallback((id: Mega | null) => setMenu({ id, path: pathname }), [pathname]);
   const [hidden, setHidden] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const skipFocusOpen = useRef(false); // Esc returns focus to the trigger without re-opening its panel
   const wishlistCount = useStore(wishlistStore).length;
   const bagCount = useStore(bagStore).lines.reduce((n, l) => n + l.qty, 0);
 
@@ -118,10 +119,10 @@ export function Header() {
             </Col>
             <Col span={{ lg: 3 }} className="flex items-center justify-end">
               <AccountAction />
-              <Action label={`Wishlist${wishlistCount ? `, ${wishlistCount} items` : ""}`} text="Wishlist" badge={wishlistCount} onClick={() => router.push("/wishlist")}>
+              <Action label={`Wishlist${wishlistCount ? `, ${wishlistCount} ${wishlistCount === 1 ? "item" : "items"}` : ""}`} text="Wishlist" badge={wishlistCount} onClick={() => router.push("/wishlist")}>
                 <Heart size={21} strokeWidth={1.5} />
               </Action>
-              <Action label={`Bag${bagCount ? `, ${bagCount} items` : ""}`} text="Bag" badge={bagCount} onClick={openBag}>
+              <Action label={`Bag${bagCount ? `, ${bagCount} ${bagCount === 1 ? "item" : "items"}` : ""}`} text="Bag" badge={bagCount} onClick={openBag}>
                 <ShoppingBag size={21} strokeWidth={1.5} />
               </Action>
             </Col>
@@ -130,15 +131,32 @@ export function Header() {
 
         <div className="relative border-b border-line">
           <div className="container-x flex h-11 items-center justify-between">
-            <nav aria-label="Primary" onKeyDown={(e) => e.key === "Escape" && close()}>
+            <nav aria-label="Primary">
               <ul className="-ml-3.5 flex items-center">
                 {NAV.map((n) => (
-                  <li key={n.id} onMouseEnter={() => schedule(n.mega ?? null, n.mega ? 90 : 0)} onFocus={() => n.mega && setOpen(n.mega)} onBlur={(e) => !e.currentTarget.parentElement?.contains(e.relatedTarget as Node) && close()}>
+                  <li
+                    key={n.id}
+                    onMouseEnter={() => schedule(n.mega ?? null, n.mega ? 90 : 0)}
+                    onFocus={() => {
+                      if (skipFocusOpen.current) skipFocusOpen.current = false;
+                      else if (n.mega) setOpen(n.mega);
+                      else close();
+                    }}
+                    onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && close()}
+                    onKeyDown={(e) => {
+                      if (e.key !== "Escape" || open !== n.mega) return;
+                      e.stopPropagation();
+                      skipFocusOpen.current = true;
+                      close();
+                      e.currentTarget.querySelector("a")?.focus();
+                    }}
+                  >
                     <Link
                       href={n.href}
                       aria-current={isActive(n.href) ? "page" : undefined}
                       aria-expanded={n.mega ? open === n.mega : undefined}
                       aria-haspopup={n.mega ? "true" : undefined}
+                      aria-controls={n.mega && open === n.mega ? "mega-panel" : undefined}
                       className={cn(
                         "relative inline-flex h-11 items-center gap-1 px-3.5 text-[13.5px] font-medium tracking-[0.005em] transition-colors after:absolute after:inset-x-3.5 after:bottom-0 after:h-0.5 after:bg-ink after:transition-transform after:duration-300 after:ease-editorial",
                         isActive(n.href) || open === n.mega ? "text-ink after:scale-x-100" : "text-ink-2 after:scale-x-0 hover:text-ink",
@@ -147,6 +165,23 @@ export function Header() {
                       {n.label}
                       {n.mega && <ChevronDown size={13} aria-hidden className={cn("transition-transform duration-300", open === n.mega && "rotate-180")} />}
                     </Link>
+                    {/* The panel follows its trigger in the DOM (so Tab walks straight into it) but is positioned against the full-width row. */}
+                    <AnimatePresence>
+                      {n.mega && open === n.mega && (
+                        <motion.div
+                          key="mega"
+                          id="mega-panel"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute inset-x-0 top-full border-b border-ink bg-bone"
+                          onMouseEnter={() => timer.current && clearTimeout(timer.current)}
+                        >
+                          {n.mega === "edits" ? <EditsMega onNavigate={close} /> : <CategoryMega top={n.mega} onNavigate={close} />}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </li>
                 ))}
               </ul>
@@ -165,23 +200,6 @@ export function Header() {
             </ul>
           </div>
 
-          {/* Mega menu — full-bleed flat panel on the same grid */}
-          <AnimatePresence>
-            {open && (
-              <motion.div
-                key="mega"
-                id="mega-panel"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-x-0 top-full border-b border-ink bg-bone"
-                onMouseEnter={() => timer.current && clearTimeout(timer.current)}
-              >
-                {open === "edits" ? <EditsMega onNavigate={close} /> : <CategoryMega top={open} onNavigate={close} />}
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </div>
     </header>

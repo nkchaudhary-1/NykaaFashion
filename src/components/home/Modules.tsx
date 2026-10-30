@@ -4,17 +4,19 @@ import { ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Section } from "@/components/layout/Section";
+import { ShoppableImage } from "@/components/editorial/ShoppableImage";
 import { LabelBadges, LabelMonogram } from "@/components/product/LabelMark";
 import { ProductCard } from "@/components/product/ProductCard";
 import { BentoTile } from "@/components/ui/BentoTile";
 import { LinkButton } from "@/components/ui/Button";
 import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
 import { Img, SIZES } from "@/components/ui/Img";
+import { Price } from "@/components/ui/Price";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SimulatedTag } from "@/components/ui/Simulated";
 import { Tabs } from "@/components/ui/Tabs";
-import { products } from "@/data/catalog";
+import { productById, products } from "@/data/catalog";
 import { categoryById } from "@/data/categories";
 import { editById } from "@/data/edits";
 import { labelById } from "@/data/labels";
@@ -22,9 +24,11 @@ import { editProducts, productsByLabel, productsInCategory } from "@/data/querie
 import { stories } from "@/data/stories";
 import type { Product, Story } from "@/data/types";
 import { inr } from "@/lib/format";
+import { imgPins } from "@/lib/img";
 import { personalizedRail } from "@/lib/recs";
 import { track } from "@/lib/track";
 import { intentStore, signal } from "@/stores/intent";
+import { setUI } from "@/stores/ui";
 import { useStore } from "@/lib/store";
 import { wishlistStore } from "@/stores/commerce";
 
@@ -205,6 +209,48 @@ export function TrendingGrid() {
   );
 }
 
+// ── Shop the look: a shoppable scene (8 columns) + the pieces in it (4 columns, 3-up on tablets) ──
+export function ShopTheLook({ story }: { story: Story }) {
+  const items = imgPins(story.cover.wide).map((p) => productById[p.id]).filter((p): p is Product => !!p);
+  if (!items.length) return null;
+  return (
+    <Section tone="paper">
+      <SectionHeading eyebrow="Shop the look" title="Everything in the picture." intro="Tap a pin for a closer look, or pick a piece from the list — every look is built from things you can add without leaving the page." href={`/discover/${story.id}`} hrefLabel="Read the story" />
+      <Grid className="mt-10 gap-y-8 sm:mt-14">
+        <Col span={{ base: 4, sm: 12, lg: 8 }}>
+          <ShoppableImage imgKey={story.cover.wide} alt={`${story.title} — shop the pieces in this look`} sizes={SIZES.half} ratio="16/9" />
+        </Col>
+        <Col span={{ base: 4, sm: 12, lg: 4 }} className="flex flex-col">
+          <p className="eyebrow pb-4 text-ink-3 lg:pt-0">
+            {story.kicker} · {story.title}
+          </p>
+          <ol aria-label="Pieces in this look" className="grid flex-1 border-t border-ink sm:grid-cols-3 sm:gap-x-[var(--gap)] sm:border-t-0 lg:grid-cols-1 lg:grid-rows-3 lg:border-t">
+            {items.map((p) => (
+              <li key={p.id} className="border-b border-line sm:border-b-0 lg:border-b">
+                <div className="grid h-full grid-cols-4 gap-x-[var(--gap)] py-4 sm:grid-cols-1 sm:gap-y-3 sm:py-0 lg:grid-cols-4 lg:gap-y-0 lg:py-5">
+                  <Link href={`/p/${p.slug}`} className="block overflow-hidden bg-sand" tabIndex={-1} aria-hidden>
+                    <Img imgKey={p.variants[0].images[0]} alt="" sizes="(min-width:1024px) 8vw, (min-width:600px) 30vw, 22vw" ratio="4/5" />
+                  </Link>
+                  <div className="col-span-3 flex min-w-0 flex-col sm:col-span-1 lg:col-span-3">
+                    <p className="eyebrow truncate text-ink-3">{labelById[p.labelId].name}</p>
+                    <Link href={`/p/${p.slug}`} className="link-u mt-1.5 line-clamp-2 text-[15px] leading-snug">
+                      {p.name}
+                    </Link>
+                    <Price price={p.price} mrp={p.mrp} size="md" className="mt-2" />
+                    <button type="button" onClick={() => setUI({ quickView: { productId: p.id, variant: 0 } })} className="tap mt-auto inline-flex h-10 items-center self-start border border-ink px-4 text-[11px] font-semibold uppercase tracking-[0.09em] transition-colors hover:bg-ink hover:text-bone" aria-label={`Quick view ${p.name}`}>
+                      Quick view
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Col>
+      </Grid>
+    </Section>
+  );
+}
+
 // ── Festive: full-bleed banner (flat colour panel + scene) and a 4-up row of picks ──
 export function OccasionEdit() {
   const edit = editById["festive"];
@@ -250,8 +296,9 @@ function StoryMeta({ s }: { s: Story }) {
     </p>
   );
 }
-export function StoryStrip({ lead }: { lead?: Story }) {
-  const [first, ...others] = lead ? [lead, ...stories.filter((s) => s.id !== lead.id)] : stories;
+export function StoryStrip({ list }: { list: Story[] }) {
+  const [first, ...others] = list;
+  if (!first) return null;
   const open = (s: Story) => () => {
     signal("story_open", { editId: s.editId, tags: s.tags });
     track("editorial_story_open", { storyId: s.id, source: "home-stories" });
