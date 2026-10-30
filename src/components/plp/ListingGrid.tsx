@@ -14,11 +14,6 @@ import { signal } from "@/stores/intent";
 import type { Feature } from "./features";
 import type { Cell } from "./plan";
 
-const lum = (hex: string) => {
-  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-};
-
 /**
  * The listing grid: 4-up cards (3-up on tablets, 2-up on phones) with feature inserts placed by `planCells` so every row
  * stays complete. Features are explicitly placed (column + row) at tablet and desktop, which lets the cards flow around
@@ -78,21 +73,19 @@ function FeatureBody({ feature, product, source }: { feature: Feature; product?:
       </div>
     );
   }
-  const dark = lum(feature.bg) < 0.28;
-  const long = feature.text.length > 110;
   return (
-    <figure className={cn("flex h-full min-h-[320px] flex-col justify-between gap-8 p-6 sm:p-8 lg:p-10", dark && "on-dark")} style={{ background: feature.bg, color: feature.fg }}>
-      {feature.eyebrow && <figcaption className="eyebrow">{feature.eyebrow}</figcaption>}
-      <blockquote className={cn("max-w-[34ch]", long ? "text-[20px] font-medium leading-[1.25] tracking-[-0.018em] sm:text-[22px] lg:text-[24px]" : "display-sm")}>{long ? feature.text : `“${feature.text}”`}</blockquote>
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 text-[13px]">
-        {feature.by && <p className="font-medium">{feature.by}</p>}
-        {feature.href && (
-          <Link href={feature.href} className="link-u tap group inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em]">
-            {feature.cta ?? "Read more"}
-            <ArrowRight size={15} aria-hidden className="transition-transform duration-300 ease-editorial group-hover:translate-x-1" />
-          </Link>
-        )}
+    <div className={cn("flex h-full min-h-[300px] flex-col justify-between gap-8 p-6 sm:p-8 lg:p-10", feature.dark && "on-dark")} style={{ background: feature.bg, color: feature.fg }}>
+      {feature.eyebrow && <p className="eyebrow">{feature.eyebrow}</p>}
+      <div>
+        <p className="max-w-[22ch] text-[24px] font-medium leading-[1.1] tracking-[-0.022em] sm:text-[28px] lg:text-[32px]">{feature.title}</p>
+        <p className="mt-4 line-clamp-6 max-w-[46ch] text-[15px] leading-relaxed">{feature.text}</p>
       </div>
-    </figure>
+      {feature.href && (
+        <Link href={feature.href} className="link-u tap group inline-flex items-center gap-2 self-start text-[12px] font-semibold uppercase tracking-[0.09em]">
+          {feature.cta ?? "Read more"}
+          <ArrowRight size={15} aria-hidden className="transition-transform duration-300 ease-editorial group-hover:translate-x-1" />
+        </Link>
+      )}
+    </div>
   );
 }

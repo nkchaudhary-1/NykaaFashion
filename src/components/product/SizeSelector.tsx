@@ -1,8 +1,9 @@
 "use client";
 import { Ruler } from "lucide-react";
-import type { RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import { sizeGuideKey } from "@/data/content";
 import type { Product } from "@/data/types";
+import { prefersReducedMotion } from "@/lib/a11y";
 import { cn } from "@/lib/cn";
 import { setUI } from "@/stores/ui";
 import type { Selection } from "./useSelection";
@@ -16,6 +17,23 @@ export function SizeSelector({ product, sel, groupRef, compact }: { product: Pro
   const guide = sizeGuideKey(product.categoryPath, product.sizes);
   const oneSize = product.sizes.length === 1;
   const scope = `${product.id}-${compact ? "q" : "p"}`;
+  const wrap = useRef<HTMLDivElement>(null);
+  // A blocked "add" shakes the picker. It is driven by the Web Animations API rather than a re-keyed subtree, so the radio that was just
+  // focused keeps focus (a remount would drop it and the shopper would have to Tab back in).
+  useEffect(() => {
+    if (!sel.shake || prefersReducedMotion()) return;
+    wrap.current?.animate(
+      [
+        { transform: "translateX(0)" },
+        { transform: "translateX(-6px)", offset: 0.2 },
+        { transform: "translateX(5px)", offset: 0.4 },
+        { transform: "translateX(-3px)", offset: 0.6 },
+        { transform: "translateX(2px)", offset: 0.8 },
+        { transform: "translateX(0)" },
+      ],
+      { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+    );
+  }, [sel.shake]);
   if (oneSize) {
     const out = (v.stock[product.sizes[0]] ?? 0) === 0;
     return (
@@ -29,13 +47,13 @@ export function SizeSelector({ product, sel, groupRef, compact }: { product: Pro
     );
   }
   return (
-    <div key={sel.shake} className={cn(sel.error && "animate-shake")}>
+    <div ref={wrap}>
       <div className="mb-3 flex items-center justify-between gap-3">
         <p id={`size-label-${scope}`} className="text-[13px] text-ink-2">
           Select size{sel.size && <>: <span className="font-medium text-ink">{sel.size}</span></>}
         </p>
         {guide && (
-          <button type="button" onClick={() => setUI({ sizeGuide: { productId: product.id } })} className="link-u tap inline-flex items-center gap-1.5 py-1 text-[12.5px] font-medium text-ink">
+          <button type="button" onClick={() => setUI({ sizeGuide: { productId: product.id } })} className="link-u tap inline-flex items-center gap-1.5 py-1 text-[12.5px] font-medium text-ink hover:text-pink-ink">
             <Ruler size={14} aria-hidden /> Size guide
           </button>
         )}
@@ -56,8 +74,8 @@ export function SizeSelector({ product, sel, groupRef, compact }: { product: Pro
               <input type="radio" name={`size-${scope}`} value={s} checked={selected} onChange={() => sel.choose(s)} className="peer sr-only" aria-label={`Size ${s}${out ? ", sold out" : qty <= 3 ? `, only ${qty} left` : ""}`} />
               <span
                 className={cn(
-                  "relative flex aspect-square items-center justify-center overflow-hidden border px-1 text-[13px] tabular-nums transition-colors duration-200 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink",
-                  selected ? "border-ink bg-ink text-bone" : out ? "border-line text-ink-3 hover:border-ink-3" : "border-line-strong text-ink hover:border-ink",
+                  "relative flex aspect-square items-center justify-center overflow-hidden whitespace-nowrap border px-0.5 text-[12.5px] tabular-nums transition-colors duration-200 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink",
+                  selected ? "border-pink bg-pink-tint font-semibold text-pink-ink" : out ? "border-line text-ink-3 hover:border-ink-3" : "border-line-strong text-ink hover:border-ink",
                 )}
               >
                 {s}

@@ -4,6 +4,7 @@ import { Img, SIZES } from "@/components/ui/Img";
 import type { Label } from "@/data/types";
 import { productsByLabel } from "@/data/queries";
 import { cn } from "@/lib/cn";
+import { legible } from "./labelTone";
 
 /** The label's picture: its most prominent piece that is in stock. */
 export const labelImage = (id: string) => {
@@ -21,7 +22,7 @@ export function LabelTile({ label, onDark, sizes = SIZES.tile, load, ratio = "4/
     <Link href={`/brands/${label.id}`} className="group block">
       <div className="relative overflow-hidden bg-sand">
         <Img imgKey={labelImage(label.id)} alt="" sizes={sizes} ratio={ratio} load={load} className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]" />
-        <LabelMonogram label={label} size="sm" className="absolute left-0 top-0" />
+        <LabelMonogram label={legible(label)} size="sm" className="absolute left-0 top-0" />
       </div>
       <p className={cn("mt-3 text-[15px] font-medium leading-tight tracking-[-0.01em]", onDark && "text-bone")}>{label.name}</p>
       <p className={cn("mt-1 truncate text-[12.5px] tabular-nums", onDark ? "text-bone" : "text-ink-3")}>

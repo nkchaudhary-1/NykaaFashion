@@ -93,7 +93,7 @@ const fmt = (list) => list.slice(0, 6).map((x) => `      ${x.k} ×${x.n}  ${x.ex
         ["bag drawer", async () => { await page.getByRole("button", { name: /^Bag/ }).first().click(); }],
         ["mobile menu", async () => { await page.getByRole("button", { name: /open menu/i }).first().click(); }],
         ["shop sheet", async () => { await page.getByRole("button", { name: /^Shop$/ }).last().click(); }],
-        ["mega menu", async () => { await page.getByRole("button", { name: /^Women/ }).first().hover(); }],
+        ["mega menu", async () => { await page.getByRole("link", { name: "Women", exact: true }).first().hover(); }],
       ];
       for (const [label, open] of steps) {
         try {

@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Img, SIZES, type LoadHint } from "@/components/ui/Img";
-import { THEMES } from "@/data/edits";
 import type { Story } from "@/data/types";
 import { cn } from "@/lib/cn";
 import { imgEdge } from "@/lib/img";
@@ -47,24 +46,34 @@ const LOOK: Record<"tall" | "wide" | "feature", Look> = {
 };
 
 export function StoryCard({ story, variant = "tall", load, className, source = "home", sizes, as: H = "h3", textOnlyForAT, box }: { story: Story; variant?: StoryCardVariant; load?: LoadHint; className?: string; source?: string; sizes?: string; as?: "h2" | "h3"; textOnlyForAT?: boolean; /** aspect classes for the cover of a text-below card (replaces the variant's own) */ box?: string }) {
-  const t = THEMES[story.theme];
-  const dot = t.bg === "#f3dcd6" ? "#e80071" : t.bg;
   const href = `/discover/${story.id}`;
   const open = () => {
     signal("story_open", { editId: story.editId, tags: story.tags });
     track("editorial_story_open", { storyId: story.id, source });
   };
   const hover = "transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.03]";
-  const meta = (
-    <p className="eyebrow flex items-center gap-2">
-      <span aria-hidden className="size-2 shrink-0" style={{ background: dot }} />
-      <span>
-        {story.kicker} · {story.readMins} min
-      </span>
+  // the kicker label: pink, with the read time — the one accent colour of the content section.
+  // `short` drops the issue number ("Festive · Issue 07" → "Festive") for the narrow two-up tiles on phones.
+  const meta = (cls?: string, short?: boolean) => (
+    <p className={cn("eyebrow text-pink-ink", cls)}>
+      {short ? (
+        <>
+          <span className="sm:hidden">
+            {story.kicker.split(" · ")[0]} · {story.readMins} min
+          </span>
+          <span className="hidden sm:inline">
+            {story.kicker} · {story.readMins} min
+          </span>
+        </>
+      ) : (
+        <>
+          {story.kicker} · {story.readMins} min
+        </>
+      )}
     </p>
   );
   const cta = (
-    <span className="mt-4 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em] text-ink">
+    <span className="mt-4 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em] text-ink transition-colors group-hover:text-pink-ink">
       Read the story <ArrowRight size={14} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
     </span>
   );
@@ -90,7 +99,7 @@ export function StoryCard({ story, variant = "tall", load, className, source = "
         </div>
         <div className={cn("relative flex items-end justify-between gap-4 bg-white px-4 py-3.5 text-ink transition-colors group-hover:bg-ink group-hover:text-bone lg:absolute lg:inset-x-0 lg:bottom-0", lead ? "sm:px-6 sm:py-5" : "sm:px-5", textOnlyForAT && "sr-only")}>
           <div className="min-w-0">
-            <div className="opacity-70">{meta}</div>
+            {meta("group-hover:text-pink-soft", !lead)}
             <H className={cn("mt-2", lead ? "display-xs sm:text-[24px] sm:leading-[1.12] sm:tracking-[-0.022em]" : "text-[16px] font-medium leading-[1.2] tracking-[-0.015em] sm:text-[18px]")}>{story.title}</H>
             {lead && <p className="mt-2 hidden max-w-[60ch] text-[14px] leading-relaxed opacity-80 sm:line-clamp-2 sm:block">{story.dek}</p>}
           </div>
@@ -102,21 +111,22 @@ export function StoryCard({ story, variant = "tall", load, className, source = "
 
   // ── Full-bleed banner
   if (variant === "banner") {
-    const wall = imgEdge(story.cover.wide)?.wall[0] ?? t.tint;
-    const dark = lum(wall) < 0.28;
+    // the cover's own wall colour (image metadata, not a design token) decides between dark and light type on top of it
+    const wall = imgEdge(story.cover.wide)?.wall[0];
+    const dark = wall ? lum(wall) < 0.28 : false;
     return (
       <Link href={href} onClick={open} className={cn("group relative block", className)}>
-        <div className="relative aspect-[4/5] overflow-hidden bg-sand sm:aspect-[16/10] lg:aspect-[2/1] lg:max-h-[80vh] lg:w-full" style={{ backgroundColor: wall }}>
+        <div className="relative aspect-[4/5] overflow-hidden bg-sand sm:aspect-[16/10] lg:aspect-[2/1] lg:max-h-[80vh] lg:w-full" style={wall ? { backgroundColor: wall } : undefined}>
           <Img imgKey={story.cover.tall} alt="" sizes={sizes ?? "100vw"} ratio="fill" load={load} className={cn("absolute inset-0 h-full sm:hidden", hover)} />
           <Img imgKey={story.cover.wide} alt="" sizes={sizes ?? "100vw"} ratio="fill" load={load} position="50% 45%" className={cn("absolute inset-0 hidden h-full sm:block", hover)} />
         </div>
-        <div className="bg-white lg:absolute lg:inset-0 lg:bg-transparent">
+        <div className="bg-sand lg:absolute lg:inset-0 lg:bg-transparent">
           <div className="container-x grid-main h-full items-center py-7 sm:py-9 lg:py-0">
             <div className={cn("col-span-4 min-w-0 text-ink sm:col-span-12 lg:col-span-5", dark && "lg:text-bone")}>
-              <div className={cn("text-ink-3", dark && "lg:text-bone")}>{meta}</div>
+              {meta(dark ? "lg:text-pink-soft" : undefined)}
               <H className="display-sm mt-3 sm:display-md">{story.title}</H>
               <p className={cn("mt-4 max-w-[46ch] text-[15px] leading-relaxed text-ink-2", dark && "lg:text-bone")}>{story.dek}</p>
-              <span className={cn("mt-5 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em]", dark && "lg:text-bone")}>
+              <span className={cn("mt-5 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em] transition-colors group-hover:text-pink-ink", dark && "lg:text-bone lg:group-hover:text-pink-soft")}>
                 Read the story <ArrowRight size={14} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
               </span>
             </div>
@@ -142,7 +152,7 @@ export function StoryCard({ story, variant = "tall", load, className, source = "
         )}
       </div>
       <div className={cn("flex flex-col pt-5", textOnlyForAT && "sr-only")}>
-        <div className="text-ink-3">{meta}</div>
+        {meta()}
         <H className={cn("mt-3", look.title)}>{story.title}</H>
         <p className={cn("mt-3 text-[14.5px] leading-relaxed text-ink-2", look.dek)}>{story.dek}</p>
         {cta}

@@ -1,13 +1,12 @@
 "use client";
 import Link from "next/link";
-import { BellRing, RotateCcw, Scissors, Share2, Tag, Truck } from "lucide-react";
+import { BellRing, RotateCcw, Scissors, Share2, Star, Tag, Truck } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { Price } from "@/components/ui/Price";
-import { RatingLine } from "@/components/ui/Rating";
 import { coupons, FREE_SHIPPING_THRESHOLD } from "@/data/commerce";
 import { inStockVariantIndex } from "@/data/catalog";
 import { labelById } from "@/data/labels";
@@ -158,27 +157,38 @@ export function ProductDetail({ product }: { product: Product }) {
           </Col>
 
           <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ sm: 7, lg: 9 }} rowStart={{ sm: 1, lg: 1 }} className={BUY_BOX}>
-            <div className="flex flex-wrap items-center gap-2">
-              <Link href={`/brands/${label.id}`} className="eyebrow link-u tap text-ink">
-                {label.name}
-              </Link>
-              <LabelBadges label={label} />
-              {product.responsible && !label.flags.responsible && <Badge tone="emerald">Responsible</Badge>}
-              {product.isNew && <Badge tone="outline">New</Badge>}
-            </div>
-
-            <div className="mt-3.5 flex items-start justify-between gap-4">
-              <h1 className="display-sm">{product.name}</h1>
-              <button type="button" onClick={share} aria-label={`Share ${product.name}`} className="inline-flex size-11 shrink-0 items-center justify-center border border-line-strong text-ink transition-colors hover:bg-ink hover:text-bone">
+            {/* Brand (bold) → product name → rating chip → price, the order shoppers scan a marketplace page in */}
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+                  <Link href={`/brands/${label.id}`} className="tap text-[18px] font-semibold leading-tight text-ink transition-colors hover:text-pink-ink">
+                    {label.name}
+                  </Link>
+                  <LabelBadges label={label} />
+                  {product.responsible && !label.flags.responsible && <Badge tone="emerald">Responsible</Badge>}
+                  {product.isNew && <Badge tone="outline">New</Badge>}
+                </div>
+                <h1 className="mt-1.5 text-[17px] font-normal leading-snug text-ink-2 sm:text-[18px]">{product.name}</h1>
+              </div>
+              <button type="button" onClick={share} aria-label={`Share ${product.name}`} className="inline-flex size-11 shrink-0 items-center justify-center border border-line-strong text-ink transition-colors hover:border-ink hover:bg-sand">
                 <Share2 size={18} strokeWidth={1.5} />
               </button>
             </div>
 
-            <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1.5">
+            <a
+              href="#reviews"
+              aria-label={`Rated ${product.rating.toFixed(1)} out of 5 from ${product.ratingCount.toLocaleString("en-IN")} ratings — read the reviews`}
+              className="tap mt-3 inline-flex items-center gap-2 border border-line-strong px-2.5 py-1 text-[12.5px] leading-none transition-colors hover:border-ink"
+            >
+              <span className="inline-flex items-center gap-1 font-semibold tabular-nums text-ink">
+                {product.rating.toFixed(1)} <Star size={12} aria-hidden className="fill-ink text-ink" />
+              </span>
+              <span aria-hidden className="h-3.5 w-px bg-line-strong" />
+              <span className="tabular-nums text-ink-3">{product.ratingCount.toLocaleString("en-IN")} ratings</span>
+            </a>
+
+            <div className="mt-4">
               <Price price={product.price} mrp={product.mrp} size="lg" className={cn(product.soldOut && "opacity-60")} />
-              <a href="#reviews" className="tap">
-                <RatingLine rating={product.rating} count={product.ratingCount} />
-              </a>
             </div>
             <p className="mt-1 text-[12px] text-ink-3">Inclusive of all taxes</p>
             <p className="mt-3.5 max-w-[46ch] text-[14px] leading-[1.55] text-ink-2">{product.description}</p>
@@ -198,7 +208,7 @@ export function ProductDetail({ product }: { product: Product }) {
                   {cta}
                 </Button>
               )}
-              <SaveButton product={product} variant={sel.variant} source="pdp" tone="plain" size={22} className="size-[52px] shrink-0 border border-line-strong" />
+              <SaveButton product={product} variant={sel.variant} source="pdp" tone="plain" size={22} className="size-[52px] shrink-0 border border-ink" />
             </div>
             {product.soldOut && (
               <p role="status" className="mt-4 border-l-2 border-ink pl-3 text-[13.5px] leading-snug text-ink-2">
@@ -287,7 +297,7 @@ function FactsPanel({ product }: { product: Product }) {
   );
 }
 
-/** The one coupon that suits this piece best (label-specific first). Codes are the prototype's simulated ones. */
+/** The one coupon that suits this piece best (label-specific first), as a pink-tint highlight. Codes are the prototype's simulated ones. */
 function Offers({ product }: { product: Product }) {
   const label = labelById[product.labelId];
   const [best] = coupons
@@ -295,13 +305,13 @@ function Offers({ product }: { product: Product }) {
     .sort((a, b) => Number(!!b.appliesTo) - Number(!!a.appliesTo));
   if (!best) return null;
   return (
-    <section aria-labelledby="offers-h" className="flex items-start gap-3 border-t border-line pt-4">
-      <Tag size={16} aria-hidden className="mt-0.5 shrink-0" />
-      <div className="min-w-0 text-[12.5px] leading-snug text-ink-2">
+    <section aria-labelledby="offers-h" className="flex items-start gap-3 bg-pink-tint px-3.5 py-3">
+      <Tag size={16} aria-hidden className="mt-0.5 shrink-0 text-pink-ink" />
+      <div className="min-w-0 text-[12.5px] leading-snug text-ink">
         <h2 id="offers-h" className="sr-only">
           Offer (simulated)
         </h2>
-        <span className="font-medium tabular-nums tracking-[0.04em] text-ink">{best.code}</span> — {best.description} <span className="text-ink-3">Simulated.</span>
+        <span className="font-semibold tabular-nums tracking-[0.04em] text-pink-ink">{best.code}</span> — {best.description} <span className="text-ink-3">Simulated.</span>
       </div>
     </section>
   );

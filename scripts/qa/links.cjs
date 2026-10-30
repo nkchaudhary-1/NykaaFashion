@@ -15,7 +15,7 @@ const BASE = process.argv.find((a) => a.startsWith("http")) ?? "http://localhost
   let page = await ctx.newPage();
   await page.goto(BASE + "/", { waitUntil: "networkidle" });
   await grab(page, "home");
-  for (const n of ["Edits", "Women", "Men", "Kids", "Home"]) {
+  for (const n of ["More", "Women", "Men", "Kids", "Home"]) {
     await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: n, exact: true }).hover();
     await page.locator("#mega-panel").waitFor();
     await page.waitForTimeout(250);

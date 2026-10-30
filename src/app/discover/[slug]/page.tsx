@@ -118,8 +118,12 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
               <div key={i} className={cn("container-x", gap)}>
                 <Grid>
                   <Col as="blockquote" span={{}} className={cn("col-span-4 border-t border-ink pt-6 sm:col-span-11 sm:pt-8 lg:col-span-8", right ? "sm:col-start-2 lg:col-start-4" : "sm:col-start-1 lg:col-start-2")}>
-                    <p className="display-md max-w-[24ch]">“{b.text}”</p>
-                    {b.by && <footer className="eyebrow mt-6 text-ink-3">— {b.by}</footer>}
+                    <p className="display-md max-w-[24ch]">
+                      <span className="text-pink">“</span>
+                      {b.text}
+                      <span className="text-pink">”</span>
+                    </p>
+                    {b.by && <footer className="eyebrow mt-6 text-pink-ink">— {b.by}</footer>}
                   </Col>
                 </Grid>
               </div>

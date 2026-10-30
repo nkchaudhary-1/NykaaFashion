@@ -6,7 +6,7 @@ import { Col, Grid } from "@/components/layout/Grid";
  * products pinned in it), so a story never repeats itself:
  *   full    the image across all 12 columns, caption and a 3-up product strip under it
  *   side    8 + 4 — image in columns 1–8, a product list beside it in 9–12 (`side-r` mirrors it)
- *   pair    6 + 6 — image in columns 1–6, a flat white panel of products beside it in 7–12
+ *   pair    6 + 6 — image in columns 1–6, a flat soft-grey panel of products beside it in 7–12
  * Phones: the image runs edge to edge, then the caption, then the products.
  */
 export type FigureLayout = "full" | "side" | "side-r" | "pair";
@@ -51,7 +51,7 @@ export function StoryFigure({ imgKey, caption, layout, n }: { imgKey: string; ca
         <Col as="figcaption" span={{ base: 4, sm: 12, lg: 6 }} rowStart={{ lg: 2 }}>
           {cap}
         </Col>
-        <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }} className="bg-white px-5 pb-2 pt-5 sm:px-8 sm:pt-8 lg:self-stretch">
+        <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }} className="bg-sand px-5 pb-2 pt-5 sm:px-8 sm:pt-8 lg:self-stretch">
           <LookList imgKey={imgKey} title="In this image" label={label} layout="stack" />
         </Col>
       </Grid>

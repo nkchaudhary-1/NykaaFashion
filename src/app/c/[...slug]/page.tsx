@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { PageHeader } from "@/components/layout/PageHeader";
 import { CategoryRail, type RailItem } from "@/components/plp/CategoryRail";
 import { interleave, relatedEditTiles, type Feature } from "@/components/plp/features";
+import { ListingHeader } from "@/components/plp/ListingHeader";
 import { ProductListing } from "@/components/plp/ProductListing";
 import { GridSkeleton } from "@/components/ui/Skeleton";
 import { ListingPageSkeleton } from "@/components/ui/PageSkeletons";
@@ -50,7 +50,7 @@ async function CategoryContent({ params }: Pick<PageProps<"/c/[...slug]">, "para
   const features: Feature[] = interleave(relatedEditTiles(pool, 2), [{ kind: "hero" }, { kind: "hero" }] as Feature[]);
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, ...categoryTrail(slug).map((c, i, a) => ({ name: c.name, href: i < a.length - 1 ? c.href : undefined }))]} eyebrow={parent ? parent.name : "Shop"} title={cat.name} intro={cat.blurb} />
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, ...categoryTrail(slug).map((c, i, a) => ({ name: c.name, href: i < a.length - 1 ? c.href : undefined }))]} title={cat.name} intro={cat.blurb} />
       <CategoryRail label={subs.length > 0 ? `${cat.name} categories` : `More in ${parent?.name}`} eyebrow={subs.length > 0 ? "Shop by category" : `More in ${parent?.name}`} items={rail} />
       <Suspense fallback={<div className="container-x"><GridSkeleton count={8} /></div>}>
         <ProductListing pool={pool} scopeKey={`cat:${id}`} categoryScope={slug} source={`cat:${id}`} features={features} />

@@ -47,7 +47,7 @@ export function CategoryMosaic() {
   const women = dept("women");
   return (
     <Section>
-      <SectionHeading eyebrow="Departments" title="Shop by category." intro="Four departments, one edit. Start wherever you are." />
+      <SectionHeading eyebrow="Departments" title="Shop by category" intro="Four departments, one edit. Start wherever you are." />
       <Grid className="mt-10 gap-y-[var(--gap)] sm:mt-14">
         <Col span={{ base: 4, sm: 12, lg: 6 }} rows={{ lg: 2 }} className="relative aspect-[5/4] sm:aspect-[16/9] lg:aspect-auto">
           <BentoTile href="/c/women" imgKey="scenes/cat-women" title={women.name} meta={pieces(women.n)} ratio="fill" sizes={SIZES.half} size="lg" position="50% 30%" />
@@ -80,7 +80,7 @@ export function FeaturedEdits() {
   ];
   return (
     <Section tone="paper">
-      <SectionHeading eyebrow="Edits" title="Start with a point of view." intro="Curated destinations, not category pages. Each edit has a narrative, a set of labels and a short list of things worth owning." href="/edits" hrefLabel="All edits" />
+      <SectionHeading eyebrow="Curated destinations" title={<>Luxe, Hidden Gems <em>&amp; more</em></>} intro="Curated destinations on Nykaa Fashion — each with its own story, labels and a short list of pieces worth owning." href="/edits" hrefLabel="All destinations" />
       <Grid className="mt-10 gap-y-[var(--gap)] sm:mt-14">
         <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }} className="relative aspect-[5/4] sm:aspect-[16/9] lg:aspect-auto">
           <BentoTile href="/edits/hidden-gems" imgKey="scenes/edit-hidden-gems-tall" title={gem.title} meta={`${gem.blurb}`} ratio="fill" sizes={SIZES.half} size="lg" onClick={open(gem.id)} position="50% 35%" />
@@ -159,7 +159,7 @@ export function NewInByTaste({ personalised }: { personalised: boolean }) {
   return (
     <Section>
       <Carousel>
-        <SectionHeading eyebrow={personalised ? "New in · by your taste" : "New in · editors’ picks"} title="Just landed." href="/edits/new-in" hrefLabel="All new in">
+        <SectionHeading eyebrow={personalised ? "New in · by your taste" : "New in · editors’ picks"} title={<>Just <em>landed</em></>} href="/edits/new-in" hrefLabel="All new in">
           <CarouselArrows />
         </SectionHeading>
         <Tabs items={TABS} value={tab} onChange={setTab} label="New in categories" className="mt-8" panelId="newin-panel" variant="pill" />
@@ -190,7 +190,7 @@ export function TrendingGrid() {
   if (!feature) return null;
   return (
     <Section tone="paper">
-      <SectionHeading eyebrow="Most wanted" title="What everyone is saving." intro="The pieces added to wishlists most this week — from every department, in one grid." />
+      <SectionHeading eyebrow="Trending now" title={<>Most wanted <em>right now</em></>} intro="The pieces added to wishlists most this week — from every department, in one grid." />
       <Grid className="mt-10 gap-y-10 sm:mt-14">
         <Col span={{ base: 4, sm: 6, lg: 6 }} rows={{ sm: 2, lg: 2 }} className="flex flex-col">
           <Reveal className="flex min-h-0 flex-1 flex-col">
@@ -305,7 +305,7 @@ export function StoryStrip({ list }: { list: Story[] }) {
   };
   return (
     <Section>
-      <SectionHeading eyebrow="Style Files" title="Stories worth the scroll." intro="Every image is shoppable, every look is built from pieces you can add without leaving the story." href="/discover" hrefLabel="Read all stories" splitAt={7} />
+      <SectionHeading eyebrow="Style Files" title={<>Style inspiration, <em>shoppable</em></>} intro="Every image is shoppable, every look is built from pieces you can add without leaving the story." href="/discover" hrefLabel="Read all stories" splitAt={7} />
       <Grid className="mt-10 gap-y-12 sm:mt-14">
         <Col span={{ base: 4, sm: 12, lg: 7 }}>
           <Reveal>
@@ -347,7 +347,7 @@ export function StoryStrip({ list }: { list: Story[] }) {
 }
 
 // ── Label spotlight: a story panel (4 columns) + two feature products (4 columns each) ──
-export function BrandSpotlight({ labelId, excludeId, eyebrow = "Label spotlight" }: { labelId: string; excludeId?: string; eyebrow?: string }) {
+export function BrandSpotlight({ labelId, excludeId, eyebrow = "House of Nykaa" }: { labelId: string; excludeId?: string; eyebrow?: string }) {
   const label = labelById[labelId];
   const all = productsByLabel(labelId).filter((p) => !p.soldOut && p.id !== excludeId);
   const items = all.slice(0, 2);

@@ -170,19 +170,18 @@ export function DiscoverIndex() {
         )}
       </div>
 
-      <Section tone="sand" className="mt-[var(--section-y)]">
-        <Grid className="items-end gap-y-10">
+      {/* The letter: a pink-tint band — copy on the left, the (simulated) sign-up form on the right, on the same bottom line */}
+      <Section tone="pink-tint" className="mt-[var(--section-y)]">
+        <Grid className="items-end gap-y-4">
           <Col span={{ base: 4, sm: 12, lg: 6 }}>
-            <p className="eyebrow text-ink-3">The Style Files letter</p>
+            <p className="eyebrow text-pink-ink">Style Files · Issue 07</p>
             <h2 className="display-md mt-4">
               One story, <em>every Sunday.</em>
             </h2>
             <p className="mt-5 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">One long read, three pieces worth owning and no discount codes. This is a prototype: the sign-up is simulated, nothing is sent and your email stays on this device.</p>
           </Col>
           <Col span={{ base: 4, sm: 12, lg: 5 }} start={{ lg: 8 }} rowStart={{ lg: 1 }}>
-            <div className="on-dark flow-root bg-ink px-6 pb-8 text-bone sm:px-8">
-              <NewsletterForm />
-            </div>
+            <NewsletterForm />
           </Col>
         </Grid>
       </Section>

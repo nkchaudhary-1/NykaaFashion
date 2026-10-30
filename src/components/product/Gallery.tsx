@@ -129,7 +129,7 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0, fill
           <div aria-hidden className="flex gap-1.5 sm:hidden">
             {images.map((_, i) => (
               <button key={i} type="button" tabIndex={-1} onClick={() => goTo(i)} className="flex h-6 w-9 items-center">
-                <span className={cn("block h-[3px] w-full transition-colors duration-300", i === index ? "bg-ink" : "bg-line-strong")} />
+                <span className={cn("block h-[3px] w-full transition-colors duration-300", i === index ? "bg-pink" : "bg-line-strong")} />
               </button>
             ))}
           </div>
@@ -210,7 +210,7 @@ function LightboxInner({ images, start, alt, onClose }: { images: string[]; star
         <ul className="flex gap-2" aria-label="Choose image">
           {images.map((k, n) => (
             <li key={k}>
-              <button type="button" onClick={() => go(n)} aria-label={`Show ${SHOT_NAMES[n] ?? `image ${n + 1}`}`} aria-current={n === i} className={cn("relative block w-11 overflow-hidden border transition-colors", n === i ? "border-ink" : "border-line hover:border-ink-3")}>
+              <button type="button" onClick={() => go(n)} aria-label={`Show ${SHOT_NAMES[n] ?? `image ${n + 1}`}`} aria-current={n === i} className={cn("relative block w-11 overflow-hidden border transition-colors", n === i ? "border-pink" : "border-line hover:border-ink-3")}>
                 <Img imgKey={k} alt="" sizes="48px" ratio="4/5" className={n === i ? undefined : "opacity-70"} />
               </button>
             </li>

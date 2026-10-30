@@ -21,9 +21,9 @@ const settle = (p, ms = 450) => p.waitForTimeout(ms);
     page.on("pageerror", (e) => errors.push(String(e).slice(0, 140)));
     await page.goto(BASE + "/", { waitUntil: "networkidle" });
 
-    await step("logo links home; primary nav lists Edits, Discover, Women, Men, Kids, Home", async () => {
+    await step("logo links home; primary nav lists Women, Men, Kids, Home, Brands, More", async () => {
       const nav = page.getByRole("navigation", { name: "Primary" });
-      for (const n of ["Edits", "Discover", "Women", "Men", "Kids", "Home"]) must(await nav.getByRole("link", { name: n, exact: true }).count() === 1, `missing nav link ${n}`);
+      for (const n of ["Women", "Men", "Kids", "Home", "Brands", "More"]) must(await nav.getByRole("link", { name: n, exact: true }).count() === 1, `missing nav link ${n}`);
       must((await page.getByRole("link", { name: /Nykaa Fashion — home/ }).first().getAttribute("href")) === "/", "logo href");
     });
 
@@ -75,19 +75,19 @@ const settle = (p, ms = 450) => p.waitForTimeout(ms);
       must(await men.evaluate((el) => el === document.activeElement), "focus not back on Men after Esc");
     });
 
-    await step("Edits mega menu lists the five edits + computed edits", async () => {
-      await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Edits", exact: true }).hover();
+    await step("More mega menu lists Luxe, Hidden Gems and the other curated destinations", async () => {
+      await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "More", exact: true }).hover();
       await page.locator("#mega-panel").waitFor();
       for (const t of ["Hidden Gems", "Luxe", "The Responsible Edit", "Festive & Wedding", "House of Nykaa"]) must(await page.locator("#mega-panel").getByRole("link", { name: new RegExp(t.replace("&", "&")) }).count() > 0, `missing ${t}`);
-      await page.mouse.move(700, 600);
+      await page.mouse.move(20, 880);
       await page.locator("#mega-panel").waitFor({ state: "detached" });
     });
 
-    await step("New in and Offers links work", async () => {
-      await page.getByRole("link", { name: "New in", exact: true }).first().click();
-      await page.waitForURL(/\/edits\/new-in/);
+    await step("Offers and Switch to Luxe links work", async () => {
       await page.getByRole("link", { name: "Offers", exact: true }).first().click();
       await page.waitForURL(/\/offers/);
+      await page.getByRole("link", { name: /Switch to\s+Luxe/i }).first().click();
+      await page.waitForURL(/\/edits\/luxe/);
     });
 
     await step("wishlist count appears on the header action; Wishlist opens the page", async () => {
@@ -144,8 +144,8 @@ const settle = (p, ms = 450) => p.waitForTimeout(ms);
       must(box && box.width > 340, `search field not full width (${box?.width})`);
     });
 
-    await step("bottom nav: Home · Shop · Edits · Wishlist · Bag, Home is current", async () => {
-      for (const n of ["Home", "Shop", "Edits", "Wishlist", "Bag"]) must(await bottom.getByText(n, { exact: true }).count() > 0, `missing ${n}`);
+    await step("bottom nav: Home · Shop · Brands · Wishlist · Bag, Home is current", async () => {
+      for (const n of ["Home", "Shop", "Brands", "Wishlist", "Bag"]) must(await bottom.getByText(n, { exact: true }).count() > 0, `missing ${n}`);
       must((await bottom.getByRole("link", { name: /^Home/ }).getAttribute("aria-current")) === "page", "Home not current");
       const b = await bottom.boundingBox();
       must(b && Math.abs(b.y + b.height - 844) < 2, "bottom nav is not pinned to the bottom edge");
@@ -183,8 +183,8 @@ const settle = (p, ms = 450) => p.waitForTimeout(ms);
       await page.getByRole("dialog", { name: "Shop" }).waitFor({ state: "detached" });
     });
 
-    await step("Edits / Wishlist / Bag tabs go to their pages and show as current", async () => {
-      for (const [name, re] of [["Edits", /\/edits$/], ["Wishlist", /\/wishlist/], ["Bag", /\/bag/]]) {
+    await step("Brands / Wishlist / Bag tabs go to their pages and show as current", async () => {
+      for (const [name, re] of [["Brands", /\/brands$/], ["Wishlist", /\/wishlist/], ["Bag", /\/bag/]]) {
         await bottom.getByRole("link", { name: new RegExp(`^${name}`) }).click();
         await page.waitForURL(re);
         await settle(page, 250);

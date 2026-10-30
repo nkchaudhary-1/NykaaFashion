@@ -10,13 +10,13 @@ const BASE =
   "relative inline-flex items-center justify-center gap-2 whitespace-nowrap select-none font-semibold uppercase tracking-[0.08em] text-[12px] leading-none transition-[background-color,color,border-color,transform,opacity] duration-300 ease-editorial active:scale-[0.985] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45";
 const SIZES: Record<ButtonSize, string> = { sm: "h-9 px-4 [@media(pointer:coarse)]:h-11", md: "h-11 px-6", lg: "h-[52px] px-8 text-[12.5px]" };
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "bg-ink text-bone hover:bg-[#2f2822]",
-  secondary: "border border-ink text-ink hover:bg-ink hover:text-bone",
+  primary: "bg-pink text-white hover:bg-pink-ink",
+  secondary: "border border-ink text-ink hover:bg-ink hover:text-white",
   ghost: "text-ink hover:bg-sand",
-  accent: "bg-pink-ink text-white hover:bg-[#8c0046]",
-  inverse: "bg-bone text-ink hover:bg-white",
+  accent: "bg-ink text-white hover:bg-ink-2",
+  inverse: "bg-white text-ink hover:bg-sand",
   danger: "border border-danger text-danger hover:bg-danger hover:text-white",
-  "outline-light": "border border-bone/70 text-bone hover:bg-bone hover:text-ink",
+  "outline-light": "border border-white/70 text-white hover:bg-white hover:text-ink",
 };
 
 export function buttonClass({ variant = "primary", size = "md", full, className }: { variant?: ButtonVariant; size?: ButtonSize; full?: boolean; className?: string } = {}) {

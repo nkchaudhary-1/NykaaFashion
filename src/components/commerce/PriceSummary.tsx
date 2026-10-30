@@ -1,3 +1,4 @@
+import { Tag } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { inr } from "@/lib/format";
@@ -41,7 +42,12 @@ export function PriceSummary({ b, className, deliveryLabel, children }: { b: Bre
       </div>
       </dl>
       <p className="mt-1 text-right text-[12px] text-ink-3">Inclusive of all taxes</p>
-      {b.youSave > 0 && <p className="mt-3 bg-emerald-tint px-3 py-2.5 text-[13px] font-medium text-emerald">You’re saving {inr(b.youSave)} on this order</p>}
+      {b.youSave > 0 && (
+        <p className="mt-4 flex items-center gap-2 bg-pink-tint px-3.5 py-3 text-[13.5px] font-semibold text-pink-ink">
+          <Tag size={15} strokeWidth={1.8} aria-hidden className="shrink-0" />
+          <span>You’re saving {inr(b.youSave)} on this order</span>
+        </p>
+      )}
       {children}
     </div>
   );

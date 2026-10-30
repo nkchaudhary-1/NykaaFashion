@@ -9,7 +9,7 @@ import { STAGES, STATUS_LABEL } from "@/lib/orders";
 import type { Address, Order, OrderStatus } from "@/stores/account";
 
 export function OrderStatusBadge({ status }: { status: OrderStatus }) {
-  const tone = status === "delivered" || status === "refunded" ? "emerald" : status === "cancelled" ? "danger" : status === "return-requested" ? "amber" : "ink";
+  const tone = status === "delivered" || status === "refunded" ? "emerald" : status === "cancelled" ? "danger" : status === "return-requested" ? "amber" : "pink";
   return <Badge tone={tone}>{STATUS_LABEL[status]}</Badge>;
 }
 
@@ -79,15 +79,15 @@ export function OrderTimeline({ order, rail }: { order: Order; rail?: boolean })
         const expected = !entry ? expectedAt(order, s.key) : null;
         return (
           <li key={s.key} aria-current={s.current ? "step" : undefined} className={cn("relative flex gap-4 pb-7 last:pb-0", side && "sm:flex-col sm:gap-3 sm:pb-0 sm:pt-4")}>
-            {!last && <span aria-hidden className={cn("absolute left-[13px] top-7 h-[calc(100%-1.75rem)] w-px", steps[i + 1].done ? "bg-ink" : "bg-line-strong", side && "sm:hidden")} />}
-            {side && <span aria-hidden className={cn("absolute inset-x-0 top-0 hidden h-0.5 sm:block", s.done ? "bg-ink" : "bg-line-strong")} />}
-            <span className={cn("relative z-[1] inline-flex size-7 shrink-0 items-center justify-center border text-[11px] tabular-nums", s.tone === "danger" ? "border-danger bg-danger text-white" : s.tone === "amber" ? "border-amber bg-amber text-white" : s.done ? "border-ink bg-ink text-bone" : "border-line-strong bg-paper text-ink-3")}>
+            {!last && <span aria-hidden className={cn("absolute left-[13px] top-7 h-[calc(100%-1.75rem)] w-px", steps[i + 1].done ? "bg-pink" : "bg-line-strong", side && "sm:hidden")} />}
+            {side && <span aria-hidden className={cn("absolute inset-x-0 top-0 hidden h-0.5 sm:block", s.done ? "bg-pink" : "bg-line-strong")} />}
+            <span className={cn("relative z-[1] inline-flex size-7 shrink-0 items-center justify-center border text-[11px] tabular-nums", s.tone === "danger" ? "border-danger bg-danger text-white" : s.tone === "amber" ? "border-amber bg-amber text-white" : s.done ? "border-pink bg-pink text-white" : "border-line-strong bg-paper text-ink-3")}>
               {s.key === "cancelled" ? <CircleX size={15} aria-hidden /> : s.key === "return-requested" ? <RotateCcw size={13} aria-hidden /> : s.done ? <Check size={14} strokeWidth={2.6} aria-hidden /> : i + 1}
             </span>
             <div className="min-w-0 pt-0.5">
               <p className={cn("flex flex-wrap items-center gap-x-2 text-[14.5px]", s.done ? "font-medium text-ink" : "text-ink-3")}>
                 {STATUS_LABEL[s.key]}
-                {s.current && <span className="inline-flex h-[18px] items-center bg-ink px-1.5 text-[9.5px] font-semibold uppercase tracking-[0.08em] text-bone">Now</span>}
+                {s.current && <span className="inline-flex h-[18px] items-center bg-pink-tint px-1.5 text-[9.5px] font-semibold uppercase tracking-[0.08em] text-pink-ink">Now</span>}
               </p>
               {entry ? (
                 <>

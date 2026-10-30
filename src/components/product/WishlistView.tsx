@@ -142,9 +142,9 @@ function EmptyWishlist() {
     <>
       <PageHeader title="Your wishlist" size="md" crumbs={CRUMBS} className={HEADER} />
       <div className="container-x">
-        <Grid className="items-center gap-y-8 border border-ink bg-paper px-0 py-8 sm:py-10">
+        <Grid className="items-center gap-y-8 bg-pink-tint px-0 py-8 sm:py-10">
           <Col span={{ base: 4, sm: 12, lg: 6 }} className="px-6 sm:px-10">
-            <Heart size={36} strokeWidth={1.1} aria-hidden />
+            <Heart size={36} strokeWidth={1.1} aria-hidden className="text-pink" />
             <h2 className="display-md mt-6">Nothing saved yet</h2>
           </Col>
           <Col span={{ base: 4, sm: 12, lg: 6 }} className="px-6 sm:px-10 lg:pl-0">

@@ -19,10 +19,10 @@ const NAV = [
   { href: "/wishlist", label: "Wishlist", Icon: Heart },
 ];
 
-/** One look for every nav entry: a flat square tab on phones and tablets, a full-width row on desktop. Current = solid ink. */
-const item = "flex shrink-0 items-center gap-2.5 whitespace-nowrap border text-[13.5px] font-medium transition-colors h-11 px-4 lg:h-12 lg:w-full lg:gap-3 lg:border-x-0 lg:border-t-0 lg:text-[14px]";
-const on = "border-ink bg-ink text-bone lg:border-ink";
-const off = "border-line-strong text-ink hover:border-ink lg:border-line lg:hover:bg-sand";
+/** One look for every nav entry: a flat square tab on phones and tablets, a full-width row on desktop. Current = pink tint with a pink edge. */
+const item = "relative flex shrink-0 items-center gap-2.5 whitespace-nowrap border text-[13.5px] font-medium transition-colors h-11 px-4 lg:h-12 lg:w-full lg:gap-3 lg:border-x-0 lg:border-t-0 lg:text-[14px]";
+const on = "border-pink bg-pink-tint text-pink-ink lg:border-line lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-[3px] lg:before:bg-pink lg:before:content-['']";
+const off = "border-line-strong text-ink hover:border-ink lg:border-line lg:hover:bg-paper";
 
 /**
  * Account shell on the 12-column grid: a 3-column side navigation (a flat tab row below 1024px) beside a 9-column content area.

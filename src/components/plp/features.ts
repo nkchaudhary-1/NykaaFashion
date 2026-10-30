@@ -8,12 +8,13 @@ import type { Edit, Label, Product } from "@/data/types";
  * Plain serialisable data, so a server page can choose the features that suit its context and hand them to the listing.
  *  - hero   a product from the list itself, shown large (the list gives one up, so it is never shown twice)
  *  - tile   an image promo — a related edit, a label, a trending search
- *  - quote  a flat colour panel with a pull-quote (a label's story, an edit's promise)
+ *  - note   a flat info panel: a short headline and a line or two (a label's story, an edit's promise). Colours are CSS values — tokens
+ *           such as var(--color-pink-tint) or an edit's THEMES colours — and `dark` says whether the text on it is light.
  */
 export type Feature =
   | { kind: "hero" }
   | { kind: "tile"; href: string; imgKey: string; title: string; meta?: string; position?: string; editId?: string }
-  | { kind: "quote"; text: string; eyebrow?: string; by?: string; bg: string; fg: string; href?: string; cta?: string };
+  | { kind: "note"; title: string; text: string; eyebrow?: string; bg: string; fg: string; dark?: boolean; href?: string; cta?: string };
 
 export const pieces = (n: number) => `${n} ${n === 1 ? "piece" : "pieces"}`;
 
@@ -52,15 +53,16 @@ export function labelTiles(pool: Product[], take = 2, skip: string[] = []): Feat
     });
 }
 
-/** An edit's promise ("Artisan-led", "Small batch" …) as a pull-quote on the edit's own colour. */
-export function highlightQuotes(edit: Edit, take = 1): Feature[] {
+/** An edit's promise ("Artisan-led", "Small batch" …) as an info panel in the edit's own colour. */
+export function highlightNotes(edit: Edit, take = 1): Feature[] {
   const t = THEMES[edit.theme];
-  return edit.highlights.slice(0, take).map((h) => ({ kind: "quote" as const, eyebrow: edit.kicker, text: `${h.title}. ${h.text}`, bg: t.bg, fg: t.fg }));
+  const dark = edit.theme !== "sand" && edit.theme !== "hon";
+  return edit.highlights.slice(0, take).map((h) => ({ kind: "note" as const, eyebrow: edit.kicker, title: h.title, text: h.text, bg: t.bg, fg: t.fg, dark }));
 }
 
-/** A label's story as a pull-quote on the label's own colour. */
-export function labelStoryQuote(label: Label): Feature {
-  return { kind: "quote", eyebrow: [label.origin, label.founded ? `est. ${label.founded}` : null].filter(Boolean).join(" · ") || "The label", text: label.story, by: label.name, bg: label.tone.bg, fg: label.tone.fg };
+/** A label's story as an info panel (token colours: soft pink on the white page). */
+export function labelStoryNote(label: Label): Feature {
+  return { kind: "note", eyebrow: [label.origin, label.founded ? `est. ${label.founded}` : null].filter(Boolean).join(" · ") || "The label", title: label.tagline, text: label.story, bg: "var(--color-pink-tint)", fg: "var(--color-ink)" };
 }
 
 /** Round-robin merge, so different kinds of feature alternate down the page. */

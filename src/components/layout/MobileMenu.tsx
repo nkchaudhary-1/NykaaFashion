@@ -48,18 +48,6 @@ export function MobileMenu() {
           </Link>
         )}
 
-        <p className={group}>Curated</p>
-        <Disclosure title={<span className="text-[15px] font-medium">Edits</span>} headingLevel={3}>
-          <ul className="-mt-1">
-            <li><Link href="/edits" onClick={close} className={`${row} font-medium`}>All edits <ChevronRight size={16} aria-hidden /></Link></li>
-            {primaryEdits.map((e) => (
-              <li key={e.id}><Link href={`/edits/${e.id}`} onClick={close} className={`${row} text-ink-2`}>{e.title} <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link></li>
-            ))}
-            <li><Link href="/edits/new-in" onClick={close} className={`${row} text-ink-2`}>New in <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link></li>
-          </ul>
-        </Disclosure>
-        <Link href="/discover" onClick={close} className={`${row} border-b border-line font-medium`}>Discover <ChevronRight size={16} aria-hidden /></Link>
-
         <p className={group}>Shop</p>
         {topCategories.map((top) => (
           <Disclosure key={top.id} title={<span className="text-[15px] font-medium">{top.name}</span>} headingLevel={3}>
@@ -71,8 +59,20 @@ export function MobileMenu() {
             </ul>
           </Disclosure>
         ))}
-        <Link href="/offers" onClick={close} className={`${row} border-b border-line font-medium text-pink-ink`}>Offers <ChevronRight size={16} aria-hidden /></Link>
-        <Link href="/brands" onClick={close} className={`${row} border-b border-line`}>Labels A–Z <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link>
+        <Link href="/brands" onClick={close} className={`${row} border-b border-line font-medium`}>Brands <ChevronRight size={16} aria-hidden /></Link>
+        <Link href="/offers" onClick={close} className={`${row} border-b border-line font-semibold text-pink`}>Offers <ChevronRight size={16} aria-hidden /></Link>
+
+        <p className={group}>More</p>
+        <Disclosure title={<span className="text-[15px] font-medium">Luxe, Hidden Gems &amp; more</span>} headingLevel={3}>
+          <ul className="-mt-1">
+            {primaryEdits.map((e) => (
+              <li key={e.id}><Link href={`/edits/${e.id}`} onClick={close} className={`${row} text-ink-2`}>{e.title} <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link></li>
+            ))}
+            <li><Link href="/edits/new-in" onClick={close} className={`${row} text-ink-2`}>New in <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link></li>
+            <li><Link href="/edits" onClick={close} className={`${row} font-medium`}>All curated edits <ChevronRight size={16} aria-hidden /></Link></li>
+          </ul>
+        </Disclosure>
+        <Link href="/discover" onClick={close} className={`${row} border-b border-line`}>Style Files <ChevronRight size={16} aria-hidden className="text-ink-3" /></Link>
 
         <p className={group}>Help</p>
         <ul>

@@ -1,15 +1,16 @@
 import type { Label } from "./types.ts";
 
-// House of Nykaa labels are named in the PRD (§1). Every other label is fictional —
-// this prototype never implies a real third-party catalogue, price or availability.
+// Brand names mirror the live Nykaa Fashion homepage and its House of Nykaa labels (PRD §1, §2.2). Hidden Gems, Luxe and the
+// remaining labels are fictional. Every product, price and description is SAMPLE content — the prototype never implies a real
+// listing, price or availability (the footer says so on every page).
 export const labels: Label[] = [
   // ── House of Nykaa ──────────────────────────────────────────
-  { id: "twenty-dresses", name: "Twenty Dresses", tagline: "Everyday dresses, cut for real life.", story: "Twenty Dresses designs one thing obsessively: the dress you reach for without thinking. Pockets where they matter, fabrics that survive a commute, and hems that move.", origin: "Mumbai", founded: 2015, flags: { houseOfNykaa: true }, tone: { bg: "#f2d9d3", fg: "#6e2a2a" } },
-  { id: "nykd", name: "Nykd by Nykaa", tagline: "Softer basics, quieter mornings.", story: "Loungewear and layering pieces in modal, rib and waffle knits — made to be lived in on days nobody is watching.", origin: "Bengaluru", founded: 2019, flags: { houseOfNykaa: true }, tone: { bg: "#e7e0d4", fg: "#3d3730" } },
-  { id: "rsvp", name: "RSVP", tagline: "Occasionwear for people who actually go out.", story: "Satin, sequin and sculpted silhouettes for the weddings, launches and long dinners on your calendar — priced like you'll wear them twice.", origin: "Delhi", founded: 2018, flags: { houseOfNykaa: true }, tone: { bg: "#3a1f2b", fg: "#f1d9c0" } },
-  { id: "pipa-bella", name: "Pipa Bella", tagline: "Jewellery and bags with a point of view.", story: "Pipa Bella makes accessories that finish an outfit rather than decorate it: sculpted gold-tone, freshwater pearls and structured leather-look bags.", origin: "Jaipur", founded: 2016, flags: { houseOfNykaa: true }, tone: { bg: "#efe3cf", fg: "#6a4d1c" } },
-  { id: "gajra-gang", name: "Gajra Gang", tagline: "Festive accessories, worn loud.", story: "Kundan, meenakari and temple-inspired pieces for people who treat every festival as a reason to stack, layer and shine.", origin: "Hyderabad", founded: 2020, flags: { houseOfNykaa: true }, tone: { bg: "#1f4d3a", fg: "#f3e2b8" } },
-  { id: "likha", name: "Likha", tagline: "Indianwear for the everyday and the evening.", story: "Likha reworks regional silhouettes — angrakha, straight, flared — in cottons and chanderi that feel as good at the desk as they do at the dinner.", origin: "Lucknow", founded: 2017, flags: { houseOfNykaa: true }, tone: { bg: "#e9c9b3", fg: "#5a2c19" } },
+  { id: "twenty-dresses", name: "Twenty Dresses", tagline: "Dresses and western wear.", story: "Twenty Dresses by Nykaa Fashion — the house label for dresses and everyday western wear. Product details in this prototype are sample content.", flags: { houseOfNykaa: true }, tone: { bg: "#f2d9d3", fg: "#6e2a2a" } },
+  { id: "nykd", name: "Nykd by Nykaa", tagline: "Loungewear and innerwear.", story: "Nykd by Nykaa — the house label for loungewear, innerwear and soft basics. Product details in this prototype are sample content.", flags: { houseOfNykaa: true }, tone: { bg: "#e7e0d4", fg: "#3d3730" } },
+  { id: "rsvp", name: "RSVP", tagline: "Occasionwear.", story: "RSVP by Nykaa Fashion — the house label for occasionwear: party, evening and wedding-season dressing. Product details in this prototype are sample content.", flags: { houseOfNykaa: true }, tone: { bg: "#3a1f2b", fg: "#f1d9c0" } },
+  { id: "pipa-bella", name: "Pipa Bella", tagline: "Jewellery and bags.", story: "Pipa Bella by Nykaa Fashion — the house label for jewellery, bags and accessories. Product details in this prototype are sample content.", flags: { houseOfNykaa: true }, tone: { bg: "#efe3cf", fg: "#6a4d1c" } },
+  { id: "gajra-gang", name: "Gajra Gang", tagline: "Festive accessories.", story: "Gajra Gang — a Nykaa Fashion house label for festive jewellery and accessories. Product details in this prototype are sample content.", flags: { houseOfNykaa: true }, tone: { bg: "#1f4d3a", fg: "#f3e2b8" } },
+  { id: "likha", name: "Likha", tagline: "Indianwear.", story: "Likha by Nykaa Fashion — the house label for indianwear: kurtas, sets and festive edits. Product details in this prototype are sample content.", flags: { houseOfNykaa: true }, tone: { bg: "#e9c9b3", fg: "#5a2c19" } },
 
   // ── Hidden Gems — independent artisan labels ────────────────
   { id: "ajrakh-and-ash", name: "Ajrakh & Ash", tagline: "Block-printed in Kutch, dyed in the river.", story: "A family studio in Ajrakhpur printing with hand-carved teak blocks and natural indigo, madder and iron. Every metre is printed twice, rested for days, and washed in the river before it ever becomes a garment.", origin: "Kutch, Gujarat", founded: 2011, flags: { hiddenGem: true, responsible: true }, tone: { bg: "#27345f", fg: "#efe3d0" } },
@@ -28,14 +29,15 @@ export const labels: Label[] = [
   { id: "orsay-and-rao", name: "Orsay & Rao", tagline: "Tailoring for the unhurried.", story: "Menswear cut with soft shoulders and honest linings, finished by hand in a Bengaluru workroom. Made-to-measure on request.", origin: "Bengaluru", founded: 2011, flags: { luxe: true }, tone: { bg: "#232620", fg: "#d6cfb8" } },
 
   // ── Mainstream & everyday ───────────────────────────────────
-  { id: "juniper-row", name: "Juniper Row", tagline: "Separates that work harder.", story: "A women's wardrobe of tailored trousers, fluid skirts and poplin blouses, designed to be mixed rather than matched.", origin: "Gurugram", founded: 2018, flags: {}, tone: { bg: "#cdd4c2", fg: "#2e3a2a" } },
-  { id: "northline", name: "Northline", tagline: "Casuals, perfected.", story: "Men's tees, shirts and chinos with considered fits and honest prices. The sort of wardrobe you stop thinking about.", origin: "Pune", founded: 2017, flags: {}, tone: { bg: "#d8dcdf", fg: "#262c31" } },
-  { id: "haven-denim", name: "Haven Denim", tagline: "Denim with a sense of ease.", story: "Cut in Bengaluru, washed in Tiruppur, finished with recycled water. Jeans and jackets in fits that flatter more than they confine.", origin: "Bengaluru", founded: 2016, flags: {}, tone: { bg: "#8aa0bd", fg: "#14213a" } },
-  { id: "stride-lab", name: "Stride Lab", tagline: "Sneakers, tested on pavements.", story: "A footwear studio building low-profile sneakers with cushioned insoles and clean lines, wearable from desk to dinner.", origin: "Agra", founded: 2019, flags: {}, tone: { bg: "#e8e4dd", fg: "#1f1d1a" } },
   { id: "little-orchard", name: "Little Orchard", tagline: "Kidswear that survives playgrounds.", story: "Soft cottons, smocking and print, with extra-deep hems that grow with the child. Tested by actual toddlers.", origin: "Chennai", founded: 2018, flags: { responsible: true }, tone: { bg: "#f2d3a4", fg: "#5a3512" } },
   { id: "hearth-and-hue", name: "Hearth & Hue", tagline: "Objects for slow evenings.", story: "Candles, vases and soft furnishings in amber, clay and oat. Poured and made in small batches.", origin: "Goa", founded: 2018, flags: {}, tone: { bg: "#e7d6bd", fg: "#4c3a1f" } },
   { id: "loom-and-leaf", name: "Loom & Leaf", tagline: "Organic basics, no compromises.", story: "GOTS-certified cotton, hemp and recycled yarns — made into the tees, shirts and trousers that anchor a responsible wardrobe.", origin: "Coimbatore", founded: 2015, flags: { responsible: true }, tone: { bg: "#c9d4bc", fg: "#2c3a25" } },
-  { id: "mira-and-co", name: "Mira & Co.", tagline: "Knitwear with a long memory.", story: "Merino, cotton and cable knits designed for the Indian winter — warm without the weight.", origin: "Ludhiana", founded: 2014, flags: {}, tone: { bg: "#d4c3b4", fg: "#3b2d22" } },
+  // ── Brands (names as on the live homepage; sample listings) ──
+  { id: "vero-moda", name: "Vero Moda", tagline: "Western wear for every day.", story: "Sample listings in the Vero Moda range — product details on this page are illustrative.", flags: {}, tone: { bg: "#f4f4f6", fg: "#001325" } },
+  { id: "us-polo", name: "U.S. Polo Assn.", tagline: "Everyday menswear.", story: "Sample listings in the U.S. Polo Assn. range — product details on this page are illustrative.", flags: {}, tone: { bg: "#e8edf5", fg: "#12263b" } },
+  { id: "hm", name: "H&M", tagline: "Denim and everyday basics.", story: "Sample listings in the H&M range — product details on this page are illustrative.", flags: {}, tone: { bg: "#fde4e4", fg: "#5a1515" } },
+  { id: "puma", name: "Puma", tagline: "Sport-inspired footwear.", story: "Sample listings in the Puma range — product details on this page are illustrative.", flags: {}, tone: { bg: "#eceef1", fg: "#1c2430" } },
+  { id: "cider", name: "Cider", tagline: "Trend-led knitwear.", story: "Sample listings in the Cider range — product details on this page are illustrative.", flags: {}, tone: { bg: "#fff0f6", fg: "#7a1a47" } },
 ];
 
 export const labelById: Record<string, Label> = Object.fromEntries(labels.map((l) => [l.id, l]));

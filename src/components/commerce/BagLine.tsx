@@ -102,7 +102,15 @@ export function BagLineRow({ line, compact, onNavigate }: { line: ResolvedLine; 
             <p className="mt-1 text-[13px] text-ink-3">{variant}</p>
             <Price price={p.price} mrp={p.mrp} size="sm" className="mt-2" />
           </div>
-          <p className="shrink-0 text-[15px] font-medium tabular-nums">{inr(p.price * line.qty)}</p>
+          <p className="shrink-0 text-right text-[15px] font-medium tabular-nums">
+            {inr(p.price * line.qty)}
+            {p.mrp > p.price && (
+              <s className="mt-0.5 block text-[12px] font-normal text-ink-3">
+                <span className="sr-only">was </span>
+                {inr(p.mrp * line.qty)}
+              </s>
+            )}
+          </p>
         </div>
         {notice}
         <div className="mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pt-4">

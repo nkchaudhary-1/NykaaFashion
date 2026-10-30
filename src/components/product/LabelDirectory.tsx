@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tabs } from "@/components/ui/Tabs";
 import { labels } from "@/data/labels";
 import { products } from "@/data/catalog";
+import { legible } from "@/app/brands/_components/labelTone";
 import { LabelBadges, LabelMonogram } from "./LabelMark";
 
 const COUNT: Record<string, number> = {};
@@ -61,7 +62,7 @@ export function LabelDirectory() {
                   {list.map((l) => (
                     <li key={l.id} className="border-b border-line">
                       <Link href={`/brands/${l.id}`} className="group flex items-start gap-4 py-4">
-                        <LabelMonogram label={l} size="sm" className="shrink-0" />
+                        <LabelMonogram label={legible(l)} size="sm" className="shrink-0" />
                         <span className="min-w-0 flex-1">
                           <span className="block text-[15px] font-medium leading-tight tracking-[-0.01em] group-hover:underline group-hover:underline-offset-4">{l.name}</span>
                           <span className="mt-1 block truncate text-[13px] text-ink-2">{l.tagline}</span>

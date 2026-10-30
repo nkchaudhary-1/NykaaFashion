@@ -65,11 +65,11 @@ function GuideContent({ guide, fitNote, modelNote }: { guide: SizeGuide; fitNote
           </thead>
           <tbody>
             {guide.rows.map((r) => (
-              <tr key={r[0]} className={cn("border-b border-line", rec?.size === r[0] && "bg-gold-tint")}>
+              <tr key={r[0]} className={cn("border-b border-line", rec?.size === r[0] && "bg-pink-tint")}>
                 {r.map((cell, i) => (
                   <td key={i} className={cn("py-2.5 pr-4", i === 0 ? "font-medium text-ink" : "text-right text-ink-2")}>
                     {cell}
-                    {i === 0 && rec?.size === r[0] && <span className="ml-2 text-[11px] font-medium uppercase tracking-wider text-gold-ink">Your size</span>}
+                    {i === 0 && rec?.size === r[0] && <span className="ml-2 text-[11px] font-semibold uppercase tracking-wider text-pink-ink">Your size</span>}
                   </td>
                 ))}
               </tr>

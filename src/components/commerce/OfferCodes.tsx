@@ -33,13 +33,13 @@ export function OfferCodes({ className, aside }: { className?: string; aside?: R
     <ul className={cn("grid-main gap-y-[var(--gap)]", className)}>
       {active.map((c) => (
         <Col as="li" key={c.code} span={{ base: 4, sm: 6, lg: 4 }}>
-          <div className="flex h-full min-h-[220px] flex-col justify-between gap-8 border border-ink p-5 sm:p-6">
+          <div className="flex h-full min-h-[220px] flex-col justify-between gap-8 border border-line-strong p-5 sm:p-6">
             <div>
-              <p className="eyebrow text-ink-3">{headline(c)}</p>
+              <p className="eyebrow text-pink-ink">{headline(c)}</p>
               <p className="display-xs mt-4">{c.title}</p>
               <p className="mt-2 text-[14px] leading-snug text-ink-2">{c.description}</p>
             </div>
-            <button type="button" onClick={() => copy(c.code)} aria-label={`Copy code ${c.code}`} className="flex h-12 items-center justify-between border border-dashed border-ink px-4 text-[14px] font-medium tabular-nums tracking-[0.18em] transition-colors hover:bg-ink hover:text-bone">
+            <button type="button" onClick={() => copy(c.code)} aria-label={`Copy code ${c.code}`} className="flex h-12 items-center justify-between border border-dashed border-pink px-4 text-[14px] font-semibold tabular-nums tracking-[0.18em] text-pink-ink transition-colors hover:bg-pink hover:text-white">
               {c.code}
               {copied === c.code ? <Check size={16} aria-hidden /> : <Copy size={15} aria-hidden />}
             </button>

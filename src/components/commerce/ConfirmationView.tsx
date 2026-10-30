@@ -22,7 +22,7 @@ function SuccessMark() {
   const reduce = useReducedMotion();
   const draw = (delay: number, duration: number) => ({ hidden: { pathLength: 0 }, visible: { pathLength: 1, transition: { duration: reduce ? 0.01 : duration, delay: reduce ? 0 : delay, ease: "easeInOut" as const } } });
   return (
-    <motion.svg initial="hidden" animate="visible" width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden className="text-ink">
+    <motion.svg initial="hidden" animate="visible" width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden className="text-pink">
       <motion.rect x="1.5" y="1.5" width="61" height="61" stroke="currentColor" strokeWidth="1.5" variants={draw(0, 0.8)} />
       <motion.path d="M20 33l8 8 16-17" stroke="currentColor" strokeWidth="2.4" strokeLinecap="square" strokeLinejoin="miter" variants={draw(0.7, 0.5)} />
     </motion.svg>
@@ -86,7 +86,7 @@ export function ConfirmationView({ id }: { id: string }) {
           </Col>
 
           <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }}>
-            <section aria-labelledby="ot" className="border border-ink bg-paper p-6 sm:p-8 lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:transition-[top] lg:duration-500 lg:ease-editorial">
+            <section aria-labelledby="ot" className="border border-line-strong bg-paper p-6 sm:p-8 lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:transition-[top] lg:duration-500 lg:ease-editorial">
               <h2 id="ot" className="display-xs">What happens next <span className="ml-1 align-middle text-[12px] font-normal tracking-normal text-ink-3">(simulated)</span></h2>
               <p className="mb-7 mt-1.5 text-[13px] text-ink-3">Each step moves on when you press “Simulate” on the order page.</p>
               <OrderTimeline order={order} />

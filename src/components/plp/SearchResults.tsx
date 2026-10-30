@@ -20,6 +20,7 @@ import { searchProducts } from "@/lib/search";
 import { track } from "@/lib/track";
 import { addRecentSearch } from "@/stores/ui";
 import { interleave, type Feature } from "./features";
+import { ListingHeader } from "./ListingHeader";
 import { ProductListing } from "./ProductListing";
 
 const href = (t: string) => `/search?q=${encodeURIComponent(t)}`;
@@ -67,8 +68,8 @@ export function SearchResults() {
   const noResults = res.results.length === 0;
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} eyebrow="Search" size="md" title={noResults ? <>No results for <em>“{q}”</em></> : <>Results for <em>“{q}”</em></>}>
-        <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2" aria-live="polite">
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} title={noResults ? <>No results for <em>“{q}”</em></> : <>Results for <em>“{q}”</em></>}>
+        <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2" aria-live="polite">
           {res.corrected && <p className="text-[14px] text-ink-2">Showing results for <strong className="font-medium text-ink">{res.corrected}</strong>.</p>}
           {res.relaxed && <p className="text-[14px] text-ink-2">No piece matches every word — showing the closest matches.</p>}
           {res.parsed.understood.length > 0 && (
@@ -83,7 +84,7 @@ export function SearchResults() {
           )}
           {res.parsed.ignored.length > 0 && <p className="text-[12.5px] text-ink-3">Ignored: {res.parsed.ignored.join(", ")}</p>}
         </div>
-      </PageHeader>
+      </ListingHeader>
       {noResults ? <NoResults /> : <ProductListing pool={res.results} scopeKey={`search:${q}`} source="search" noun="results" features={features} />}
     </>
   );

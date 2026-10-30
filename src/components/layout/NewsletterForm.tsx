@@ -20,24 +20,24 @@ export function NewsletterForm() {
   };
   if (newsletter) {
     return (
-      <p className="mt-8 flex items-center gap-2 text-[14px] text-bone/80">
-        <Check size={16} className="text-gold" aria-hidden /> Subscribed as {newsletter} (simulated)
+      <p className="mt-8 flex items-center gap-2 text-[14px] text-ink-2">
+        <Check size={16} className="text-pink" aria-hidden /> Subscribed as {newsletter} (simulated)
       </p>
     );
   }
   return (
     <form onSubmit={submit} noValidate className="mt-8 max-w-sm">
-      <label htmlFor="nl" className="eyebrow mb-3 block text-bone/55">
+      <label htmlFor="nl" className="eyebrow mb-3 block text-ink-3">
         The Style Files letter
       </label>
-      <div className="flex border-b border-bone/40 transition-colors focus-within:border-bone focus-within:border-b-2">
-        <input id="nl" type="email" autoComplete="email" placeholder="Your email" value={email} onChange={(e) => (setEmail(e.target.value), setError(null))} aria-invalid={error ? true : undefined} aria-describedby={error ? "nl-err" : undefined} className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-bone placeholder:text-bone/45 focus:outline-none" />
-        <button type="submit" aria-label="Subscribe" className="inline-flex size-12 items-center justify-center text-bone transition-transform hover:translate-x-0.5">
+      <div className="flex border-b border-ink-3 transition-colors focus-within:border-ink focus-within:border-b-2">
+        <input id="nl" type="email" autoComplete="email" placeholder="Your email" value={email} onChange={(e) => (setEmail(e.target.value), setError(null))} aria-invalid={error ? true : undefined} aria-describedby={error ? "nl-err" : undefined} className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-ink placeholder:text-ink-3 focus:outline-none" />
+        <button type="submit" aria-label="Subscribe" className="inline-flex size-12 items-center justify-center bg-pink text-white transition-colors hover:bg-pink-ink">
           <ArrowRight size={19} />
         </button>
       </div>
       {error && (
-        <p id="nl-err" role="alert" className="mt-2 text-[12.5px] text-[#ffb4a8]">
+        <p id="nl-err" role="alert" className="mt-2 text-[12.5px] text-danger">
           {error}
         </p>
       )}

@@ -32,11 +32,11 @@ export function BottomNav() {
 
   const active = (href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`));
   const cell = "relative flex h-full w-full flex-col items-center justify-center gap-1 text-[10.5px] font-medium tracking-wide transition-colors";
-  const bar = <span aria-hidden className="absolute inset-x-3 top-0 h-0.5 bg-ink" />;
+  const bar = <span aria-hidden className="absolute inset-x-3 top-0 h-0.5 bg-pink" />;
 
   const link = (href: string, label: string, icon: ReactNode, count = 0) => (
     <li>
-      <Link href={href} aria-current={active(href) ? "page" : undefined} className={cn(cell, active(href) ? "text-ink" : "text-ink-3")}>
+      <Link href={href} aria-current={active(href) ? "page" : undefined} className={cn(cell, active(href) ? "text-pink" : "text-ink-3")}>
         <span className="relative">
           {icon}
           {count > 0 && <CountBadge n={count} className="-right-2.5 -top-1.5" />}
@@ -53,13 +53,13 @@ export function BottomNav() {
       <ul className="grid h-[var(--bottom-nav-h)] grid-cols-5">
         {link("/", "Home", <Home size={22} strokeWidth={active("/") ? 1.9 : 1.4} aria-hidden />)}
         <li>
-          <button type="button" onClick={() => setUI({ menuOpen: true })} aria-haspopup="dialog" aria-expanded={menuOpen} className={cn(cell, menuOpen ? "text-ink" : "text-ink-3")}>
+          <button type="button" onClick={() => setUI({ menuOpen: true })} aria-haspopup="dialog" aria-expanded={menuOpen} className={cn(cell, menuOpen ? "text-pink" : "text-ink-3")}>
             <LayoutGrid size={22} strokeWidth={menuOpen ? 1.9 : 1.4} aria-hidden />
             Shop
             {menuOpen && bar}
           </button>
         </li>
-        {link("/edits", "Edits", <Layers size={22} strokeWidth={active("/edits") ? 1.9 : 1.4} aria-hidden />)}
+        {link("/brands", "Brands", <Layers size={22} strokeWidth={active("/brands") ? 1.9 : 1.4} aria-hidden />)}
         {link("/wishlist", "Wishlist", <Heart size={22} strokeWidth={active("/wishlist") ? 1.9 : 1.4} aria-hidden />, wishCount)}
         {link("/bag", "Bag", <ShoppingBag size={22} strokeWidth={active("/bag") ? 1.9 : 1.4} aria-hidden />, bagCount)}
       </ul>

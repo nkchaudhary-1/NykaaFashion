@@ -43,7 +43,7 @@ export function CompleteTheLook({ product }: { product: Product }) {
     toast({ title: n ? `Saved ${n} pieces to your wishlist` : "Already in your wishlist", action: { label: "View", href: "/wishlist" } });
   };
   const save = (
-    <Button variant={totalInBoard ? "inverse" : "secondary"} icon={<Heart size={15} />} onClick={saveAll}>
+    <Button variant="secondary" icon={<Heart size={15} />} onClick={saveAll}>
       Save the look
     </Button>
   );
@@ -81,12 +81,15 @@ export function CompleteTheLook({ product }: { product: Product }) {
               );
             })}
             {totalInBoard && (
-              <li className={cn("flex aspect-[4/5] flex-col justify-between bg-ink p-5 text-bone sm:p-6", cell)}>
+              <li className={cn("flex aspect-[4/5] flex-col justify-between overflow-hidden bg-ink p-4 text-bone sm:p-5 lg:p-6", cell)}>
                 <p className="eyebrow">The whole look</p>
                 <div>
                   <p className="display-sm tabular-nums">{inr(total)}</p>
                   <p className="mt-2 text-[13px] text-bone">{look.length} pieces, one occasion.</p>
-                  <div className="on-dark mt-5">{save}</div>
+                  {/* the tile is only two columns wide on phones, so this button is a compact, tile-width one */}
+                  <button type="button" onClick={saveAll} className="on-dark mt-5 inline-flex h-11 w-full items-center justify-center gap-2 bg-white px-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-sand lg:text-[12px] lg:tracking-[0.08em]">
+                    <Heart size={14} aria-hidden className="hidden lg:block" /> Save the look
+                  </button>
                 </div>
               </li>
             )}
@@ -96,19 +99,19 @@ export function CompleteTheLook({ product }: { product: Product }) {
         <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 2 }} className="lg:self-end">
           <ol aria-label="Pieces in this look" className="border-t border-line">
             {look.map((p, i) => (
-              <li key={p.id} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)} className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-line py-3.5 sm:flex-nowrap">
+              <li key={p.id} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)} className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-line py-4 sm:flex-nowrap">
                 <span aria-hidden className="inline-flex size-7 shrink-0 items-center justify-center rounded-full border border-ink text-[12px] font-medium tabular-nums">
                   {i + 1}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="eyebrow truncate text-ink-3">
-                    {i === 0 && "This piece · "}
+                  <p className="truncate text-[13px] font-semibold text-ink">
+                    {i === 0 && <span className="font-normal text-ink-3">This piece · </span>}
                     {labelById[p.labelId].name}
                   </p>
                   {i === 0 ? (
-                    <p className="mt-1.5 line-clamp-2 text-[14.5px] leading-snug">{p.name}</p>
+                    <p className="mt-0.5 line-clamp-2 text-[14px] leading-snug text-ink-2">{p.name}</p>
                   ) : (
-                    <Link href={`/p/${p.slug}`} onClick={(e) => captureFlip(p.id, e.currentTarget, 0, "complete-the-look")} className="link-u mt-1.5 line-clamp-2 block text-[14.5px] leading-snug">
+                    <Link href={`/p/${p.slug}`} onClick={(e) => captureFlip(p.id, e.currentTarget, 0, "complete-the-look")} className="mt-0.5 line-clamp-2 block text-[14px] leading-snug text-ink-2 transition-colors hover:text-pink-ink">
                       {p.name}
                     </Link>
                   )}

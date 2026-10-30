@@ -70,7 +70,8 @@ export function CheckoutFlow() {
   const goto = (s: 0 | 1 | 2) => {
     patchCheckout({ step: s });
     track("checkout_step", { step: STEPS[s] });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Jump to the step that just opened. No smooth scroll: it would slide the controls out from under the pointer.
+    requestAnimationFrame(() => document.getElementById(`step-${s + 1}`)?.scrollIntoView({ block: "start" }));
   };
 
   // ── Step 1 → 2 ─────────────────────────────────────────────
@@ -300,7 +301,7 @@ export function CheckoutFlow() {
 /** One step of the flow: a square numbered marker, the title, and "Change" once it is done. The current step is outlined in ink. */
 function StepCard({ id, n, title, state, onChange, children }: { id: string; n: number; title: string; state: "done" | "current" | "todo"; onChange?: () => void; children?: ReactNode }) {
   return (
-    <section aria-labelledby={id} className={cn("border bg-paper", state === "current" ? "border-ink" : "border-line")}>
+    <section id={`step-${n}`} aria-labelledby={id} className={cn("border bg-paper", state === "current" ? "border-ink" : "border-line")}>
       <header className="flex items-center justify-between gap-3 px-5 py-4 sm:px-7 sm:py-5">
         <h2 id={id} className={cn("display-xs flex items-center gap-3.5", state === "todo" && "text-ink-3")}>
           <StepMark n={n} state={state} className="size-8 text-[13px]" />

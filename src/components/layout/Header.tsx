@@ -13,22 +13,22 @@ import { useStore } from "@/lib/store";
 import { logout, useAuth } from "@/stores/account";
 import { bagStore, wishlistStore } from "@/stores/commerce";
 import { setUI } from "@/stores/ui";
-import { CategoryMega, EditsMega } from "./MegaMenu";
+import { CategoryMega, MoreMega } from "./MegaMenu";
 import { Logo } from "./Logo";
 
-type Mega = "edits" | "women" | "men" | "kids" | "home";
+type Mega = "more" | "women" | "men" | "kids" | "home";
 const NAV: Array<{ id: string; label: string; href: string; mega?: Mega }> = [
-  { id: "edits", label: "Edits", href: "/edits", mega: "edits" },
-  { id: "discover", label: "Discover", href: "/discover" },
   { id: "women", label: "Women", href: "/c/women", mega: "women" },
   { id: "men", label: "Men", href: "/c/men", mega: "men" },
   { id: "kids", label: "Kids", href: "/c/kids", mega: "kids" },
   { id: "home", label: "Home", href: "/c/home", mega: "home" },
+  { id: "brands", label: "Brands", href: "/brands" },
+  { id: "more", label: "More", href: "/edits", mega: "more" },
 ];
 
 /**
  * Two tiers, aligned to the page grid. Desktop: row 1 = logo (3 cols) · search (6) · account / wishlist / bag (3);
- * row 2 = primary navigation with grid-aligned mega menus. Phones/tablets: menu · logo · account, then a full-width search
+ * row 2 = primary navigation (Women · Men · Kids · Home · Brands · More) with grid-aligned mega menus. Phones/tablets: menu · logo · account, then a full-width search
  * field — wishlist and bag live in the bottom navigation. The whole header steps away on scroll down and returns on scroll up.
  */
 export function Header() {
@@ -178,7 +178,7 @@ export function Header() {
                           className="absolute inset-x-0 top-full border-b border-ink bg-bone"
                           onMouseEnter={() => timer.current && clearTimeout(timer.current)}
                         >
-                          {n.mega === "edits" ? <EditsMega onNavigate={close} /> : <CategoryMega top={n.mega} onNavigate={close} />}
+                          {n.mega === "more" ? <MoreMega onNavigate={close} /> : <CategoryMega top={n.mega} onNavigate={close} />}
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -186,15 +186,15 @@ export function Header() {
                 ))}
               </ul>
             </nav>
-            <ul className="-mr-3.5 flex items-center" onMouseEnter={() => schedule(null, 0)}>
+            <ul className="flex items-center gap-1" onMouseEnter={() => schedule(null, 0)}>
               <li>
-                <Link href="/edits/new-in" className="inline-flex h-11 items-center px-3.5 text-[13.5px] font-medium text-ink-2 transition-colors hover:text-ink">
-                  New in
+                <Link href="/offers" aria-current={isActive("/offers") ? "page" : undefined} className={cn("inline-flex h-11 items-center px-3.5 text-[13.5px] font-semibold transition-colors", isActive("/offers") ? "text-pink-ink" : "text-pink hover:text-pink-ink")}>
+                  Offers
                 </Link>
               </li>
               <li>
-                <Link href="/offers" aria-current={isActive("/offers") ? "page" : undefined} className={cn("inline-flex h-11 items-center px-3.5 text-[13.5px] font-medium transition-colors", isActive("/offers") ? "text-ink" : "text-pink-ink hover:text-ink")}>
-                  Offers
+                <Link href="/edits/luxe" className="inline-flex h-8 items-center gap-2 bg-luxe px-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-ink-2">
+                  Switch to <span className="text-gold">Luxe</span>
                 </Link>
               </li>
             </ul>

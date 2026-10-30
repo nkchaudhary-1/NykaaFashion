@@ -2,7 +2,6 @@ import { PinLayer } from "@/components/editorial/ShoppableImage";
 import { StoryActions } from "@/components/editorial/StoryActions";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Img } from "@/components/ui/Img";
-import { THEMES } from "@/data/edits";
 import type { Story } from "@/data/types";
 import { cn } from "@/lib/cn";
 import { imgPins } from "@/lib/img";
@@ -18,6 +17,17 @@ function splitTitle(title: string): [string, string] {
 // Art direction without a <picture>: only the visible cover ever downloads (a display:none copy of a lazy image stays unfetched).
 // phones: the 4:5 cover, edge to edge · tablets: the 16:9 cover, edge to edge · desktop: the 4:5 cover cropped into the 6-column panel,
 // and from 1536px the 16:9 one with its subject (the right half of the scene) kept in view. Pins use the same crop, so they stay on the garments.
+/** The cover panel is a flat token surface (not the story's edit colours): pink tint for most, soft grey for the quieter edits, the navy ink for Luxe. */
+const PANEL: Record<Story["theme"], { cls: string; dark: boolean }> = {
+  gem: { cls: "bg-pink-tint text-ink", dark: false },
+  festive: { cls: "bg-pink-tint text-ink", dark: false },
+  hon: { cls: "bg-pink-tint text-ink", dark: false },
+  resp: { cls: "bg-sand text-ink", dark: false },
+  sand: { cls: "bg-sand text-ink", dark: false },
+  luxe: { cls: "bg-ink text-bone", dark: true },
+  ink: { cls: "bg-ink text-bone", dark: true },
+};
+
 const TALL = "block sm:hidden lg:block 2xl:hidden";
 const WIDE = "hidden sm:block lg:hidden 2xl:block";
 
@@ -34,21 +44,20 @@ function focus(imgKey: string): string {
  * image bleeding off the right edge from column 7. Phones and tablets: the image edge to edge, the copy panel under it.
  */
 export function StoryCover({ story }: { story: Story }) {
-  const t = THEMES[story.theme];
-  const dark = story.theme !== "sand" && story.theme !== "hon";
+  const { cls, dark } = PANEL[story.theme];
   const [lead, rest] = splitTitle(story.title);
   const tallAt = focus(story.cover.tall);
   const wideAt = focus(story.cover.wide);
   return (
-    <header className={cn(dark && "on-dark")} style={{ background: t.bg, color: t.fg }}>
+    <header className={cn(cls, dark && "on-dark")}>
       <div className="container-x">
         <Grid>
           <Col span={{ base: 4, sm: 12, lg: 6 }} className="order-2 flex flex-col justify-center py-10 sm:py-12 lg:order-1 lg:py-20 lg:pr-[var(--gap)]">
-            <p className="eyebrow flex items-center gap-3">
+            <p className={cn("eyebrow flex items-center gap-3", dark ? "text-pink-soft" : "text-pink-ink")}>
               <span aria-hidden className="h-px w-8 bg-current" />
               {story.kicker}
             </p>
-            <h1 className={cn("mt-6", story.title.length > 28 ? "display-md" : "display-lg")}>
+            <h1 className={cn("mt-6", story.title.length > 28 ? "display-md" : "display-lg", dark && "[&_em]:text-pink-soft")}>
               {lead}
               {rest && (
                 <>

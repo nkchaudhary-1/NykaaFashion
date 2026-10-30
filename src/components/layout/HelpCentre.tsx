@@ -33,7 +33,7 @@ function Tile({ Icon, title, text, href }: (typeof TOPICS)[number]) {
   const body = (
     <>
       <span className="flex items-start justify-between">
-        <Icon size={24} strokeWidth={1.4} aria-hidden />
+        <Icon size={24} strokeWidth={1.4} aria-hidden className="text-pink-ink transition-colors group-hover:text-white" />
         <ArrowUpRight size={18} aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
       </span>
       <span>
@@ -193,7 +193,7 @@ export function HelpCentre() {
               </div>
               <div className="lg:col-span-6">
                 {sent ? (
-                  <div role="status" className="border border-ink bg-white p-8">
+                  <div role="status" className="border border-ink bg-sand p-8">
                     <Check size={24} aria-hidden className="mb-4" />
                     <p className="display-xs">Thanks — we’ve noted it.</p>
                     <p className="mt-2 max-w-[46ch] text-[14px] text-ink-2">In this prototype your message is stored on your device only. In a real service, someone would reply within a day.</p>

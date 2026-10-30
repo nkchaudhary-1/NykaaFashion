@@ -147,11 +147,11 @@ export const computedEdits = edits.filter((e) => !e.primary);
 
 // Theme → palette (used by headers, tiles and pills).
 export const THEMES: Record<Edit["theme"], { bg: string; fg: string; tint: string; accent: string; label: string }> = {
-  gem: { bg: "#a2432a", fg: "#fbefe6", tint: "#f2dfd4", accent: "#f3c9a8", label: "Hidden Gems" },
-  luxe: { bg: "#1c1814", fg: "#efe6d3", tint: "#2a241e", accent: "#b69255", label: "Luxe" },
-  resp: { bg: "#4d6646", fg: "#f1f4ea", tint: "#e1e9db", accent: "#cfe0bd", label: "Responsible" },
-  festive: { bg: "#7a1936", fg: "#fbe9dc", tint: "#f4dedb", accent: "#e3a31a", label: "Festive" },
-  hon: { bg: "#f3dcd6", fg: "#3a1d27", tint: "#fbe6ef", accent: "#e80071", label: "House of Nykaa" },
-  ink: { bg: "#16120f", fg: "#f5f1ea", tint: "#2a241e", accent: "#e3a31a", label: "Offers" },
-  sand: { bg: "#ebe4d9", fg: "#16120f", tint: "#f5f1ea", accent: "#16120f", label: "Edit" },
+  gem: { bg: "#9b1c55", fg: "#ffffff", tint: "#fbe3ee", accent: "#ffd6e8", label: "Hidden Gems" },
+  luxe: { bg: "#0e0e10", fg: "#f6efde", tint: "#1b1b1f", accent: "#c5a059", label: "Luxe" },
+  resp: { bg: "#2f6b4f", fg: "#ffffff", tint: "#e1f0e8", accent: "#cfe9d9", label: "Responsible" },
+  festive: { bg: "#8a1448", fg: "#ffffff", tint: "#fde4ee", accent: "#ffb020", label: "Festive" },
+  hon: { bg: "#ffd6e8", fg: "#001325", tint: "#fff0f6", accent: "#e80071", label: "House of Nykaa" },
+  ink: { bg: "#001325", fg: "#ffffff", tint: "#12263b", accent: "#ffb020", label: "Offers" },
+  sand: { bg: "#f4f4f6", fg: "#001325", tint: "#ffffff", accent: "#e80071", label: "Edit" },
 };

@@ -9,7 +9,7 @@ import { StoryCard } from "@/components/editorial/StoryCard";
 import { EditOpenTracker } from "@/components/editorial/Trackers";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Section } from "@/components/layout/Section";
-import { highlightQuotes, interleave, labelTiles, type Feature } from "@/components/plp/features";
+import { highlightNotes, interleave, labelTiles, type Feature } from "@/components/plp/features";
 import { ProductListing } from "@/components/plp/ProductListing";
 import { BentoTile } from "@/components/ui/BentoTile";
 import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
@@ -53,8 +53,8 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
   const sceneBlock = story?.blocks.find((b) => b.t === "scene");
   const look = story ? { story, scene: sceneBlock?.t === "scene" ? sceneBlock.scene : story.cover.wide, caption: sceneBlock?.t === "scene" ? sceneBlock.caption : story.title } : null;
   const more = primaryEdits.filter((e) => e.id !== edit.id).slice(0, 3);
-  // Grid inserts for this edit: one of its labels, a hero piece, the edit's own promise as a quote — then the next label.
-  const features: Feature[] = interleave<Feature>(labelTiles(pool, 2), [{ kind: "hero" }, { kind: "hero" }], highlightQuotes(edit, 2));
+  // Grid inserts for this edit: one of its labels, a hero piece, the edit's own promise as an info panel — then the next label.
+  const features: Feature[] = interleave<Feature>(labelTiles(pool, 2), [{ kind: "hero" }, { kind: "hero" }], highlightNotes(edit, 2));
   return (
     <>
       <EditOpenTracker editId={edit.id} />

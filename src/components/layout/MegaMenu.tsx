@@ -11,8 +11,8 @@ import { signal } from "@/stores/intent";
 
 const COUNT: Record<string, number> = Object.fromEntries(categories.map((c) => [c.id, productsInCategory(c.id).length]));
 const POPULAR_LABELS: Record<string, Array<[string, string]>> = {
-  women: [["twenty-dresses", "Twenty Dresses"], ["likha", "Likha"], ["maati-loom", "Maati Loom"], ["pipa-bella", "Pipa Bella"]],
-  men: [["northline", "Northline"], ["orsay-and-rao", "Orsay & Rao"], ["kora-kala", "Kora Kala"], ["stride-lab", "Stride Lab"]],
+  women: [["twenty-dresses", "Twenty Dresses"], ["vero-moda", "Vero Moda"], ["rsvp", "RSVP"], ["likha", "Likha"]],
+  men: [["us-polo", "U.S. Polo Assn."], ["puma", "Puma"], ["orsay-and-rao", "Orsay & Rao"], ["kora-kala", "Kora Kala"]],
   kids: [["little-orchard", "Little Orchard"]],
   home: [["rangrez-home", "Rangrez Home"], ["mitti-and-co", "Mitti & Co."], ["hearth-and-hue", "Hearth & Hue"]],
 };
@@ -59,7 +59,7 @@ export function CategoryMega({ top, onNavigate }: { top: "women" | "men" | "kids
       </Col>
       <Col span={{ lg: 3 }} className="grid content-start gap-9">
         <div>
-          <p className={head}>Edits</p>
+          <p className={head}>Featured</p>
           <ul>
             {primaryEdits.map((e) => (
               <li key={e.id}>
@@ -76,7 +76,7 @@ export function CategoryMega({ top, onNavigate }: { top: "women" | "men" | "kids
           </ul>
         </div>
         <div>
-          <p className={head}>Labels we love</p>
+          <p className={head}>Top brands</p>
           <ul>
             {(POPULAR_LABELS[top] ?? []).map(([id, name]) => (
               <li key={id}>
@@ -87,7 +87,7 @@ export function CategoryMega({ top, onNavigate }: { top: "women" | "men" | "kids
             ))}
             <li>
               <Link href="/brands" onClick={onNavigate} className={link}>
-                All labels A–Z
+                All brands A–Z
               </Link>
             </li>
           </ul>
@@ -103,36 +103,47 @@ export function CategoryMega({ top, onNavigate }: { top: "women" | "men" | "kids
   );
 }
 
-/** Edits: five curated destinations (2 columns each) + the computed edits list (2 columns). */
-export function EditsMega({ onNavigate }: { onNavigate: () => void }) {
+/** More: the curated destinations (Luxe, Hidden Gems …) + explore links (3 columns each) and two feature tiles. */
+export function MoreMega({ onNavigate }: { onNavigate: () => void }) {
+  const curated = primaryEdits;
   return (
     <div className="container-x grid-main py-10">
-      {primaryEdits.map((e) => (
-        <Col key={e.id} span={{ lg: 2 }}>
-          <Link href={`/edits/${e.id}`} onClick={() => (signal("edit_open", { editId: e.id }), onNavigate())} className="group block">
-            <div className="overflow-hidden bg-sand">
-              <Img imgKey={`scenes/edit-${e.id}-tall`} alt="" sizes={SIZES.thumb} ratio="4/5" className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]" />
-            </div>
-            <p className="mt-3 text-[15px] font-medium leading-snug tracking-[-0.015em]">{e.title}</p>
-            <p className="mt-1 text-[12.5px] leading-snug text-ink-3">{editProducts(e).length} pieces</p>
-          </Link>
-        </Col>
-      ))}
-      <Col span={{ lg: 2 }}>
-        <p className={head}>Computed</p>
+      <Col span={{ lg: 3 }}>
+        <p className={head}>Curated destinations</p>
         <ul>
-          {computedEdits.map((e) => (
+          {curated.map((e) => (
             <li key={e.id}>
-              <Link href={`/edits/${e.id}`} onClick={onNavigate} className={link}>
+              <Link href={`/edits/${e.id}`} onClick={() => (signal("edit_open", { editId: e.id }), onNavigate())} className={link}>
                 {e.title}
                 <span className="text-[11px] tabular-nums text-ink-3">{editProducts(e).length}</span>
               </Link>
             </li>
           ))}
         </ul>
-        <Link href="/edits" onClick={onNavigate} className="link-u mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-[0.09em]">
-          All edits <ArrowUpRight size={14} />
-        </Link>
+      </Col>
+      <Col span={{ lg: 3 }}>
+        <p className={head}>Explore</p>
+        <ul>
+          {[
+            ["/discover", "Style Files"],
+            ["/brands", "All brands A–Z"],
+            ["/edits/new-in", "New in"],
+            ["/offers", "Offers"],
+            ...computedEdits.filter((e) => e.id !== "new-in").map((e): [string, string] => [`/edits/${e.id}`, e.title]),
+          ].map(([href, label]) => (
+            <li key={href}>
+              <Link href={href} onClick={onNavigate} className={link}>
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Col>
+      <Col span={{ lg: 3 }}>
+        <Tile href="/edits/luxe" scene="scenes/edit-luxe-tall" kicker="Nykaa Fashion Luxe" title="Luxe" onNavigate={onNavigate} />
+      </Col>
+      <Col span={{ lg: 3 }}>
+        <Tile href="/edits/hidden-gems" scene="scenes/edit-hidden-gems-tall" kicker="Independent labels" title="Hidden Gems" onNavigate={onNavigate} />
       </Col>
     </div>
   );

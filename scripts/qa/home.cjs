@@ -20,28 +20,42 @@ const must = (c, m) => { if (!c) throw new Error(m); };
   console.log(mobile ? "Home — phone 390×844" : "Home — desktop 1440×900");
   await home();
 
-  await step("hero: headline, story and edit links", async () => {
+  await step("hero: one h1, sale banner CTAs, pause + next controls", async () => {
     await page.getByRole("heading", { level: 1 }).first().waitFor();
-    const story = page.getByRole("link", { name: /See the story/ }).first();
-    must((await story.getAttribute("href"))?.startsWith("/discover/"), "story link");
-    const shop = page.getByRole("link", { name: /^Shop / }).first();
-    must((await shop.getAttribute("href"))?.startsWith("/edits/"), "edit link");
+    must((await page.getByRole("heading", { level: 1 }).count()) === 1, "home must have exactly one h1");
+    const cta = page.getByRole("link", { name: /Shop the sale/ }).first();
+    must((await cta.getAttribute("href")) === "/offers", "sale CTA");
+    if (!mobile) {
+      await page.getByRole("button", { name: "Pause banner rotation" }).click();
+      await page.getByRole("button", { name: "Next banner" }).click();
+      await page.getByRole("heading", { name: /Diwali-ready/ }).first().waitFor();
+      await page.getByRole("button", { name: "Show banner 1 of 3" }).click();
+    }
   });
 
-  await step("category tiles navigate (Women)", async () => {
-    await page.getByRole("link", { name: /^Women/ }).filter({ hasText: /pieces/ }).first().click();
-    await page.waitForURL(/\/c\/women$/);
+  await step("category tiles navigate (Indianwear)", async () => {
+    await page.getByRole("link", { name: /^Indianwear/ }).filter({ hasText: /styles/ }).first().click();
+    await page.waitForURL(/\/c\/women\/indianwear/);
     await home();
   });
 
-  await step("edit chips row navigates", async () => {
-    await page.getByRole("navigation", { name: "Edits" }).getByRole("link").first().click();
-    await page.waitForURL(/\/edits\//);
+  await step("price shortcuts and celebration tiles deep-link into listings", async () => {
+    await page.getByRole("link", { name: /Under ₹1,999/ }).first().click();
+    await page.waitForURL(/\/edits\/under-1500/);
+    await home();
+    await page.getByRole("link", { name: /Evening dresses/ }).first().click();
+    await page.waitForURL(/\/c\/women\/dresses\?occ=party/);
+    await home();
+  });
+
+  await step("iconic brands tiles open a brand page", async () => {
+    await page.getByRole("link", { name: /^Puma/ }).first().click();
+    await page.waitForURL(/\/brands\/puma/);
     await home();
   });
 
   await step("‘Just landed’ tabs change the rail", async () => {
-    const section = page.locator("section", { has: page.getByRole("heading", { name: "Just landed." }) });
+    const section = page.locator("section", { has: page.getByRole("heading", { name: "Just landed" }) });
     const first = async () => section.getByRole("tabpanel").locator("li").first().innerText();
     const before = await first();
     await section.getByRole("tab", { name: "Men", exact: true }).click();
@@ -52,7 +66,7 @@ const must = (c, m) => { if (!c) throw new Error(m); };
 
   if (!mobile) {
     await step("carousel arrows scroll the rail; Previous starts disabled", async () => {
-      const section = page.locator("section", { has: page.getByRole("heading", { name: "Just landed." }) });
+      const section = page.locator("section", { has: page.getByRole("heading", { name: "Just landed" }) });
       const prev = section.getByRole("button", { name: "Previous" });
       const next = section.getByRole("button", { name: "Next" });
       must(await prev.isDisabled(), "Previous should be disabled at the start");
@@ -65,7 +79,7 @@ const must = (c, m) => { if (!c) throw new Error(m); };
       must(await prev.isEnabled(), "Previous should enable after scrolling");
     });
     await step("carousel track is a keyboard-scrollable region", async () => {
-      const section = page.locator("section", { has: page.getByRole("heading", { name: "Just landed." }) });
+      const section = page.locator("section", { has: page.getByRole("heading", { name: "Just landed" }) });
       const track = section.getByRole("list", { name: "New in" });
       await track.evaluate((el) => (el.scrollLeft = 0));
       await track.focus();
@@ -75,7 +89,7 @@ const must = (c, m) => { if (!c) throw new Error(m); };
     });
   } else {
     await step("carousel swipes (touch scroll) and next card peeks", async () => {
-      const section = page.locator("section", { has: page.getByRole("heading", { name: "Just landed." }) });
+      const section = page.locator("section", { has: page.getByRole("heading", { name: "Just landed" }) });
       const track = section.getByRole("list", { name: "New in" });
       const m = await track.evaluate((el) => ({ cw: el.clientWidth, sw: el.scrollWidth, first: el.firstElementChild.getBoundingClientRect().width }));
       must(m.sw > m.cw + 40, "rail does not overflow");
@@ -97,12 +111,6 @@ const must = (c, m) => { if (!c) throw new Error(m); };
       await page.keyboard.press("Escape");
       await page.getByRole("dialog", { name: /Quick view/ }).waitFor({ state: "detached" });
     }
-  });
-
-  await step("offer shortcuts navigate", async () => {
-    await home();
-    await page.getByRole("link", { name: /Under ₹1,500/ }).last().click();
-    await page.waitForURL(/\/edits\/under-1500/);
   });
 
   await step("newsletter: invalid email is rejected, valid email is confirmed as simulated", async () => {

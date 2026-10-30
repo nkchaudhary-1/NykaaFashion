@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, ShieldCheck, ShoppingBag } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { BagLineRow } from "@/components/commerce/BagLine";
-import { CouponBox } from "@/components/commerce/CouponBox";
+import { CouponForm, CouponOffers } from "@/components/commerce/CouponBox";
 import { FreeShippingBar } from "@/components/commerce/FreeShippingBar";
 import { PriceSummary } from "@/components/commerce/PriceSummary";
 import { Col, Grid } from "@/components/layout/Grid";
@@ -91,7 +91,7 @@ export function BagView() {
     <>
       <PageHeader title="Your bag" size="md" crumbs={CRUMBS} className={HEADER} intro={`${count} ${count === 1 ? "piece" : "pieces"} in your bag. Offers and delivery are worked out below — nothing is charged.`} />
 
-      {/* 8 / 4 — lines and offers on the left, a sticky order summary on the right (it spans both rows so it stays in view). */}
+      {/* 8 / 4 — lines and offers on the left, a sticky coupon + order summary on the right (it spans both rows so it stays in view). */}
       <div className="container-x pb-[var(--section-y)]">
         <Grid className="gap-y-12">
           <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 1 }}>
@@ -106,13 +106,15 @@ export function BagView() {
             </Link>
           </Col>
 
-          <Col span={{ base: 4, sm: 6, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 2 }}>
-            <CouponBox lines={lines} applied={coupon} error={price.couponError} />
+          <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 2 }}>
+            <CouponOffers lines={lines} applied={coupon} error={price.couponError} />
           </Col>
 
-          <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }}>
-            <aside aria-label="Order summary" className="lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:transition-[top] lg:duration-500 lg:ease-editorial">
-              <section aria-labelledby="sum-h" className="border border-ink bg-paper p-5 sm:p-6">
+          <Col span={{ base: 4, sm: 12, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }}>
+            {/* tablets: coupon + notice on the left half, the summary on the right half; desktop and phones: one stack */}
+            <aside aria-label="Order summary" className="space-y-4 sm:grid sm:grid-cols-12 sm:gap-x-[var(--gap)] sm:gap-y-4 sm:space-y-0 lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:block lg:space-y-4 lg:transition-[top] lg:duration-500 lg:ease-editorial">
+              <CouponForm lines={lines} applied={coupon} error={price.couponError} offersHref="#offers" className="sm:col-span-6 sm:row-start-1" />
+              <section aria-labelledby="sum-h" className="border border-line-strong bg-white p-5 sm:col-span-6 sm:col-start-7 sm:row-span-2 sm:row-start-1 sm:p-6">
                 <h2 id="sum-h" className="display-xs">Order summary</h2>
                 <PriceSummary b={price} className="mt-5" />
                 {blocked && (
@@ -129,13 +131,13 @@ export function BagView() {
                   <ShieldCheck size={14} aria-hidden /> Simulated checkout — no payment is taken
                 </p>
               </section>
-              <SimulatedNotice className="mt-4">Coupons, delivery fees and totals are computed with the prototype’s mock rules.</SimulatedNotice>
+              <SimulatedNotice className="sm:col-span-6 sm:row-start-2">Coupons, delivery fees and totals are computed with the prototype’s mock rules.</SimulatedNotice>
             </aside>
           </Col>
         </Grid>
 
         {/* phones & tablets: the total and the way forward stay on screen, just above the bottom navigation */}
-        <div className="sticky bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom))] z-30 -mx-[var(--gutter)] mt-12 flex items-center justify-between gap-4 border-t border-ink bg-paper px-[var(--gutter)] py-3 lg:hidden">
+        <div className="sticky bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom))] z-30 -mx-[var(--gutter)] mt-12 flex items-center justify-between gap-4 border-t border-line-strong bg-white px-[var(--gutter)] py-3 lg:hidden">
           <p className="min-w-0">
             <span className="eyebrow block text-ink-3">Total</span>
             <span className="mt-1 block text-[18px] font-medium tabular-nums">{inr(price.total)}</span>
@@ -187,8 +189,8 @@ function EmptyBag({ saved }: { saved: Product[] }) {
     <>
       <div className="container-x pb-[var(--section-y)]">
         <Grid className="gap-y-[var(--gap)]">
-          <Col span={{ base: 4, sm: 12, lg: 6 }} rows={{ lg: 2 }} className="flex flex-col justify-between gap-12 border border-ink bg-paper p-6 sm:p-10">
-            <ShoppingBag size={40} strokeWidth={1.1} aria-hidden />
+          <Col span={{ base: 4, sm: 12, lg: 6 }} rows={{ lg: 2 }} className="flex flex-col justify-between gap-12 bg-pink-tint p-6 sm:p-10">
+            <ShoppingBag size={40} strokeWidth={1.1} aria-hidden className="text-pink" />
             <div>
               <h2 className="display-md">Your bag is empty</h2>
               <p className="mt-4 max-w-[38ch] text-[15px] leading-relaxed text-ink-2">Nothing here yet. Start from an edit, or pick up where you left off.</p>

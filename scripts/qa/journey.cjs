@@ -48,16 +48,17 @@ const settle = async (page) => {
     await page.goto(BASE + "/", { waitUntil: "networkidle" });
     await page.getByRole("heading", { level: 1 }).first().waitFor();
     const h1 = await page.getByRole("heading", { level: 1 }).first().innerText();
-    if (!/Block-?\s*Print/i.test(h1)) throw new Error(`unexpected h1: ${h1}`);
+    if (!/Up to \d+% off/i.test(h1)) throw new Error(`unexpected h1: ${h1}`);
   });
 
-  await step("Primary nav → Edits → Hidden Gems", async () => {
+  await step("Primary nav → More → Hidden Gems", async () => {
     if (mobile) {
-      await page.getByRole("link", { name: "Edits", exact: true }).last().click();
-      await page.waitForURL(/\/edits$/);
-      await page.getByRole("link", { name: /Hidden Gems/ }).first().click();
+      await page.getByRole("button", { name: "Open menu" }).click();
+      const dlg = page.getByRole("dialog", { name: "Menu" });
+      await dlg.getByRole("button", { name: /Luxe, Hidden Gems/ }).click();
+      await dlg.getByRole("link", { name: /Hidden Gems/ }).first().click();
     } else {
-      await page.getByRole("link", { name: "Edits", exact: true }).first().hover();
+      await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "More", exact: true }).hover();
       await page.locator("#mega-panel").waitFor();
       await page.locator("#mega-panel").getByRole("link", { name: /Hidden Gems/ }).first().click();
     }

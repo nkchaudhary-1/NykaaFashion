@@ -18,7 +18,7 @@ const BY_COUNT: Array<{ max: number; density: CarouselDensity; ratio: string }> 
   { max: 2, density: "feature", ratio: "3/2" },
   { max: 3, density: "wide", ratio: "4/3" },
   { max: 4, density: "product", ratio: "1/1" },
-  { max: Infinity, density: "tile", ratio: "4/5" },
+  { max: Infinity, density: "tile", ratio: "1/1" },
 ];
 
 export function CategoryRail({ label, eyebrow, items }: { label: string; eyebrow: string; items: RailItem[] }) {

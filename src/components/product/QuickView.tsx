@@ -51,7 +51,7 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
               <div className="flex gap-1.5">
                 {v.images.map((_, i) => (
                   <button key={i} type="button" aria-label={`Show image ${i + 1} of ${v.images.length}`} aria-pressed={at === i} onClick={() => setShot(i)} className="flex h-11 w-9 items-center">
-                    <span className={cn("block h-[3px] w-full transition-colors", at === i ? "bg-ink" : "bg-line-strong")} />
+                    <span className={cn("block h-[3px] w-full transition-colors", at === i ? "bg-pink" : "bg-line-strong")} />
                   </button>
                 ))}
               </div>
@@ -60,10 +60,10 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
         </div>
         <div className="flex flex-col gap-5 p-5 sm:p-8">
           <div className="pr-10 sm:pr-8">
-            <Link href={`/brands/${label.id}`} onClick={close} className="eyebrow link-u tap text-ink-3">
+            <Link href={`/brands/${label.id}`} onClick={close} className="tap text-[17px] font-semibold leading-tight text-ink transition-colors hover:text-pink-ink">
               {label.name}
             </Link>
-            <h2 className="display-sm mt-2.5">{product.name}</h2>
+            <h2 className="mt-1.5 text-[16px] font-normal leading-snug text-ink-2">{product.name}</h2>
             <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1.5">
               <Price price={product.price} mrp={product.mrp} size="lg" />
               <RatingLine rating={product.rating} count={product.ratingCount} />
@@ -81,7 +81,7 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
                 Add to bag
               </Button>
             )}
-            <SaveButton product={product} variant={sel.variant} source="quickview" tone="plain" size={22} className="size-[52px] shrink-0 border border-line-strong" />
+            <SaveButton product={product} variant={sel.variant} source="quickview" tone="plain" size={22} className="size-[52px] shrink-0 border border-ink" />
           </div>
           <LinkButton href={`/p/${product.slug}`} variant="ghost" size="md" full iconRight={<ArrowRight size={15} />} onClick={close}>
             View full details

@@ -19,7 +19,7 @@ export function InfoNav({ current, sections }: { current: string; sections: Arra
     cn(
       "tap inline-flex shrink-0 items-center whitespace-nowrap text-[13.5px] font-medium transition-colors",
       "h-10 border px-4 lg:h-auto lg:border-0 lg:border-l-2 lg:py-2 lg:pl-4 lg:pr-0 lg:text-[14px]",
-      active ? "border-ink bg-ink text-bone lg:bg-transparent lg:text-ink" : "border-line-strong text-ink hover:border-ink lg:border-line lg:text-ink-3 lg:hover:border-ink lg:hover:text-ink",
+      active ? "border-ink bg-ink text-bone lg:border-pink lg:bg-transparent lg:text-ink" : "border-line-strong text-ink hover:border-ink lg:border-line lg:text-ink-3 lg:hover:border-ink lg:hover:text-ink",
     );
   return (
     <div>

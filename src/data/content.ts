@@ -172,8 +172,8 @@ export function sizeGuideKey(path: string[], sizes: string[]): string | null {
 }
 
 export const FOOTER_LINKS: Array<{ title: string; links: Array<{ label: string; href: string }> }> = [
-  { title: "Discover", links: [{ label: "Style Files", href: "/discover" }, { label: "Hidden Gems", href: "/edits/hidden-gems" }, { label: "Luxe", href: "/edits/luxe" }, { label: "The Responsible Edit", href: "/edits/responsible" }, { label: "Festive & Wedding", href: "/edits/festive" }, { label: "House of Nykaa", href: "/edits/house-of-nykaa" }] },
-  { title: "Shop", links: [{ label: "Women", href: "/c/women" }, { label: "Men", href: "/c/men" }, { label: "Kids", href: "/c/kids" }, { label: "Home", href: "/c/home" }, { label: "All labels", href: "/brands" }, { label: "Offers", href: "/offers" }] },
+  { title: "Shop", links: [{ label: "Women", href: "/c/women" }, { label: "Men", href: "/c/men" }, { label: "Kids", href: "/c/kids" }, { label: "Home", href: "/c/home" }, { label: "All brands", href: "/brands" }, { label: "Offers", href: "/offers" }] },
+  { title: "Explore", links: [{ label: "Luxe", href: "/edits/luxe" }, { label: "Hidden Gems", href: "/edits/hidden-gems" }, { label: "The Responsible Collection", href: "/edits/responsible" }, { label: "Festive & Wedding", href: "/edits/festive" }, { label: "House of Nykaa", href: "/edits/house-of-nykaa" }, { label: "Style Files", href: "/discover" }] },
   { title: "Help", links: [{ label: "Help centre", href: "/help" }, { label: "Shipping & delivery", href: "/info/shipping" }, { label: "Returns & refunds", href: "/info/returns" }, { label: "Track an order", href: "/account/orders" }, { label: "Contact us", href: "/info/contact" }] },
-  { title: "About", links: [{ label: "About the Style Files", href: "/info/about" }, { label: "Prototype notes", href: "/prototype" }, { label: "Careers", href: "/info/careers" }, { label: "Terms", href: "/info/terms" }, { label: "Privacy", href: "/info/privacy" }] },
+  { title: "Company", links: [{ label: "About Nykaa Fashion", href: "/info/about" }, { label: "Careers", href: "/info/careers" }, { label: "Terms", href: "/info/terms" }, { label: "Privacy", href: "/info/privacy" }, { label: "Prototype notes", href: "/prototype" }] },
 ];
