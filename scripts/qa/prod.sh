@@ -16,6 +16,8 @@ done
 PIDS="$(next_pids)"
 [ -n "$PIDS" ] && kill -9 $PIDS 2>/dev/null
 rm -f .next/lock
+# Re-rendered files in public/img keep their names; drop the optimizer cache so QA never sees a stale derivative.
+rm -rf .next/cache/images
 
 npx next build > /tmp/next-build.log 2>&1 || { tail -40 /tmp/next-build.log; echo "BUILD FAILED"; exit 1; }
 (nohup npx next start -p "$PORT" > /tmp/next-start.log 2>&1 &)

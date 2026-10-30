@@ -19,7 +19,19 @@ npm run build && npm start
 npm run typecheck && npm run lint
 npm run data:check        # validate every cross-reference in src/data
 npm run art:manifest      # build the image-render manifest from catalogue + scene data
-npm run art:render        # render imagery (scripts/art) into public/img
+npm run art:render        # render imagery (scripts/art) into public/img (overwrites placeholders)
+npm run art:placeholders  # fast tonal placeholders for any image that has no file yet
+```
+
+QA tools (Playwright; run against a production server — `scripts/qa/prod.sh 3100` builds and starts one):
+
+```bash
+node scripts/qa/journey.cjs  http://localhost:3100 [--mobile]   # 21-step end-to-end shopping journey
+node scripts/qa/overflow.cjs http://localhost:3100              # horizontal-overflow scan, every route x 4 widths + overlays
+node scripts/qa/keyboard.cjs http://localhost:3100              # keyboard-only checks (skip link, combobox, focus traps…)
+node scripts/qa/a11y.cjs     http://localhost:3100              # axe-core on every page (npm i --no-save axe-core first)
+node scripts/qa/vitals.cjs   http://localhost:3100 [--throttle] # lab LCP / CLS / long tasks / transfer per route
+node scripts/qa/sweep.cjs <outDir> http://localhost:3100 / /c/women   # scrolling screenshots for visual review
 ```
 
 ## Structure
@@ -31,7 +43,7 @@ src/data/           types · labels · categories · catalog-defs → catalog ·
 src/lib/            store · filters · search · recs · pricing · intent helpers · flip · mockApi · a11y
 src/stores/         wishlist/bag · account/orders · intent · checkout · ui/toasts/prefs
 scripts/art/        procedural imagery engine (SVG → sharp → WebP)
-scripts/qa/         Playwright journey + screenshot tools
+scripts/qa/         Playwright journey · overflow · keyboard · a11y · vitals · screenshot tools
 docs/               PRD · art-engine brief
 ```
 

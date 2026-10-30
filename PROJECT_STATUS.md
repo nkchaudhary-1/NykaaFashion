@@ -12,8 +12,12 @@ npm run dev            # http://localhost:3000
 npm run build && npm start
 npm run typecheck && npm run lint
 npm run data:check     # cross-reference validation of all mock data
-node scripts/qa/journey.cjs http://localhost:3000            # e2e shopping journey (needs a running server)
-node scripts/qa/journey.cjs http://localhost:3000 --mobile
+scripts/qa/prod.sh 3100                                        # rebuild + (re)start a production server for QA
+node scripts/qa/journey.cjs http://localhost:3100            # e2e shopping journey (needs a running server)
+node scripts/qa/journey.cjs http://localhost:3100 --mobile
+node scripts/qa/overflow.cjs http://localhost:3100           # horizontal-overflow scan: every route x 360/390/820/1280 + overlays
+node scripts/qa/keyboard.cjs http://localhost:3100           # keyboard-only checks
+node scripts/qa/a11y.cjs http://localhost:3100               # axe-core (npm i --no-save axe-core first)
 node scripts/qa/shot.cjs <url> <out.png> [--full] [--mobile]  # screenshot + console/network health check
 ```
 
@@ -51,7 +55,8 @@ The **Prototype** panel (bottom-right) lets a reviewer force intent states, add 
 
 ## Pending
 
-- [ ] Swap placeholder renders for the art engine's output (`npm run art:manifest && npm run art:render`) and review at desktop + mobile.
+- [x] Mobile horizontal overflow — fixed (implicit grid tracks); `overflow.cjs` reports none at 360/390/820/1280.
+- [ ] Swap placeholder renders for the art engine's output (`npm run art:manifest && npm run art:render`) and review at desktop + mobile. Built-kind products render today; scenes (editorial covers, pins) and 10 remaining kinds are the engine's Phase B.
 - [ ] Visual QA sweep of every route at 390 / 820 / 1280 / 1728 widths with real imagery.
 - [x] Accessibility audit pass (axe + keyboard) — see QA log. Still to do: contrast re-check on text over real imagery.
 - [ ] Performance pass on production build (bundle size, LCP images, `image-meta.json` payload).
@@ -67,5 +72,7 @@ The **Prototype** panel (bottom-right) lets a reviewer force intent states, add 
 - `scripts/qa/journey.cjs` — 21-step end-to-end journey (home → edit → filter URL/back → PDP → size gate → bag → coupon → login → checkout → forced payment failure → success → tracking → addresses → search → no-results → sold-out/notify → story pin → deal intent → 404): **passes on desktop (1440×900) and mobile (390×844)**.
 - `scripts/qa/a11y.cjs` (axe-core, WCAG 2.1 A/AA + best-practice) — **0 violations on 23 pages at desktop and mobile** (public + signed-in surfaces). Found and fixed 71 violation types along the way (tab semantics, label-in-name, heading order, landmarks, definition lists, opacity-based low contrast, carousel keyboard access).
 - `scripts/qa/keyboard.cjs` — skip link, search combobox, overlay focus trap + focus return, mega menu from keyboard, size radios, carousel arrows, reduced motion: **all pass**.
+- `scripts/qa/overflow.cjs` — walks 23 routes (+ 4 signed-in) at 360 / 390 / 820 / 1280 plus the search and bag overlays and flags any element past the viewport: **none**. (It found 32 issues first: CSS grids that only declared breakpoint columns got an implicit auto track that stretched to max-content; every such grid now has a `grid-cols-1` base.)
+- Focus styling: the global `:focus-visible` ring lives in `@layer base`, so `outline-none` / `focus-visible:ring-*` utilities on components actually apply (inputs get a 2px ink underline or ring, round buttons keep their round ring).
 - Production build (`next build`, 212 static pages) ✅ · `npm run typecheck` ✅ · `npm run lint` ✅ · `npm run data:check` ✅
 - Automated + keyboard checks are not a full WCAG conformance audit; manual screen-reader testing has not been done.

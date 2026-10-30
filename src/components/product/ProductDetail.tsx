@@ -92,9 +92,12 @@ export function ProductDetail({ product }: { product: Product }) {
   return (
     <div className="container-x pb-14">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16 xl:gap-24">
-        <Gallery key={sel.variant} images={v.images} name={product.name} colorName={v.colorName} heroRef={heroRef} startIndex={sel.variant === inStockVariantIndex(product) ? startShot : 0} />
+        {/* The gallery is the sticky half: the buy box is the taller column, so the product stays in view while its fit, fabric and care are read. */}
+        <div className="min-w-0 lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
+          <Gallery key={sel.variant} images={v.images} name={product.name} colorName={v.colorName} heroRef={heroRef} startIndex={sel.variant === inStockVariantIndex(product) ? startShot : 0} />
+        </div>
 
-        <div className="lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
+        <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <Link href={`/brands/${label.id}`} className="eyebrow link-u text-ink">{label.name}</Link>
             <LabelBadges label={label} />
@@ -213,9 +216,10 @@ function StickyBar({ product, image, on, cta, onClick, variantName, size, sizeCh
     <div
       aria-hidden={!on}
       className={cn(
-        "fixed inset-x-0 z-[39] border-line bg-bone/95 backdrop-blur-md transition-[transform,top] duration-500 ease-editorial",
+        "fixed inset-x-0 z-[39] border-line bg-bone/95 backdrop-blur-md transition-[transform,top,opacity,visibility] duration-500 ease-editorial",
         "bottom-0 border-t pb-[env(safe-area-inset-bottom)] lg:bottom-auto lg:top-[var(--header-offset,var(--header-h))] lg:border-b lg:border-t-0 lg:pb-0",
-        on ? "translate-y-0" : "translate-y-full lg:-translate-y-full lg:pointer-events-none",
+        // Hidden on desktop it parks behind the header, which leaves a strip showing above it at scroll 0 (over the announcement bar) — so also fade + hide it.
+        on ? "translate-y-0" : "translate-y-full lg:invisible lg:-translate-y-full lg:opacity-0 lg:pointer-events-none",
       )}
     >
       <div className="container-x flex items-center gap-4 py-3">

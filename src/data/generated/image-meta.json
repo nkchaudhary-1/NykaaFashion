@@ -1,1 +1,3362 @@
-{"products/twd-01/v1-front":{"w":1000,"h":1250,"avg":"#d2afa2","placeholder":true},"products/twd-01/v1-alt":{"w":1000,"h":1250,"avg":"#d2afa2","placeholder":true},"products/twd-01/v1-detail":{"w":1000,"h":1250,"avg":"#bc7c75","placeholder":true},"products/twd-01/v2-front":{"w":1000,"h":1250,"avg":"#e6ddcd","placeholder":true},"products/twd-01/v2-alt":{"w":1000,"h":1250,"avg":"#e6ddcd","placeholder":true},"products/twd-02/v1-front":{"w":1000,"h":1250,"avg":"#dfcfc1","placeholder":true},"products/twd-02/v1-alt":{"w":1000,"h":1250,"avg":"#dfcfc1","placeholder":true},"products/twd-02/v1-detail":{"w":1000,"h":1250,"avg":"#d6c5b0","placeholder":true},"products/twd-02/v2-front":{"w":1000,"h":1250,"avg":"#cfcabd","placeholder":true},"products/twd-02/v2-alt":{"w":1000,"h":1250,"avg":"#cfcabd","placeholder":true},"products/twd-03/v1-front":{"w":1000,"h":1250,"avg":"#b8b6b9","placeholder":true},"products/twd-03/v1-alt":{"w":1000,"h":1250,"avg":"#b7b6b9","placeholder":true},"products/twd-03/v1-detail":{"w":1000,"h":1250,"avg":"#797f94","placeholder":true},"products/twd-04/v1-front":{"w":1000,"h":1250,"avg":"#c9b2b2","placeholder":true},"products/twd-04/v1-alt":{"w":1000,"h":1250,"avg":"#c9b2b2","placeholder":true},"products/twd-04/v1-detail":{"w":1000,"h":1250,"avg":"#9f7887","placeholder":true},"products/twd-04/v2-front":{"w":1000,"h":1250,"avg":"#e8ddcc","placeholder":true},"products/twd-04/v2-alt":{"w":1000,"h":1250,"avg":"#e8ddcc","placeholder":true},"products/twd-05/v1-front":{"w":1000,"h":1250,"avg":"#b2bab5","placeholder":true},"products/twd-05/v1-alt":{"w":1000,"h":1250,"avg":"#b2bab5","placeholder":true},"products/twd-05/v1-detail":{"w":1000,"h":1250,"avg":"#71999a","placeholder":true},"products/twd-05/v2-front":{"w":1000,"h":1250,"avg":"#d9aca5","placeholder":true},"products/twd-05/v2-alt":{"w":1000,"h":1250,"avg":"#d9aca5","placeholder":true},"products/twd-06/v1-front":{"w":1000,"h":1250,"avg":"#acafa0","placeholder":true},"products/twd-06/v1-alt":{"w":1000,"h":1250,"avg":"#acafa0","placeholder":true},"products/twd-06/v1-detail":{"w":1000,"h":1250,"avg":"#6e8474","placeholder":true},"products/twd-07/v1-front":{"w":1000,"h":1250,"avg":"#b4aaa3","placeholder":true},"products/twd-07/v1-alt":{"w":1000,"h":1250,"avg":"#b4aaa3","placeholder":true},"products/twd-07/v1-detail":{"w":1000,"h":1250,"avg":"#797370","placeholder":true},"products/twd-07/v2-front":{"w":1000,"h":1250,"avg":"#d9b5a4","placeholder":true},"products/twd-07/v2-alt":{"w":1000,"h":1250,"avg":"#d9b5a4","placeholder":true},"products/rsv-01/v1-front":{"w":1000,"h":1250,"avg":"#604640","placeholder":true},"products/rsv-01/v1-alt":{"w":1000,"h":1250,"avg":"#604640","placeholder":true},"products/rsv-01/v1-detail":{"w":1000,"h":1250,"avg":"#917454","placeholder":true},"products/rsv-01/v2-front":{"w":1000,"h":1250,"avg":"#31212b","placeholder":true},"products/rsv-01/v2-alt":{"w":1000,"h":1250,"avg":"#31212b","placeholder":true},"products/rsv-02/v1-front":{"w":1000,"h":1250,"avg":"#c4a79f","placeholder":true},"products/rsv-02/v1-alt":{"w":1000,"h":1250,"avg":"#c4a79f","placeholder":true},"products/rsv-02/v1-detail":{"w":1000,"h":1250,"avg":"#9e6d6f","placeholder":true},"products/rsv-03/v1-front":{"w":1000,"h":1250,"avg":"#2e4437","placeholder":true},"products/rsv-03/v1-alt":{"w":1000,"h":1250,"avg":"#2e4437","placeholder":true},"products/rsv-03/v1-detail":{"w":1000,"h":1250,"avg":"#255343","placeholder":true},"products/rsv-04/v1-front":{"w":1000,"h":1250,"avg":"#ddcbb4","placeholder":true},"products/rsv-04/v1-alt":{"w":1000,"h":1250,"avg":"#ddcbb4","placeholder":true},"products/rsv-04/v1-detail":{"w":1000,"h":1250,"avg":"#d7c2a1","placeholder":true},"products/rsv-04/v2-front":{"w":1000,"h":1250,"avg":"#78716d","placeholder":true},"products/rsv-04/v2-alt":{"w":1000,"h":1250,"avg":"#78716d","placeholder":true},"products/rsv-05/v1-front":{"w":1000,"h":1250,"avg":"#a47577","placeholder":true},"products/rsv-05/v1-alt":{"w":1000,"h":1250,"avg":"#a47578","placeholder":true},"products/rsv-05/v1-detail":{"w":1000,"h":1250,"avg":"#702330","placeholder":true},"products/rsv-05/v2-front":{"w":1000,"h":1250,"avg":"#719485","placeholder":true},"products/rsv-05/v2-alt":{"w":1000,"h":1250,"avg":"#719485","placeholder":true},"products/nyk-01/v1-front":{"w":1000,"h":1250,"avg":"#e4d2c6","placeholder":true},"products/nyk-01/v1-alt":{"w":1000,"h":1250,"avg":"#e4d2c6","placeholder":true},"products/nyk-01/v1-detail":{"w":1000,"h":1250,"avg":"#decfbe","placeholder":true},"products/nyk-01/v2-front":{"w":1000,"h":1250,"avg":"#cfc2c2","placeholder":true},"products/nyk-01/v2-alt":{"w":1000,"h":1250,"avg":"#cfc2c2","placeholder":true},"products/nyk-02/v1-front":{"w":1000,"h":1250,"avg":"#e6dcce","placeholder":true},"products/nyk-02/v1-alt":{"w":1000,"h":1250,"avg":"#e6dcce","placeholder":true},"products/nyk-02/v1-detail":{"w":1000,"h":1250,"avg":"#dfd4c3","placeholder":true},"products/nyk-02/v2-front":{"w":1000,"h":1250,"avg":"#b7b2ad","placeholder":true},"products/nyk-02/v2-alt":{"w":1000,"h":1250,"avg":"#b7b2ad","placeholder":true},"products/nyk-03/v1-front":{"w":1000,"h":1250,"avg":"#e0d3c8","placeholder":true},"products/nyk-03/v1-alt":{"w":1000,"h":1250,"avg":"#e0d3c8","placeholder":true},"products/nyk-03/v1-detail":{"w":1000,"h":1250,"avg":"#d8cdc0","placeholder":true},"products/nyk-03/v2-front":{"w":1000,"h":1250,"avg":"#c5b2a7","placeholder":true},"products/nyk-03/v2-alt":{"w":1000,"h":1250,"avg":"#c5b2a7","placeholder":true},"products/nyk-04/v1-front":{"w":1000,"h":1250,"avg":"#e6d4c6","placeholder":true},"products/nyk-04/v1-alt":{"w":1000,"h":1250,"avg":"#e6d4c6","placeholder":true},"products/nyk-04/v1-detail":{"w":1000,"h":1250,"avg":"#e0cfbb","placeholder":true},"products/nyk-04/v2-front":{"w":1000,"h":1250,"avg":"#b3a7a8","placeholder":true},"products/nyk-04/v2-alt":{"w":1000,"h":1250,"avg":"#b3a7a8","placeholder":true},"products/pip-01/v1-front":{"w":1000,"h":1250,"avg":"#dbd2c4","placeholder":true},"products/pip-01/v1-alt":{"w":1000,"h":1250,"avg":"#dbd2c4","placeholder":true},"products/pip-01/v1-detail":{"w":1000,"h":1250,"avg":"#ded5c5","placeholder":true},"products/pip-02/v1-front":{"w":1000,"h":1250,"avg":"#dfccb5","placeholder":true},"products/pip-02/v1-alt":{"w":1000,"h":1250,"avg":"#dfccb4","placeholder":true},"products/pip-02/v1-detail":{"w":1000,"h":1250,"avg":"#d5bc94","placeholder":true},"products/pip-02/v2-front":{"w":1000,"h":1250,"avg":"#dfd5cf","placeholder":true},"products/pip-02/v2-alt":{"w":1000,"h":1250,"avg":"#dfd5cf","placeholder":true},"products/pip-03/v1-front":{"w":1000,"h":1250,"avg":"#c29d7f","placeholder":true},"products/pip-03/v1-alt":{"w":1000,"h":1250,"avg":"#c29d7f","placeholder":true},"products/pip-03/v1-detail":{"w":1000,"h":1250,"avg":"#a86d42","placeholder":true},"products/pip-03/v2-front":{"w":1000,"h":1250,"avg":"#78736c","placeholder":true},"products/pip-03/v2-alt":{"w":1000,"h":1250,"avg":"#78736c","placeholder":true},"products/pip-03/v3-front":{"w":1000,"h":1250,"avg":"#e4dacb","placeholder":true},"products/pip-03/v3-alt":{"w":1000,"h":1250,"avg":"#e4dacb","placeholder":true},"products/pip-04/v1-front":{"w":1000,"h":1250,"avg":"#d7c6a9","placeholder":true},"products/pip-04/v1-alt":{"w":1000,"h":1250,"avg":"#d7c6a9","placeholder":true},"products/pip-04/v1-detail":{"w":1000,"h":1250,"avg":"#d0b88e","placeholder":true},"products/gaj-01/v1-front":{"w":1000,"h":1250,"avg":"#d6aaa8","placeholder":true},"products/gaj-01/v1-alt":{"w":1000,"h":1250,"avg":"#d6aaa8","placeholder":true},"products/gaj-01/v1-detail":{"w":1000,"h":1250,"avg":"#c06f74","placeholder":true},"products/gaj-01/v2-front":{"w":1000,"h":1250,"avg":"#b2bcae","placeholder":true},"products/gaj-01/v2-alt":{"w":1000,"h":1250,"avg":"#b2bcae","placeholder":true},"products/gaj-02/v1-front":{"w":1000,"h":1250,"avg":"#a5b4ad","placeholder":true},"products/gaj-02/v1-alt":{"w":1000,"h":1250,"avg":"#a5b4ad","placeholder":true},"products/gaj-02/v1-detail":{"w":1000,"h":1250,"avg":"#6a9292","placeholder":true},"products/gaj-02/v2-front":{"w":1000,"h":1250,"avg":"#d6aea9","placeholder":true},"products/gaj-02/v2-alt":{"w":1000,"h":1250,"avg":"#d6aea9","placeholder":true},"products/gaj-03/v1-front":{"w":1000,"h":1250,"avg":"#d2c09e","placeholder":true},"products/gaj-03/v1-alt":{"w":1000,"h":1250,"avg":"#d2c09e","placeholder":true},"products/gaj-03/v1-detail":{"w":1000,"h":1250,"avg":"#c4a670","placeholder":true},"products/gaj-04/v1-front":{"w":1000,"h":1250,"avg":"#dcbb6d","placeholder":true},"products/gaj-04/v1-alt":{"w":1000,"h":1250,"avg":"#dcbb6d","placeholder":true},"products/gaj-04/v1-detail":{"w":1000,"h":1250,"avg":"#d49d1c","placeholder":true},"products/gaj-04/v2-front":{"w":1000,"h":1250,"avg":"#c87b98","placeholder":true},"products/gaj-04/v2-alt":{"w":1000,"h":1250,"avg":"#c87b98","placeholder":true},"products/lik-01/v1-front":{"w":1000,"h":1250,"avg":"#ead6cc","placeholder":true},"products/lik-01/v1-alt":{"w":1000,"h":1250,"avg":"#ead6cc","placeholder":true},"products/lik-01/v1-detail":{"w":1000,"h":1250,"avg":"#e6c4bb","placeholder":true},"products/lik-01/v2-front":{"w":1000,"h":1250,"avg":"#d7d5c6","placeholder":true},"products/lik-01/v2-alt":{"w":1000,"h":1250,"avg":"#d8d5c6","placeholder":true},"products/lik-02/v1-front":{"w":1000,"h":1250,"avg":"#ddc697","placeholder":true},"products/lik-02/v1-alt":{"w":1000,"h":1250,"avg":"#ddc697","placeholder":true},"products/lik-02/v1-detail":{"w":1000,"h":1250,"avg":"#dab661","placeholder":true},"products/lik-02/v2-front":{"w":1000,"h":1250,"avg":"#acb8b0","placeholder":true},"products/lik-02/v2-alt":{"w":1000,"h":1250,"avg":"#acb8b0","placeholder":true},"products/lik-03/v1-front":{"w":1000,"h":1250,"avg":"#c3aba8","placeholder":true},"products/lik-03/v1-alt":{"w":1000,"h":1250,"avg":"#c3aba8","placeholder":true},"products/lik-03/v1-detail":{"w":1000,"h":1250,"avg":"#9c737f","placeholder":true},"products/lik-03/v2-front":{"w":1000,"h":1250,"avg":"#b2aeae","placeholder":true},"products/lik-03/v2-alt":{"w":1000,"h":1250,"avg":"#b2aeae","placeholder":true},"products/lik-04/v1-front":{"w":1000,"h":1250,"avg":"#dbb6a3","placeholder":true},"products/lik-04/v1-alt":{"w":1000,"h":1250,"avg":"#dbb6a3","placeholder":true},"products/lik-04/v1-detail":{"w":1000,"h":1250,"avg":"#d28b76","placeholder":true},"products/lik-04/v2-front":{"w":1000,"h":1250,"avg":"#d8d4bb","placeholder":true},"products/lik-04/v2-alt":{"w":1000,"h":1250,"avg":"#d8d4bb","placeholder":true},"products/lik-05/v1-front":{"w":1000,"h":1250,"avg":"#cfa4a3","placeholder":true},"products/lik-05/v1-alt":{"w":1000,"h":1250,"avg":"#cfa4a3","placeholder":true},"products/lik-05/v1-detail":{"w":1000,"h":1250,"avg":"#b06870","placeholder":true},"products/aja-01/v1-front":{"w":1000,"h":1250,"avg":"#b1adac","placeholder":true},"products/aja-01/v1-alt":{"w":1000,"h":1250,"avg":"#b1adac","placeholder":true},"products/aja-01/v1-detail":{"w":1000,"h":1250,"avg":"#727386","placeholder":true},"products/aja-02/v1-front":{"w":1000,"h":1250,"avg":"#d7aea2","placeholder":true},"products/aja-02/v1-alt":{"w":1000,"h":1250,"avg":"#d7aea2","placeholder":true},"products/aja-02/v1-detail":{"w":1000,"h":1250,"avg":"#c1806f","placeholder":true},"products/aja-03/v1-front":{"w":1000,"h":1250,"avg":"#b7b4b7","placeholder":true},"products/aja-03/v1-alt":{"w":1000,"h":1250,"avg":"#b7b4b7","placeholder":true},"products/aja-03/v1-detail":{"w":1000,"h":1250,"avg":"#75778b","placeholder":true},"products/aja-04/v1-front":{"w":1000,"h":1250,"avg":"#b0b2b7","placeholder":true},"products/aja-04/v1-alt":{"w":1000,"h":1250,"avg":"#b0b2b7","placeholder":true},"products/aja-04/v1-detail":{"w":1000,"h":1250,"avg":"#757d93","placeholder":true},"products/aja-04/v2-front":{"w":1000,"h":1250,"avg":"#d0b2ac","placeholder":true},"products/aja-04/v2-alt":{"w":1000,"h":1250,"avg":"#d0b2ac","placeholder":true},"products/maa-01/v1-front":{"w":1000,"h":1250,"avg":"#e5dccb","placeholder":true},"products/maa-01/v1-alt":{"w":1000,"h":1250,"avg":"#e5dccb","placeholder":true},"products/maa-01/v1-detail":{"w":1000,"h":1250,"avg":"#e3dbcb","placeholder":true},"products/maa-01/v2-front":{"w":1000,"h":1250,"avg":"#dfd0c1","placeholder":true},"products/maa-01/v2-alt":{"w":1000,"h":1250,"avg":"#dfd0c1","placeholder":true},"products/maa-02/v1-front":{"w":1000,"h":1250,"avg":"#d8c29d","placeholder":true},"products/maa-02/v1-alt":{"w":1000,"h":1250,"avg":"#d8c29d","placeholder":true},"products/maa-02/v1-detail":{"w":1000,"h":1250,"avg":"#cda968","placeholder":true},"products/maa-03/v1-front":{"w":1000,"h":1250,"avg":"#b4aeb3","placeholder":true},"products/maa-03/v1-alt":{"w":1000,"h":1250,"avg":"#b4aeb3","placeholder":true},"products/maa-03/v1-detail":{"w":1000,"h":1250,"avg":"#787b91","placeholder":true},"products/maa-04/v1-front":{"w":1000,"h":1250,"avg":"#d6b59f","placeholder":true},"products/maa-04/v1-alt":{"w":1000,"h":1250,"avg":"#d6b59f","placeholder":true},"products/maa-04/v1-detail":{"w":1000,"h":1250,"avg":"#c68a6e","placeholder":true},"products/maa-04/v2-front":{"w":1000,"h":1250,"avg":"#c3bfa6","placeholder":true},"products/maa-04/v2-alt":{"w":1000,"h":1250,"avg":"#c3bfa6","placeholder":true},"products/ind-01/v1-front":{"w":1000,"h":1250,"avg":"#b2b3b6","placeholder":true},"products/ind-01/v1-alt":{"w":1000,"h":1250,"avg":"#b2b3b6","placeholder":true},"products/ind-01/v1-detail":{"w":1000,"h":1250,"avg":"#77859c","placeholder":true},"products/ind-02/v1-front":{"w":1000,"h":1250,"avg":"#b8babe","placeholder":true},"products/ind-02/v1-alt":{"w":1000,"h":1250,"avg":"#b8babe","placeholder":true},"products/ind-02/v1-detail":{"w":1000,"h":1250,"avg":"#7a89a0","placeholder":true},"products/ind-03/v1-front":{"w":1000,"h":1250,"avg":"#b0b6bc","placeholder":true},"products/ind-03/v1-alt":{"w":1000,"h":1250,"avg":"#b0b6bc","placeholder":true},"products/ind-03/v1-detail":{"w":1000,"h":1250,"avg":"#77879f","placeholder":true},"products/ind-03/v2-front":{"w":1000,"h":1250,"avg":"#e2ddd3","placeholder":true},"products/ind-03/v2-alt":{"w":1000,"h":1250,"avg":"#e2ddd3","placeholder":true},"products/ind-04/v1-front":{"w":1000,"h":1250,"avg":"#b0b0af","placeholder":true},"products/ind-04/v1-alt":{"w":1000,"h":1250,"avg":"#b0b0af","placeholder":true},"products/ind-04/v1-detail":{"w":1000,"h":1250,"avg":"#768398","placeholder":true},"products/kor-01/v1-front":{"w":1000,"h":1250,"avg":"#ebe4d7","placeholder":true},"products/kor-01/v1-alt":{"w":1000,"h":1250,"avg":"#ebe4d7","placeholder":true},"products/kor-01/v1-detail":{"w":1000,"h":1250,"avg":"#ebe4d6","placeholder":true},"products/kor-01/v2-front":{"w":1000,"h":1250,"avg":"#dddcd7","placeholder":true},"products/kor-01/v2-alt":{"w":1000,"h":1250,"avg":"#dddcd7","placeholder":true},"products/kor-02/v1-front":{"w":1000,"h":1250,"avg":"#e3d8ca","placeholder":true},"products/kor-02/v1-alt":{"w":1000,"h":1250,"avg":"#e3d8ca","placeholder":true},"products/kor-02/v1-detail":{"w":1000,"h":1250,"avg":"#e6decf","placeholder":true},"products/kor-03/v1-front":{"w":1000,"h":1250,"avg":"#dcddd6","placeholder":true},"products/kor-03/v1-alt":{"w":1000,"h":1250,"avg":"#dcddd6","placeholder":true},"products/kor-03/v1-detail":{"w":1000,"h":1250,"avg":"#e2e0d5","placeholder":true},"products/kor-03/v2-front":{"w":1000,"h":1250,"avg":"#ced7d8","placeholder":true},"products/kor-03/v2-alt":{"w":1000,"h":1250,"avg":"#ced7d8","placeholder":true},"products/kor-04/v1-front":{"w":1000,"h":1250,"avg":"#e4dbcb","placeholder":true},"products/kor-04/v1-alt":{"w":1000,"h":1250,"avg":"#e4dbcb","placeholder":true},"products/kor-04/v1-detail":{"w":1000,"h":1250,"avg":"#e4dbc9","placeholder":true},"products/til-01/v1-front":{"w":1000,"h":1250,"avg":"#472231","placeholder":true},"products/til-01/v1-alt":{"w":1000,"h":1250,"avg":"#472231","placeholder":true},"products/til-01/v1-detail":{"w":1000,"h":1250,"avg":"#592431","placeholder":true},"products/til-01/v2-front":{"w":1000,"h":1250,"avg":"#332e34","placeholder":true},"products/til-01/v2-alt":{"w":1000,"h":1250,"avg":"#332e34","placeholder":true},"products/til-02/v1-front":{"w":1000,"h":1250,"avg":"#a5abaf","placeholder":true},"products/til-02/v1-alt":{"w":1000,"h":1250,"avg":"#a5abaf","placeholder":true},"products/til-02/v1-detail":{"w":1000,"h":1250,"avg":"#6a717d","placeholder":true},"products/til-02/v2-front":{"w":1000,"h":1250,"avg":"#b5a8a8","placeholder":true},"products/til-02/v2-alt":{"w":1000,"h":1250,"avg":"#b5a8a8","placeholder":true},"products/til-03/v1-front":{"w":1000,"h":1250,"avg":"#a27578","placeholder":true},"products/til-03/v1-alt":{"w":1000,"h":1250,"avg":"#a27578","placeholder":true},"products/til-03/v1-detail":{"w":1000,"h":1250,"avg":"#6c2331","placeholder":true},"products/til-03/v2-front":{"w":1000,"h":1250,"avg":"#e7dfd0","placeholder":true},"products/til-03/v2-alt":{"w":1000,"h":1250,"avg":"#e7dfd1","placeholder":true},"products/til-04/v1-front":{"w":1000,"h":1250,"avg":"#deded7","placeholder":true},"products/til-04/v1-alt":{"w":1000,"h":1250,"avg":"#deded7","placeholder":true},"products/til-04/v1-detail":{"w":1000,"h":1250,"avg":"#e3e0d1","placeholder":true},"products/til-04/v2-front":{"w":1000,"h":1250,"avg":"#b2b9ae","placeholder":true},"products/til-04/v2-alt":{"w":1000,"h":1250,"avg":"#b2b9ae","placeholder":true},"products/saa-01/v1-front":{"w":1000,"h":1250,"avg":"#cdc6bc","placeholder":true},"products/saa-01/v1-alt":{"w":1000,"h":1250,"avg":"#cdc6bc","placeholder":true},"products/saa-01/v1-detail":{"w":1000,"h":1250,"avg":"#b0aca4","placeholder":true},"products/saa-02/v1-front":{"w":1000,"h":1250,"avg":"#c7beb1","placeholder":true},"products/saa-02/v1-alt":{"w":1000,"h":1250,"avg":"#c7beb1","placeholder":true},"products/saa-02/v1-detail":{"w":1000,"h":1250,"avg":"#ada79e","placeholder":true},"products/saa-03/v1-front":{"w":1000,"h":1250,"avg":"#c2bbb1","placeholder":true},"products/saa-03/v1-alt":{"w":1000,"h":1250,"avg":"#c2bbb1","placeholder":true},"products/saa-03/v1-detail":{"w":1000,"h":1250,"avg":"#aaa69f","placeholder":true},"products/saa-04/v1-front":{"w":1000,"h":1250,"avg":"#dfd5cf","placeholder":true},"products/saa-04/v1-alt":{"w":1000,"h":1250,"avg":"#dfd5cf","placeholder":true},"products/saa-04/v1-detail":{"w":1000,"h":1250,"avg":"#d5cfcd","placeholder":true},"products/ran-01/v1-front":{"w":1000,"h":1250,"avg":"#d9b7a6","placeholder":true},"products/ran-01/v1-alt":{"w":1000,"h":1250,"avg":"#d9b7a6","placeholder":true},"products/ran-01/v1-detail":{"w":1000,"h":1250,"avg":"#c78772","placeholder":true},"products/ran-01/v2-front":{"w":1000,"h":1250,"avg":"#b4b1b1","placeholder":true},"products/ran-01/v2-alt":{"w":1000,"h":1250,"avg":"#b4b1b1","placeholder":true},"products/ran-02/v1-front":{"w":1000,"h":1250,"avg":"#d7b5a3","placeholder":true},"products/ran-02/v1-alt":{"w":1000,"h":1250,"avg":"#d7b5a3","placeholder":true},"products/ran-02/v1-detail":{"w":1000,"h":1250,"avg":"#c58671","placeholder":true},"products/ran-03/v1-front":{"w":1000,"h":1250,"avg":"#aeaaa8","placeholder":true},"products/ran-03/v1-alt":{"w":1000,"h":1250,"avg":"#aeaaa8","placeholder":true},"products/ran-03/v1-detail":{"w":1000,"h":1250,"avg":"#737688","placeholder":true},"products/ran-03/v2-front":{"w":1000,"h":1250,"avg":"#ddc19a","placeholder":true},"products/ran-03/v2-alt":{"w":1000,"h":1250,"avg":"#ddc19a","placeholder":true},"products/ran-04/v1-front":{"w":1000,"h":1250,"avg":"#bbbda9","placeholder":true},"products/ran-04/v1-alt":{"w":1000,"h":1250,"avg":"#bbbda9","placeholder":true},"products/ran-04/v1-detail":{"w":1000,"h":1250,"avg":"#89987f","placeholder":true},"products/mit-01/v1-front":{"w":1000,"h":1250,"avg":"#e4dbcc","placeholder":true},"products/mit-01/v1-alt":{"w":1000,"h":1250,"avg":"#e4dbcc","placeholder":true},"products/mit-01/v1-detail":{"w":1000,"h":1250,"avg":"#ded7c8","placeholder":true},"products/mit-01/v2-front":{"w":1000,"h":1250,"avg":"#d9bfa9","placeholder":true},"products/mit-01/v2-alt":{"w":1000,"h":1250,"avg":"#d9bfa9","placeholder":true},"products/mit-02/v1-front":{"w":1000,"h":1250,"avg":"#e6dccb","placeholder":true},"products/mit-02/v1-alt":{"w":1000,"h":1250,"avg":"#e6dccb","placeholder":true},"products/mit-02/v1-detail":{"w":1000,"h":1250,"avg":"#e2d8c5","placeholder":true},"products/mit-02/v2-front":{"w":1000,"h":1250,"avg":"#d5d2c1","placeholder":true},"products/mit-02/v2-alt":{"w":1000,"h":1250,"avg":"#d5d2c1","placeholder":true},"products/mit-03/v1-front":{"w":1000,"h":1250,"avg":"#d5baa2","placeholder":true},"products/mit-03/v1-alt":{"w":1000,"h":1250,"avg":"#d5baa2","placeholder":true},"products/mit-03/v1-detail":{"w":1000,"h":1250,"avg":"#c89a7c","placeholder":true},"products/mit-04/v1-front":{"w":1000,"h":1250,"avg":"#e4dbcc","placeholder":true},"products/mit-04/v1-alt":{"w":1000,"h":1250,"avg":"#e4dbcc","placeholder":true},"products/mit-04/v1-detail":{"w":1000,"h":1250,"avg":"#e2d7c6","placeholder":true},"products/mit-04/v2-front":{"w":1000,"h":1250,"avg":"#c4bfb6","placeholder":true},"products/mit-04/v2-alt":{"w":1000,"h":1250,"avg":"#c4bfb6","placeholder":true},"products/mau-01/v1-front":{"w":1000,"h":1250,"avg":"#42212f","placeholder":true},"products/mau-01/v1-alt":{"w":1000,"h":1250,"avg":"#42212f","placeholder":true},"products/mau-01/v1-detail":{"w":1000,"h":1250,"avg":"#522431","placeholder":true},"products/mau-01/v2-front":{"w":1000,"h":1250,"avg":"#68545a","placeholder":true},"products/mau-01/v2-alt":{"w":1000,"h":1250,"avg":"#68545a","placeholder":true},"products/mau-02/v1-front":{"w":1000,"h":1250,"avg":"#373a33","placeholder":true},"products/mau-02/v1-alt":{"w":1000,"h":1250,"avg":"#373a33","placeholder":true},"products/mau-02/v1-detail":{"w":1000,"h":1250,"avg":"#3b3d3c","placeholder":true},"products/mau-02/v2-front":{"w":1000,"h":1250,"avg":"#59513c","placeholder":true},"products/mau-02/v2-alt":{"w":1000,"h":1250,"avg":"#59513c","placeholder":true},"products/mau-03/v1-front":{"w":1000,"h":1250,"avg":"#424635","placeholder":true},"products/mau-03/v1-alt":{"w":1000,"h":1250,"avg":"#424635","placeholder":true},"products/mau-03/v1-detail":{"w":1000,"h":1250,"avg":"#52573f","placeholder":true},"products/mau-03/v2-front":{"w":1000,"h":1250,"avg":"#323736","placeholder":true},"products/mau-03/v2-alt":{"w":1000,"h":1250,"avg":"#323736","placeholder":true},"products/noo-01/v1-front":{"w":1000,"h":1250,"avg":"#69565b","placeholder":true},"products/noo-01/v1-alt":{"w":1000,"h":1250,"avg":"#69565b","placeholder":true},"products/noo-01/v1-detail":{"w":1000,"h":1250,"avg":"#a5968e","placeholder":true},"products/noo-02/v1-front":{"w":1000,"h":1250,"avg":"#322333","placeholder":true},"products/noo-02/v1-alt":{"w":1000,"h":1250,"avg":"#322333","placeholder":true},"products/noo-02/v1-detail":{"w":1000,"h":1250,"avg":"#2c2736","placeholder":true},"products/noo-03/v1-front":{"w":1000,"h":1250,"avg":"#332e34","placeholder":true},"products/noo-03/v1-alt":{"w":1000,"h":1250,"avg":"#332e34","placeholder":true},"products/noo-03/v1-detail":{"w":1000,"h":1250,"avg":"#2d3f38","placeholder":true},"products/ves-01/v1-front":{"w":1000,"h":1250,"avg":"#63442a","placeholder":true},"products/ves-01/v1-alt":{"w":1000,"h":1250,"avg":"#63442a","placeholder":true},"products/ves-01/v1-detail":{"w":1000,"h":1250,"avg":"#8b4f2a","placeholder":true},"products/ves-01/v2-front":{"w":1000,"h":1250,"avg":"#292a24","placeholder":true},"products/ves-01/v2-alt":{"w":1000,"h":1250,"avg":"#292a24","placeholder":true},"products/ves-02/v1-front":{"w":1000,"h":1250,"avg":"#31332b","placeholder":true},"products/ves-02/v1-alt":{"w":1000,"h":1250,"avg":"#31332b","placeholder":true},"products/ves-02/v1-detail":{"w":1000,"h":1250,"avg":"#2d2d28","placeholder":true},"products/ves-02/v2-front":{"w":1000,"h":1250,"avg":"#463e2f","placeholder":true},"products/ves-02/v2-alt":{"w":1000,"h":1250,"avg":"#463e2f","placeholder":true},"products/ves-03/v1-front":{"w":1000,"h":1250,"avg":"#412a26","placeholder":true},"products/ves-03/v1-alt":{"w":1000,"h":1250,"avg":"#412a26","placeholder":true},"products/ves-03/v1-detail":{"w":1000,"h":1250,"avg":"#4e2023","placeholder":true},"products/ves-03/v2-front":{"w":1000,"h":1250,"avg":"#847961","placeholder":true},"products/ves-03/v2-alt":{"w":1000,"h":1250,"avg":"#847961","placeholder":true},"products/ves-04/v1-front":{"w":1000,"h":1250,"avg":"#928d7c","placeholder":true},"products/ves-04/v1-alt":{"w":1000,"h":1250,"avg":"#928d7c","placeholder":true},"products/ves-04/v1-detail":{"w":1000,"h":1250,"avg":"#dfd3bd","placeholder":true},"products/ves-04/v2-front":{"w":1000,"h":1250,"avg":"#292a24","placeholder":true},"products/ves-04/v2-alt":{"w":1000,"h":1250,"avg":"#292a24","placeholder":true},"products/ves-05/v1-front":{"w":1000,"h":1250,"avg":"#463c2c","placeholder":true},"products/ves-05/v1-alt":{"w":1000,"h":1250,"avg":"#463c2c","placeholder":true},"products/ves-05/v1-detail":{"w":1000,"h":1250,"avg":"#5b402b","placeholder":true},"products/ves-05/v2-front":{"w":1000,"h":1250,"avg":"#31332b","placeholder":true},"products/ves-05/v2-alt":{"w":1000,"h":1250,"avg":"#31332b","placeholder":true},"products/ora-01/v1-front":{"w":1000,"h":1250,"avg":"#605f50","placeholder":true},"products/ora-01/v1-alt":{"w":1000,"h":1250,"avg":"#605f50","placeholder":true},"products/ora-01/v1-detail":{"w":1000,"h":1250,"avg":"#938d7a","placeholder":true},"products/ora-01/v2-front":{"w":1000,"h":1250,"avg":"#323736","placeholder":true},"products/ora-01/v2-alt":{"w":1000,"h":1250,"avg":"#323736","placeholder":true},"products/ora-02/v1-front":{"w":1000,"h":1250,"avg":"#323736","placeholder":true},"products/ora-02/v1-alt":{"w":1000,"h":1250,"avg":"#323736","placeholder":true},"products/ora-02/v1-detail":{"w":1000,"h":1250,"avg":"#2f3742","placeholder":true},"products/ora-02/v2-front":{"w":1000,"h":1250,"avg":"#67675a","placeholder":true},"products/ora-02/v2-alt":{"w":1000,"h":1250,"avg":"#67675a","placeholder":true},"products/ora-03/v1-front":{"w":1000,"h":1250,"avg":"#373a33","placeholder":true},"products/ora-03/v1-alt":{"w":1000,"h":1250,"avg":"#373a33","placeholder":true},"products/ora-03/v1-detail":{"w":1000,"h":1250,"avg":"#3b3d3c","placeholder":true},"products/ora-03/v2-front":{"w":1000,"h":1250,"avg":"#424635","placeholder":true},"products/ora-03/v2-alt":{"w":1000,"h":1250,"avg":"#424635","placeholder":true},"products/jun-01/v1-front":{"w":1000,"h":1250,"avg":"#b2a49c","placeholder":true},"products/jun-01/v1-alt":{"w":1000,"h":1250,"avg":"#b2a49c","placeholder":true},"products/jun-01/v1-detail":{"w":1000,"h":1250,"avg":"#726a65","placeholder":true},"products/jun-01/v2-front":{"w":1000,"h":1250,"avg":"#e1d1c5","placeholder":true},"products/jun-01/v2-alt":{"w":1000,"h":1250,"avg":"#e1d1c6","placeholder":true},"products/jun-01/v3-front":{"w":1000,"h":1250,"avg":"#c2b6a6","placeholder":true},"products/jun-01/v3-alt":{"w":1000,"h":1250,"avg":"#c2b6a6","placeholder":true},"products/jun-02/v1-front":{"w":1000,"h":1250,"avg":"#e6ddcc","placeholder":true},"products/jun-02/v1-alt":{"w":1000,"h":1250,"avg":"#e6ddcc","placeholder":true},"products/jun-02/v1-detail":{"w":1000,"h":1250,"avg":"#e9e2d1","placeholder":true},"products/jun-02/v2-front":{"w":1000,"h":1250,"avg":"#d8d5ce","placeholder":true},"products/jun-02/v2-alt":{"w":1000,"h":1250,"avg":"#d8d5ce","placeholder":true},"products/jun-03/v1-front":{"w":1000,"h":1250,"avg":"#cfc9b9","placeholder":true},"products/jun-03/v1-alt":{"w":1000,"h":1250,"avg":"#cfc9b9","placeholder":true},"products/jun-03/v1-detail":{"w":1000,"h":1250,"avg":"#bbbeac","placeholder":true},"products/jun-03/v2-front":{"w":1000,"h":1250,"avg":"#bca7a4","placeholder":true},"products/jun-03/v2-alt":{"w":1000,"h":1250,"avg":"#bca7a4","placeholder":true},"products/jun-04/v1-front":{"w":1000,"h":1250,"avg":"#e9ded6","placeholder":true},"products/jun-04/v1-alt":{"w":1000,"h":1250,"avg":"#e9ded6","placeholder":true},"products/jun-04/v1-detail":{"w":1000,"h":1250,"avg":"#ebe4de","placeholder":true},"products/jun-04/v2-front":{"w":1000,"h":1250,"avg":"#b1a69f","placeholder":true},"products/jun-04/v2-alt":{"w":1000,"h":1250,"avg":"#b1a69f","placeholder":true},"products/jun-04/v3-front":{"w":1000,"h":1250,"avg":"#dec3b4","placeholder":true},"products/jun-04/v3-alt":{"w":1000,"h":1250,"avg":"#dec3b4","placeholder":true},"products/jun-05/v1-front":{"w":1000,"h":1250,"avg":"#b4b2af","placeholder":true},"products/jun-05/v1-alt":{"w":1000,"h":1250,"avg":"#b4b2af","placeholder":true},"products/jun-05/v1-detail":{"w":1000,"h":1250,"avg":"#737781","placeholder":true},"products/jun-05/v2-front":{"w":1000,"h":1250,"avg":"#dbcbb5","placeholder":true},"products/jun-05/v2-alt":{"w":1000,"h":1250,"avg":"#dbcbb5","placeholder":true},"products/nor-01/v1-front":{"w":1000,"h":1250,"avg":"#e5e2da","placeholder":true},"products/nor-01/v1-alt":{"w":1000,"h":1250,"avg":"#e5e2da","placeholder":true},"products/nor-01/v1-detail":{"w":1000,"h":1250,"avg":"#e9e6e0","placeholder":true},"products/nor-01/v2-front":{"w":1000,"h":1250,"avg":"#adaaa3","placeholder":true},"products/nor-01/v2-alt":{"w":1000,"h":1250,"avg":"#adaaa3","placeholder":true},"products/nor-01/v3-front":{"w":1000,"h":1250,"avg":"#bdbcad","placeholder":true},"products/nor-01/v3-alt":{"w":1000,"h":1250,"avg":"#bdbcad","placeholder":true},"products/nor-02/v1-front":{"w":1000,"h":1250,"avg":"#d0d7da","placeholder":true},"products/nor-02/v1-alt":{"w":1000,"h":1250,"avg":"#d0d7da","placeholder":true},"products/nor-02/v1-detail":{"w":1000,"h":1250,"avg":"#c5d2dc","placeholder":true},"products/nor-02/v2-front":{"w":1000,"h":1250,"avg":"#dfe0dd","placeholder":true},"products/nor-02/v2-alt":{"w":1000,"h":1250,"avg":"#dfe0dd","placeholder":true},"products/nor-03/v1-front":{"w":1000,"h":1250,"avg":"#d6cab6","placeholder":true},"products/nor-03/v1-alt":{"w":1000,"h":1250,"avg":"#d6cab6","placeholder":true},"products/nor-03/v1-detail":{"w":1000,"h":1250,"avg":"#c6b89c","placeholder":true},"products/nor-03/v2-front":{"w":1000,"h":1250,"avg":"#afaba8","placeholder":true},"products/nor-03/v2-alt":{"w":1000,"h":1250,"avg":"#afaba8","placeholder":true},"products/nor-04/v1-front":{"w":1000,"h":1250,"avg":"#d5d3c9","placeholder":true},"products/nor-04/v1-alt":{"w":1000,"h":1250,"avg":"#d5d3c9","placeholder":true},"products/nor-04/v1-detail":{"w":1000,"h":1250,"avg":"#d3ccb8","placeholder":true},"products/nor-04/v2-front":{"w":1000,"h":1250,"avg":"#c3cbc2","placeholder":true},"products/nor-04/v2-alt":{"w":1000,"h":1250,"avg":"#c3cbc2","placeholder":true},"products/nor-05/v1-front":{"w":1000,"h":1250,"avg":"#ded8cc","placeholder":true},"products/nor-05/v1-alt":{"w":1000,"h":1250,"avg":"#ded8cc","placeholder":true},"products/nor-05/v1-detail":{"w":1000,"h":1250,"avg":"#dbd2c2","placeholder":true},"products/nor-05/v2-front":{"w":1000,"h":1250,"avg":"#adadae","placeholder":true},"products/nor-05/v2-alt":{"w":1000,"h":1250,"avg":"#adadae","placeholder":true},"products/hav-01/v1-front":{"w":1000,"h":1250,"avg":"#b7b7b8","placeholder":true},"products/hav-01/v1-alt":{"w":1000,"h":1250,"avg":"#b7b7b8","placeholder":true},"products/hav-01/v1-detail":{"w":1000,"h":1250,"avg":"#8796a9","placeholder":true},"products/hav-01/v2-front":{"w":1000,"h":1250,"avg":"#afa79e","placeholder":true},"products/hav-01/v2-alt":{"w":1000,"h":1250,"avg":"#afa79e","placeholder":true},"products/hav-02/v1-front":{"w":1000,"h":1250,"avg":"#d1d1d0","placeholder":true},"products/hav-02/v1-alt":{"w":1000,"h":1250,"avg":"#d1d1d0","placeholder":true},"products/hav-02/v1-detail":{"w":1000,"h":1250,"avg":"#b1bbc7","placeholder":true},"products/hav-03/v1-front":{"w":1000,"h":1250,"avg":"#b8b1b7","placeholder":true},"products/hav-03/v1-alt":{"w":1000,"h":1250,"avg":"#b8b1b7","placeholder":true},"products/hav-03/v1-detail":{"w":1000,"h":1250,"avg":"#7e889e","placeholder":true},"products/hav-03/v2-front":{"w":1000,"h":1250,"avg":"#e7d7cb","placeholder":true},"products/hav-03/v2-alt":{"w":1000,"h":1250,"avg":"#e7d7cb","placeholder":true},"products/str-01/v1-front":{"w":1000,"h":1250,"avg":"#e8e3da","placeholder":true},"products/str-01/v1-alt":{"w":1000,"h":1250,"avg":"#e8e3da","placeholder":true},"products/str-01/v1-detail":{"w":1000,"h":1250,"avg":"#eeebe6","placeholder":true},"products/str-01/v2-front":{"w":1000,"h":1250,"avg":"#e3dac8","placeholder":true},"products/str-01/v2-alt":{"w":1000,"h":1250,"avg":"#e3dac8","placeholder":true},"products/str-02/v1-front":{"w":1000,"h":1250,"avg":"#beb9b0","placeholder":true},"products/str-02/v1-alt":{"w":1000,"h":1250,"avg":"#beb9b0","placeholder":true},"products/str-02/v1-detail":{"w":1000,"h":1250,"avg":"#a7a5a0","placeholder":true},"products/str-02/v2-front":{"w":1000,"h":1250,"avg":"#7c7f8f","placeholder":true},"products/str-02/v2-alt":{"w":1000,"h":1250,"avg":"#7c7f8f","placeholder":true},"products/str-03/v1-front":{"w":1000,"h":1250,"avg":"#e1dcd3","placeholder":true},"products/str-03/v1-alt":{"w":1000,"h":1250,"avg":"#e1dcd3","placeholder":true},"products/str-03/v1-detail":{"w":1000,"h":1250,"avg":"#edebe6","placeholder":true},"products/str-03/v2-front":{"w":1000,"h":1250,"avg":"#ddc9bf","placeholder":true},"products/str-03/v2-alt":{"w":1000,"h":1250,"avg":"#ddc9bf","placeholder":true},"products/str-04/v1-front":{"w":1000,"h":1250,"avg":"#818296","placeholder":true},"products/str-04/v1-alt":{"w":1000,"h":1250,"avg":"#818296","placeholder":true},"products/str-04/v1-detail":{"w":1000,"h":1250,"avg":"#31406a","placeholder":true},"products/str-04/v2-front":{"w":1000,"h":1250,"avg":"#d8cdc0","placeholder":true},"products/str-04/v2-alt":{"w":1000,"h":1250,"avg":"#d8cdc0","placeholder":true},"products/lit-01/v1-front":{"w":1000,"h":1250,"avg":"#dfd4a6","placeholder":true},"products/lit-01/v1-alt":{"w":1000,"h":1250,"avg":"#dfd4a6","placeholder":true},"products/lit-01/v1-detail":{"w":1000,"h":1250,"avg":"#dec06f","placeholder":true},"products/lit-01/v2-front":{"w":1000,"h":1250,"avg":"#d1dcd5","placeholder":true},"products/lit-01/v2-alt":{"w":1000,"h":1250,"avg":"#d1dcd5","placeholder":true},"products/lit-02/v1-front":{"w":1000,"h":1250,"avg":"#b5bdb8","placeholder":true},"products/lit-02/v1-alt":{"w":1000,"h":1250,"avg":"#b5bdb8","placeholder":true},"products/lit-02/v1-detail":{"w":1000,"h":1250,"avg":"#739a9b","placeholder":true},"products/lit-02/v2-front":{"w":1000,"h":1250,"avg":"#e2c7a4","placeholder":true},"products/lit-02/v2-alt":{"w":1000,"h":1250,"avg":"#e2c7a4","placeholder":true},"products/lit-03/v1-front":{"w":1000,"h":1250,"avg":"#e4b99e","placeholder":true},"products/lit-03/v1-alt":{"w":1000,"h":1250,"avg":"#e4b99e","placeholder":true},"products/lit-03/v1-detail":{"w":1000,"h":1250,"avg":"#d6866e","placeholder":true},"products/lit-03/v2-front":{"w":1000,"h":1250,"avg":"#b7c4b1","placeholder":true},"products/lit-03/v2-alt":{"w":1000,"h":1250,"avg":"#b7c4b1","placeholder":true},"products/lit-03/v3-front":{"w":1000,"h":1250,"avg":"#eddfb6","placeholder":true},"products/lit-03/v3-alt":{"w":1000,"h":1250,"avg":"#eddfb6","placeholder":true},"products/lit-04/v1-front":{"w":1000,"h":1250,"avg":"#e6d5c8","placeholder":true},"products/lit-04/v1-alt":{"w":1000,"h":1250,"avg":"#e6d5c8","placeholder":true},"products/lit-04/v1-detail":{"w":1000,"h":1250,"avg":"#e6cdc4","placeholder":true},"products/lit-04/v2-front":{"w":1000,"h":1250,"avg":"#b5b9a7","placeholder":true},"products/lit-04/v2-alt":{"w":1000,"h":1250,"avg":"#b5b9a8","placeholder":true},"products/lit-05/v1-front":{"w":1000,"h":1250,"avg":"#d5ded6","placeholder":true},"products/lit-05/v1-alt":{"w":1000,"h":1250,"avg":"#d5ded6","placeholder":true},"products/lit-05/v1-detail":{"w":1000,"h":1250,"avg":"#c7d5d9","placeholder":true},"products/lit-05/v2-front":{"w":1000,"h":1250,"avg":"#dddecb","placeholder":true},"products/lit-05/v2-alt":{"w":1000,"h":1250,"avg":"#dddecb","placeholder":true},"products/lit-06/v1-front":{"w":1000,"h":1250,"avg":"#e9e2db","placeholder":true},"products/lit-06/v1-alt":{"w":1000,"h":1250,"avg":"#e9e1db","placeholder":true},"products/lit-06/v1-detail":{"w":1000,"h":1250,"avg":"#eeebe6","placeholder":true},"products/lit-06/v2-front":{"w":1000,"h":1250,"avg":"#e19f8f","placeholder":true},"products/lit-06/v2-alt":{"w":1000,"h":1250,"avg":"#e19f8f","placeholder":true},"products/lit-07/v1-front":{"w":1000,"h":1250,"avg":"#deb1ae","placeholder":true},"products/lit-07/v1-alt":{"w":1000,"h":1250,"avg":"#deb1ae","placeholder":true},"products/lit-07/v1-detail":{"w":1000,"h":1250,"avg":"#c9758d","placeholder":true},"products/lit-07/v2-front":{"w":1000,"h":1250,"avg":"#b7c4b1","placeholder":true},"products/lit-07/v2-alt":{"w":1000,"h":1250,"avg":"#b7c4b1","placeholder":true},"products/lit-08/v1-front":{"w":1000,"h":1250,"avg":"#d8d0c4","placeholder":true},"products/lit-08/v1-alt":{"w":1000,"h":1250,"avg":"#d8d0c4","placeholder":true},"products/lit-08/v1-detail":{"w":1000,"h":1250,"avg":"#c8c3bc","placeholder":true},"products/lit-08/v2-front":{"w":1000,"h":1250,"avg":"#b1aca7","placeholder":true},"products/lit-08/v2-alt":{"w":1000,"h":1250,"avg":"#b1aca7","placeholder":true},"products/hea-01/v1-front":{"w":1000,"h":1250,"avg":"#d6bea0","placeholder":true},"products/hea-01/v1-alt":{"w":1000,"h":1250,"avg":"#d6bea0","placeholder":true},"products/hea-01/v1-detail":{"w":1000,"h":1250,"avg":"#c19768","placeholder":true},"products/hea-02/v1-front":{"w":1000,"h":1250,"avg":"#e0d5c1","placeholder":true},"products/hea-02/v1-alt":{"w":1000,"h":1250,"avg":"#e0d5c1","placeholder":true},"products/hea-02/v1-detail":{"w":1000,"h":1250,"avg":"#dfd5c0","placeholder":true},"products/hea-03/v1-front":{"w":1000,"h":1250,"avg":"#e1d7c6","placeholder":true},"products/hea-03/v1-alt":{"w":1000,"h":1250,"avg":"#e1d7c6","placeholder":true},"products/hea-03/v1-detail":{"w":1000,"h":1250,"avg":"#ddd1bf","placeholder":true},"products/hea-03/v2-front":{"w":1000,"h":1250,"avg":"#d7b7a2","placeholder":true},"products/hea-03/v2-alt":{"w":1000,"h":1250,"avg":"#d7b7a2","placeholder":true},"products/hea-04/v1-front":{"w":1000,"h":1250,"avg":"#e3d9c8","placeholder":true},"products/hea-04/v1-alt":{"w":1000,"h":1250,"avg":"#e3d9c8","placeholder":true},"products/hea-04/v1-detail":{"w":1000,"h":1250,"avg":"#ded3c0","placeholder":true},"products/hea-04/v2-front":{"w":1000,"h":1250,"avg":"#c6c4ac","placeholder":true},"products/hea-04/v2-alt":{"w":1000,"h":1250,"avg":"#c6c4ac","placeholder":true},"products/hea-05/v1-front":{"w":1000,"h":1250,"avg":"#e1d6c5","placeholder":true},"products/hea-05/v1-alt":{"w":1000,"h":1250,"avg":"#e0d6c5","placeholder":true},"products/hea-05/v1-detail":{"w":1000,"h":1250,"avg":"#e2d8c7","placeholder":true},"products/loo-01/v1-front":{"w":1000,"h":1250,"avg":"#dadbd4","placeholder":true},"products/loo-01/v1-alt":{"w":1000,"h":1250,"avg":"#dadbd4","placeholder":true},"products/loo-01/v1-detail":{"w":1000,"h":1250,"avg":"#e0ddd1","placeholder":true},"products/loo-01/v2-front":{"w":1000,"h":1250,"avg":"#d2c4b9","placeholder":true},"products/loo-01/v2-alt":{"w":1000,"h":1250,"avg":"#d2c4b9","placeholder":true},"products/loo-01/v3-front":{"w":1000,"h":1250,"avg":"#a9b8af","placeholder":true},"products/loo-01/v3-alt":{"w":1000,"h":1250,"avg":"#a9b8af","placeholder":true},"products/loo-02/v1-front":{"w":1000,"h":1250,"avg":"#ded3c1","placeholder":true},"products/loo-02/v1-alt":{"w":1000,"h":1250,"avg":"#ded4c1","placeholder":true},"products/loo-02/v1-detail":{"w":1000,"h":1250,"avg":"#d8ccb4","placeholder":true},"products/loo-02/v2-front":{"w":1000,"h":1250,"avg":"#c2bda9","placeholder":true},"products/loo-02/v2-alt":{"w":1000,"h":1250,"avg":"#c2bda9","placeholder":true},"products/loo-03/v1-front":{"w":1000,"h":1250,"avg":"#d8d7cf","placeholder":true},"products/loo-03/v1-alt":{"w":1000,"h":1250,"avg":"#d8d7cf","placeholder":true},"products/loo-03/v1-detail":{"w":1000,"h":1250,"avg":"#d8d2c3","placeholder":true},"products/loo-03/v2-front":{"w":1000,"h":1250,"avg":"#aeb1af","placeholder":true},"products/loo-03/v2-alt":{"w":1000,"h":1250,"avg":"#aeb1af","placeholder":true},"products/loo-04/v1-front":{"w":1000,"h":1250,"avg":"#e6dcce","placeholder":true},"products/loo-04/v1-alt":{"w":1000,"h":1250,"avg":"#e6dcce","placeholder":true},"products/loo-04/v1-detail":{"w":1000,"h":1250,"avg":"#dfd4c3","placeholder":true},"products/loo-04/v2-front":{"w":1000,"h":1250,"avg":"#c8c7b1","placeholder":true},"products/loo-04/v2-alt":{"w":1000,"h":1250,"avg":"#c8c7b1","placeholder":true},"products/mir-01/v1-front":{"w":1000,"h":1250,"avg":"#d9c1ad","placeholder":true},"products/mir-01/v1-alt":{"w":1000,"h":1250,"avg":"#d9c1ad","placeholder":true},"products/mir-01/v1-detail":{"w":1000,"h":1250,"avg":"#c6a989","placeholder":true},"products/mir-01/v2-front":{"w":1000,"h":1250,"avg":"#b2a7a7","placeholder":true},"products/mir-01/v2-alt":{"w":1000,"h":1250,"avg":"#b2a7a7","placeholder":true},"products/mir-01/v3-front":{"w":1000,"h":1250,"avg":"#e4c8c0","placeholder":true},"products/mir-01/v3-alt":{"w":1000,"h":1250,"avg":"#e4c8c0","placeholder":true},"products/mir-02/v1-front":{"w":1000,"h":1250,"avg":"#ebe3d6","placeholder":true},"products/mir-02/v1-alt":{"w":1000,"h":1250,"avg":"#ebe3d6","placeholder":true},"products/mir-02/v1-detail":{"w":1000,"h":1250,"avg":"#eae4d4","placeholder":true},"products/mir-02/v2-front":{"w":1000,"h":1250,"avg":"#b9beb0","placeholder":true},"products/mir-02/v2-alt":{"w":1000,"h":1250,"avg":"#b9beb0","placeholder":true},"products/mir-03/v1-front":{"w":1000,"h":1250,"avg":"#b1a69f","placeholder":true},"products/mir-03/v1-alt":{"w":1000,"h":1250,"avg":"#b1a69f","placeholder":true},"products/mir-03/v1-detail":{"w":1000,"h":1250,"avg":"#716b66","placeholder":true},"products/mir-03/v2-front":{"w":1000,"h":1250,"avg":"#d8c3b0","placeholder":true},"products/mir-03/v2-alt":{"w":1000,"h":1250,"avg":"#d8c3b0","placeholder":true},"scenes/edit-hidden-gems-tall":{"w":1000,"h":1250,"avg":"#a99ea0","placeholder":true,"pins":[]},"scenes/edit-hidden-gems-wide":{"w":1600,"h":900,"avg":"#d3c0b5","placeholder":true,"pins":[]},"scenes/edit-luxe-tall":{"w":1000,"h":1250,"avg":"#3f2422","placeholder":true,"pins":[]},"scenes/edit-luxe-wide":{"w":1600,"h":900,"avg":"#312422","placeholder":true,"pins":[]},"scenes/edit-responsible-tall":{"w":1000,"h":1250,"avg":"#a9afa6","placeholder":true,"pins":[]},"scenes/edit-responsible-wide":{"w":1600,"h":900,"avg":"#bcc3b5","placeholder":true,"pins":[]},"scenes/edit-festive-tall":{"w":1000,"h":1250,"avg":"#be969a","placeholder":true,"pins":[]},"scenes/edit-festive-wide":{"w":1600,"h":900,"avg":"#c29998","placeholder":true,"pins":[]},"scenes/edit-house-of-nykaa-tall":{"w":1000,"h":1250,"avg":"#d6a7a5","placeholder":true,"pins":[]},"scenes/edit-house-of-nykaa-wide":{"w":1600,"h":900,"avg":"#e1bfb9","placeholder":true,"pins":[]},"scenes/edit-new-in-tall":{"w":1000,"h":1250,"avg":"#d0a99e","placeholder":true,"pins":[]},"scenes/edit-new-in-wide":{"w":1600,"h":900,"avg":"#dbc2b2","placeholder":true,"pins":[]},"scenes/edit-under-1500-tall":{"w":1000,"h":1250,"avg":"#e6dccf","placeholder":true,"pins":[]},"scenes/edit-under-1500-wide":{"w":1600,"h":900,"avg":"#e6dccf","placeholder":true,"pins":[]},"scenes/edit-under-3000-tall":{"w":1000,"h":1250,"avg":"#a3a7a6","placeholder":true,"pins":[]},"scenes/edit-under-3000-wide":{"w":1600,"h":900,"avg":"#acb7b8","placeholder":true,"pins":[]},"scenes/edit-the-offer-edit-tall":{"w":1000,"h":1250,"avg":"#474036","placeholder":true,"pins":[]},"scenes/edit-the-offer-edit-wide":{"w":1600,"h":900,"avg":"#39332d","placeholder":true,"pins":[]},"scenes/cat-women":{"w":1000,"h":1250,"avg":"#dbbe8e","placeholder":true,"pins":[]},"scenes/cat-men":{"w":1000,"h":1250,"avg":"#abb0ad","placeholder":true,"pins":[]},"scenes/cat-kids":{"w":1000,"h":1250,"avg":"#a7ab7c","placeholder":true,"pins":[]},"scenes/cat-home":{"w":1000,"h":1250,"avg":"#e4d7c5","placeholder":true,"pins":[]},"scenes/auth-side":{"w":1000,"h":1250,"avg":"#d6c4ba","placeholder":true,"pins":[]},"scenes/story-block-print-wide":{"w":1600,"h":900,"avg":"#bfaea9","placeholder":true,"pins":[{"id":"aja-01","x":0.55,"y":0.42},{"id":"aja-03","x":0.73,"y":0.417},{"id":"ran-01","x":0.91,"y":0.766}]},"scenes/story-block-print-tall":{"w":1000,"h":1250,"avg":"#a4999d","placeholder":true,"pins":[{"id":"aja-01","x":0.3,"y":0.428},{"id":"aja-04","x":0.7,"y":0.32}]},"scenes/story-block-print-1":{"w":1500,"h":1000,"avg":"#aba2a4","placeholder":true,"pins":[{"id":"aja-01","x":0.2,"y":0.428},{"id":"aja-03","x":0.5,"y":0.424},{"id":"aja-04","x":0.8,"y":0.332}]},"scenes/story-block-print-2":{"w":1500,"h":1000,"avg":"#dbccbb","placeholder":true,"pins":[{"id":"ran-01","x":0.2,"y":0.76},{"id":"ind-04","x":0.5,"y":0.745},{"id":"ran-04","x":0.8,"y":0.76}]},"scenes/story-diwali-wide":{"w":1600,"h":900,"avg":"#c29998","placeholder":true,"pins":[{"id":"lik-03","x":0.55,"y":0.49},{"id":"til-01","x":0.73,"y":0.54},{"id":"gaj-01","x":0.91,"y":0.831}]},"scenes/story-diwali-tall":{"w":1000,"h":1250,"avg":"#c08e8d","placeholder":true,"pins":[{"id":"lik-01","x":0.3,"y":0.5},{"id":"til-01","x":0.7,"y":0.48}]},"scenes/story-diwali-1":{"w":1500,"h":1000,"avg":"#cca7a7","placeholder":true,"pins":[{"id":"lik-01","x":0.2,"y":0.5},{"id":"lik-03","x":0.5,"y":0.55},{"id":"gaj-01","x":0.8,"y":0.828}]},"scenes/story-diwali-2":{"w":1500,"h":1000,"avg":"#e7cfc1","placeholder":true,"pins":[{"id":"til-03","x":0.2,"y":0.792},{"id":"gaj-02","x":0.5,"y":0.817},{"id":"gaj-03","x":0.8,"y":0.792}]},"scenes/story-quiet-luxe-wide":{"w":1600,"h":900,"avg":"#382a24","placeholder":true,"pins":[{"id":"mau-01","x":0.55,"y":0.451},{"id":"mau-03","x":0.73,"y":0.417},{"id":"ves-01","x":0.91,"y":0.751}]},"scenes/story-quiet-luxe-tall":{"w":1000,"h":1250,"avg":"#2d2623","placeholder":true,"pins":[{"id":"mau-02","x":0.3,"y":0.348},{"id":"ves-03","x":0.7,"y":0.774}]},"scenes/story-quiet-luxe-1":{"w":1500,"h":1000,"avg":"#3e302a","placeholder":true,"pins":[{"id":"mau-01","x":0.2,"y":0.46},{"id":"mau-03","x":0.5,"y":0.424},{"id":"ves-04","x":0.8,"y":0.792}]},"scenes/story-quiet-luxe-2":{"w":1500,"h":1000,"avg":"#36342f","placeholder":true,"pins":[{"id":"ora-01","x":0.2,"y":0.348},{"id":"ora-02","x":0.5,"y":0.361},{"id":"ves-05","x":0.8,"y":0.808}]},"scenes/story-one-dress-wide":{"w":1600,"h":900,"avg":"#dccbc3","placeholder":true,"pins":[{"id":"twd-02","x":0.55,"y":0.451},{"id":"twd-02","x":0.73,"y":0.496},{"id":"pip-03","x":0.91,"y":0.774}]},"scenes/story-one-dress-tall":{"w":1000,"h":1250,"avg":"#e6d0c8","placeholder":true,"pins":[{"id":"twd-02","x":0.3,"y":0.46},{"id":"str-01","x":0.7,"y":0.804}]},"scenes/story-one-dress-1":{"w":1500,"h":1000,"avg":"#e8d2cb","placeholder":true,"pins":[{"id":"twd-02","x":0.2,"y":0.46},{"id":"str-01","x":0.5,"y":0.79},{"id":"pip-03","x":0.8,"y":0.768}]},"scenes/story-one-dress-2":{"w":1500,"h":1000,"avg":"#ddccc5","placeholder":true,"pins":[{"id":"twd-02","x":0.2,"y":0.46},{"id":"ves-04","x":0.5,"y":0.781},{"id":"pip-02","x":0.8,"y":0.792}]},"scenes/story-wear-less-wide":{"w":1600,"h":900,"avg":"#bcc3b5","placeholder":true,"pins":[{"id":"loo-04","x":0.55,"y":0.326},{"id":"jun-05","x":0.73,"y":0.478},{"id":"loo-01","x":0.91,"y":0.298}]},"scenes/story-wear-less-tall":{"w":1000,"h":1250,"avg":"#a9afa6","placeholder":true,"pins":[{"id":"loo-04","x":0.3,"y":0.332},{"id":"jun-05","x":0.7,"y":0.427}]},"scenes/story-wear-less-1":{"w":1500,"h":1000,"avg":"#babfb3","placeholder":true,"pins":[{"id":"loo-01","x":0.2,"y":0.308},{"id":"jun-05","x":0.5,"y":0.487},{"id":"loo-04","x":0.8,"y":0.332}]},"scenes/story-wear-less-2":{"w":1500,"h":1000,"avg":"#c2c9b8","placeholder":true,"pins":[{"id":"mir-03","x":0.2,"y":0.332},{"id":"jun-03","x":0.5,"y":0.424},{"id":"str-04","x":0.8,"y":0.8}]},"scenes/story-slow-home-wide":{"w":1600,"h":900,"avg":"#e3d5c3","placeholder":true,"pins":[{"id":"ran-02","x":0.55,"y":0.763},{"id":"mit-03","x":0.73,"y":0.695},{"id":"hea-01","x":0.91,"y":0.804}]},"scenes/story-slow-home-tall":{"w":1000,"h":1250,"avg":"#ded4c5","placeholder":true,"pins":[{"id":"ran-03","x":0.3,"y":0.744},{"id":"mit-02","x":0.7,"y":0.766}]},"scenes/story-slow-home-1":{"w":1500,"h":1000,"avg":"#e8dbc8","placeholder":true,"pins":[{"id":"ran-01","x":0.2,"y":0.76},{"id":"mit-01","x":0.5,"y":0.79},{"id":"hea-01","x":0.8,"y":0.8}]},"scenes/story-slow-home-2":{"w":1500,"h":1000,"avg":"#e5d9c6","placeholder":true,"pins":[{"id":"hea-03","x":0.2,"y":0.76},{"id":"mit-04","x":0.5,"y":0.79},{"id":"hea-04","x":0.8,"y":0.76}]}}
+{
+ "products/aja-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#979195"
+ },
+ "products/aja-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#6e697b"
+ },
+ "products/aja-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#989196"
+ },
+ "products/aja-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7aea2",
+  "placeholder": true
+ },
+ "products/aja-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c1806f",
+  "placeholder": true
+ },
+ "products/aja-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7aea2",
+  "placeholder": true
+ },
+ "products/aja-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ada5a7"
+ },
+ "products/aja-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#59566e"
+ },
+ "products/aja-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aea5a7"
+ },
+ "products/aja-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a1a3aa"
+ },
+ "products/aja-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#757b8d"
+ },
+ "products/aja-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a2a4ab"
+ },
+ "products/aja-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c9a59d"
+ },
+ "products/aja-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c8a39b"
+ },
+ "products/gaj-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e3d2c5"
+ },
+ "products/gaj-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbc8b6"
+ },
+ "products/gaj-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1d0c3"
+ },
+ "products/gaj-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e3d2c4"
+ },
+ "products/gaj-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6d5c7"
+ },
+ "products/gaj-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a5b4ad",
+  "placeholder": true
+ },
+ "products/gaj-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#6a9292",
+  "placeholder": true
+ },
+ "products/gaj-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a5b4ad",
+  "placeholder": true
+ },
+ "products/gaj-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d6aea9",
+  "placeholder": true
+ },
+ "products/gaj-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d6aea9",
+  "placeholder": true
+ },
+ "products/gaj-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d2c09e",
+  "placeholder": true
+ },
+ "products/gaj-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c4a670",
+  "placeholder": true
+ },
+ "products/gaj-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d2c09e",
+  "placeholder": true
+ },
+ "products/gaj-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d3b8"
+ },
+ "products/gaj-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e3d0b1"
+ },
+ "products/gaj-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d3b7"
+ },
+ "products/gaj-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfc4bf"
+ },
+ "products/gaj-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dec3bd"
+ },
+ "products/hav-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b6b4b4"
+ },
+ "products/hav-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#7b899d"
+ },
+ "products/hav-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b6b4b4"
+ },
+ "products/hav-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aea49b"
+ },
+ "products/hav-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ada399"
+ },
+ "products/hav-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cbcac8"
+ },
+ "products/hav-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#acb4c0"
+ },
+ "products/hav-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cccbca"
+ },
+ "products/hav-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b1aab0"
+ },
+ "products/hav-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#707991"
+ },
+ "products/hav-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b1aab0"
+ },
+ "products/hav-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e7d5c9"
+ },
+ "products/hav-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e7d5c8"
+ },
+ "products/hea-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d6bea0",
+  "placeholder": true
+ },
+ "products/hea-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c19768",
+  "placeholder": true
+ },
+ "products/hea-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d6bea0",
+  "placeholder": true
+ },
+ "products/hea-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcd0bd"
+ },
+ "products/hea-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcd0bd"
+ },
+ "products/hea-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1d5c1"
+ },
+ "products/hea-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1d7c6",
+  "placeholder": true
+ },
+ "products/hea-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddd1bf",
+  "placeholder": true
+ },
+ "products/hea-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1d7c6",
+  "placeholder": true
+ },
+ "products/hea-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7b7a2",
+  "placeholder": true
+ },
+ "products/hea-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7b7a2",
+  "placeholder": true
+ },
+ "products/hea-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfd4c2"
+ },
+ "products/hea-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbd1bf"
+ },
+ "products/hea-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded3c0"
+ },
+ "products/hea-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c2bea6"
+ },
+ "products/hea-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bdb9a0"
+ },
+ "products/hea-05/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0d6c5",
+  "placeholder": true
+ },
+ "products/hea-05/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2d8c7",
+  "placeholder": true
+ },
+ "products/hea-05/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1d6c5",
+  "placeholder": true
+ },
+ "products/ind-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#abadb3"
+ },
+ "products/ind-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#7e8a9f"
+ },
+ "products/ind-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a3a6ac"
+ },
+ "products/ind-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b8b7ba"
+ },
+ "products/ind-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#546a8e"
+ },
+ "products/ind-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b1b2b6"
+ },
+ "products/ind-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#8a95a4"
+ },
+ "products/ind-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#7f8b9d"
+ },
+ "products/ind-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#8a95a4"
+ },
+ "products/ind-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4ddd0"
+ },
+ "products/ind-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4ddd0"
+ },
+ "products/ind-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c2bdb7"
+ },
+ "products/ind-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#acacae"
+ },
+ "products/ind-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b7b5b1"
+ },
+ "products/jun-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a99b94"
+ },
+ "products/jun-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#6d635e"
+ },
+ "products/jun-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a89992"
+ },
+ "products/jun-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0cfc2"
+ },
+ "products/jun-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0cec1"
+ },
+ "products/jun-01/v3-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b8ab9a"
+ },
+ "products/jun-01/v3-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b7ab99"
+ },
+ "products/jun-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e7dcca"
+ },
+ "products/jun-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6dcc9"
+ },
+ "products/jun-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6dcc9"
+ },
+ "products/jun-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8d5cd"
+ },
+ "products/jun-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8d5cc"
+ },
+ "products/jun-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cac3b2"
+ },
+ "products/jun-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b1b19e"
+ },
+ "products/jun-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c9c2b1"
+ },
+ "products/jun-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b09996"
+ },
+ "products/jun-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b19997"
+ },
+ "products/jun-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e9dad1"
+ },
+ "products/jun-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5dbd2"
+ },
+ "products/jun-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#eadcd3"
+ },
+ "products/jun-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c0b2aa"
+ },
+ "products/jun-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c1b3ab"
+ },
+ "products/jun-04/v3-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1c7b9"
+ },
+ "products/jun-04/v3-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2c8ba"
+ },
+ "products/jun-05/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b0aba7"
+ },
+ "products/jun-05/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#656771"
+ },
+ "products/jun-05/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b2ada9"
+ },
+ "products/jun-05/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dac7af"
+ },
+ "products/jun-05/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dac8b2"
+ },
+ "products/kor-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ebe4d7",
+  "placeholder": true
+ },
+ "products/kor-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ebe4d6",
+  "placeholder": true
+ },
+ "products/kor-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ebe4d7",
+  "placeholder": true
+ },
+ "products/kor-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dddcd7",
+  "placeholder": true
+ },
+ "products/kor-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dddcd7",
+  "placeholder": true
+ },
+ "products/kor-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d7c8"
+ },
+ "products/kor-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6dccc"
+ },
+ "products/kor-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d7c8"
+ },
+ "products/kor-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1e0d6"
+ },
+ "products/kor-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6e2d7"
+ },
+ "products/kor-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2e0d6"
+ },
+ "products/kor-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cfd9db"
+ },
+ "products/kor-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ccd6d8"
+ },
+ "products/kor-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5dbcb"
+ },
+ "products/kor-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e9dfcd"
+ },
+ "products/kor-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6dccb"
+ },
+ "products/lik-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ead6cc",
+  "placeholder": true
+ },
+ "products/lik-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6c4bb",
+  "placeholder": true
+ },
+ "products/lik-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ead6cc",
+  "placeholder": true
+ },
+ "products/lik-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8d5c6",
+  "placeholder": true
+ },
+ "products/lik-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7d5c6",
+  "placeholder": true
+ },
+ "products/lik-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcbe80"
+ },
+ "products/lik-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dab45f"
+ },
+ "products/lik-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddbf82"
+ },
+ "products/lik-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#92a7a1"
+ },
+ "products/lik-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#90a59f"
+ },
+ "products/lik-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c3aba8",
+  "placeholder": true
+ },
+ "products/lik-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#9c737f",
+  "placeholder": true
+ },
+ "products/lik-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c3aba8",
+  "placeholder": true
+ },
+ "products/lik-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b2aeae",
+  "placeholder": true
+ },
+ "products/lik-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b2aeae",
+  "placeholder": true
+ },
+ "products/lik-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbb6a3",
+  "placeholder": true
+ },
+ "products/lik-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d28b76",
+  "placeholder": true
+ },
+ "products/lik-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbb6a3",
+  "placeholder": true
+ },
+ "products/lik-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8d4bb",
+  "placeholder": true
+ },
+ "products/lik-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8d4bb",
+  "placeholder": true
+ },
+ "products/lik-05/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cfa4a3",
+  "placeholder": true
+ },
+ "products/lik-05/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b06870",
+  "placeholder": true
+ },
+ "products/lik-05/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cfa4a3",
+  "placeholder": true
+ },
+ "products/lit-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#decf9a"
+ },
+ "products/lit-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1b757"
+ },
+ "products/lit-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#decf9a"
+ },
+ "products/lit-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7ddd4"
+ },
+ "products/lit-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7ddd3"
+ },
+ "products/lit-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b5bdb8",
+  "placeholder": true
+ },
+ "products/lit-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#739a9b",
+  "placeholder": true
+ },
+ "products/lit-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b5bdb8",
+  "placeholder": true
+ },
+ "products/lit-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2c7a4",
+  "placeholder": true
+ },
+ "products/lit-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2c7a4",
+  "placeholder": true
+ },
+ "products/lit-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1b397"
+ },
+ "products/lit-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ca785f"
+ },
+ "products/lit-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0b396"
+ },
+ "products/lit-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b3beaa"
+ },
+ "products/lit-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b3bfaa"
+ },
+ "products/lit-03/v3-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#efdfb3"
+ },
+ "products/lit-03/v3-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#eedeb2"
+ },
+ "products/lit-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfcdbe"
+ },
+ "products/lit-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5b6b0"
+ },
+ "products/lit-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1cfc1"
+ },
+ "products/lit-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a9ad9a"
+ },
+ "products/lit-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aaad9a"
+ },
+ "products/lit-05/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbe0d4"
+ },
+ "products/lit-05/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8ddd7"
+ },
+ "products/lit-05/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dce1d4"
+ },
+ "products/lit-05/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfddc8"
+ },
+ "products/lit-05/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dedcc7"
+ },
+ "products/lit-06/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5d6cd"
+ },
+ "products/lit-06/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e3d5cd"
+ },
+ "products/lit-06/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d5cc"
+ },
+ "products/lit-06/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4cec5"
+ },
+ "products/lit-06/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2ccc3"
+ },
+ "products/lit-07/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d59b9d"
+ },
+ "products/lit-07/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#af3a68"
+ },
+ "products/lit-07/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d49b9c"
+ },
+ "products/lit-07/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a0b29f"
+ },
+ "products/lit-07/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a2b4a1"
+ },
+ "products/lit-08/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8cfc1"
+ },
+ "products/lit-08/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c6c0b7"
+ },
+ "products/lit-08/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8cfc0"
+ },
+ "products/lit-08/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aca6a0"
+ },
+ "products/lit-08/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ada7a1"
+ },
+ "products/loo-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbdbd2"
+ },
+ "products/loo-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dedacc"
+ },
+ "products/loo-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dadad1"
+ },
+ "products/loo-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d3c4b7"
+ },
+ "products/loo-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d2c3b6"
+ },
+ "products/loo-01/v3-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a5b3aa"
+ },
+ "products/loo-01/v3-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a4b2a9"
+ },
+ "products/loo-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded1bc"
+ },
+ "products/loo-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7c8ad"
+ },
+ "products/loo-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded1bc"
+ },
+ "products/loo-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b2ad97"
+ },
+ "products/loo-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b2ad97"
+ },
+ "products/loo-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8d6cd"
+ },
+ "products/loo-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5cdbc"
+ },
+ "products/loo-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7d5cc"
+ },
+ "products/loo-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a8aaa7"
+ },
+ "products/loo-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aaaca9"
+ },
+ "products/loo-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6dcce",
+  "placeholder": true
+ },
+ "products/loo-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfd4c3",
+  "placeholder": true
+ },
+ "products/loo-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6dcce",
+  "placeholder": true
+ },
+ "products/loo-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c8c7b1",
+  "placeholder": true
+ },
+ "products/loo-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c8c7b1",
+  "placeholder": true
+ },
+ "products/maa-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d2c9ba"
+ },
+ "products/maa-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c2bcb0"
+ },
+ "products/maa-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cec6b8"
+ },
+ "products/maa-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5c0b6"
+ },
+ "products/maa-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d1bab1"
+ },
+ "products/maa-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cfae8e"
+ },
+ "products/maa-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bd9159"
+ },
+ "products/maa-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ceab86"
+ },
+ "products/maa-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c2b9b9"
+ },
+ "products/maa-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#9a99a1"
+ },
+ "products/maa-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bcb5b8"
+ },
+ "products/maa-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcc1ac"
+ },
+ "products/maa-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cfa38a"
+ },
+ "products/maa-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddc1ac"
+ },
+ "products/maa-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d2cdb6"
+ },
+ "products/maa-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cac7ae"
+ },
+ "products/mau-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#432330"
+ },
+ "products/mau-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#502c38"
+ },
+ "products/mau-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#422230"
+ },
+ "products/mau-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#6a5a60"
+ },
+ "products/mau-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#68585e"
+ },
+ "products/mau-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2e302d"
+ },
+ "products/mau-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2f3131"
+ },
+ "products/mau-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2e302d"
+ },
+ "products/mau-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#5d523b"
+ },
+ "products/mau-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#5d523b"
+ },
+ "products/mau-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#3d4131"
+ },
+ "products/mau-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#434833"
+ },
+ "products/mau-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#3d4131"
+ },
+ "products/mau-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2c3233"
+ },
+ "products/mau-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2c3233"
+ },
+ "products/mir-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d9c1ad",
+  "placeholder": true
+ },
+ "products/mir-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c6a989",
+  "placeholder": true
+ },
+ "products/mir-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d9c1ad",
+  "placeholder": true
+ },
+ "products/mir-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b2a7a7",
+  "placeholder": true
+ },
+ "products/mir-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b2a7a7",
+  "placeholder": true
+ },
+ "products/mir-01/v3-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4c8c0",
+  "placeholder": true
+ },
+ "products/mir-01/v3-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4c8c0",
+  "placeholder": true
+ },
+ "products/mir-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ebe3d6",
+  "placeholder": true
+ },
+ "products/mir-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#eae4d4",
+  "placeholder": true
+ },
+ "products/mir-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ebe3d6",
+  "placeholder": true
+ },
+ "products/mir-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b9beb0",
+  "placeholder": true
+ },
+ "products/mir-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b9beb0",
+  "placeholder": true
+ },
+ "products/mir-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b1a69f",
+  "placeholder": true
+ },
+ "products/mir-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#716b66",
+  "placeholder": true
+ },
+ "products/mir-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b1a69f",
+  "placeholder": true
+ },
+ "products/mir-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8c3b0",
+  "placeholder": true
+ },
+ "products/mir-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8c3b0",
+  "placeholder": true
+ },
+ "products/mit-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4dbcc",
+  "placeholder": true
+ },
+ "products/mit-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded7c8",
+  "placeholder": true
+ },
+ "products/mit-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4dbcc",
+  "placeholder": true
+ },
+ "products/mit-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d9bfa9",
+  "placeholder": true
+ },
+ "products/mit-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d9bfa9",
+  "placeholder": true
+ },
+ "products/mit-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e3d8c7"
+ },
+ "products/mit-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4dbca"
+ },
+ "products/mit-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5dac9"
+ },
+ "products/mit-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcd3c2"
+ },
+ "products/mit-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0d7c6"
+ },
+ "products/mit-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5c1ab"
+ },
+ "products/mit-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cab29c"
+ },
+ "products/mit-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#decfba"
+ },
+ "products/mit-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4dbcc",
+  "placeholder": true
+ },
+ "products/mit-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2d7c6",
+  "placeholder": true
+ },
+ "products/mit-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4dbcc",
+  "placeholder": true
+ },
+ "products/mit-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c4bfb6",
+  "placeholder": true
+ },
+ "products/mit-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c4bfb6",
+  "placeholder": true
+ },
+ "products/noo-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#746361"
+ },
+ "products/noo-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b6a693"
+ },
+ "products/noo-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#887770"
+ },
+ "products/noo-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#322333",
+  "placeholder": true
+ },
+ "products/noo-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2c2736",
+  "placeholder": true
+ },
+ "products/noo-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#322333",
+  "placeholder": true
+ },
+ "products/noo-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2f2b2f"
+ },
+ "products/noo-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#30503d"
+ },
+ "products/noo-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2f2b2f"
+ },
+ "products/nor-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4e0d6"
+ },
+ "products/nor-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5e1d9"
+ },
+ "products/nor-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4e0d6"
+ },
+ "products/nor-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aba8a0"
+ },
+ "products/nor-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aaa79f"
+ },
+ "products/nor-01/v3-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b9b8a7"
+ },
+ "products/nor-01/v3-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b9b8a7"
+ },
+ "products/nor-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cdd6da"
+ },
+ "products/nor-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cad3d8"
+ },
+ "products/nor-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ced6da"
+ },
+ "products/nor-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1e2dd"
+ },
+ "products/nor-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0e0db"
+ },
+ "products/nor-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5c7b2"
+ },
+ "products/nor-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c2b193"
+ },
+ "products/nor-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d6c9b4"
+ },
+ "products/nor-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aba7a3"
+ },
+ "products/nor-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aaa5a2"
+ },
+ "products/nor-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d6d2c3"
+ },
+ "products/nor-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5cbb6"
+ },
+ "products/nor-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d4d0c1"
+ },
+ "products/nor-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bbc6b8"
+ },
+ "products/nor-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bcc6b8"
+ },
+ "products/nor-05/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded7c8"
+ },
+ "products/nor-05/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcd5c5"
+ },
+ "products/nor-05/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded7c8"
+ },
+ "products/nor-05/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a0a1a2"
+ },
+ "products/nor-05/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a0a1a2"
+ },
+ "products/nyk-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d2c3"
+ },
+ "products/nyk-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1cfbf"
+ },
+ "products/nyk-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d1c3"
+ },
+ "products/nyk-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c9bcbe"
+ },
+ "products/nyk-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c8bbbc"
+ },
+ "products/nyk-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5dac9"
+ },
+ "products/nyk-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfd1bd"
+ },
+ "products/nyk-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6dac9"
+ },
+ "products/nyk-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aba49e"
+ },
+ "products/nyk-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aba49e"
+ },
+ "products/nyk-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0d3c8",
+  "placeholder": true
+ },
+ "products/nyk-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8cdc0",
+  "placeholder": true
+ },
+ "products/nyk-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0d3c8",
+  "placeholder": true
+ },
+ "products/nyk-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c5b2a7",
+  "placeholder": true
+ },
+ "products/nyk-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c5b2a7",
+  "placeholder": true
+ },
+ "products/nyk-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e8d6c6"
+ },
+ "products/nyk-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5d5c2"
+ },
+ "products/nyk-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e7d5c5"
+ },
+ "products/nyk-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#9b9196"
+ },
+ "products/nyk-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#9b9196"
+ },
+ "products/ora-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#696758"
+ },
+ "products/ora-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a9a08b"
+ },
+ "products/ora-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#696758"
+ },
+ "products/ora-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#292f32"
+ },
+ "products/ora-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#282f32"
+ },
+ "products/ora-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#31373b"
+ },
+ "products/ora-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#363e4b"
+ },
+ "products/ora-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#31373b"
+ },
+ "products/ora-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#7a796e"
+ },
+ "products/ora-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#79796e"
+ },
+ "products/ora-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2f322d"
+ },
+ "products/ora-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#323334"
+ },
+ "products/ora-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2f322c"
+ },
+ "products/ora-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#393e2e"
+ },
+ "products/ora-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#3a3e2e"
+ },
+ "products/pip-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcd1c3"
+ },
+ "products/pip-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcd1c1"
+ },
+ "products/pip-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d9cec1"
+ },
+ "products/pip-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfccb4",
+  "placeholder": true
+ },
+ "products/pip-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5bc94",
+  "placeholder": true
+ },
+ "products/pip-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfccb5",
+  "placeholder": true
+ },
+ "products/pip-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfd5cf",
+  "placeholder": true
+ },
+ "products/pip-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfd5cf",
+  "placeholder": true
+ },
+ "products/pip-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddcab8"
+ },
+ "products/pip-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cdb097"
+ },
+ "products/pip-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcc9b7"
+ },
+ "products/pip-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c9bfb3"
+ },
+ "products/pip-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c9bfb3"
+ },
+ "products/pip-03/v3-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e7dbcd"
+ },
+ "products/pip-03/v3-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5dacb"
+ },
+ "products/pip-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2d4c1"
+ },
+ "products/pip-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dccdb8"
+ },
+ "products/pip-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0d1bf"
+ },
+ "products/ran-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dac2af"
+ },
+ "products/ran-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d1af9d"
+ },
+ "products/ran-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5b4a1"
+ },
+ "products/ran-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c4bdb4"
+ },
+ "products/ran-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#b6b0ad"
+ },
+ "products/ran-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7b5a3",
+  "placeholder": true
+ },
+ "products/ran-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c58671",
+  "placeholder": true
+ },
+ "products/ran-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7b5a3",
+  "placeholder": true
+ },
+ "products/ran-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aeaaa8",
+  "placeholder": true
+ },
+ "products/ran-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#737688",
+  "placeholder": true
+ },
+ "products/ran-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aeaaa8",
+  "placeholder": true
+ },
+ "products/ran-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddc19a",
+  "placeholder": true
+ },
+ "products/ran-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddc19a",
+  "placeholder": true
+ },
+ "products/ran-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bbbda9",
+  "placeholder": true
+ },
+ "products/ran-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#89987f",
+  "placeholder": true
+ },
+ "products/ran-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bbbda9",
+  "placeholder": true
+ },
+ "products/rsv-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#634d48"
+ },
+ "products/rsv-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c5ac80"
+ },
+ "products/rsv-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#5f4944"
+ },
+ "products/rsv-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#392a34"
+ },
+ "products/rsv-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#362731"
+ },
+ "products/rsv-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8c4b6"
+ },
+ "products/rsv-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a07171"
+ },
+ "products/rsv-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7c4b6"
+ },
+ "products/rsv-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2a3e33"
+ },
+ "products/rsv-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2a493c"
+ },
+ "products/rsv-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2b3f33"
+ },
+ "products/rsv-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e9d7cb"
+ },
+ "products/rsv-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e8d7cb"
+ },
+ "products/rsv-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e7d5c9"
+ },
+ "products/rsv-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddccc2"
+ },
+ "products/rsv-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dccbc1"
+ },
+ "products/rsv-05/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d5c0b6"
+ },
+ "products/rsv-05/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d2bbb3"
+ },
+ "products/rsv-05/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7c2b8"
+ },
+ "products/rsv-05/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cbcabc"
+ },
+ "products/rsv-05/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cbcbbc"
+ },
+ "products/saa-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfd4c7"
+ },
+ "products/saa-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cec2b5"
+ },
+ "products/saa-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbd0c3"
+ },
+ "products/saa-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c7beb1",
+  "placeholder": true
+ },
+ "products/saa-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ada79e",
+  "placeholder": true
+ },
+ "products/saa-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c7beb1",
+  "placeholder": true
+ },
+ "products/saa-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c2bbb1",
+  "placeholder": true
+ },
+ "products/saa-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#aaa69f",
+  "placeholder": true
+ },
+ "products/saa-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c2bbb1",
+  "placeholder": true
+ },
+ "products/saa-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e9d8ce"
+ },
+ "products/saa-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ecdbd0"
+ },
+ "products/saa-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e9d9ce"
+ },
+ "products/str-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e2d8cc"
+ },
+ "products/str-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1d8cd"
+ },
+ "products/str-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1d7cc"
+ },
+ "products/str-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d7c9"
+ },
+ "products/str-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d8c9"
+ },
+ "products/str-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded1c1"
+ },
+ "products/str-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddd2c3"
+ },
+ "products/str-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded1c1"
+ },
+ "products/str-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8cdbf"
+ },
+ "products/str-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7ccbd"
+ },
+ "products/str-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7cfc2"
+ },
+ "products/str-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbd4c8"
+ },
+ "products/str-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7cfc2"
+ },
+ "products/str-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7cec2"
+ },
+ "products/str-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7cdc1"
+ },
+ "products/str-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbccc6"
+ },
+ "products/str-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d3c6c2"
+ },
+ "products/str-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#daccc6"
+ },
+ "products/str-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5d5cc"
+ },
+ "products/str-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e3d2c9"
+ },
+ "products/til-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#472231",
+  "placeholder": true
+ },
+ "products/til-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#592431",
+  "placeholder": true
+ },
+ "products/til-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#472231",
+  "placeholder": true
+ },
+ "products/til-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#332e34",
+  "placeholder": true
+ },
+ "products/til-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#332e34",
+  "placeholder": true
+ },
+ "products/til-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#949ba3"
+ },
+ "products/til-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#303c59"
+ },
+ "products/til-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#939aa2"
+ },
+ "products/til-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ab9597"
+ },
+ "products/til-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ac9698"
+ },
+ "products/til-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d8c3b9"
+ },
+ "products/til-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d3bdb4"
+ },
+ "products/til-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d7c2b8"
+ },
+ "products/til-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e7dcce"
+ },
+ "products/til-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e7dccf"
+ },
+ "products/til-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1dfd3"
+ },
+ "products/til-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e5e0d1"
+ },
+ "products/til-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1dfd3"
+ },
+ "products/til-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#949c8c"
+ },
+ "products/til-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#929a8a"
+ },
+ "products/twd-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cda89c"
+ },
+ "products/twd-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bd867d"
+ },
+ "products/twd-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#cca79a"
+ },
+ "products/twd-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e1d2c2"
+ },
+ "products/twd-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e0d0c0"
+ },
+ "products/twd-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dfccbc"
+ },
+ "products/twd-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d4c0a7"
+ },
+ "products/twd-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddcab9"
+ },
+ "products/twd-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c6c4b4"
+ },
+ "products/twd-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c6c4b4"
+ },
+ "products/twd-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c5c0bd"
+ },
+ "products/twd-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#6c738a"
+ },
+ "products/twd-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c4bfbc"
+ },
+ "products/twd-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c6acac"
+ },
+ "products/twd-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bb9b9e"
+ },
+ "products/twd-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c6acab"
+ },
+ "products/twd-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#eadecc"
+ },
+ "products/twd-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e9ddcb"
+ },
+ "products/twd-05/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c1c1ba"
+ },
+ "products/twd-05/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#9faea9"
+ },
+ "products/twd-05/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#bfbfb8"
+ },
+ "products/twd-05/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ddb7ae"
+ },
+ "products/twd-05/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dcb6ad"
+ },
+ "products/twd-06/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#9ca292"
+ },
+ "products/twd-06/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#3d6050"
+ },
+ "products/twd-06/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#9da394"
+ },
+ "products/twd-07/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a59a94"
+ },
+ "products/twd-07/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#7e7773"
+ },
+ "products/twd-07/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a79c96"
+ },
+ "products/twd-07/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d3a896"
+ },
+ "products/twd-07/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d3a796"
+ },
+ "products/ves-01/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#433929"
+ },
+ "products/ves-01/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#63432a"
+ },
+ "products/ves-01/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#433829"
+ },
+ "products/ves-01/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2e3029"
+ },
+ "products/ves-01/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2e3029"
+ },
+ "products/ves-02/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#31332b",
+  "placeholder": true
+ },
+ "products/ves-02/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2d2d28",
+  "placeholder": true
+ },
+ "products/ves-02/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#31332b",
+  "placeholder": true
+ },
+ "products/ves-02/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#463e2f",
+  "placeholder": true
+ },
+ "products/ves-02/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#463e2f",
+  "placeholder": true
+ },
+ "products/ves-03/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#34322a"
+ },
+ "products/ves-03/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#372f29"
+ },
+ "products/ves-03/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#333129"
+ },
+ "products/ves-03/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#434336"
+ },
+ "products/ves-03/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#424235"
+ },
+ "products/ves-04/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#393c31"
+ },
+ "products/ves-04/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#3b3d32"
+ },
+ "products/ves-04/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#3a3c31"
+ },
+ "products/ves-04/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#32352b"
+ },
+ "products/ves-04/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#32352b"
+ },
+ "products/ves-05/v1-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#463c2c",
+  "placeholder": true
+ },
+ "products/ves-05/v1-detail": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#5b402b",
+  "placeholder": true
+ },
+ "products/ves-05/v1-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#463c2c",
+  "placeholder": true
+ },
+ "products/ves-05/v2-alt": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#31332b",
+  "placeholder": true
+ },
+ "products/ves-05/v2-front": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#31332b",
+  "placeholder": true
+ },
+ "scenes/auth-side": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d6c4ba",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/cat-home": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e4d7c5",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/cat-kids": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a7ab7c",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/cat-men": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#abb0ad",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/cat-women": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#dbbe8e",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-festive-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#be969a",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-festive-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#c29998",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-hidden-gems-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a99ea0",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-hidden-gems-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#d3c0b5",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-house-of-nykaa-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d6a7a5",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-house-of-nykaa-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#e1bfb9",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-luxe-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#3f2422",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-luxe-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#312422",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-new-in-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#d0a99e",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-new-in-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#dbc2b2",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-responsible-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a9afa6",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-responsible-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#bcc3b5",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-the-offer-edit-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#474036",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-the-offer-edit-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#39332d",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-under-1500-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6dccf",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-under-1500-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#e6dccf",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-under-3000-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a3a7a6",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/edit-under-3000-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#acb7b8",
+  "placeholder": true,
+  "pins": []
+ },
+ "scenes/story-block-print-1": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#aba2a4",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "aja-01",
+    "x": 0.2,
+    "y": 0.428
+   },
+   {
+    "id": "aja-03",
+    "x": 0.5,
+    "y": 0.424
+   },
+   {
+    "id": "aja-04",
+    "x": 0.8,
+    "y": 0.332
+   }
+  ]
+ },
+ "scenes/story-block-print-2": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#dbccbb",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "ran-01",
+    "x": 0.2,
+    "y": 0.76
+   },
+   {
+    "id": "ind-04",
+    "x": 0.5,
+    "y": 0.745
+   },
+   {
+    "id": "ran-04",
+    "x": 0.8,
+    "y": 0.76
+   }
+  ]
+ },
+ "scenes/story-block-print-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a4999d",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "aja-01",
+    "x": 0.3,
+    "y": 0.428
+   },
+   {
+    "id": "aja-04",
+    "x": 0.7,
+    "y": 0.32
+   }
+  ]
+ },
+ "scenes/story-block-print-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#bfaea9",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "aja-01",
+    "x": 0.55,
+    "y": 0.42
+   },
+   {
+    "id": "aja-03",
+    "x": 0.73,
+    "y": 0.417
+   },
+   {
+    "id": "ran-01",
+    "x": 0.91,
+    "y": 0.766
+   }
+  ]
+ },
+ "scenes/story-diwali-1": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#cca7a7",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "lik-01",
+    "x": 0.2,
+    "y": 0.5
+   },
+   {
+    "id": "lik-03",
+    "x": 0.5,
+    "y": 0.55
+   },
+   {
+    "id": "gaj-01",
+    "x": 0.8,
+    "y": 0.828
+   }
+  ]
+ },
+ "scenes/story-diwali-2": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#e7cfc1",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "til-03",
+    "x": 0.2,
+    "y": 0.792
+   },
+   {
+    "id": "gaj-02",
+    "x": 0.5,
+    "y": 0.817
+   },
+   {
+    "id": "gaj-03",
+    "x": 0.8,
+    "y": 0.792
+   }
+  ]
+ },
+ "scenes/story-diwali-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#c08e8d",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "lik-01",
+    "x": 0.3,
+    "y": 0.5
+   },
+   {
+    "id": "til-01",
+    "x": 0.7,
+    "y": 0.48
+   }
+  ]
+ },
+ "scenes/story-diwali-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#c29998",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "lik-03",
+    "x": 0.55,
+    "y": 0.49
+   },
+   {
+    "id": "til-01",
+    "x": 0.73,
+    "y": 0.54
+   },
+   {
+    "id": "gaj-01",
+    "x": 0.91,
+    "y": 0.831
+   }
+  ]
+ },
+ "scenes/story-one-dress-1": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#e8d2cb",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "twd-02",
+    "x": 0.2,
+    "y": 0.46
+   },
+   {
+    "id": "str-01",
+    "x": 0.5,
+    "y": 0.79
+   },
+   {
+    "id": "pip-03",
+    "x": 0.8,
+    "y": 0.768
+   }
+  ]
+ },
+ "scenes/story-one-dress-2": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#ddccc5",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "twd-02",
+    "x": 0.2,
+    "y": 0.46
+   },
+   {
+    "id": "ves-04",
+    "x": 0.5,
+    "y": 0.781
+   },
+   {
+    "id": "pip-02",
+    "x": 0.8,
+    "y": 0.792
+   }
+  ]
+ },
+ "scenes/story-one-dress-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#e6d0c8",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "twd-02",
+    "x": 0.3,
+    "y": 0.46
+   },
+   {
+    "id": "str-01",
+    "x": 0.7,
+    "y": 0.804
+   }
+  ]
+ },
+ "scenes/story-one-dress-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#dccbc3",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "twd-02",
+    "x": 0.55,
+    "y": 0.451
+   },
+   {
+    "id": "twd-02",
+    "x": 0.73,
+    "y": 0.496
+   },
+   {
+    "id": "pip-03",
+    "x": 0.91,
+    "y": 0.774
+   }
+  ]
+ },
+ "scenes/story-quiet-luxe-1": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#3e302a",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "mau-01",
+    "x": 0.2,
+    "y": 0.46
+   },
+   {
+    "id": "mau-03",
+    "x": 0.5,
+    "y": 0.424
+   },
+   {
+    "id": "ves-04",
+    "x": 0.8,
+    "y": 0.792
+   }
+  ]
+ },
+ "scenes/story-quiet-luxe-2": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#36342f",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "ora-01",
+    "x": 0.2,
+    "y": 0.348
+   },
+   {
+    "id": "ora-02",
+    "x": 0.5,
+    "y": 0.361
+   },
+   {
+    "id": "ves-05",
+    "x": 0.8,
+    "y": 0.808
+   }
+  ]
+ },
+ "scenes/story-quiet-luxe-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#2d2623",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "mau-02",
+    "x": 0.3,
+    "y": 0.348
+   },
+   {
+    "id": "ves-03",
+    "x": 0.7,
+    "y": 0.774
+   }
+  ]
+ },
+ "scenes/story-quiet-luxe-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#382a24",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "mau-01",
+    "x": 0.55,
+    "y": 0.451
+   },
+   {
+    "id": "mau-03",
+    "x": 0.73,
+    "y": 0.417
+   },
+   {
+    "id": "ves-01",
+    "x": 0.91,
+    "y": 0.751
+   }
+  ]
+ },
+ "scenes/story-slow-home-1": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#e8dbc8",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "ran-01",
+    "x": 0.2,
+    "y": 0.76
+   },
+   {
+    "id": "mit-01",
+    "x": 0.5,
+    "y": 0.79
+   },
+   {
+    "id": "hea-01",
+    "x": 0.8,
+    "y": 0.8
+   }
+  ]
+ },
+ "scenes/story-slow-home-2": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#e5d9c6",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "hea-03",
+    "x": 0.2,
+    "y": 0.76
+   },
+   {
+    "id": "mit-04",
+    "x": 0.5,
+    "y": 0.79
+   },
+   {
+    "id": "hea-04",
+    "x": 0.8,
+    "y": 0.76
+   }
+  ]
+ },
+ "scenes/story-slow-home-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#ded4c5",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "ran-03",
+    "x": 0.3,
+    "y": 0.744
+   },
+   {
+    "id": "mit-02",
+    "x": 0.7,
+    "y": 0.766
+   }
+  ]
+ },
+ "scenes/story-slow-home-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#e3d5c3",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "ran-02",
+    "x": 0.55,
+    "y": 0.763
+   },
+   {
+    "id": "mit-03",
+    "x": 0.73,
+    "y": 0.695
+   },
+   {
+    "id": "hea-01",
+    "x": 0.91,
+    "y": 0.804
+   }
+  ]
+ },
+ "scenes/story-wear-less-1": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#babfb3",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "loo-01",
+    "x": 0.2,
+    "y": 0.308
+   },
+   {
+    "id": "jun-05",
+    "x": 0.5,
+    "y": 0.487
+   },
+   {
+    "id": "loo-04",
+    "x": 0.8,
+    "y": 0.332
+   }
+  ]
+ },
+ "scenes/story-wear-less-2": {
+  "w": 1500,
+  "h": 1000,
+  "avg": "#c2c9b8",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "mir-03",
+    "x": 0.2,
+    "y": 0.332
+   },
+   {
+    "id": "jun-03",
+    "x": 0.5,
+    "y": 0.424
+   },
+   {
+    "id": "str-04",
+    "x": 0.8,
+    "y": 0.8
+   }
+  ]
+ },
+ "scenes/story-wear-less-tall": {
+  "w": 1000,
+  "h": 1250,
+  "avg": "#a9afa6",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "loo-04",
+    "x": 0.3,
+    "y": 0.332
+   },
+   {
+    "id": "jun-05",
+    "x": 0.7,
+    "y": 0.427
+   }
+  ]
+ },
+ "scenes/story-wear-less-wide": {
+  "w": 1600,
+  "h": 900,
+  "avg": "#bcc3b5",
+  "placeholder": true,
+  "pins": [
+   {
+    "id": "loo-04",
+    "x": 0.55,
+    "y": 0.326
+   },
+   {
+    "id": "jun-05",
+    "x": 0.73,
+    "y": 0.478
+   },
+   {
+    "id": "loo-01",
+    "x": 0.91,
+    "y": 0.298
+   }
+  ]
+ }
+}
