@@ -1,0 +1,68 @@
+# PROJECT STATUS — Nykaa Fashion redesign (prototype)
+
+_Source of truth: [`docs/PRD.md`](docs/PRD.md). Last updated: 30 Oct 2026._
+
+**Thesis:** make *curation* the default way to discover (taste, not discount). Edits sit beside Shop and Discover in the primary nav; the homepage is intent-adaptive (cold → curation, returning → "picked for you" rail, deal → offers promoted). Everything backend-shaped is **simulated and labelled**.
+
+## Run it
+
+```bash
+npm install
+npm run dev            # http://localhost:3000
+npm run build && npm start
+npm run typecheck && npm run lint
+npm run data:check     # cross-reference validation of all mock data
+node scripts/qa/journey.cjs http://localhost:3000            # e2e shopping journey (needs a running server)
+node scripts/qa/journey.cjs http://localhost:3000 --mobile
+node scripts/qa/shot.cjs <url> <out.png> [--full] [--mobile]  # screenshot + console/network health check
+```
+
+## Milestones (PRD build order)
+
+| # | Milestone | Status |
+|---|-----------|--------|
+| 01 | **Foundation** — architecture, tokens, type, global styles, responsive layout, reusable UI kit | ✅ done |
+| 02 | **Shopping discovery** — adaptive Home, header + mega menus, search + suggestions, category/edit/label pages, PLP with URL-encoded filters & sort | ✅ done |
+| 03 | **Product experience** — PDP (gallery, zoom, FLIP, sizes, size guide, reviews, complete-the-look, recommendations), wishlist, quick view, notify-me | ✅ done |
+| 04 | **Commerce** — bag, qty, coupons, price maths, OTP login/registration, addresses, 3-step checkout, payment selection, simulated confirmation | ✅ done |
+| 05 | **Account** — profile, addresses, wishlist, order history, order detail, tracking timeline, cancel / return | ✅ done |
+| 06 | **Final polish** — motion, loading/empty/error states, a11y, performance, responsive refinement | 🔄 in progress (see Pending) |
+| — | **Imagery** — procedural art engine (`scripts/art`) replacing placeholder renders | 🔄 in progress (agent-built engine; placeholders in place) |
+
+## Routes
+
+`/` · `/discover` · `/discover/[story]` · `/edits` · `/edits/[edit]` · `/c/[...category]` · `/brands` · `/brands/[label]` · `/p/[product]` · `/search?q=` · `/offers` · `/wishlist` · `/bag` · `/login` · `/checkout` · `/checkout/confirmation/[id]` · `/account` · `/account/orders` · `/account/orders/[id]` · `/account/addresses` · `/help` · `/info/[page]` · `/prototype` · 404 + error boundary.
+
+## What is simulated (always labelled in the UI)
+
+Personalisation / intent engine (localStorage heuristics) · OTP sign-in (code is `123456`) · payments (test values shown; `fail@upi` and card `…0002` decline on purpose) · orders, tracking & returns · reviews · delivery estimates · coupons (`TASTE10`, `FIRSTEDIT`, `GEMS15`, `HOUSE200`) · back-in-stock alerts · analytics events (logged locally, PRD §8.1).
+
+The **Prototype** panel (bottom-right) lets a reviewer force intent states, add latency, fail the next request, hide a home module (partial failure), read the event log, sign in as the demo account, and reset everything.
+
+## Decisions
+
+- **Stack:** PRD §9.1 — Next.js + TypeScript + Tailwind + Framer Motion + Lucide. Repo was empty, so scaffolded with the current `create-next-app` (Next 16.4, Cache Components, Turbopack). No other runtime deps.
+- **Cache Components rules respected:** no `Date.now()`/`Math.random()` during render (`useNow`, seeded PRNG), `useSearchParams` behind `<Suspense>`, `await params` behind `<Suspense>` with skeletons, header wrapped for `usePathname`.
+- **State:** a ~60-line external store (`src/lib/store.ts`) on `useSyncExternalStore` with localStorage/sessionStorage persistence — hydration-safe, no state library.
+- **Data model:** PRD §6.5 in `src/data/*`. Plain erasable TypeScript so Node scripts import it directly.
+- **Brands:** House of Nykaa labels are used as named in the PRD; every other label/product is fictional (no implied real catalogue or prices).
+- **Typography:** Instrument Serif (display) + Geist (UI). ₹ is only in Geist's latin-ext subset, so the display stack falls back to Geist for it. Pink never carries text (white-on-`#e80071` is 4.50:1); CTAs are ink; accent text uses `pink-ink`.
+- **Imagery:** the sandbox cannot reach any photo host and the connected AI-image account has 0 credits, so imagery is generated procedurally (SVG → sharp → WebP) from the same catalogue data. Images are *files*: replace `public/img/<key>.webp` with a photograph of the same name and nothing else changes.
+
+## Pending
+
+- [ ] Swap placeholder renders for the art engine's output (`npm run art:manifest && npm run art:render`) and review at desktop + mobile.
+- [ ] Visual QA sweep of every route at 390 / 820 / 1280 / 1728 widths with real imagery.
+- [ ] Accessibility audit pass (axe-style checks, keyboard walk-through of overlays, contrast re-check on imagery overlays).
+- [ ] Performance pass on production build (bundle size, LCP images, `image-meta.json` payload).
+- [ ] Optional: `Reveal` stagger tuning, hero parallax, FLIP polish.
+
+## Blocked / limitations
+
+- No real payments, orders, SMS/email, recommender or analytics backend — by design (PRD §3.4/§9.2). Fulfilment (delivery, returns, refunds) is a *parallel business track* the PRD explicitly excludes; the redesign's impact ceiling depends on it.
+- iOS app is a later phase (PRD §3.6); this is responsive web.
+
+## QA log
+
+- `scripts/qa/journey.cjs` — 21-step end-to-end journey (home → edit → filter URL/back → PDP → size gate → bag → coupon → login → checkout → forced payment failure → success → tracking → addresses → search → no-results → sold-out/notify → story pin → deal intent → 404): **passes on desktop (1440×900) and mobile (390×844)**.
+- `npm run typecheck` ✅ · `npm run lint` ✅ · `npm run data:check` ✅
