@@ -1,7 +1,7 @@
 "use client";
 import { getImageProps } from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ArrowRight, Check, ChevronLeft, ChevronRight, Copy, Pause, Play } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Section } from "@/components/layout/Section";
@@ -12,15 +12,18 @@ import { LinkButton } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { products } from "@/data/catalog";
+import { coupons } from "@/data/commerce";
 import { labelById } from "@/data/labels";
 import { CATEGORY_TILES, CELEBRATION_TILES, DIWALI_TILES, ICONIC_BRANDS, PRICE_TILES, SEO_BLOCKS } from "@/data/home-content";
 import { photo } from "@/data/placeholders";
 import { productsByLabel, productsInCategory } from "@/data/queries";
 import type { Product } from "@/data/types";
+import { inr } from "@/lib/format";
 import { imgEdge, imgSrc } from "@/lib/img";
 import { searchProducts } from "@/lib/search";
 import { track } from "@/lib/track";
 import { signal } from "@/stores/intent";
+import { toast } from "@/stores/ui";
 
 const inStock = (list: Product[]) => list.filter((p) => !p.soldOut);
 const hero = (p: Product | undefined) => p?.variants[0].images[0] ?? "scenes/cat-women";
@@ -234,6 +237,49 @@ export function PriceStrip() {
           </li>
         ))}
       </ul>
+    </Section>
+  );
+}
+
+// ── Offers for you: four coupon tiles (click to copy — simulated codes) ───────────────────────────────────────
+export function CouponStrip() {
+  const [copied, setCopied] = useState<string | null>(null);
+  const list = coupons.filter((c) => !c.expired).slice(0, 4);
+  const copy = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch {
+      /* clipboard may be unavailable — still confirm so the flow is testable */
+    }
+    setCopied(code);
+    signal("discount_interaction");
+    toast({ title: `Code ${code} copied`, description: "Apply it in your bag — simulated coupon." });
+    setTimeout(() => setCopied(null), 2200);
+  };
+  const off = (c: (typeof coupons)[number]) => (c.type === "percent" ? `${c.value}% off` : `${inr(c.value)} off`);
+  return (
+    <Section y="none" className="pb-2 pt-2">
+      <div className="flex items-end justify-between gap-4">
+        <h2 className="display-xs">Offers <em>for you</em></h2>
+        <Link href="/offers" className="link-u tap text-[12px] font-semibold uppercase tracking-[0.09em]">
+          All offers
+        </Link>
+      </div>
+      <Grid as="ul" className="mt-5 gap-y-[var(--gap)]">
+        {list.map((c) => (
+          <Col as="li" key={c.code} span={{ base: 4, sm: 6, lg: 3 }}>
+            <div className="flex h-full items-center justify-between gap-4 border border-dashed border-pink bg-white p-4">
+              <div className="min-w-0">
+                <p className="text-[16px] font-bold leading-tight text-pink-ink">{off(c)}</p>
+                <p className="mt-1 line-clamp-2 text-[12.5px] leading-snug text-ink-2">{c.description}</p>
+              </div>
+              <button type="button" onClick={() => copy(c.code)} aria-label={`Copy code ${c.code}`} className="tap inline-flex h-11 shrink-0 items-center gap-2 border border-ink px-3 text-[12px] font-bold tracking-[0.08em] tabular-nums transition-colors hover:bg-ink hover:text-white">
+                {copied === c.code ? <Check size={14} aria-hidden /> : <Copy size={14} aria-hidden />} {c.code}
+              </button>
+            </div>
+          </Col>
+        ))}
+      </Grid>
     </Section>
   );
 }

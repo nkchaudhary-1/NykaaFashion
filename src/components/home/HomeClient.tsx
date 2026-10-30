@@ -12,7 +12,7 @@ import { topKey, useIntent } from "@/stores/intent";
 import { usePrefs } from "@/stores/ui";
 import { ModuleShell } from "./ModuleShell";
 import { BrandSpotlight, FeaturedEdits, NewInByTaste, OfferModule, PersonalizedRail, ShopTheLook, StoryStrip, TrendingGrid } from "./Modules";
-import { CategoryTiles, CelebrationTiles, DiwaliWardrobe, IconicBrands, PriceStrip, SaleHero, SeoBlocks } from "./NykaaModules";
+import { CategoryTiles, CelebrationTiles, CouponStrip, DiwaliWardrobe, IconicBrands, PriceStrip, SaleHero, SeoBlocks } from "./NykaaModules";
 
 function Values() {
   const icons = [ShieldCheck, RotateCcw, CreditCard];
@@ -57,6 +57,8 @@ export function HomeClient() {
         return <SaleHero />;
       case "pricestrip":
         return <PriceStrip />;
+      case "coupons":
+        return <CouponStrip />;
       case "categories":
         return <CategoryTiles />;
       case "celebration":

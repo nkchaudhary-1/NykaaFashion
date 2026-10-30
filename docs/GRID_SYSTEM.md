@@ -4,6 +4,20 @@ One grid, used everywhere. Every image, card, banner and text block lines up on 
 content instead of repeating one pattern. This file is the contract; `scripts/qa/grid.cjs` enforces the alignment part on the
 rendered DOM and `scripts/qa/flat.cjs` enforces the visual rules.
 
+## 0. Identity — what stays Nykaa Fashion
+
+The redesign keeps the live brand and reorganises it; it does not invent a new one.
+
+| Kept from the live site | How it shows up |
+| --- | --- |
+| White surfaces, navy-black text, **Nykaa pink `#e80071`** | tokens in `globals.css`; pink = primary CTAs, active states, discount text, headline emphasis (`<em>`); small pink text on white/grey uses `pink-ink` `#c4005f` (AA) |
+| Navigation | Women · Men · Kids · Home · Brands · **More ▾** (Luxe, Hidden Gems, Responsible, Festive, House of Nykaa, Style Files), Offers, *Switch to Luxe*; phones: ☰ drawer + bottom nav Home · Shop · Brands · Wishlist · Bag |
+| Homepage module stack | sale banner → category tiles → **Celebration-ready categories** → **Iconic brands, unreal savings** → **Build Diwali wardrobe** → curated destinations → SEO copy (titles as on the live page; counts and "up to X% off" stamps are computed from the catalogue) |
+| Listing pattern | brand (bold) → product name → price + struck MRP + pink "% off"; wishlist heart top-right; "House of Nykaa" badge on own labels |
+| Brand names | H&M, Puma, U.S. Polo Assn., Cider, Vero Moda and the House of Nykaa labels (Twenty Dresses, Nykd, RSVP, Pipa Bella, Gajra Gang, Likha) — **sample listings**, flagged as such |
+
+What changes is structure: one grid, a different composition per section, clearer hierarchy and spacing, flat and shadow-free.
+
 ## 1. Rules of the look
 
 | Rule | What it means in code |
@@ -68,7 +82,7 @@ Pick one per section; do not repeat the same one twice in a row on a page.
 
 | Page | Structure |
 | --- | --- |
-| Home | Hero banner → edit chips → category bento → new-in carousel → edits bento (mirrored) → trending mixed grid → shop-the-look scene + list → festive split banner + 4-up → story lead+stack → label spotlight → offer band → values → footer. Order adapts to intent (cold / returning / deal). |
+| Home | Sale banner carousel (3 slides, pause + arrows) → price shortcuts → category tiles (6-up carousel) → offers for you (coupon tiles) → Celebration-ready categories (4 portrait tiles) → Iconic brands (4×2 brand wall) → Build Diwali wardrobe (4-col photo feature + 2×4 tiles) → new-arrivals carousel → curated destinations bento (mirrored) → trending mixed grid → shop-the-look scene + list → Style Files (lead + stack) → House of Nykaa spotlight → SEO accordion → service promises → footer. Order adapts to intent (cold / returning / deal). |
 | Category / search / edit / label listings | Page heading → sub-category tile rail → sticky toolbar (Filter · quick chips · count · Sort) → full-width 4-up grid (3-up tablet, 2-up phone) with a 6×2 feature insert → "Show more". Filters open in a drawer so the grid keeps all 12 columns. |
 | Product | Gallery 8 cols (image grid: first image 8, then 4+4; phones: swipeable, full bleed) + sticky buy box 4 cols → details / delivery / reviews (4+8) → complete-the-look carousel → more-from-label carousel. Sticky add-to-bag bar on phones. |
 | Discover / stories | Asymmetric editorial rows; article = full-bleed cover, 7-column reading column (cols 3–9 / centred), wide shoppable images spanning 12 or 8+4. |

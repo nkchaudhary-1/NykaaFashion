@@ -68,7 +68,7 @@ export function SearchResults() {
   const noResults = res.results.length === 0;
   return (
     <>
-      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} title={noResults ? <>No results for <em>“{q}”</em></> : <>Results for <em>“{q}”</em></>}>
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} title={<>{noResults ? "No results for" : "Results for"} <span className="text-pink-ink">“{q}”</span></>}>
         <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2" aria-live="polite">
           {res.corrected && <p className="text-[14px] text-ink-2">Showing results for <strong className="font-medium text-ink">{res.corrected}</strong>.</p>}
           {res.relaxed && <p className="text-[14px] text-ink-2">No piece matches every word — showing the closest matches.</p>}

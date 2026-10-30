@@ -1,8 +1,8 @@
-# Nykaa Fashion — curation-first redesign (prototype)
+# Nykaa Fashion — redesign prototype
 
-A responsive-web redesign of Nykaa Fashion's discovery experience, built from [`docs/PRD.md`](docs/PRD.md). Discovery is led by **taste, not discount**: Hidden Gems, Luxe, the Responsible Edit, Festive and House of Nykaa are first-class destinations; a discount is shown only where a price has genuinely moved.
+An improved Nykaa Fashion: the **existing identity is kept** — white surfaces, navy-black text, Nykaa pink for CTAs and discounts, the live navigation (Women · Men · Kids · Home · Brands · More ▾ with Luxe and Hidden Gems) and the live homepage module stack (sale banner → category tiles → Celebration-ready categories → Iconic brands, unreal savings → Build Diwali wardrobe → SEO copy) — while the structure is rebuilt on one strict 12-column grid (4 on phones) with a different composition per section, flat colour, no shadows and a single typeface (Inter Display). Grid contract: [`docs/GRID_SYSTEM.md`](docs/GRID_SYSTEM.md); original brief: [`docs/PRD.md`](docs/PRD.md).
 
-> **This is a design prototype.** Products, labels, stories and people are fictional (House of Nykaa label names are used as named in the brief). Checkout, payments, OTP sign-in, orders, tracking, reviews and personalisation are **simulated** and labelled as such. No payment is taken and no order exists.
+> **This is a design prototype.** Brand names mirror the live site, but every product, price, discount stamp, story and person is **sample data** (the live catalogue could not be read from the build environment — import path below). Checkout, payments, OTP sign-in, orders, tracking, reviews and personalisation are **simulated** and labelled as such. No payment is taken and no order exists.
 
 See [`PROJECT_STATUS.md`](PROJECT_STATUS.md) for milestones, decisions and QA, and `/prototype` in the running app for reviewer notes.
 

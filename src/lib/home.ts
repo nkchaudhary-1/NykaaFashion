@@ -2,7 +2,7 @@ import type { IntentMode } from "@/stores/intent";
 
 // Adaptive home composition — PRD §5.1 / §6.1: "System reorders home modules from intent signal
 // (cold → curation; returning → rail; deal-intent → discount promoted)".
-export type HomeModuleId = "hero" | "pricestrip" | "categories" | "celebration" | "brands" | "diwali" | "newin" | "edits" | "trending" | "look" | "rail" | "stories" | "brand" | "offers" | "seo";
+export type HomeModuleId = "hero" | "pricestrip" | "coupons" | "categories" | "celebration" | "brands" | "diwali" | "newin" | "edits" | "trending" | "look" | "rail" | "stories" | "brand" | "offers" | "seo";
 
 // Modules follow the live Nykaa Fashion homepage stack (sale banner → category tiles → Celebration-ready Categories → Iconic Brands →
 // Build Diwali wardrobe → SEO copy) with the curated destinations (Luxe, Hidden Gems, Style Files) kept in view instead of behind "More".
@@ -10,6 +10,7 @@ export const HOME_MODULES: Array<{ id: HomeModuleId; name: string }> = [
   { id: "hero", name: "Sale banner" },
   { id: "pricestrip", name: "Price shortcuts" },
   { id: "categories", name: "Shop by category" },
+  { id: "coupons", name: "Offers for you" },
   { id: "celebration", name: "Celebration-ready categories" },
   { id: "brands", name: "Iconic brands" },
   { id: "diwali", name: "Build Diwali wardrobe" },
@@ -34,11 +35,11 @@ export function composeHome(mode: IntentMode): HomeSlot[] {
   const ids = (list: HomeModuleId[]): HomeSlot[] => list.map((id) => ({ id }));
   switch (mode) {
     case "returning":
-      return ids(["hero", "rail", "categories", "pricestrip", "celebration", "brands", "newin", "diwali", "edits", "trending", "look", "brand", "stories", "seo"]);
+      return ids(["hero", "rail", "categories", "pricestrip", "coupons", "celebration", "brands", "newin", "diwali", "edits", "trending", "look", "brand", "stories", "seo"]);
     case "deal":
-      return [{ id: "offers", promoted: true }, ...ids(["hero", "rail", "categories", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"])];
+      return [{ id: "offers", promoted: true }, ...ids(["hero", "rail", "categories", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"])];
     default:
-      return ids(["hero", "pricestrip", "categories", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"]);
+      return ids(["hero", "pricestrip", "categories", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"]);
   }
 }
 
