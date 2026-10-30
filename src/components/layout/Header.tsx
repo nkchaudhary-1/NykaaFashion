@@ -5,11 +5,15 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import { CountBadge, IconButton } from "@/components/ui/Button";
-import { productBySlug } from "@/data/catalog";
+import { Img } from "@/components/ui/Img";
+import { Price } from "@/components/ui/Price";
+import { heroImage, productById, productBySlug } from "@/data/catalog";
+import { labelById } from "@/data/labels";
 import { DEPTS, DEPT_TABS, SEARCH_PLACEHOLDER, deptOfPath, type Dept } from "@/data/nav";
 import { useOutsideClick } from "@/lib/a11y";
 import { cn } from "@/lib/cn";
-import { initials } from "@/lib/format";
+import { inr, initials } from "@/lib/format";
+import { priceBag } from "@/lib/pricing";
 import { useStore } from "@/lib/store";
 import { logout, useAuth } from "@/stores/account";
 import { bagStore, wishlistStore } from "@/stores/commerce";
@@ -202,9 +206,7 @@ export function Header() {
                 <HeaderAction label={`Wishlist${wishlistCount ? `, ${wishlistCount} ${wishlistCount === 1 ? "item" : "items"}` : ""}`} text="Wishlist" badge={wishlistCount} onClick={() => router.push("/wishlist")}>
                   <Heart size={22} strokeWidth={1.5} />
                 </HeaderAction>
-                <HeaderAction label={`Cart${bagCount ? `, ${bagCount} ${bagCount === 1 ? "item" : "items"}` : ""}`} text="Cart" badge={bagCount} onClick={openBag}>
-                  <ShoppingBag size={22} strokeWidth={1.5} />
-                </HeaderAction>
+                <CartMenu count={bagCount} onOpenBag={openBag} />
               </div>
             </div>
           </div>
@@ -323,6 +325,96 @@ function HeaderAction({ label, text, badge, onClick, children }: { label: string
       </span>
       <span aria-hidden className="text-[14px] font-semibold">{text}</span>
     </button>
+  );
+}
+
+/**
+ * Cart: the icon + label open the bag drawer; hovering it (mouse only) previews the bag as on the live site — what you have saved so far, the latest item
+ * and "Continue" / "View bag". Keyboard and touch users go straight to the drawer, which carries the same information.
+ */
+function CartMenu({ count, onOpenBag }: { count: number; onOpenBag: () => void }) {
+  const bag = useStore(bagStore);
+  const [open, setOpen] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hover = (on: boolean) => {
+    if (tapsOnly()) return;
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setOpen(on && count > 0), on ? 140 : 220);
+  };
+  const lines = bag.lines.flatMap((l) => {
+    const product = productById[l.productId];
+    return product ? [{ line: l, product }] : [];
+  });
+  const latest = lines[0];
+  const youSave = priceBag(lines.map(({ product, line }) => ({ product, qty: line.qty }))).youSave;
+  const others = lines.slice(1, 6);
+  return (
+    <div className="relative" onMouseEnter={() => hover(true)} onMouseLeave={() => hover(false)}>
+      <HeaderAction
+        label={`Cart${count ? `, ${count} ${count === 1 ? "item" : "items"}` : ""}`}
+        text="Cart"
+        badge={count}
+        onClick={() => {
+          setOpen(false);
+          onOpenBag();
+        }}
+      >
+        <ShoppingBag size={22} strokeWidth={1.5} />
+      </HeaderAction>
+      <AnimatePresence>
+        {open && latest && (
+          <motion.div role="region" aria-label="Bag preview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }} className="absolute right-0 top-full z-50 w-[380px] border border-line-strong bg-white">
+            <div className="bg-sand px-5 py-4">
+              {youSave > 0 && <p className="text-[14px] font-semibold text-emerald">You Saved {inr(youSave)}</p>}
+              <p className="mt-0.5 text-[16px] leading-snug text-ink">Apply coupons &amp; offers to your bag to save more</p>
+            </div>
+            <div className="px-5 pb-5 pt-4">
+              <p className="text-[14px] text-ink-3">Recently added</p>
+              <div className="mt-3 flex gap-4">
+                <div className="w-[76px] shrink-0 bg-sand">
+                  <Img imgKey={heroImage(latest.product, latest.line.variant)} alt="" sizes="76px" ratio="3/4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[14px] font-bold text-ink">{labelById[latest.product.labelId].name}</p>
+                  <p className="truncate text-[14px] text-ink-3">{latest.product.name}</p>
+                  {latest.line.size !== "One size" && <p className="mt-1 text-[14px] text-ink">Size {latest.line.size}</p>}
+                  <Price price={latest.product.price} mrp={latest.product.mrp} size="md" className="mt-2" />
+                </div>
+              </div>
+              {others.length > 0 && (
+                <>
+                  <p className="mt-4 text-[13px] text-ink-3">
+                    {lines.length - 1} more {lines.length - 1 === 1 ? "item" : "items"} in your bag
+                  </p>
+                  <ul className="mt-2 flex gap-2">
+                    {others.map(({ line, product }) => (
+                      <li key={line.id} className="w-10 bg-sand">
+                        <Img imgKey={heroImage(product, line.variant)} alt={product.name} sizes="40px" ratio="3/4" />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              <div className="mt-5 grid grid-cols-2 gap-3">
+                <button type="button" onClick={() => setOpen(false)} className="inline-flex h-11 items-center justify-center rounded-[var(--radius-sm)] border border-ink text-[15px] font-semibold text-ink hover:bg-sand">
+                  Continue
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    onOpenBag();
+                  }}
+                  className="inline-flex h-11 items-center justify-center rounded-[var(--radius-sm)] bg-navy text-[15px] font-semibold text-white hover:bg-ink"
+                >
+                  View bag
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
