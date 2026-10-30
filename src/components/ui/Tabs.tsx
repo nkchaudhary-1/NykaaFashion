@@ -45,7 +45,7 @@ export function Tabs({ items, value, onChange, label, className, variant = "unde
               "relative inline-flex min-h-11 shrink-0 items-center gap-1.5 whitespace-nowrap px-4 text-[13px] font-medium transition-colors",
               variant === "underline"
                 ? cn("after:absolute after:inset-x-3 after:bottom-0 after:h-px after:origin-left after:bg-ink after:transition-transform after:duration-300", active ? "text-ink after:scale-x-100" : "text-ink-3 after:scale-x-0 hover:text-ink")
-                : cn("rounded-full border", active ? "border-ink bg-ink text-bone" : "border-line-strong text-ink-2 hover:border-ink"),
+                : cn("border", active ? "border-ink bg-ink text-bone" : "border-line-strong text-ink-2 hover:border-ink"),
             )}
           >
             {t.label}

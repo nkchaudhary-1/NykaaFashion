@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div aria-hidden className={cn("skeleton rounded-[2px]", className)} />;
+  return <div aria-hidden className={cn("skeleton", className)} />;
 }
 
 export function CardSkeleton() {

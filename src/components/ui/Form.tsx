@@ -4,7 +4,7 @@ import { useId, type ComponentProps, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 const CONTROL =
-  "w-full border bg-white text-[15px] text-ink placeholder:text-ink-3/80 transition-colors duration-200 hover:border-ink-3 focus:border-ink focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink disabled:bg-sand disabled:text-ink-3";
+  "w-full border bg-white text-[15px] text-ink placeholder:text-ink-3/80 transition-colors duration-200 hover:border-ink-3 focus:border-ink focus-visible:outline-offset-0 disabled:bg-sand disabled:text-ink-3";
 
 export function FieldShell({ id, label, hint, error, optional, children, className }: { id: string; label?: string; hint?: string; error?: string | null; optional?: boolean; children: ReactNode; className?: string }) {
   return (
@@ -116,8 +116,8 @@ export function Switch({ checked, onChange, label, hint, className }: { checked:
         </span>
         {hint && <span className="block text-[12.5px] text-ink-3">{hint}</span>}
       </div>
-      <button type="button" role="switch" aria-checked={checked} aria-labelledby={`${id}-l`} onClick={() => onChange(!checked)} className={cn("relative h-6 w-11 shrink-0 rounded-full transition-colors duration-300", checked ? "bg-ink" : "bg-line-strong")}>
-        <span className={cn("absolute left-0.5 top-0.5 size-5 rounded-full bg-white shadow transition-transform duration-300 ease-editorial", checked && "translate-x-5")} />
+      <button type="button" role="switch" aria-checked={checked} aria-labelledby={`${id}-l`} onClick={() => onChange(!checked)} className={cn("relative h-6 w-11 shrink-0 transition-colors duration-300", checked ? "bg-ink" : "bg-line-strong")}>
+        <span className={cn("absolute left-0.5 top-0.5 size-5 bg-white transition-transform duration-300 ease-editorial", checked && "translate-x-5")} />
       </button>
     </div>
   );

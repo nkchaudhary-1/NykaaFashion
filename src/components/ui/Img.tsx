@@ -27,7 +27,7 @@ interface Props {
   load?: LoadHint;
   className?: string;
   imgClassName?: string;
-  /** CSS aspect-ratio of the box (e.g. "4/5"); omit when the parent controls size */
+  /** CSS aspect-ratio of the box (e.g. "4/5"); "fill" lets the parent set the height; omit for the file's own ratio */
   ratio?: string;
   position?: string;
   cover?: boolean;
@@ -37,8 +37,9 @@ interface Props {
 export function Img({ imgKey, alt, sizes, load, className, imgClassName, ratio, position, cover = true }: Props) {
   const [w, h] = imgSize(imgKey);
   const blur = imgBlur(imgKey); // tiny inline preview exists for the large editorial covers only
+  const placed = /(^|\s)(absolute|fixed|sticky)(\s|$)/.test(className ?? ""); // cn() is a plain join: don't stack `relative` on top of a caller's position
   return (
-    <div className={cn("relative overflow-hidden", className)} style={{ backgroundColor: imgAvg(imgKey), aspectRatio: ratio ?? `${w}/${h}` }}>
+    <div className={cn("overflow-hidden", !placed && "relative", className)} style={{ backgroundColor: imgAvg(imgKey), aspectRatio: ratio === "fill" ? undefined : (ratio ?? `${w}/${h}`) }}>
       <Image
         src={imgSrc(imgKey)}
         alt={alt}

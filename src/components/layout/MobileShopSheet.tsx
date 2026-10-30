@@ -1,48 +1,57 @@
 "use client";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { Disclosure } from "@/components/ui/Disclosure";
+import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { Img, SIZES } from "@/components/ui/Img";
 import { Overlay, OverlayBody, OverlayHeader } from "@/components/ui/Overlay";
+import { Tabs } from "@/components/ui/Tabs";
 import { categories, topCategories } from "@/data/categories";
+import { productsInCategory } from "@/data/queries";
 import { setUI, useUI } from "@/stores/ui";
 
+/** Bottom-nav "Shop": pick a department, then browse its categories as image tiles (2-up grid on the phone grid). */
 export function MobileShopSheet() {
   const { menuOpen } = useUI();
+  const [top, setTop] = useState(topCategories[0].id);
   const close = () => setUI({ menuOpen: false });
-  const row = "flex min-h-11 items-center justify-between py-2 text-[15px] text-ink";
+  const subs = categories.filter((c) => c.parent === top);
+  const topName = topCategories.find((t) => t.id === top)?.name ?? "";
+  const quick = [
+    ["/edits/new-in", "New in"],
+    ["/offers", "Offers"],
+    ["/brands", "Labels A–Z"],
+  ];
   return (
     <Overlay open={menuOpen} onClose={close} label="Shop" side="bottom" panelClassName="h-[88dvh]">
       <OverlayHeader title="Shop" />
+      <div className="shrink-0 px-2">
+        <Tabs items={topCategories.map((t) => ({ id: t.id, label: t.name }))} value={top} onChange={setTop} label="Departments" panelId="shop-panel" />
+      </div>
       <OverlayBody>
-        {topCategories.map((top) => (
-          <Disclosure key={top.id} title={<span className="display-xs">{top.name}</span>} headingLevel={3}>
-            <ul className="-mt-1">
-              <li>
-                <Link href={`/c/${top.id}`} onClick={close} className={`${row} font-medium`}>
-                  All {top.name.toLowerCase()} <ChevronRight size={16} aria-hidden />
-                </Link>
-              </li>
-              {categories.filter((c) => c.parent === top.id).map((c) => (
+        <div id="shop-panel" role="tabpanel" aria-label={topName}>
+          <Link href={`/c/${top}`} onClick={close} className="flex min-h-12 items-center justify-between border-b border-ink pb-3 text-[17px] font-medium tracking-[-0.015em]">
+            Shop all {topName.toLowerCase()} <ArrowRight size={18} aria-hidden />
+          </Link>
+          <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-6">
+            {subs.map((c) => {
+              const rep = productsInCategory(c.id).find((p) => !p.soldOut) ?? productsInCategory(c.id)[0];
+              return (
                 <li key={c.id}>
-                  <Link href={`/c/${c.id}`} onClick={close} className={`${row} text-ink-2`}>
-                    {c.name} <ChevronRight size={16} aria-hidden className="text-ink-3" />
+                  <Link href={`/c/${c.id}`} onClick={close} className="block">
+                    <div className="bg-sand">{rep && <Img imgKey={rep.variants[0].images[0]} alt="" sizes={SIZES.thumb} ratio="1/1" />}</div>
+                    <p className="mt-2 text-[14px] font-medium leading-snug">{c.name}</p>
+                    <p className="text-[12px] tabular-nums text-ink-3">{productsInCategory(c.id).length} pieces</p>
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </Disclosure>
-        ))}
-        <ul className="mt-6 grid grid-cols-1 gap-1 border-t border-line pt-4">
-          {[
-            ["/edits/new-in", "New in"],
-            ["/brands", "All labels A–Z"],
-            ["/offers", "Offers"],
-            ["/wishlist", "Wishlist"],
-            ["/account", "Account"],
-          ].map(([href, label]) => (
+              );
+            })}
+          </ul>
+        </div>
+        <ul className="mt-8 grid grid-cols-3 border-t border-line pt-4">
+          {quick.map(([href, label]) => (
             <li key={href}>
-              <Link href={href} onClick={close} className={row}>
-                {label} <ChevronRight size={16} aria-hidden className="text-ink-3" />
+              <Link href={href} onClick={close} className="flex min-h-11 items-center text-[13.5px] font-medium">
+                {label}
               </Link>
             </li>
           ))}

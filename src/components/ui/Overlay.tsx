@@ -55,11 +55,11 @@ function Inner({ onClose, label, side = "center", mobileSheet = true, className,
   const shown = reduce ? { opacity: 1 } : { x: 0, y: 0, scale: 1, opacity: 1 };
 
   const pos: Record<OverlaySide, string> = {
-    center: "left-1/2 top-1/2 w-[min(92vw,560px)] max-h-[88dvh] -translate-x-1/2 -translate-y-1/2",
-    right: "inset-y-0 right-0 w-[min(100vw,460px)]",
-    left: "inset-y-0 left-0 w-[min(100vw,420px)]",
-    bottom: "inset-x-0 bottom-0 max-h-[90dvh] rounded-t-[16px]",
-    top: "inset-x-0 top-0 max-h-[100dvh]",
+    center: "left-1/2 top-1/2 w-[min(92vw,560px)] max-h-[88dvh] -translate-x-1/2 -translate-y-1/2 border border-ink",
+    right: "inset-y-0 right-0 w-[min(100vw,460px)] border-l border-ink",
+    left: "inset-y-0 left-0 w-[min(100vw,420px)] border-r border-ink",
+    bottom: "inset-x-0 bottom-0 max-h-[90dvh] border-t border-ink",
+    top: "inset-x-0 top-0 max-h-[100dvh] border-b border-ink",
   };
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
@@ -68,14 +68,14 @@ function Inner({ onClose, label, side = "center", mobileSheet = true, className,
 
   return (
     <div className={cn("fixed inset-0", className)} style={{ zIndex: z }}>
-      <motion.div className="absolute inset-0 bg-ink/45 backdrop-blur-[2px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} onClick={onClose} aria-hidden />
+      <motion.div className="absolute inset-0 bg-ink/50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} onClick={onClose} aria-hidden />
       <motion.div
         ref={ref}
         role="dialog"
         aria-modal="true"
         aria-label={label}
         tabIndex={-1}
-        className={cn("fixed flex flex-col overflow-hidden bg-paper shadow-[0_24px_80px_-20px_rgba(22,18,15,0.45)] outline-none", pos[effective], panelClassName)}
+        className={cn("fixed flex flex-col overflow-hidden bg-paper outline-none", pos[effective], panelClassName)}
         initial={hidden}
         animate={shown}
         exit={hidden}
@@ -85,10 +85,10 @@ function Inner({ onClose, label, side = "center", mobileSheet = true, className,
         dragElastic={{ top: 0, bottom: 0.4 }}
         onDragEnd={onDragEnd}
       >
-        {effective === "bottom" && <div aria-hidden className="mx-auto mt-2.5 h-1 w-10 shrink-0 rounded-full bg-line-strong" />}
+        {effective === "bottom" && <div aria-hidden className="mx-auto mt-2.5 h-[3px] w-10 shrink-0 bg-line-strong" />}
         {children}
         {!hideClose && (
-          <button type="button" onClick={onClose} aria-label="Close" className="absolute right-2 top-2 inline-flex size-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-sand">
+          <button type="button" onClick={onClose} aria-label="Close" className="absolute right-2 top-2 inline-flex size-11 items-center justify-center text-ink transition-colors hover:bg-sand">
             <X size={20} strokeWidth={1.6} />
           </button>
         )}

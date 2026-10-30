@@ -2,24 +2,25 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
-import { EditTile } from "@/components/editorial/EditTile";
-import { StoryCard } from "@/components/editorial/StoryCard";
+import { Col, Grid } from "@/components/layout/Grid";
+import { Section } from "@/components/layout/Section";
 import { LabelBadges, LabelMonogram } from "@/components/product/LabelMark";
 import { ProductCard } from "@/components/product/ProductCard";
-import { ProductRail, Rail } from "@/components/product/Rail";
+import { BentoTile } from "@/components/ui/BentoTile";
 import { LinkButton } from "@/components/ui/Button";
+import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
 import { Img, SIZES } from "@/components/ui/Img";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SimulatedTag } from "@/components/ui/Simulated";
 import { Tabs } from "@/components/ui/Tabs";
 import { products } from "@/data/catalog";
+import { categoryById } from "@/data/categories";
 import { editById } from "@/data/edits";
 import { labelById } from "@/data/labels";
-import { editProducts, productsByLabel } from "@/data/queries";
+import { editProducts, productsByLabel, productsInCategory } from "@/data/queries";
 import { stories } from "@/data/stories";
 import type { Product, Story } from "@/data/types";
-import { cn } from "@/lib/cn";
 import { inr } from "@/lib/format";
 import { personalizedRail } from "@/lib/recs";
 import { track } from "@/lib/track";
@@ -27,37 +28,76 @@ import { intentStore, signal } from "@/stores/intent";
 import { useStore } from "@/lib/store";
 import { wishlistStore } from "@/stores/commerce";
 
-// ── Featured edits ────────────────────────────────────────────
-export function FeaturedEdits() {
-  const lead = ["hidden-gems", "luxe", "responsible"].map((id) => editById[id]);
+const pieces = (n: number) => `${n} ${n === 1 ? "piece" : "pieces"}`;
+
+// ── Shop by category: one big tile + a 2×2 of 4:5 tiles on the 12-column grid ──
+export function CategoryMosaic() {
+  const dept = (id: string) => ({ id, name: categoryById[id].name, n: productsInCategory(id).length });
+  const jewellery = productsInCategory("women/jewellery");
+  const jewel = jewellery.find((p) => !p.soldOut) ?? jewellery[0];
+  const small = [
+    { href: "/c/men", img: "scenes/cat-men", ...dept("men") },
+    { href: "/c/kids", img: "scenes/cat-kids", ...dept("kids") },
+    { href: "/c/home", img: "scenes/cat-home", ...dept("home") },
+  ];
+  const women = dept("women");
   return (
-    <div className="container-x py-16 sm:py-24">
-      <SectionHeading eyebrow="Edits" title={<>Start with a point of view.</>} intro="Curated destinations, not category pages. Each edit has a narrative, a set of labels and a short list of things worth owning." href="/edits" hrefLabel="All edits" />
-      <ul className="mt-10 grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-3">
-        {lead.map((e, i) => (
-          <li key={e.id} className={cn(i === 1 && "md:mt-14")}>
-            <Reveal delay={i * 90}>
-              <EditTile edit={e} />
-            </Reveal>
+    <Section>
+      <SectionHeading eyebrow="Departments" title="Shop by category." intro="Four departments, one edit. Start wherever you are." />
+      <Grid className="mt-10 gap-y-[var(--gap)] sm:mt-14">
+        <Col span={{ base: 4, sm: 12, lg: 6 }} rows={{ lg: 2 }} className="relative aspect-[5/4] sm:aspect-[16/9] lg:aspect-auto">
+          <BentoTile href="/c/women" imgKey="scenes/cat-women" title={women.name} meta={pieces(women.n)} ratio="fill" sizes={SIZES.half} size="lg" position="50% 30%" />
+        </Col>
+        {small.map((c) => (
+          <Col key={c.id} span={{ base: 2, sm: 6, lg: 3 }}>
+            <BentoTile href={c.href} imgKey={c.img} title={c.name} meta={pieces(c.n)} sizes={SIZES.tile} />
+          </Col>
+        ))}
+        {jewel && (
+          <Col span={{ base: 2, sm: 6, lg: 3 }}>
+            <BentoTile href="/c/women/jewellery" imgKey={jewel.variants[0].images[0]} title="Jewellery" meta={pieces(jewellery.length)} sizes={SIZES.tile} />
+          </Col>
+        )}
+      </Grid>
+    </Section>
+  );
+}
+
+// ── Featured edits: asymmetric bento (the big tile sits on the right this time) ──
+export function FeaturedEdits() {
+  const gem = editById["hidden-gems"];
+  const rest = ["luxe", "responsible", "festive", "house-of-nykaa"].map((id) => editById[id]);
+  const open = (id: string) => () => signal("edit_open", { editId: id });
+  const computed = [
+    ["/edits/new-in", "New in"],
+    ["/edits/under-1500", "Under ₹1,500"],
+    ["/edits/under-3000", "Under ₹3,000"],
+    ["/edits/the-offer-edit", "The Offer Edit"],
+  ];
+  return (
+    <Section tone="paper">
+      <SectionHeading eyebrow="Edits" title="Start with a point of view." intro="Curated destinations, not category pages. Each edit has a narrative, a set of labels and a short list of things worth owning." href="/edits" hrefLabel="All edits" />
+      <Grid className="mt-10 gap-y-[var(--gap)] sm:mt-14">
+        <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }} className="relative aspect-[5/4] sm:aspect-[16/9] lg:aspect-auto">
+          <BentoTile href="/edits/hidden-gems" imgKey="scenes/edit-hidden-gems-tall" title={gem.title} meta={`${gem.blurb}`} ratio="fill" sizes={SIZES.half} size="lg" onClick={open(gem.id)} position="50% 35%" />
+        </Col>
+        {rest.map((e, i) => (
+          <Col key={e.id} span={{ base: 2, sm: 6, lg: 3 }} start={{ lg: i % 2 ? 4 : 1 }} rowStart={{ lg: i < 2 ? 1 : 2 }}>
+            <BentoTile href={`/edits/${e.id}`} imgKey={`scenes/edit-${e.id}-tall`} title={e.title} meta={pieces(editProducts(e).length)} sizes={SIZES.tile} onClick={open(e.id)} />
+          </Col>
+        ))}
+      </Grid>
+      <ul className="mt-[var(--gap)] grid grid-cols-2 gap-[var(--gap)] sm:grid-cols-4">
+        {computed.map(([href, label]) => (
+          <li key={href}>
+            <Link href={href} className="group flex h-14 items-center justify-between border border-ink px-4 text-[14px] font-medium transition-colors hover:bg-ink hover:text-bone">
+              {label}
+              <ArrowRight size={16} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </li>
         ))}
       </ul>
-      <div className="mt-14 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2">
-        {["festive", "house-of-nykaa"].map((id) => {
-          const e = editById[id];
-          return (
-            <Link key={id} href={`/edits/${id}`} onClick={() => signal("edit_open", { editId: id })} className="group flex items-center justify-between gap-6 bg-bone px-6 py-6 transition-colors hover:bg-paper">
-              <span>
-                <span className="eyebrow block text-ink-3">{e.kicker}</span>
-                <span className="display-xs mt-2 block">{e.title}</span>
-                <span className="mt-1 block text-[13.5px] text-ink-2">{e.blurb}</span>
-              </span>
-              <ArrowRight size={22} className="shrink-0 transition-transform duration-300 ease-editorial group-hover:translate-x-1.5" aria-hidden />
-            </Link>
-          );
-        })}
-      </div>
-    </div>
+    </Section>
   );
 }
 
@@ -68,55 +108,35 @@ export function PersonalizedRail() {
   const { items, warm } = useMemo(() => personalizedRail(intent, saved, 8), [intent, saved]);
   const reasons = Object.fromEntries(items.map((r) => [r.product.id, r.reason]));
   return (
-    <div className="border-y border-line bg-paper">
-      <div className="container-x py-14 sm:py-20">
+    <Section tone="paper" className="border-y border-line">
+      <Carousel>
         <SectionHeading eyebrow={warm ? "For you" : "Popular right now"} title={warm ? "Picked for you." : "Popular right now."} intro={warm ? "Based on what you’ve viewed and saved on this device." : "Browse and save a few pieces and this rail starts to learn your taste."}>
           <SimulatedTag note="Heuristic scoring over your local browse and save signals — not machine learning. Nothing leaves this browser." />
+          <CarouselArrows />
         </SectionHeading>
         <div className="mt-10" onClickCapture={() => track("personalized_rail_click", { warm })}>
-          <ProductRail products={items.map((i) => i.product)} label="Picked for you" source="home-rail" reasons={reasons} />
+          <ProductRailTrack products={items.map((i) => i.product)} label="Picked for you" source="home-rail" reasons={reasons} />
         </div>
-      </div>
-    </div>
+      </Carousel>
+    </Section>
   );
 }
 
-// ── Occasion / seasonal edit ─────────────────────────────────
-export function OccasionEdit() {
-  const edit = editById["festive"];
-  const picks = useMemo(() => {
-    const preferred = ["lik-01", "til-01", "gaj-01", "aja-02"];
-    return preferred.map((id) => products.find((p) => p.id === id)!).filter(Boolean);
-  }, []);
+/** Track only — the arrows live in the section header. */
+function ProductRailTrack({ products: list, label, source, reasons }: { products: Product[]; label: string; source: string; reasons?: Record<string, string> }) {
   return (
-    <div className="container-x py-16 sm:py-24">
-      <div className="grid grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <div className="relative isolate flex min-h-[460px] flex-col justify-end bg-festive text-bone grain">
-          <Img imgKey="scenes/edit-festive-tall" alt="" sizes={SIZES.half} ratio="4/5" className="absolute inset-0 h-full w-full opacity-90 mix-blend-luminosity" />
-          <div className="relative z-[1] bg-gradient-to-t from-festive via-festive/85 to-transparent p-8 pt-40 sm:p-12 sm:pt-56">
-            <p className="eyebrow text-marigold">Festive &amp; wedding</p>
-            <h2 className="display-md mt-4 text-balance">Festive, dressed <em>slowly</em>.</h2>
-            <p className="mt-4 max-w-[40ch] text-[15px] leading-relaxed text-bone/80">{edit.narrative.split(".")[0]}. Start with one piece you love, then build around it.</p>
-            <LinkButton href="/edits/festive" variant="inverse" size="lg" className="mt-8" iconRight={<ArrowRight size={16} />} onClick={() => signal("edit_open", { editId: "festive" })}>
-              Shop the edit
-            </LinkButton>
-          </div>
+    <CarouselTrack label={label} density="product">
+      {list.map((p) => (
+        <div key={p.id} className="flex h-full flex-col">
+          <ProductCard product={p} source={source} sizes={SIZES.rail} />
+          {reasons?.[p.id] && <p className="mt-2 text-[12px] leading-snug text-ink-3">{reasons[p.id]}</p>}
         </div>
-        <ul className="grid grid-cols-2 gap-x-3 gap-y-8 bg-paper p-5 sm:gap-x-5 sm:p-10">
-          {picks.map((p, i) => (
-            <li key={p.id}>
-              <Reveal delay={(i % 2) * 80}>
-                <ProductCard product={p} source="home-festive" sizes={SIZES.cardWide} />
-              </Reveal>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      ))}
+    </CarouselTrack>
   );
 }
 
-// ── New in by taste ──────────────────────────────────────────
+// ── New in by taste: product carousel, arrows in the header ──
 const TABS = [
   { id: "all", label: "All" },
   { id: "women", label: "Women" },
@@ -130,47 +150,164 @@ export function NewInByTaste({ personalised }: { personalised: boolean }) {
     const base = [...products].filter((p) => !p.soldOut).sort((a, b) => Number(b.isNew) - Number(a.isNew) || a.rank - b.rank);
     const taste = (p: Product) => (personalised ? (intent.weights.label[p.labelId] ?? 0) * 1.2 + (intent.weights.category[p.categoryPath.slice(0, 2).join("/")] ?? 0) : 0);
     const filtered = base.filter((p) => (tab === "all" ? true : tab === "home" ? ["home", "kids"].includes(p.categoryPath[0]) : p.categoryPath[0] === tab));
-    return filtered.sort((a, b) => Number(b.isNew) * 3 + taste(b) - (Number(a.isNew) * 3 + taste(a)) || a.rank - b.rank).slice(0, 8);
+    return filtered.sort((a, b) => Number(b.isNew) * 3 + taste(b) - (Number(a.isNew) * 3 + taste(a)) || a.rank - b.rank).slice(0, 10);
   }, [tab, personalised, intent]);
   return (
-    <div className="container-x py-16 sm:py-24">
-      <SectionHeading eyebrow={personalised ? "New in · by your taste" : "New in · editors’ picks"} title="Just landed." href="/edits/new-in" hrefLabel="All new in" />
-      <Tabs items={TABS} value={tab} onChange={setTab} label="New in categories" className="mt-8" panelId="newin-panel" />
-      <div className="mt-10" key={tab} role="tabpanel" id="newin-panel" aria-label={`New in — ${TABS.find((t) => t.id === tab)?.label}`}>
-        <ProductRail products={list} label="New in" source="home-newin" />
-      </div>
-    </div>
+    <Section>
+      <Carousel>
+        <SectionHeading eyebrow={personalised ? "New in · by your taste" : "New in · editors’ picks"} title="Just landed." href="/edits/new-in" hrefLabel="All new in">
+          <CarouselArrows />
+        </SectionHeading>
+        <Tabs items={TABS} value={tab} onChange={setTab} label="New in categories" className="mt-8" panelId="newin-panel" variant="pill" />
+        <div className="mt-8" key={tab} role="tabpanel" id="newin-panel" aria-label={`New in — ${TABS.find((t) => t.id === tab)?.label}`}>
+          <ProductRailTrack products={list} label="New in" source="home-newin" />
+        </div>
+      </Carousel>
+    </Section>
   );
 }
 
-// ── Style Files ──────────────────────────────────────────────
+// ── Trending: mixed-size grid — one feature piece (6 columns × 2 rows) + four standard cards ──
+function trendingPicks(): Product[] {
+  const best = (top: string, skip: Set<string>) => products.filter((p) => !p.soldOut && p.categoryPath[0] === top && !skip.has(p.id)).sort((a, b) => a.rank - b.rank)[0];
+  const used = new Set<string>();
+  const out: Product[] = [];
+  for (const top of ["women", "men", "home", "women", "kids"]) {
+    const p = best(top, used);
+    if (p) {
+      used.add(p.id);
+      out.push(p);
+    }
+  }
+  return out;
+}
+export function TrendingGrid() {
+  const [feature, ...rest] = useMemo(() => trendingPicks(), []);
+  if (!feature) return null;
+  return (
+    <Section tone="paper">
+      <SectionHeading eyebrow="Most wanted" title="What everyone is saving." intro="The pieces added to wishlists most this week — from every department, in one grid." />
+      <Grid className="mt-10 gap-y-10 sm:mt-14">
+        <Col span={{ base: 4, sm: 6, lg: 6 }} rows={{ sm: 2, lg: 2 }} className="flex flex-col">
+          <Reveal className="flex min-h-0 flex-1 flex-col">
+            <ProductCard product={feature} source="home-trending" sizes={SIZES.half} fill className="flex-1" />
+          </Reveal>
+        </Col>
+        {rest.slice(0, 4).map((p, i) => (
+          <Col key={p.id} span={{ base: 2, sm: 3, lg: 3 }}>
+            <Reveal delay={(i % 2) * 70} className="h-full">
+              <ProductCard product={p} source="home-trending" sizes={SIZES.cardWide} />
+            </Reveal>
+          </Col>
+        ))}
+      </Grid>
+    </Section>
+  );
+}
+
+// ── Festive: full-bleed banner (flat colour panel + scene) and a 4-up row of picks ──
+export function OccasionEdit() {
+  const edit = editById["festive"];
+  const picks = useMemo(() => ["lik-01", "til-01", "gaj-01", "aja-02"].map((id) => products.find((p) => p.id === id)!).filter(Boolean), []);
+  return (
+    <>
+      <Section tone="festive" y="none">
+        <Grid>
+          <Col span={{ base: 4, sm: 12, lg: 6 }} className="flex flex-col justify-center py-14 sm:py-16 lg:py-20 lg:pr-[var(--gap)]">
+            <p className="eyebrow text-marigold">Festive &amp; wedding</p>
+            <h2 className="display-md mt-5">Festive, dressed <em>slowly.</em></h2>
+            <p className="mt-5 max-w-[42ch] text-[16px] leading-relaxed text-bone">{edit.narrative.split(".")[0]}. Start with one piece you love, then build around it.</p>
+            <LinkButton href="/edits/festive" variant="inverse" size="lg" className="mt-8 self-start" iconRight={<ArrowRight size={16} />} onClick={() => signal("edit_open", { editId: "festive" })}>
+              Shop the edit
+            </LinkButton>
+          </Col>
+          {/* starts on the centre axis (column 7) and bleeds off the right edge; on phones/tablets it runs edge to edge */}
+          <Col span={{ base: 4, sm: 12, lg: 6 }} className="relative -mx-[var(--gutter)] aspect-[16/10] lg:mx-0 lg:-mr-[var(--edge)] lg:aspect-auto lg:min-h-[480px]">
+            <Img imgKey="scenes/edit-festive-wide" alt="" sizes={SIZES.half} ratio="fill" position="70% 50%" className="absolute inset-0 h-full" />
+          </Col>
+        </Grid>
+      </Section>
+      <Section y="sm">
+        <ul className="grid-main gap-y-8">
+          {picks.map((p, i) => (
+            <Col as="li" key={p.id} span={{ base: 2, sm: 6, lg: 3 }}>
+              <Reveal delay={(i % 4) * 70}>
+                <ProductCard product={p} source="home-festive" sizes={SIZES.cardWide} />
+              </Reveal>
+            </Col>
+          ))}
+        </ul>
+      </Section>
+    </>
+  );
+}
+
+// ── Style Files: a lead story (7 columns) beside two compact horizontal stories (5 columns) ──
+function StoryMeta({ s }: { s: Story }) {
+  return (
+    <p className="eyebrow text-ink-3">
+      {s.kicker} · {s.readMins} min
+    </p>
+  );
+}
 export function StoryStrip({ lead }: { lead?: Story }) {
   const [first, ...others] = lead ? [lead, ...stories.filter((s) => s.id !== lead.id)] : stories;
+  const open = (s: Story) => () => {
+    signal("story_open", { editId: s.editId, tags: s.tags });
+    track("editorial_story_open", { storyId: s.id, source: "home-stories" });
+  };
   return (
-    <div className="container-x py-16 sm:py-24">
-      <SectionHeading eyebrow="Style Files" title="Stories worth the scroll." intro="Shop the story: every image is shoppable, every look is built from pieces you can add without leaving the page." href="/discover" hrefLabel="Read all stories" />
-      <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-12 lg:grid-cols-[1.5fr_1fr_1fr]">
-        <Reveal>
-          <StoryCard story={first} variant="wide" source="home-stories" />
-        </Reveal>
-        {others.slice(0, 2).map((s, i) => (
-          <Reveal key={s.id} delay={(i + 1) * 90}>
-            <StoryCard story={s} source="home-stories" />
+    <Section>
+      <SectionHeading eyebrow="Style Files" title="Stories worth the scroll." intro="Every image is shoppable, every look is built from pieces you can add without leaving the story." href="/discover" hrefLabel="Read all stories" splitAt={7} />
+      <Grid className="mt-10 gap-y-12 sm:mt-14">
+        <Col span={{ base: 4, sm: 12, lg: 7 }}>
+          <Reveal>
+            <Link href={`/discover/${first.id}`} onClick={open(first)} className="group block">
+              <div className="overflow-hidden bg-sand">
+                <Img imgKey={first.cover.wide} alt="" sizes={SIZES.half} ratio="16/10" className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.02]" />
+              </div>
+              <div className="mt-5">
+                <StoryMeta s={first} />
+                <h3 className="display-sm mt-3">{first.title}</h3>
+                <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-ink-2">{first.dek}</p>
+              </div>
+            </Link>
           </Reveal>
-        ))}
-      </div>
-    </div>
+        </Col>
+        <Col span={{ base: 4, sm: 12, lg: 5 }} className="grid grid-cols-2 content-start gap-x-[var(--gap)] gap-y-10 lg:grid-cols-1">
+          {others.slice(0, 2).map((s, i) => (
+            <Reveal key={s.id} delay={(i + 1) * 90}>
+              {/* below lg: a vertical card (2 of the 4 / 6 of the 12 columns); at lg: image on 2 of the 5 columns, text on 3 */}
+              <Link href={`/discover/${s.id}`} onClick={open(s)} className="group grid gap-x-[var(--gap)] lg:grid-cols-5">
+                <div className="overflow-hidden bg-sand lg:col-span-2">
+                  <Img imgKey={s.cover.tall} alt="" sizes="(min-width:1024px) 20vw, 50vw" ratio="4/5" className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.03]" />
+                </div>
+                <div className="mt-4 flex flex-col lg:col-span-3 lg:mt-0">
+                  <StoryMeta s={s} />
+                  <h3 className="display-xs mt-3">{s.title}</h3>
+                  <p className="mt-3 hidden text-[14px] leading-relaxed text-ink-2 sm:line-clamp-3">{s.dek}</p>
+                  <span className="mt-auto inline-flex items-center gap-2 pt-4 text-[12px] font-semibold uppercase tracking-[0.09em]">
+                    Read <ArrowRight size={14} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+        </Col>
+      </Grid>
+    </Section>
   );
 }
 
-// ── Label spotlight ──────────────────────────────────────────
+// ── Label spotlight: a story panel (4 columns) + two feature products (4 columns each) ──
 export function BrandSpotlight({ labelId, excludeId, eyebrow = "Label spotlight" }: { labelId: string; excludeId?: string; eyebrow?: string }) {
   const label = labelById[labelId];
-  const items = productsByLabel(labelId).filter((p) => !p.soldOut && p.id !== excludeId).slice(0, 3);
+  const all = productsByLabel(labelId).filter((p) => !p.soldOut && p.id !== excludeId);
+  const items = all.slice(0, 2);
   return (
-    <div className="container-x pb-8 pt-4 sm:pb-12">
-      <div className="grid grid-cols-1 gap-10 border-t border-ink pt-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
-        <div>
+    <Section tone="paper" y="md" className="border-y border-line">
+      <Grid className="gap-y-10">
+        <Col span={{ base: 4, sm: 12, lg: 4 }} className="flex flex-col">
           <p className="eyebrow text-ink-3">{eyebrow}</p>
           <div className="mt-6 flex items-center gap-5">
             <LabelMonogram label={label} size="lg" />
@@ -181,21 +318,19 @@ export function BrandSpotlight({ labelId, excludeId, eyebrow = "Label spotlight"
           </div>
           <LabelBadges label={label} className="mt-5" />
           <p className="mt-6 max-w-[44ch] text-[15px] leading-relaxed text-ink-2">{label.story}</p>
-          <LinkButton href={`/brands/${label.id}`} variant="secondary" size="lg" className="mt-8" iconRight={<ArrowRight size={16} />}>
-            Meet the label
+          <LinkButton href={`/brands/${label.id}`} variant="secondary" size="lg" className="mt-8 self-start" iconRight={<ArrowRight size={16} />}>
+            Meet the label · {pieces(all.length)}
           </LinkButton>
-        </div>
-        <ul className="grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 sm:gap-x-5">
-          {items.map((p, i) => (
-            <li key={p.id} className={cn(i === 2 && "col-span-2 sm:col-span-1")}>
-              <Reveal delay={i * 80}>
-                <ProductCard product={p} source="home-brand" sizes={SIZES.cardWide} />
-              </Reveal>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+        </Col>
+        {items.map((p, i) => (
+          <Col key={p.id} span={{ base: 2, sm: 6, lg: 4 }}>
+            <Reveal delay={i * 80}>
+              <ProductCard product={p} source="home-brand" sizes={SIZES.half} />
+            </Reveal>
+          </Col>
+        ))}
+      </Grid>
+    </Section>
   );
 }
 
@@ -208,65 +343,47 @@ export function OfferModule({ promoted }: { promoted: boolean }) {
     track("home_module_click", { moduleType: "offers", via });
   };
   const shortcuts = [
-    { href: "/edits/the-offer-edit", label: `Up to ${best}% off`, sub: `${onSale.length} pieces`, via: "up-to" },
+    { href: "/edits/the-offer-edit", label: `Up to ${best}% off`, sub: pieces(onSale.length), via: "up-to" },
     { href: "/edits/under-1500", label: "Under ₹1,500", sub: "Computed edit", via: "u1500" },
     { href: "/edits/under-3000", label: "Under ₹3,000", sub: "Computed edit", via: "u3000" },
     { href: "/offers", label: "All offers", sub: "Coupons & markdowns", via: "all" },
   ];
-  if (!promoted) {
-    return (
-      <div className="bg-ink text-bone">
-        <div className="container-x flex flex-col gap-8 py-12 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="eyebrow text-bone/60">The Offer Edit</p>
-            <h2 className="display-sm mt-3">Fewer sales. <em>Better</em> ones.</h2>
-            <p className="mt-2 max-w-[48ch] text-[14px] text-bone/70">Only genuine price moves — we show a discount where one exists, and nowhere else.</p>
-          </div>
-          <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:w-[58%]">
-            {shortcuts.map((s) => (
-              <li key={s.href}>
-                <Link href={s.href} onClick={() => click(s.via)} className="group flex h-full min-h-[84px] flex-col justify-between border border-bone/25 p-4 transition-colors hover:border-bone hover:bg-bone/10">
-                  <span className="text-[15px] font-medium">{s.label}</span>
-                  <span className="mt-3 flex items-center justify-between text-[12px] text-bone/60">
-                    {s.sub} <ArrowRight size={14} aria-hidden className="transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    );
-  }
   const featured = onSale.slice(0, 4);
   return (
-    <div className="bg-ink text-bone">
-      <div className="container-x py-14 sm:py-20">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
+    <Section tone="ink" y={promoted ? "md" : "sm"}>
+      {promoted ? (
+        <Grid className="items-end gap-y-8">
+          <Col span={{ base: 4, sm: 12, lg: 7 }}>
             <p className="eyebrow text-marigold">You’re looking for offers</p>
-            <h2 className="display-lg mt-4">The Offer <em>Edit</em>.</h2>
-            <p className="mt-4 max-w-[50ch] text-[15px] text-bone/75">Genuine markdowns, up to {best}% off — straight to the pieces. Curation is still one tap away.</p>
-          </div>
-          <ul className="flex flex-wrap gap-2.5">
-            {shortcuts.map((s) => (
-              <li key={s.href}>
-                <Link href={s.href} onClick={() => click(s.via)} className="inline-flex h-11 items-center gap-2 border border-bone/40 px-5 text-[13.5px] transition-colors hover:bg-bone hover:text-ink">
-                  {s.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <ul className="mt-12 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 lg:grid-cols-4">
+            <h2 className="display-lg mt-4">The Offer <em>Edit.</em></h2>
+            <p className="mt-4 max-w-[50ch] text-[15px] text-bone">{`Genuine markdowns, up to ${best}% off — straight to the pieces. Curation is still one tap away.`}</p>
+          </Col>
+        </Grid>
+      ) : (
+        <SectionHeading onDark eyebrow="The Offer Edit" title={<>Fewer sales. <em>Better</em> ones.</>} intro="Only genuine price moves — we show a discount where one exists, and nowhere else." />
+      )}
+      <ul className="mt-10 grid grid-cols-2 gap-[var(--gap)] sm:grid-cols-4">
+        {shortcuts.map((s) => (
+          <li key={s.href}>
+            <Link href={s.href} onClick={() => click(s.via)} className="group flex h-full min-h-[88px] flex-col justify-between border border-bone p-4 transition-colors hover:bg-bone hover:text-ink">
+              <span className="text-[16px] font-medium tracking-[-0.01em]">{s.label}</span>
+              <span className="mt-3 flex items-center justify-between text-[12px]">
+                {s.sub} <ArrowRight size={14} aria-hidden className="transition-transform group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {promoted && (
+        <ul className="grid-main mt-12 gap-y-8">
           {featured.map((p) => (
-            <li key={p.id}>
+            <Col as="li" key={p.id} span={{ base: 2, sm: 6, lg: 3 }}>
               <OfferCard product={p} />
-            </li>
+            </Col>
           ))}
         </ul>
-      </div>
-    </div>
+      )}
+    </Section>
   );
 }
 
@@ -274,17 +391,16 @@ function OfferCard({ product: p }: { product: Product }) {
   return (
     <Link href={`/p/${p.slug}`} onClick={() => signal("discount_interaction")} className="group block">
       <div className="relative overflow-hidden">
-        <Img imgKey={p.variants[0].images[0]} alt="" sizes={SIZES.cardWide} ratio="4/5" className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]" />
-        <span className="absolute left-2 top-2 inline-flex h-[22px] items-center bg-bone px-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald">{p.discount}% off</span>
+        <Img imgKey={p.variants[0].images[0]} alt="" sizes={SIZES.cardWide} ratio="4/5" className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.03]" />
+        <span className="absolute left-0 top-0 inline-flex h-7 items-center bg-bone px-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-emerald">{p.discount}% off</span>
       </div>
-      <p className="eyebrow mt-3 text-bone/55">{labelById[p.labelId].name}</p>
+      <p className="eyebrow mt-3 text-bone">{labelById[p.labelId].name}</p>
       <h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.name}</h3>
       <p className="mt-1.5 flex items-baseline gap-2 text-[14px] tabular-nums">
         <span className="font-medium">{inr(p.price)}</span>
-        <s className="text-[12.5px] text-bone/55">{inr(p.mrp)}</s>
+        <s className="text-[12.5px] text-bone/80">{inr(p.mrp)}</s>
       </p>
     </Link>
   );
 }
 
-export { Rail };

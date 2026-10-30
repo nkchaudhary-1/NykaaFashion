@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
@@ -9,6 +9,7 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Logo } from "@/components/layout/Logo";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 import { MobileShopSheet } from "@/components/layout/MobileShopSheet";
 import { PrototypePanel } from "@/components/layout/PrototypePanel";
 import { SearchOverlay } from "@/components/layout/SearchOverlay";
@@ -17,10 +18,9 @@ import { QuickViewHost } from "@/components/product/QuickView";
 import { SizeGuideHost } from "@/components/product/SizeGuideDialog";
 import { ToastRegion } from "@/components/ui/ToastRegion";
 
-// ₹ lives in latin-ext for Geist; Instrument Serif has no ₹ so the stack falls back to Geist for it.
-const geist = Geist({ subsets: ["latin", "latin-ext"], variable: "--font-geist", display: "swap" });
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap", preload: false });
-const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-instrument", display: "swap" });
+// The one typeface. Inter's optical-size axis (opsz 14–32) is loaded so the page can run at its display cut — "Inter Display" —
+// everywhere (globals.css sets opsz 32 on body). ₹ (U+20B9) is in latin-ext.
+const inter = Inter({ subsets: ["latin", "latin-ext"], axes: ["opsz"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -42,7 +42,7 @@ function HeaderFallback() {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geist.variable} ${mono.variable} ${instrument.variable}`}>
+    <html lang="en" className={inter.variable}>
       <body>
         <a href="#main" className="sr-only z-[100] bg-ink px-4 py-3 text-bone focus:not-sr-only focus:fixed focus:left-3 focus:top-3">
           Skip to content
@@ -63,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <BagDrawer />
           <SearchOverlay />
           <MobileShopSheet />
+          <MobileMenu />
           <QuickViewHost />
           <SizeGuideHost />
           <NotifyMeHost />

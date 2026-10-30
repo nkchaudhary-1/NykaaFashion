@@ -3,7 +3,7 @@ import type { Product } from "@/data/types";
 
 export function Swatch({ hex, selected, size = 22 }: { hex: string; selected?: boolean; size?: number }) {
   return (
-    <span aria-hidden className={cn("inline-block rounded-full border border-ink/15", selected && "ring-1 ring-ink ring-offset-2 ring-offset-bone")} style={{ width: size, height: size, backgroundColor: hex }} />
+    <span aria-hidden className={cn("inline-block rounded-full border", selected ? "border-ink outline outline-1 outline-offset-2 outline-ink" : "border-ink/15")} style={{ width: size, height: size, backgroundColor: hex }} />
   );
 }
 

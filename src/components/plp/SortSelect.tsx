@@ -14,7 +14,7 @@ export function SortSelect({ value, onChange, className, variant = "inline" }: {
       </label>
       {variant === "inline" ? (
         <div className="relative">
-          <select id={id} value={value} onChange={(e) => onChange(e.target.value as SortKey)} className="h-11 appearance-none border border-line-strong bg-white pl-4 pr-10 text-[13.5px] text-ink hover:border-ink focus:border-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-ink">
+          <select id={id} value={value} onChange={(e) => onChange(e.target.value as SortKey)} className="h-11 appearance-none border border-line-strong bg-white pl-4 pr-10 text-[13.5px] text-ink hover:border-ink focus:border-ink">
             {SORTS.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.label}

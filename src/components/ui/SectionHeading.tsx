@@ -3,21 +3,43 @@ import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-export function SectionHeading({ eyebrow, title, intro, href, hrefLabel, className, level = 2, align = "between", onDark, children }: { eyebrow?: string; title: ReactNode; intro?: string; href?: string; hrefLabel?: string; className?: string; level?: 1 | 2 | 3; align?: "between" | "left"; onDark?: boolean; children?: ReactNode }) {
+/** Where the right-hand column starts: 6 = the page's centre axis (default), 7 = the 7/5 split used by lead-story layouts. */
+const SPLIT = {
+  6: { left: "lg:col-span-6", right: "lg:col-span-6 lg:col-start-7" },
+  7: { left: "lg:col-span-7", right: "lg:col-span-5 lg:col-start-8" },
+} as const;
+
+/**
+ * Section header on the 12-column grid: eyebrow + title on the left (columns 1–6), intro / link / controls on the right
+ * (columns 7–12, starting on the page's centre axis — the same line a half-width tile or the 3rd of four cards starts on),
+ * so every section's header reads — and aligns — the same way.
+ */
+const SIZE = { md: "display-md", lg: "display-lg", xl: "display-xl" } as const;
+
+export function SectionHeading({ eyebrow, title, intro, href, hrefLabel, className, level = 2, size = "md", onDark, splitAt = 6, children }: { eyebrow?: string; title: ReactNode; intro?: ReactNode; href?: string; hrefLabel?: string; className?: string; level?: 1 | 2 | 3; size?: keyof typeof SIZE; onDark?: boolean; splitAt?: 6 | 7; children?: ReactNode }) {
   const H = `h${level}` as "h1" | "h2" | "h3";
+  const hasRight = !!(intro || href || children);
   return (
-    <div className={cn("flex flex-wrap items-end gap-x-8 gap-y-4", align === "between" ? "justify-between" : "justify-start", className)}>
-      <div className="min-w-0 max-w-2xl">
-        {eyebrow && <p className={cn("eyebrow mb-3", onDark ? "text-bone/70" : "text-ink-3")}>{eyebrow}</p>}
-        <H className="display-md">{title}</H>
-        {intro && <p className={cn("mt-3 max-w-xl text-[15px] leading-relaxed", onDark ? "text-bone/75" : "text-ink-2")}>{intro}</p>}
+    <div className={cn("grid-main items-end gap-y-6", className)}>
+      <div className={cn("col-span-4 min-w-0 sm:col-span-12", hasRight && SPLIT[splitAt].left)}>
+        {eyebrow && <p className={cn("eyebrow mb-4", onDark ? "text-bone" : "text-ink-3")}>{eyebrow}</p>}
+        <H className={SIZE[size]}>{title}</H>
       </div>
-      {children}
-      {href && (
-        <Link href={href} className={cn("link-u tap group inline-flex items-center gap-2 pb-1 text-[12px] font-medium uppercase tracking-[0.12em]", onDark ? "text-bone" : "text-ink")}>
-          {hrefLabel ?? "View all"}
-          <ArrowRight size={15} className="transition-transform duration-300 ease-editorial group-hover:translate-x-1" />
-        </Link>
+      {hasRight && (
+        <div className={cn("col-span-4 flex min-w-0 flex-col gap-5 sm:col-span-12", SPLIT[splitAt].right, !intro && "lg:items-end")}>
+          {intro && <div className={cn("max-w-[46ch] text-[15px] leading-relaxed", onDark ? "text-bone" : "text-ink-2")}>{intro}</div>}
+          {(href || children) && (
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              {children}
+              {href && (
+                <Link href={href} className={cn("link-u tap group inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em]", onDark ? "text-bone" : "text-ink")}>
+                  {hrefLabel ?? "View all"}
+                  <ArrowRight size={15} className="transition-transform duration-300 ease-editorial group-hover:translate-x-1" />
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

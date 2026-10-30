@@ -94,7 +94,7 @@ export function FilterPanel({ facets, filters, onChange, hide = [] }: { facets: 
       {show("label") && facets.label.length > 1 && (
         <Disclosure title="Label" defaultOpen={false} meta={filters.label.length ? `${filters.label.length} selected` : undefined}>
           {facets.label.length > 8 && (
-            <input type="search" aria-label="Search labels" placeholder="Search labels" value={labelQuery} onChange={(e) => setLabelQuery(e.target.value)} className="mb-2 h-10 w-full border border-line-strong bg-white px-3 text-[14px] focus:border-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-ink" />
+            <input type="search" aria-label="Search labels" placeholder="Search labels" value={labelQuery} onChange={(e) => setLabelQuery(e.target.value)} className="mb-2 h-10 w-full border border-line-strong bg-white px-3 text-[14px] focus:border-ink" />
           )}
           <div className="-my-1 max-h-64 overflow-y-auto pr-1">
             {labels.map((l) => (

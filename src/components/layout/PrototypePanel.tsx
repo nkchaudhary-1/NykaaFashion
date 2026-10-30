@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { FlaskConical, RotateCcw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { RotateCcw } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Select, Switch } from "@/components/ui/Form";
 import { Overlay, OverlayBody, OverlayHeader } from "@/components/ui/Overlay";
@@ -20,38 +20,9 @@ import { cn } from "@/lib/cn";
 
 export function PrototypePanel() {
   const { protoOpen } = useUI();
-  // A reviewer tool must not sit on top of the content being reviewed: step aside while scrolling down, return on scroll up
-  // (and whenever it has keyboard focus).
-  const [away, setAway] = useState(false);
-  useEffect(() => {
-    let last = window.scrollY;
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const y = window.scrollY;
-        if (Math.abs(y - last) < 8) return;
-        setAway(y > last && y > 240);
-        last = y;
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
+  // The panel opens from the footer, the phone menu or the /prototype page — there is no floating button over the content.
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setUI({ protoOpen: true })}
-        aria-haspopup="dialog"
-        className={cn(away && "pointer-events-none translate-y-3 opacity-0 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100", "fixed bottom-[calc(var(--bottom-nav-h)+var(--sticky-h,0px)+env(safe-area-inset-bottom)+10px)] right-3 z-[60] inline-flex size-11 items-center justify-center gap-2 border border-line-strong bg-paper/95 text-[11px] font-medium uppercase tracking-[0.12em] text-ink-2 shadow-sm backdrop-blur transition-[color,border-color,transform,opacity] duration-300 hover:border-ink hover:text-ink lg:bottom-4 lg:right-4 lg:h-10 lg:w-auto lg:px-3.5")}
-        aria-label="Prototype controls"
-      >
-        <FlaskConical size={15} aria-hidden /> <span className="hidden lg:inline">Prototype</span>
-      </button>
       <Overlay open={protoOpen} onClose={() => setUI({ protoOpen: false })} label="Prototype controls" side="left">
         <OverlayHeader title="Prototype controls" sub="Review simulated behaviour — nothing leaves this browser." />
         <OverlayBody className="space-y-8">

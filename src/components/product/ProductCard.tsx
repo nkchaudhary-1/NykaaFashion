@@ -22,6 +22,8 @@ interface Props {
   variant?: number;
   sizes?: string;
   ratio?: string;
+  /** image takes whatever height the grid gives it (feature cards in mixed-size grids) */
+  fill?: boolean;
   className?: string;
   hideQuickView?: boolean;
   /** extra content under the price (e.g. wishlist actions) */
@@ -33,7 +35,7 @@ interface Props {
  * Taste-first product card (PRD §5.4): image-forward, label above name, price with discount ONLY when one exists,
  * no sale chrome by default. Multi-shot: hover swaps on mouse, swipe on touch. Save is always one tap.
  */
-export function ProductCard({ product: p, load, source = "grid", variant = 0, sizes = SIZES.card, ratio = "4/5", className, hideQuickView, footer, onOpen }: Props) {
+export function ProductCard({ product: p, load, source = "grid", variant = 0, sizes = SIZES.card, ratio = "4/5", fill, className, hideQuickView, footer, onOpen }: Props) {
   const label = labelById[p.labelId];
   const v = p.variants[Math.min(variant, p.variants.length - 1)];
   const [shot, setShot] = useState(0);
@@ -69,18 +71,18 @@ export function ProductCard({ product: p, load, source = "grid", variant = 0, si
     <article className={cn("group/card relative flex h-full flex-col", className)}>
       <div
         ref={box}
-        className="relative touch-pan-y overflow-hidden"
+        className={cn("relative touch-pan-y overflow-hidden", fill && "aspect-[4/5] sm:aspect-auto sm:min-h-0 sm:flex-1")}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         onPointerEnter={(e) => e.pointerType === "mouse" && hasAlt && setShot(1)}
         onPointerLeave={(e) => e.pointerType === "mouse" && setShot(0)}
       >
         {/* Image link is a pointer convenience; the text link below is the one assistive tech announces. */}
-        <Link href={`/p/${p.slug}`} aria-hidden tabIndex={-1} draggable={false} onClick={open} className="block">
-          <Img imgKey={v.images[0]} alt="" sizes={sizes} load={load} ratio={ratio} className={cn(p.soldOut && "opacity-70 saturate-50")} />
+        <Link href={`/p/${p.slug}`} aria-hidden tabIndex={-1} draggable={false} onClick={open} className={cn("block", fill && "absolute inset-0")}>
+          <Img imgKey={v.images[0]} alt="" sizes={sizes} load={load} ratio={fill ? "fill" : ratio} className={cn(fill && "h-full", p.soldOut && "opacity-60")} />
           {hasAlt && (
             <span className={cn("absolute inset-0 block transition-opacity duration-500 ease-editorial", shot > 0 ? "opacity-100" : "opacity-0")}>
-              <Img imgKey={v.images[Math.min(1, v.images.length - 1)]} alt="" sizes={sizes} ratio={ratio} className="h-full" />
+              <Img imgKey={v.images[Math.min(1, v.images.length - 1)]} alt="" sizes={sizes} ratio={fill ? "fill" : ratio} className="h-full" />
             </span>
           )}
         </Link>
@@ -95,26 +97,26 @@ export function ProductCard({ product: p, load, source = "grid", variant = 0, si
         {hasAlt && (
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center gap-1 [@media(hover:hover)]:hidden">
             {v.images.map((_, i) => (
-              <span key={i} className={cn("h-1 rounded-full transition-all duration-300", i === shot ? "w-4 bg-ink" : "w-1 bg-ink/35")} />
+              <span key={i} className={cn("h-[3px] transition-all duration-300", i === shot ? "w-4 bg-ink" : "w-2 bg-ink/35")} />
             ))}
           </div>
         )}
 
-        <SaveButton product={p} variant={variant} source={source} className="absolute right-1.5 top-1.5" />
+        <SaveButton product={p} variant={variant} source={source} className="absolute right-0 top-0" />
 
         {!hideQuickView && !p.soldOut && (
           <button
             type="button"
             aria-label={`Quick view ${p.name}`}
             onClick={() => setUI({ quickView: { productId: p.id, variant } })}
-            className="absolute inset-x-2 bottom-2 hidden h-10 translate-y-2 items-center justify-center gap-2 bg-white/95 text-[11px] font-medium uppercase tracking-[0.12em] text-ink opacity-0 shadow-sm backdrop-blur transition-[opacity,transform,background-color] duration-300 ease-editorial hover:bg-white focus-visible:translate-y-0 focus-visible:opacity-100 group-hover/card:translate-y-0 group-hover/card:opacity-100 lg:flex"
+            className="absolute inset-x-0 bottom-0 hidden h-11 translate-y-full items-center justify-center gap-2 border-t border-line bg-white text-[11px] font-semibold uppercase tracking-[0.09em] text-ink transition-transform duration-300 ease-editorial hover:bg-bone focus-visible:translate-y-0 group-hover/card:translate-y-0 lg:flex"
           >
             <Eye size={14} aria-hidden /> Quick view
           </button>
         )}
       </div>
 
-      <Link href={`/p/${p.slug}`} draggable={false} onClick={open} className="flex flex-1 flex-col pt-3 outline-offset-4">
+      <Link href={`/p/${p.slug}`} draggable={false} onClick={open} className={cn("flex flex-col pt-3 outline-offset-4", !fill && "flex-1")}>
         <p className="eyebrow truncate text-ink-3">{p.soldOut && <span className="sr-only">Sold out: </span>}{label.name}</p>
         <h3 className="mt-1.5 line-clamp-2 text-[14px] font-normal leading-[1.3] text-ink">{p.name}</h3>
         <div className="mt-auto pt-1.5">

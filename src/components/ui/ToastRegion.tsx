@@ -13,7 +13,7 @@ export function ToastRegion() {
       <div role="status" aria-live="polite" aria-atomic="false" className="flex w-full max-w-[420px] flex-col items-stretch gap-2">
         <AnimatePresence initial={false}>
           {toasts.map((t) => (
-            <motion.div key={t.id} layout initial={{ opacity: 0, y: 24, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.97 }} transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }} className={cn("pointer-events-auto flex items-start gap-3 bg-ink px-4 py-3.5 text-bone shadow-[0_18px_50px_-16px_rgba(22,18,15,0.6)]", t.tone === "error" && "bg-danger")}>
+            <motion.div key={t.id} layout initial={{ opacity: 0, y: 24, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.97 }} transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }} className={cn("pointer-events-auto flex items-start gap-3 bg-ink px-4 py-3.5 text-bone", t.tone === "error" && "bg-danger")}>
               {t.tone === "error" ? <CircleAlert size={18} className="mt-0.5 shrink-0" /> : <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#9fd8bd]" />}
               <div className="min-w-0 flex-1">
                 <p className="text-[14px] font-medium leading-snug">{t.title}</p>

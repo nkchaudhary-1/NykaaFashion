@@ -2,16 +2,19 @@
 
 /* ───────────────────────────────────────────────────────────────
    Nykaa Fashion — redesign tokens
-   Direction: editorial, tonal, hairline. Taste over discount.
+   Direction: flat, editorial, grid-first. One typeface (Inter Display),
+   flat colour, 1px lines, square corners. No shadows, gradients, blur or texture — anywhere.
+   See docs/GRID_SYSTEM.md for the grid contract.
    ─────────────────────────────────────────────────────────────── */
 
 @theme {
-  /* type */
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: var(--font-instrument), var(--font-geist), ui-serif, Georgia, "Times New Roman", serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* type — a single family: Inter at its display optical size (opsz 32 = "Inter Display") */
+  --font-sans: var(--font-inter), "Inter Display", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-sans);
 
   /* neutrals — warm paper */
+  --color-white: #ffffff;
   --color-bone: #f5f1ea;
   --color-paper: #fbf9f5;
   --color-sand: #ebe4d9;
@@ -48,7 +51,7 @@
   --color-marigold: #e3a31a;
   --color-festive-tint: #f4dedb;
 
-  /* breakpoints — PRD §7.3: mobile ≤600, tablet 600–1024, desktop ≥1024 */
+  /* breakpoints — mobile < 600 (4-col grid), tablet 600–1023 and desktop ≥ 1024 (12-col grid) */
   --breakpoint-sm: 37.5rem;
   --breakpoint-md: 48rem;
   --breakpoint-lg: 64rem;
@@ -57,15 +60,15 @@
 
   /* motion — one easing curve (PRD §7.2) */
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
-  --animate-shimmer: shimmer 1.8s linear infinite;
+  --animate-pulse-flat: pulse-flat 1.6s ease-in-out infinite;
   --animate-shake: shake 0.42s var(--ease-editorial);
   --animate-pop: pop 0.38s var(--ease-editorial);
   --animate-fade-up: fade-up 0.5s var(--ease-editorial) both;
   --animate-fade-in: fade-in 0.3s var(--ease-editorial) both;
 
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+  @keyframes pulse-flat {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
   }
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
@@ -91,14 +94,27 @@
 
 :root {
   color-scheme: light;
-  --gutter: clamp(16px, 3.6vw, 56px);
-  --maxw: 1760px;
-  --header-h: 68px;
+  /* ── The grid contract ──
+     page margin (--gutter) · column gap (--gap) · content max width (--maxw)
+     4 columns below 600px, 12 columns from 600px up. Everything snaps to these. */
+  --maxw: 1600px;
+  --gutter: clamp(16px, 3.2vw, 48px);
+  --gap: 16px;
+  --edge: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter))); /* where the container's content starts, for full-bleed bands */
+  --section-y: clamp(56px, 7vw, 112px);
+  --header-h: 112px;
+  --header-offset: var(--header-h);
   --bottom-nav-h: 60px;
 }
 
+@media (min-width: 37.5rem) {
+  :root { --gap: 20px; }
+}
+@media (min-width: 64rem) {
+  :root { --gap: 24px; }
+}
 @media (max-width: 63.99rem) {
-  :root { --header-h: 56px; }
+  :root { --header-h: 104px; }
 }
 
 html {
@@ -110,8 +126,11 @@ body {
   background: var(--color-bone);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  /* Inter Display = Inter at opsz 32. Applied to everything, small text included, so the page has one voice. */
+  font-variation-settings: "opsz" 32;
   font-size: 15px;
   line-height: 1.55;
+  letter-spacing: 0.004em;
   font-feature-settings: "kern", "liga", "calt";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -123,14 +142,13 @@ body {
   body { padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom)); }
 }
 
-::selection { background: var(--color-pink); color: #fff; }
+::selection { background: var(--color-ink); color: var(--color-bone); }
 
-/* Layered so component-level utilities (outline-none, focus-visible:ring-*, outline-offset-*) can refine it.
-   The outline follows each element's own radius — no forced border-radius, which flattened round buttons. */
+/* Flat focus: a plain outline, never a glow. Layered so component utilities can refine it. */
 @layer base {
   :focus-visible {
     outline: 2px solid var(--color-ink);
-    outline-offset: 3px;
+    outline-offset: 2px;
   }
   .on-dark :focus-visible, [data-theme="dark"] :focus-visible { outline-color: #fff; }
 }
@@ -139,12 +157,34 @@ button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
 img { -webkit-user-drag: none; }
 
-/* ── Layout helpers ───────────────────────────────────────────── */
+/* ── Grid & layout ────────────────────────────────────────────── */
 @utility container-x {
   width: 100%;
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--gutter);
+}
+/* The page grid. Place children with col-span-* (4 columns on phones, 12 from 600px). */
+@utility grid-main {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gap);
+  @media (min-width: 37.5rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+@utility section-y {
+  padding-block: var(--section-y);
+}
+/* Align the content of a full-bleed band with the container's left edge. */
+@utility edge-l { padding-left: var(--edge); }
+@utility edge-r { padding-right: var(--edge); }
+/* Phones/tablets: let a rail run off the right edge of the screen (so the next card peeks) without moving its left edge. */
+@utility bleed-r {
+  @media (max-width: 63.99rem) {
+    margin-right: calc(var(--gutter) * -1);
+    padding-right: var(--gutter);
+  }
 }
 @utility scrollbar-none {
   scrollbar-width: none;
@@ -154,58 +194,62 @@ img { -webkit-user-drag: none; }
   border-color: var(--color-line);
 }
 
-/* ── Typography ───────────────────────────────────────────────── */
+/* ── Typography (Inter Display) ───────────────────────────────── */
 @utility display-xl {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(3.25rem, 9.2vw, 9rem);
-  line-height: 0.92;
-  letter-spacing: -0.025em;
+  font-weight: 500;
+  font-size: clamp(3rem, 7.6vw, 7.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  & em { font-style: normal; font-weight: 300; }
 }
 @utility display-lg {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(2.6rem, 6.2vw, 5.75rem);
-  line-height: 0.96;
-  letter-spacing: -0.022em;
+  font-weight: 500;
+  font-size: clamp(2.5rem, 5.4vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  & em { font-style: normal; font-weight: 300; }
 }
 @utility display-md {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(2.1rem, 4.2vw, 3.75rem);
-  line-height: 1;
-  letter-spacing: -0.018em;
+  font-weight: 500;
+  font-size: clamp(2rem, 3.7vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  & em { font-style: normal; font-weight: 300; }
 }
 @utility display-sm {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.65rem, 2.6vw, 2.4rem);
-  line-height: 1.05;
-  letter-spacing: -0.012em;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.3vw, 2.125rem);
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+  & em { font-style: normal; font-weight: 300; }
 }
 @utility display-xs {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.35rem;
-  line-height: 1.15;
-  letter-spacing: -0.006em;
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  & em { font-style: normal; font-weight: 300; }
 }
 @utility eyebrow {
   font-size: 0.6875rem;
   line-height: 1;
-  font-weight: 500;
-  letter-spacing: 0.15em;
+  font-weight: 600;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 @utility lede {
-  font-size: clamp(1rem, 1.25vw, 1.1875rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 1.2vw, 1.1875rem);
+  line-height: 1.55;
   color: var(--color-ink-2);
   max-width: 56ch;
 }
 @utility prose-nf {
   & p { margin-block: 0 1.1em; max-width: 62ch; line-height: 1.7; color: var(--color-ink-2); }
-  & h2 { font-family: var(--font-display); font-size: 1.9rem; line-height: 1.1; margin-block: 1.6em 0.5em; color: var(--color-ink); }
+  & h2 { font-weight: 500; font-size: 1.75rem; line-height: 1.12; letter-spacing: -0.028em; margin-block: 1.6em 0.5em; color: var(--color-ink); }
   & h3 { font-weight: 600; margin-block: 1.4em 0.4em; color: var(--color-ink); }
   & ul { padding-left: 1.1em; list-style: disc; margin-block: 0 1.1em; color: var(--color-ink-2); }
   & li { margin-block: 0.35em; padding-left: 0.2em; }
@@ -220,38 +264,21 @@ img { -webkit-user-drag: none; }
   }
 }
 
-/* animated underline for text links — origin is the content box so padding added for touch never detaches the line from the text */
+/* text link: the underline fades in — plain text-decoration, nothing painted */
 @utility link-u {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-origin: content-box;
-  background-position: 0 100%;
-  background-size: 0% 1px;
-  transition: background-size 0.4s var(--ease-editorial);
-  &:hover, &:focus-visible { background-size: 100% 1px; }
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.25s var(--ease-editorial);
+  &:hover, &:focus-visible { text-decoration-color: currentColor; }
 }
 
 /* ── Surfaces ─────────────────────────────────────────────────── */
 @utility skeleton {
-  background: linear-gradient(100deg, var(--color-sand) 30%, #f3eee6 50%, var(--color-sand) 70%);
-  background-size: 200% 100%;
-  animation: var(--animate-shimmer);
+  background: var(--color-sand);
+  animation: var(--animate-pulse-flat);
 }
-
-.grain { position: relative; isolation: isolate; }
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.16;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-/* arch mask — editorial motif */
-.arch { border-radius: 999px 999px 0 0; }
 
 /* hide number input spinners */
 input[type="number"]::-webkit-outer-spin-button,
@@ -262,7 +289,7 @@ input[type="number"] { -moz-appearance: textfield; }
 input[type="range"] { accent-color: var(--color-ink); }
 
 /* Scroll-snap rails */
-.snap-x-rail { scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); }
+.snap-x-rail { scroll-snap-type: x mandatory; }
 .snap-x-rail > * { scroll-snap-align: start; }
 
 /* Lock scroll when overlays are open */

@@ -7,7 +7,7 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "accent" | "inve
 export type ButtonSize = "sm" | "md" | "lg";
 
 const BASE =
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap select-none font-medium uppercase tracking-[0.1em] text-[12px] leading-none transition-[background-color,color,border-color,transform,opacity] duration-300 ease-editorial active:scale-[0.985] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45";
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap select-none font-semibold uppercase tracking-[0.08em] text-[12px] leading-none transition-[background-color,color,border-color,transform,opacity] duration-300 ease-editorial active:scale-[0.985] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45";
 const SIZES: Record<ButtonSize, string> = { sm: "h-9 px-4 [@media(pointer:coarse)]:h-11", md: "h-11 px-6", lg: "h-[52px] px-8 text-[12.5px]" };
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: "bg-ink text-bone hover:bg-[#2f2822]",
@@ -56,7 +56,7 @@ export function IconButton({ label, children, className, badge, ...rest }: { lab
     <button
       type="button"
       aria-label={label}
-      className={cn("relative inline-flex size-11 shrink-0 items-center justify-center rounded-full transition-colors duration-200 hover:bg-sand active:bg-stone/60", className)}
+      className={cn("relative inline-flex size-11 shrink-0 items-center justify-center transition-colors duration-200 hover:bg-sand active:bg-stone/60", className)}
       {...rest}
     >
       {children}
@@ -67,7 +67,7 @@ export function IconButton({ label, children, className, badge, ...rest }: { lab
 
 export function CountBadge({ n, className }: { n: number; className?: string }) {
   return (
-    <span aria-hidden className={cn("absolute right-1 top-1 inline-flex min-w-[17px] items-center justify-center rounded-full bg-pink-ink px-1 text-[10px] font-semibold leading-[17px] text-white", className)}>
+    <span aria-hidden className={cn("absolute inline-flex min-w-[17px] items-center justify-center rounded-full bg-pink-ink px-1 text-[10px] font-semibold leading-[17px] text-white", className ?? "right-1 top-1")}>
       {n > 99 ? "99+" : n}
     </span>
   );

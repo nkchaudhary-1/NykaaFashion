@@ -2,6 +2,8 @@
 import { AnimatePresence, LayoutGroup } from "framer-motion";
 import { Gem, HandHeart, Scissors } from "lucide-react";
 import { useMemo } from "react";
+import { Col, Grid } from "@/components/layout/Grid";
+import { Section } from "@/components/layout/Section";
 import { primaryEdits } from "@/data/edits";
 import { stories } from "@/data/stories";
 import { labelById } from "@/data/labels";
@@ -10,7 +12,7 @@ import { topKey, useIntent } from "@/stores/intent";
 import { usePrefs } from "@/stores/ui";
 import { EditChips, Hero } from "./Hero";
 import { ModuleShell } from "./ModuleShell";
-import { BrandSpotlight, FeaturedEdits, NewInByTaste, OccasionEdit, OfferModule, PersonalizedRail, StoryStrip } from "./Modules";
+import { BrandSpotlight, CategoryMosaic, FeaturedEdits, NewInByTaste, OccasionEdit, OfferModule, PersonalizedRail, StoryStrip, TrendingGrid } from "./Modules";
 
 function Values() {
   const items = [
@@ -19,19 +21,19 @@ function Values() {
     { Icon: Gem, t: "Honest pricing", d: "A discount appears only where a price has genuinely moved." },
   ];
   return (
-    <div className="container-x py-16 sm:py-20">
-      <ul className="grid grid-cols-1 gap-10 border-t border-line pt-12 sm:grid-cols-3">
+    <Section y="sm">
+      <Grid as="ul" className="gap-y-10 border-t border-ink pt-10">
         {items.map(({ Icon, t, d }) => (
-          <li key={t} className="flex gap-4">
-            <Icon size={22} strokeWidth={1.3} aria-hidden className="mt-1 shrink-0" />
+          <Col as="li" key={t} span={{ base: 4, sm: 4, lg: 4 }} className="flex gap-4">
+            <Icon size={22} strokeWidth={1.4} aria-hidden className="mt-1 shrink-0" />
             <div>
               <h2 className="display-xs">{t}</h2>
               <p className="mt-2 max-w-[34ch] text-[14px] leading-relaxed text-ink-2">{d}</p>
             </div>
-          </li>
+          </Col>
         ))}
-      </ul>
-    </div>
+      </Grid>
+    </Section>
   );
 }
 
@@ -55,8 +57,12 @@ export function HomeClient() {
             <EditChips edits={primaryEdits} />
           </>
         );
+      case "categories":
+        return <CategoryMosaic />;
       case "edits":
         return <FeaturedEdits />;
+      case "trending":
+        return <TrendingGrid />;
       case "rail":
         return <PersonalizedRail />;
       case "occasion":
