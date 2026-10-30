@@ -135,17 +135,17 @@ B.floral = (spec, rng) => {
   pts.forEach(([x, y], idx) => {
     const rot = rng.range(0, 360), r = rng.next();
     if (r < 0.34) {
-      body += wrapUse('fl1', x, y, T, T, rot, rng.range(0.85, 1.2), 4 * S);
-      for (let q = 0; q < 2; q++) body += wrapUse('lf', x, y, T, T, rot + 150 + q * 70 + rng.range(-20, 20), rng.range(0.85, 1.1), 5 * S);
+      body += wrapUse('fl1', x, y, T, T, rot, rng.range(0.85, 1.2), 6 * S);
+      for (let q = 0; q < 2; q++) body += wrapUse('lf', x, y, T, T, rot + 150 + q * 70 + rng.range(-20, 20), rng.range(0.85, 1.1), 7 * S);
     } else if (r < 0.58) {
-      body += wrapUse('fl2', x, y, T, T, rot, rng.range(0.9, 1.25), 3 * S);
-      body += wrapUse('sprig', x + 0.5, y + 0.8, T, T, rng.range(-40, 40), 1, 5 * S);
+      body += wrapUse('fl2', x, y, T, T, rot, rng.range(0.9, 1.25), 5 * S);
+      body += wrapUse('sprig', x + 0.5, y + 0.8, T, T, rng.range(-40, 40), 1, 9 * S);
     } else if (r < 0.82) {
-      body += wrapUse('sprig', x, y, T, T, rng.range(0, 360), rng.range(0.9, 1.3), 5 * S);
-      body += wrapUse('fl3', x + 1.4, y - 0.6, T, T, rot, 1, 2 * S);
+      body += wrapUse('sprig', x, y, T, T, rng.range(0, 360), rng.range(0.9, 1.3), 9 * S);
+      body += wrapUse('fl3', x + 1.4, y - 0.6, T, T, rot, 1, 4 * S);
     } else {
-      body += wrapUse('fl3', x, y, T, T, rot, rng.range(0.9, 1.4), 2 * S);
-      body += wrapUse('lf', x, y, T, T, rot + 90, 0.8, 3 * S);
+      body += wrapUse('fl3', x, y, T, T, rot, rng.range(0.9, 1.4), 4 * S);
+      body += wrapUse('lf', x, y, T, T, rot + 90, 0.8, 6 * S);
     }
   });
   return { defs: tileWrap(T, T, body, { extraDefs: defs }), fill: 'url(#pat)' };

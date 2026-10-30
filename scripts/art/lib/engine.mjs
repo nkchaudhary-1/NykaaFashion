@@ -2,12 +2,14 @@
 import { Ctx } from './ctx.mjs';
 import { sharp } from './raster.mjs';
 import { getKind } from '../kinds/index.mjs';
+import { renderScene } from './scene.mjs';
 
 /** Render one job to raw RGB (Uint8Array) + dimensions. */
 export async function renderRaw(job) {
   const w = job.w || 1000, h = job.h || 1250;
+  if (job.scene) return renderScene({ ...job, w, h });
   const spec = job.spec;
-  if (!spec) throw new Error(`job ${job.out}: only "spec" jobs are supported in Phase A (scenes arrive in Phase B)`);
+  if (!spec) throw new Error(`job ${job.out}: a job needs either "spec" or "scene"`);
   if (!spec.kind) throw new Error(`job ${job.out}: spec.kind is required`);
   const kind = getKind(spec.kind);
   const shot = spec.shot || 'front';
@@ -29,7 +31,7 @@ export function meanColor(rgb) {
 
 /** Render + encode. Returns { webp, avg, w, h, blur?, pins? } */
 export async function renderJob(job, { quality = 80, effort = 5 } = {}) {
-  const { rgb, w, h, pins } = await renderRaw(job);
+  const { rgb, w, h, pins, edge } = await renderRaw(job);
   const base = sharp(Buffer.from(rgb.buffer, rgb.byteOffset, rgb.byteLength), { raw: { width: w, height: h, channels: 3 } });
   const webp = await base.clone().webp({ quality: job.quality || quality, effort, smartSubsample: true }).toBuffer();
   const out = { webp, avg: meanColor(rgb), w, h };
@@ -38,5 +40,6 @@ export async function renderJob(job, { quality = 80, effort = 5 } = {}) {
     out.blur = 'data:image/webp;base64,' + b.toString('base64');
   }
   if (pins && pins.length) out.pins = pins;
+  if (edge) out.edge = edge;
   return out;
 }

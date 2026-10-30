@@ -22,6 +22,7 @@ export function kurtaProfile(ctx, spec, shot) {
   const trim = spec.trim && spec.trim !== 'none' ? spec.trim : null;
   const btn = trim === 'zari-border' || trim === 'gota' ? '#C9A24A' : mix(spec.color, '#e8dcc4', 0.6);
   const P = {
+    menHandled: true,
     fabric: spec.fabric, ST, UA: [chest, 22], hemV: len, drop: fitName === 'flared' ? 3.8 : fitName === 'a-line' ? 2.6 : 1.5,
     side: [[30, chest + 0.2], [48, lerp(chest, hemHw, 0.12)], [lerp(48, len - 2.5, 0.5), lerp(chest, hemHw, 0.42)], [len - 3.4, hemHw]],
     sleeve: sleeveKey, neck: neck === 'mandarin' ? { type: 'collar', width: 6.6, depth: 3 } : neck === 'keyhole' ? { type: 'round', width: 7.2, depth: 4.5 } : neck === 'v' ? { type: 'v', width: 7.4, depth: 13 } : { type: 'round', width: 7.4, depth: 7.2 },

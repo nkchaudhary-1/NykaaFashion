@@ -13,6 +13,12 @@ const SHAPES = {
   amphora: { H: 34, pts: [[0, 4.4], [0.05, 5.2], [0.2, 8.1], [0.4, 9.2], [0.62, 7.4], [0.78, 4.2], [0.86, 3.3], [0.94, 3.9], [1, 4.8]], handles: true },
   cylinder: { H: 27, pts: [[0, 5.6], [0.04, 6.1], [0.5, 6.5], [0.96, 6.2], [1, 6.35]] },
   bottle: { H: 31, pts: [[0, 5.2], [0.04, 6.2], [0.16, 7.0], [0.3, 6.6], [0.46, 4.2], [0.6, 2.2], [0.76, 1.55], [0.9, 1.6], [0.95, 1.9], [1, 2.0]] },
+  // tableware / candles (shared renderer): bowl shows its glazed inside, mug has one handle, jar / pillar / tin carry wax
+  bowl: { H: 8.6, view: 0.3, solid: true, opening: 'bowl', pts: [[0, 3.4], [0.05, 3.9], [0.22, 5.4], [0.5, 7.4], [0.82, 8.9], [0.96, 9.4], [1, 9.5]] },
+  mug: { H: 10, view: 0.22, solid: true, opening: 'bowl', handle: 'mug', pts: [[0, 3.7], [0.04, 4.1], [0.5, 4.35], [0.96, 4.25], [1, 4.35]] },
+  jar: { H: 11, view: 0.24, solid: true, opening: 'wax', pts: [[0, 4.3], [0.04, 4.75], [0.5, 4.95], [0.95, 4.8], [1, 4.85]] },
+  pillar: { H: 15.5, view: 0.24, solid: true, opening: 'wax', flush: true, pts: [[0, 3.5], [0.03, 3.75], [0.5, 3.8], [0.97, 3.7], [1, 3.6]] },
+  tin: { H: 7.4, view: 0.26, solid: true, opening: 'wax', lid: true, pts: [[0, 5.3], [0.04, 5.8], [0.5, 5.85], [0.9, 5.8], [1, 5.9]] },
 };
 
 function glaze(spec, rng) {
@@ -27,10 +33,10 @@ export async function drawVase(ctx, spec, { shape, cx = 0, scale = 1, color, col
   const H = S.H * scale;
   const pr = profile(S.pts.map(([t, r]) => [t, r * scale]), H);
   const k = ctx.cam.k;
-  const view = 0.17; // minor/major axis ratio of horizontal circles (camera elevation)
+  const view = S.view ?? 0.17; // minor/major axis ratio of horizontal circles (camera elevation)
   const rt = pr.r(H), rb = pr.r(0);
   const rimRy = rt * view, baseRy = rb * view;
-  const gz = { a: color || '#C9B8A3', b: color2 || mix(color || '#C9B8A3', '#ffffff', 0.25) };
+  const gz = { a: color || '#C9B8A3', b: S.solid ? mix(color || '#C9B8A3', '#ffffff', 0.05) : (color2 || mix(color || '#C9B8A3', '#ffffff', 0.25)) };
   const isMatte = matte ?? false;
   // silhouette (y up is negative): base at y=0, top at y=-H
   const N = 36;
@@ -113,9 +119,26 @@ export async function drawVase(ctx, spec, { shape, cx = 0, scale = 1, color, col
   const rimInner = rt * 0.82;
   const [rx0, ry0] = cam.fwd(cx, -H);
   const rg = ctx.id('rg');
-  const rimSvg = `<defs><radialGradient id="${rg}" cx=".5" cy=".3" r=".8"><stop offset="0" stop-color="${darken(gz.a, 0.55)}"/><stop offset="1" stop-color="${darken(gz.a, 0.8)}"/></radialGradient></defs>` +
+  let openSvg;
+  if (S.opening === 'bowl') {
+    const ic = color2 || darken(gz.a, 0.25);
+    openSvg = `<defs><linearGradient id="${rg}" x1="0.1" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="${darken(ic, 0.5)}"/><stop offset=".45" stop-color="${ic}"/><stop offset="1" stop-color="${lighten(ic, 0.22)}"/></linearGradient></defs>` +
+      `<ellipse cx="${f(cx)}" cy="${f(-H + rimRy * 0.04)}" rx="${f(rimInner * 1.07)}" ry="${f(rimRy * 0.9)}" fill="url(#${rg})"/>` +
+      `<ellipse cx="${f(cx + rimInner * 0.06)}" cy="${f(-H + rimRy * 0.35)}" rx="${f(rimInner * 0.62)}" ry="${f(rimRy * 0.5)}" fill="#000" fill-opacity=".1"/>`;
+  } else if (S.opening === 'wax') {
+    const wc = matte === 'pillar' ? gz.a : (S.waxColor || mix(gz.a, '#F2E7D2', 0.6));
+    const top = S.flush ? 0 : rimRy * 0.34;
+    openSvg = `<defs><radialGradient id="${rg}" cx=".4" cy=".3" r=".85"><stop offset="0" stop-color="${lighten(wc, 0.12)}"/><stop offset=".7" stop-color="${wc}"/><stop offset="1" stop-color="${darken(wc, 0.22)}"/></radialGradient></defs>` +
+      `<ellipse cx="${f(cx)}" cy="${f(-H + rimRy * 0.04 + top)}" rx="${f(rimInner * (S.flush ? 1.02 : 1.0))}" ry="${f(rimRy * 0.84)}" fill="url(#${rg})"/>` +
+      `<ellipse cx="${f(cx)}" cy="${f(-H + rimRy * 0.1 + top)}" rx="${f(rimInner * 0.18)}" ry="${f(rimRy * 0.2)}" fill="${darken(wc, 0.4)}" fill-opacity=".55"/>` +
+      `<path d="M${f(cx)} ${f(-H + rimRy * 0.08 + top)}Q${f(cx + 0.12)} ${f(-H - 0.8 + top)} ${f(cx + 0.06)} ${f(-H - 1.5 + top)}" stroke="#2a211c" stroke-width=".2" fill="none" stroke-linecap="round"/>`;
+  } else {
+    openSvg = `<defs><radialGradient id="${rg}" cx=".5" cy=".3" r=".8"><stop offset="0" stop-color="${darken(gz.a, 0.55)}"/><stop offset="1" stop-color="${darken(gz.a, 0.8)}"/></radialGradient></defs>` +
+      `<ellipse cx="${f(cx)}" cy="${f(-H + rimRy * 0.04)}" rx="${f(rimInner)}" ry="${f(rimRy * 0.82)}" fill="url(#${rg})"/>`;
+  }
+  const rimSvg = openSvg.split('</defs>')[0] + '</defs>' +
     `<ellipse cx="${f(cx)}" cy="${f(-H)}" rx="${f(rt)}" ry="${f(rimRy)}" fill="${lighten(gz.a, 0.12)}" fill-opacity=".9"/>` +
-    `<ellipse cx="${f(cx)}" cy="${f(-H + rimRy * 0.04)}" rx="${f(rimInner)}" ry="${f(rimRy * 0.82)}" fill="url(#${rg})"/>` +
+    openSvg.split('</defs>')[1] +
     `<path d="M${f(cx - rimInner)} ${f(-H + rimRy * 0.04)}A${f(rimInner)} ${f(rimRy * 0.82)} 0 0 1 ${f(cx + rimInner)} ${f(-H + rimRy * 0.04)}" fill="none" stroke="#000" stroke-opacity=".45" stroke-width=".18"/>` +
     `<path d="M${f(cx - rt + 0.2)} ${f(-H + rimRy * 0.2)}A${f(rt - 0.2)} ${f(rimRy)} 0 0 0 ${f(cx + rt - 0.2)} ${f(-H + rimRy * 0.2)}" fill="none" stroke="#fff" stroke-opacity="${isMatte ? 0.18 : 0.5}" stroke-width=".16"/>`;
   await ctx.vector(rimSvg, { bounds });
@@ -132,6 +155,19 @@ export async function drawVase(ctx, spec, { shape, cx = 0, scale = 1, color, col
       ctx.shadeAndDraw(hl2, { mat, bevel: { sigma: 0.45 * k * scale, h: 0.5 * scale }, edgeAo: 0.1, contact: { dx: 0.2, dy: 0.3, sigma: 0.3, strength: 0.3 } });
       layers.push(hl2);
     }
+  }
+  if (S.handle === 'mug') {
+    const hh = H * 0.78, hl = H * 0.24, rr = (h) => pr.r(h);
+    const c = Curve.through([[cx + rr(hh) * 0.92, -hh], [cx + rr(hh) + 2.3, -hh - 0.2], [cx + rr(hh) + 3.5, -H * 0.5], [cx + rr(hl) + 2.2, -hl + 0.1], [cx + rr(hl) * 0.92, -hl]]);
+    const { L, R } = tube(c, 1.25, { n: 30 });
+    const hb = { x0: cx - rt, x1: cx + rt + 6, y0: -H, y1: 0 };
+    const hl2 = await ctx.albedo({ d: polyD([...L, ...R.slice().reverse()]), bounds: hb, fill: gz.a, inner: '', pad });
+    ctx.shadeAndDraw(hl2, { mat, bevel: { sigma: 0.4 * k, h: 0.55 }, edgeAo: 0.1, contact: { dx: 0.2, dy: 0.3, sigma: 0.3, strength: 0.3 } });
+    layers.push(hl2);
+    bounds.x1 += 4.4;
+  }
+  if (S.lid) { // tin: a thin lid seam below the rim
+    await ctx.vector(`<path d="M${f(cx - pr.r(H * 0.8))} ${f(-H * 0.8)}A${f(pr.r(H * 0.8))} ${f(pr.r(H * 0.8) * view)} 0 0 0 ${f(cx + pr.r(H * 0.8))} ${f(-H * 0.8)}" fill="none" stroke="#000" stroke-opacity=".35" stroke-width=".16"/>`, { bounds });
   }
   // dried stems
   if (stems) await drawStems(ctx, { cx, H, rt, rimRy, rng: rng || new Rng(9), style: dryStyle, scale });

@@ -7,6 +7,9 @@ import { mix, darken, lighten, shadowOf, luma } from '../lib/color.mjs';
 import { makeMaterial, clothPiece, stitchLine } from '../lib/garment.mjs';
 import { trimBand, tassels } from '../lib/trims.mjs';
 import { Camera } from '../lib/shade.mjs';
+import { clipHangerPieces, pickHangerTone } from '../lib/hanger.mjs';
+import { mirrorOutline } from '../lib/geometry.mjs';
+import { renderGarment } from '../lib/garment.mjs';
 
 /** soft, slightly wavy folded-cloth slab outline (top edge = fold crease, bottom edge = visible border edge) */
 function slabPath(w, h, rng) {
@@ -112,7 +115,43 @@ async function paint(ctx, model) {
   }
 }
 
+/** a saree hung from a clip hanger: soft vertical drape, border along the hem and edges, pallu motif band (scene `hang` items) */
+function hangingSaree(ctx, spec) {
+  const M = makeMaterial(ctx, spec, { fabric: spec.fabric || 'silk' });
+  const rng = ctx.rng.fork('saree-hang');
+  const c2 = spec.color2 || mix(spec.color, '#000', 0.3);
+  const borderType = spec.border && spec.border !== 'zari' ? spec.border : 'zari-border';
+  const top = 4.6, len = 72, hwT = 23, hwB = 26.5, fabAmp = M.mat.foldAmp ?? 1;
+  const half = [[0, top, 'c'], [hwT, top, 'c'], [lerp(hwT, hwB, 0.5) + 0.4, top + len * 0.5], [hwB, top + len - 1.4, 'c'], [hwB * 0.7, top + len + 0.5], [hwB * 0.3, top + len - 0.4], [0, top + len]];
+  const outline = mirrorOutline(half);
+  const fld = new FoldField(rng.int(1, 1e6));
+  fld.dome({ hw: (v) => lerp(hwT, hwB, (v - top) / len), v0: top, v1: top + len, amp: 1.1 * fabAmp, in: 3, out: 3, pow: 0.9 });
+  for (let i = 0; i < 9; i++) { const x = (-0.9 + 1.8 * (i + 0.5) / 9) * hwT; fld.ridge({ a: [x, top + 3], b: [x * 1.12 + rng.range(-1.5, 1.5), top + len - 1], s0: 1.4, s1: 2.8, a0: 0.2 * (i % 2 ? 1 : -1), a1: rng.range(0.5, 1.4) * (i % 2 ? 1 : -1) * fabAmp, bow: rng.range(-1, 1), fade0: 0.1, fade1: 0.08, wob: 0.4, wobF: 1.2, ph: rng.range(0, 6) }); }
+  fld.noise({ amp: 0.2 * (M.mat.wrink ?? 0.3), fu: 0.14, fv: 0.08, oct: 3 });
+  const hemC = Curve.through([[-hwB * 0.96, top + len - 0.6], [-hwB * 0.5, top + len + 0.25], [0, top + len - 0.1], [hwB * 0.5, top + len + 0.3], [hwB * 0.96, top + len - 0.6]]);
+  const bw = 6.2;
+  const tb = trimBand(borderType, hemC, { o0: -bw - 0.6, o1: -0.6, color: spec.color, color2: c2, n: 100 });
+  let inner = tb.inner;
+  const tb2 = trimBand('piping', hemC, { o0: -bw - 1.6, o1: -bw - 1.1, color: spec.color, color2: lighten(c2, 0.1), n: 60 });
+  inner += tb2.inner;
+  // pallu band: a row of paisley motifs between the border and the field
+  const by = top + len - bw - 9.4;
+  inner += `<rect x="${f(-hwB)}" y="${f(by)}" width="${f(2 * hwB)}" height="6.4" fill="${mix(spec.color, '#000', 0.14)}" opacity=".35"/><path d="M${f(-hwB)} ${f(by)}H${f(hwB)}M${f(-hwB)} ${f(by + 6.4)}H${f(hwB)}" stroke="${GOLDC(c2)}" stroke-width=".2"/>`;
+  for (let q = 0; q < 8; q++) { const x = lerp(-hwB + 4, hwB - 4, q / 7); inner += `<g transform="translate(${f(x)} ${f(by + 3.2)}) scale(1.35)"><path d="M0 1.9C-1.7 1.4 -2.3 -0.6 -1.6 -1.6C-0.8 -2.7 0.7 -2.4 1.1 -1.3C1.4 -0.5 0.6 -0.2 0.2 -0.6C0.8 0.6 0.4 1.5 0 1.9Z" fill="${GOLDC(c2)}"/></g>`; }
+  const b = outline.bounds();
+  const cloth = clothPiece(M, { id: 'saree', z: 10, d: outline.d(), bounds: b, field: fld, inner, defs: tb.defs, bevelCm: 0.5, bevelH: 0.5, edgeAo: 0.14, grid: 3, contact: { dx: 0.3, dy: 0.6, sigma: 0.6, strength: 0.36 } });
+  const tone = pickHangerTone(ctx, spec.color);
+  const hang = clipHangerPieces(ctx, { halfW: 27.5, tone, clipX: 21.5 });
+  const pieces = [...hang, cloth];
+  return { pieces, bounds: unionBounds(pieces.map((p) => p.bounds)) };
+}
+
 export default {
+  async scene(ctx, spec) {
+    const m = hangingSaree(ctx, spec);
+    ctx.fitCamera(m.bounds);
+    await renderGarment(ctx, m);
+  },
   async front(ctx, spec) {
     const model = build(ctx, spec, 'front');
     ctx.fitCamera(model.bounds, { mx: 0.09, top: 0.07, bottom: 0.08, kmax: 14 });

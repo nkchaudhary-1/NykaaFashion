@@ -36,8 +36,11 @@ export function hangerPieces(ctx, { halfW = 18.4, drop = 5.4, tone = HANGER_TONE
     bevelCm: 0.42, bevelH: 0.5, edgeAo: 0.1, texSwap: true, contact: { dx: 0.2, dy: 0.3, sigma: 0.3, strength: 0.3 }, hanger: true,
   });
   // hook wire: stem up to the peg, small curl over it
-  const hookC = Curve.through([[0, 0.6], [0, -2.6], [0.05, -4.6], [0.9, -6.5], [2.4, -7.2], [3.5, -6.2], [3.4, -4.6]]);
-  const { L, R } = tube(hookC, 0.34, { n: 40 });
+  const rail = !!ctx.rail; // scene hung from a rail: straight wire up to the rod, no wall peg
+  if (rail) showPeg = false;
+  const hookC = rail ? Curve.through([[0, 0.6], [0, -2.8], [0.02, -5.2], [0.28, -6.5], [0.9, -6.95]])
+    : Curve.through([[0, 0.6], [0, -2.6], [0.05, -4.6], [0.9, -6.5], [2.4, -7.2], [3.5, -6.2], [3.4, -4.6]]);
+  const { L, R } = tube(hookC, rail ? 0.5 : 0.34, { n: 40 });
   pieces.push({
     id: 'hook', z: 1, d: polyD([...L, ...R.slice().reverse()]), bounds: hookC.bounds(), pad: 1.5, fill: hookTone, inner: '', defs: '',
     mat: { amb: 0.3, wrap: 0.1, spec: 0.9, shin: 40, metal: 0.8, tex: { type: 'none', amp: 0, bump: 0 } },
@@ -63,14 +66,16 @@ export function clipHangerPieces(ctx, { halfW = 17, tone = HANGER_TONES.beech, h
     mat: { amb: 0.38, wrap: 0.2, spec: 0.28, shin: 22, tex: { type: 'wood', amp: 0.08, bump: 0.02 } },
     bevelCm: 0.35, bevelH: 0.45, edgeAo: 0.1, texSwap: true, contact: { dx: 0.2, dy: 0.3, sigma: 0.3, strength: 0.3 },
   });
-  const hookC = Curve.through([[0, barY - 0.2], [0, -2.0], [0.05, -4.0], [0.9, -5.9], [2.4, -6.6], [3.5, -5.6], [3.4, -4.0]]);
-  const { L, R } = tube(hookC, 0.34, { n: 40 });
+  const rail = !!ctx.rail;
+  const hookC = rail ? Curve.through([[0, barY - 0.2], [0, -2.4], [0.02, -4.4], [0.28, -5.7], [0.9, -6.15]])
+    : Curve.through([[0, barY - 0.2], [0, -2.0], [0.05, -4.0], [0.9, -5.9], [2.4, -6.6], [3.5, -5.6], [3.4, -4.0]]);
+  const { L, R } = tube(hookC, rail ? 0.5 : 0.34, { n: 40 });
   pieces.push({
     id: 'hook', z: 1, d: polyD([...L, ...R.slice().reverse()]), bounds: hookC.bounds(), pad: 1.5, fill: hookTone, inner: '', defs: '',
     mat: { amb: 0.3, wrap: 0.1, spec: 0.9, shin: 40, metal: 0.8, tex: { type: 'none', amp: 0, bump: 0 } },
     bevelCm: 0.12, bevelH: 0.3, edgeAo: 0, contact: { dx: 0.2, dy: 0.3, sigma: 0.25, strength: 0.25 },
   });
-  pieces.push({
+  if (!rail) pieces.push({
     id: 'peg', z: 2, d: ellipseD(1.6, -4.0, 1.45, 1.45), bounds: { x0: 0, y0: -5.7, x1: 3.3, y1: -2.3 }, pad: 1.5, fill: mix(tone, '#d9c9b0', 0.35), inner: '', defs: '',
     mat: { amb: 0.32, wrap: 0.15, spec: 0.5, shin: 26, tex: { type: 'wood', amp: 0.05, bump: 0 } },
     bevelCm: 0.95, bevelH: 1.1, edgeAo: 0, contact: { dx: 0.5, dy: 0.7, sigma: 0.5, strength: 0.4 },

@@ -4019,6 +4019,1626 @@
     "shot": "detail",
     "seed": 702
    }
+  },
+  {
+   "out": "samples/kurta-set/palazzo-blush-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "round",
+    "sleeve": "three-quarter",
+    "bottom": "palazzo",
+    "color": "#E8B4B0",
+    "color2": "#C9A769",
+    "bg": "#EFE6DA",
+    "shot": "front",
+    "seed": 901
+   }
+  },
+  {
+   "out": "samples/kurta-set/palazzo-blush-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "round",
+    "sleeve": "three-quarter",
+    "bottom": "palazzo",
+    "color": "#E8B4B0",
+    "color2": "#C9A769",
+    "bg": "#EFE6DA",
+    "shot": "alt",
+    "seed": 902
+   }
+  },
+  {
+   "out": "samples/kurta-set/palazzo-blush-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "round",
+    "sleeve": "three-quarter",
+    "bottom": "palazzo",
+    "color": "#E8B4B0",
+    "color2": "#C9A769",
+    "bg": "#EFE6DA",
+    "shot": "detail",
+    "seed": 903
+   }
+  },
+  {
+   "out": "samples/kurta-set/churidar-indigo-print-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "a-line",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "bottom": "churidar",
+    "color": "#2B3A67",
+    "color2": "#EFE7D6",
+    "pattern": "block-print",
+    "bg": "#E8D1C0",
+    "shot": "front",
+    "seed": 904
+   }
+  },
+  {
+   "out": "samples/kurta-set/churidar-indigo-print-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "a-line",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "bottom": "churidar",
+    "color": "#2B3A67",
+    "color2": "#EFE7D6",
+    "pattern": "block-print",
+    "bg": "#E8D1C0",
+    "shot": "alt",
+    "seed": 905
+   }
+  },
+  {
+   "out": "samples/kurta-set/churidar-indigo-print-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "a-line",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "bottom": "churidar",
+    "color": "#2B3A67",
+    "color2": "#EFE7D6",
+    "pattern": "block-print",
+    "bg": "#E8D1C0",
+    "shot": "detail",
+    "seed": 906
+   }
+  },
+  {
+   "out": "samples/kurta-set/boys-teal-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "bottom": "churidar",
+    "kids": true,
+    "gender": "men",
+    "color": "#1F6F78",
+    "color2": "#F3EBDD",
+    "pattern": "block-print",
+    "bg": "#F0DCD2",
+    "shot": "front",
+    "seed": 907
+   }
+  },
+  {
+   "out": "samples/kurta-set/boys-teal-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "bottom": "churidar",
+    "kids": true,
+    "gender": "men",
+    "color": "#1F6F78",
+    "color2": "#F3EBDD",
+    "pattern": "block-print",
+    "bg": "#F0DCD2",
+    "shot": "alt",
+    "seed": 908
+   }
+  },
+  {
+   "out": "samples/kurta-set/boys-teal-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta-set",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "bottom": "churidar",
+    "kids": true,
+    "gender": "men",
+    "color": "#1F6F78",
+    "color2": "#F3EBDD",
+    "pattern": "block-print",
+    "bg": "#F0DCD2",
+    "shot": "detail",
+    "seed": 909
+   }
+  },
+  {
+   "out": "samples/sweater/cardigan-oat-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "cardigan",
+    "fabric": "knit",
+    "color": "#CFC6B6",
+    "bg": "#EADBD3",
+    "shot": "front",
+    "seed": 910
+   }
+  },
+  {
+   "out": "samples/sweater/cardigan-oat-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "cardigan",
+    "fabric": "knit",
+    "color": "#CFC6B6",
+    "bg": "#EADBD3",
+    "shot": "alt",
+    "seed": 911
+   }
+  },
+  {
+   "out": "samples/sweater/cardigan-oat-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "cardigan",
+    "fabric": "knit",
+    "color": "#CFC6B6",
+    "bg": "#EADBD3",
+    "shot": "detail",
+    "seed": 912
+   }
+  },
+  {
+   "out": "samples/sweater/turtle-mulberry-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "turtle",
+    "fabric": "knit",
+    "color": "#6B2D4F",
+    "bg": "#D6DEE0",
+    "shot": "front",
+    "seed": 913
+   }
+  },
+  {
+   "out": "samples/sweater/turtle-mulberry-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "turtle",
+    "fabric": "knit",
+    "color": "#6B2D4F",
+    "bg": "#D6DEE0",
+    "shot": "alt",
+    "seed": 914
+   }
+  },
+  {
+   "out": "samples/sweater/turtle-mulberry-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "turtle",
+    "fabric": "knit",
+    "color": "#6B2D4F",
+    "bg": "#D6DEE0",
+    "shot": "detail",
+    "seed": 915
+   }
+  },
+  {
+   "out": "samples/sweater/crew-indigo-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "crew",
+    "fabric": "knit",
+    "color": "#2B3A67",
+    "bg": "#E8DFD0",
+    "shot": "front",
+    "seed": 916
+   }
+  },
+  {
+   "out": "samples/sweater/crew-indigo-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "crew",
+    "fabric": "knit",
+    "color": "#2B3A67",
+    "bg": "#E8DFD0",
+    "shot": "alt",
+    "seed": 917
+   }
+  },
+  {
+   "out": "samples/sweater/crew-indigo-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sweater",
+    "style": "crew",
+    "fabric": "knit",
+    "color": "#2B3A67",
+    "bg": "#E8DFD0",
+    "shot": "detail",
+    "seed": 918
+   }
+  },
+  {
+   "out": "samples/throw/terracotta-print-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "throw",
+    "fabric": "cotton",
+    "color": "#B24A33",
+    "color2": "#F0E2C8",
+    "pattern": "block-print",
+    "bg": "#E8DFD0",
+    "shot": "front",
+    "seed": 919
+   }
+  },
+  {
+   "out": "samples/throw/terracotta-print-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "throw",
+    "fabric": "cotton",
+    "color": "#B24A33",
+    "color2": "#F0E2C8",
+    "pattern": "block-print",
+    "bg": "#E8DFD0",
+    "shot": "alt",
+    "seed": 920
+   }
+  },
+  {
+   "out": "samples/throw/terracotta-print-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "throw",
+    "fabric": "cotton",
+    "color": "#B24A33",
+    "color2": "#F0E2C8",
+    "pattern": "block-print",
+    "bg": "#E8DFD0",
+    "shot": "detail",
+    "seed": 921
+   }
+  },
+  {
+   "out": "samples/throw/wool-stone-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "throw",
+    "fabric": "wool",
+    "color": "#8D867C",
+    "color2": "#E6DAC9",
+    "bg": "#D6DEE0",
+    "shot": "front",
+    "seed": 922
+   }
+  },
+  {
+   "out": "samples/throw/wool-stone-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "throw",
+    "fabric": "wool",
+    "color": "#8D867C",
+    "color2": "#E6DAC9",
+    "bg": "#D6DEE0",
+    "shot": "alt",
+    "seed": 923
+   }
+  },
+  {
+   "out": "samples/throw/wool-stone-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "throw",
+    "fabric": "wool",
+    "color": "#8D867C",
+    "color2": "#E6DAC9",
+    "bg": "#D6DEE0",
+    "shot": "detail",
+    "seed": 924
+   }
+  },
+  {
+   "out": "samples/bedding/indigo-print-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bedding",
+    "color": "#27345F",
+    "color2": "#EFE3D0",
+    "pattern": "block-print",
+    "bg": "#E3D8C6",
+    "shot": "front",
+    "seed": 925
+   }
+  },
+  {
+   "out": "samples/bedding/indigo-print-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bedding",
+    "color": "#27345F",
+    "color2": "#EFE3D0",
+    "pattern": "block-print",
+    "bg": "#E3D8C6",
+    "shot": "alt",
+    "seed": 926
+   }
+  },
+  {
+   "out": "samples/bedding/indigo-print-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bedding",
+    "color": "#27345F",
+    "color2": "#EFE3D0",
+    "pattern": "block-print",
+    "bg": "#E3D8C6",
+    "shot": "detail",
+    "seed": 927
+   }
+  },
+  {
+   "out": "samples/necklace/layered-gold-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "necklace",
+    "style": "layered",
+    "metal": "gold",
+    "color": "#C9A769",
+    "color2": "#A33B3B",
+    "bg": "#ECDCD3",
+    "shot": "front",
+    "seed": 928
+   }
+  },
+  {
+   "out": "samples/necklace/layered-gold-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "necklace",
+    "style": "layered",
+    "metal": "gold",
+    "color": "#C9A769",
+    "color2": "#A33B3B",
+    "bg": "#ECDCD3",
+    "shot": "alt",
+    "seed": 929
+   }
+  },
+  {
+   "out": "samples/necklace/layered-gold-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "necklace",
+    "style": "layered",
+    "metal": "gold",
+    "color": "#C9A769",
+    "color2": "#A33B3B",
+    "bg": "#ECDCD3",
+    "shot": "detail",
+    "seed": 930
+   }
+  },
+  {
+   "out": "samples/necklace/temple-oxidised-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "necklace",
+    "style": "temple",
+    "metal": "oxidised",
+    "color": "#8D867C",
+    "color2": "#1F6F78",
+    "bg": "#D6DEE0",
+    "shot": "front",
+    "seed": 931
+   }
+  },
+  {
+   "out": "samples/necklace/temple-oxidised-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "necklace",
+    "style": "temple",
+    "metal": "oxidised",
+    "color": "#8D867C",
+    "color2": "#1F6F78",
+    "bg": "#D6DEE0",
+    "shot": "alt",
+    "seed": 932
+   }
+  },
+  {
+   "out": "samples/necklace/temple-oxidised-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "necklace",
+    "style": "temple",
+    "metal": "oxidised",
+    "color": "#8D867C",
+    "color2": "#1F6F78",
+    "bg": "#D6DEE0",
+    "shot": "detail",
+    "seed": 933
+   }
+  },
+  {
+   "out": "samples/bangles/kundan-six-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bangles",
+    "count": 6,
+    "style": "kundan",
+    "color": "#1F6F78",
+    "color2": "#D8586A",
+    "bg": "#D9D1C4",
+    "shot": "front",
+    "seed": 934
+   }
+  },
+  {
+   "out": "samples/bangles/kundan-six-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bangles",
+    "count": 6,
+    "style": "kundan",
+    "color": "#1F6F78",
+    "color2": "#D8586A",
+    "bg": "#D9D1C4",
+    "shot": "alt",
+    "seed": 935
+   }
+  },
+  {
+   "out": "samples/bangles/kundan-six-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bangles",
+    "count": 6,
+    "style": "kundan",
+    "color": "#1F6F78",
+    "color2": "#D8586A",
+    "bg": "#D9D1C4",
+    "shot": "detail",
+    "seed": 936
+   }
+  },
+  {
+   "out": "samples/bangles/kada-pair-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bangles",
+    "count": 2,
+    "style": "kada",
+    "metal": "oxidised",
+    "color": "#8D867C",
+    "bg": "#E8DFD0",
+    "shot": "front",
+    "seed": 937
+   }
+  },
+  {
+   "out": "samples/bangles/kada-pair-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bangles",
+    "count": 2,
+    "style": "kada",
+    "metal": "oxidised",
+    "color": "#8D867C",
+    "bg": "#E8DFD0",
+    "shot": "alt",
+    "seed": 938
+   }
+  },
+  {
+   "out": "samples/bangles/kada-pair-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bangles",
+    "count": 2,
+    "style": "kada",
+    "metal": "oxidised",
+    "color": "#8D867C",
+    "bg": "#E8DFD0",
+    "shot": "detail",
+    "seed": 939
+   }
+  },
+  {
+   "out": "samples/bowl/bowl-cream-blue-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bowl",
+    "style": "bowl",
+    "color": "#E5DCCB",
+    "color2": "#2B5A7A",
+    "bg": "#E8DFD0",
+    "shot": "front",
+    "seed": 940
+   }
+  },
+  {
+   "out": "samples/bowl/bowl-cream-blue-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bowl",
+    "style": "bowl",
+    "color": "#E5DCCB",
+    "color2": "#2B5A7A",
+    "bg": "#E8DFD0",
+    "shot": "alt",
+    "seed": 941
+   }
+  },
+  {
+   "out": "samples/bowl/bowl-cream-blue-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bowl",
+    "style": "bowl",
+    "color": "#E5DCCB",
+    "color2": "#2B5A7A",
+    "bg": "#E8DFD0",
+    "shot": "detail",
+    "seed": 942
+   }
+  },
+  {
+   "out": "samples/bowl/mug-cream-madder-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bowl",
+    "style": "mug",
+    "color": "#E5DCCB",
+    "color2": "#A33B3B",
+    "bg": "#D8C2AE",
+    "shot": "front",
+    "seed": 943
+   }
+  },
+  {
+   "out": "samples/bowl/mug-cream-madder-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bowl",
+    "style": "mug",
+    "color": "#E5DCCB",
+    "color2": "#A33B3B",
+    "bg": "#D8C2AE",
+    "shot": "alt",
+    "seed": 944
+   }
+  },
+  {
+   "out": "samples/bowl/mug-cream-madder-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "bowl",
+    "style": "mug",
+    "color": "#E5DCCB",
+    "color2": "#A33B3B",
+    "bg": "#D8C2AE",
+    "shot": "detail",
+    "seed": 945
+   }
+  },
+  {
+   "out": "samples/candle/glass-amber-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "glass",
+    "color": "#A8651F",
+    "bg": "#EBE2D3",
+    "shot": "front",
+    "seed": 946
+   }
+  },
+  {
+   "out": "samples/candle/glass-amber-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "glass",
+    "color": "#A8651F",
+    "bg": "#EBE2D3",
+    "shot": "alt",
+    "seed": 947
+   }
+  },
+  {
+   "out": "samples/candle/glass-amber-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "glass",
+    "color": "#A8651F",
+    "bg": "#EBE2D3",
+    "shot": "detail",
+    "seed": 948
+   }
+  },
+  {
+   "out": "samples/candle/ceramic-sage-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "ceramic",
+    "color": "#6B8F71",
+    "bg": "#EBE2D3",
+    "shot": "front",
+    "seed": 949
+   }
+  },
+  {
+   "out": "samples/candle/ceramic-sage-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "ceramic",
+    "color": "#6B8F71",
+    "bg": "#EBE2D3",
+    "shot": "alt",
+    "seed": 950
+   }
+  },
+  {
+   "out": "samples/candle/ceramic-sage-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "ceramic",
+    "color": "#6B8F71",
+    "bg": "#EBE2D3",
+    "shot": "detail",
+    "seed": 951
+   }
+  },
+  {
+   "out": "samples/candle/pillar-ivory-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "pillar",
+    "color": "#E9DFCF",
+    "bg": "#D6DEE0",
+    "shot": "front",
+    "seed": 952
+   }
+  },
+  {
+   "out": "samples/candle/pillar-ivory-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "pillar",
+    "color": "#E9DFCF",
+    "bg": "#D6DEE0",
+    "shot": "alt",
+    "seed": 953
+   }
+  },
+  {
+   "out": "samples/candle/pillar-ivory-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "pillar",
+    "color": "#E9DFCF",
+    "bg": "#D6DEE0",
+    "shot": "detail",
+    "seed": 954
+   }
+  },
+  {
+   "out": "samples/candle/tin-clay-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "tin",
+    "color": "#B5532F",
+    "bg": "#E6DAC9",
+    "shot": "front",
+    "seed": 955
+   }
+  },
+  {
+   "out": "samples/candle/tin-clay-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "tin",
+    "color": "#B5532F",
+    "bg": "#E6DAC9",
+    "shot": "alt",
+    "seed": 956
+   }
+  },
+  {
+   "out": "samples/candle/tin-clay-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "candle",
+    "vessel": "tin",
+    "color": "#B5532F",
+    "bg": "#E6DAC9",
+    "shot": "detail",
+    "seed": 957
+   }
+  },
+  {
+   "out": "samples/boot/ankle-black-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "boot",
+    "height": "ankle",
+    "fabric": "leather",
+    "color": "#1C1A19",
+    "bg": "#3A3D32",
+    "shot": "front",
+    "seed": 958
+   }
+  },
+  {
+   "out": "samples/boot/ankle-black-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "boot",
+    "height": "ankle",
+    "fabric": "leather",
+    "color": "#1C1A19",
+    "bg": "#3A3D32",
+    "shot": "alt",
+    "seed": 959
+   }
+  },
+  {
+   "out": "samples/boot/ankle-black-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "boot",
+    "height": "ankle",
+    "fabric": "leather",
+    "color": "#1C1A19",
+    "bg": "#3A3D32",
+    "shot": "detail",
+    "seed": 960
+   }
+  },
+  {
+   "out": "samples/boot/ankle-tan-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "boot",
+    "height": "ankle",
+    "fabric": "leather",
+    "color": "#8A5A33",
+    "bg": "#E6DAC9",
+    "shot": "front",
+    "seed": 961
+   }
+  },
+  {
+   "out": "samples/boot/ankle-tan-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "boot",
+    "height": "ankle",
+    "fabric": "leather",
+    "color": "#8A5A33",
+    "bg": "#E6DAC9",
+    "shot": "alt",
+    "seed": 962
+   }
+  },
+  {
+   "out": "samples/boot/ankle-tan-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "boot",
+    "height": "ankle",
+    "fabric": "leather",
+    "color": "#8A5A33",
+    "bg": "#E6DAC9",
+    "shot": "detail",
+    "seed": 963
+   }
+  },
+  {
+   "out": "samples/flat/loafer-brown-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "flat",
+    "style": "loafer",
+    "fabric": "leather",
+    "gender": "men",
+    "color": "#6B3A1E",
+    "bg": "#3A3D32",
+    "shot": "front",
+    "seed": 964
+   }
+  },
+  {
+   "out": "samples/flat/loafer-brown-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "flat",
+    "style": "loafer",
+    "fabric": "leather",
+    "gender": "men",
+    "color": "#6B3A1E",
+    "bg": "#3A3D32",
+    "shot": "alt",
+    "seed": 965
+   }
+  },
+  {
+   "out": "samples/flat/loafer-brown-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "flat",
+    "style": "loafer",
+    "fabric": "leather",
+    "gender": "men",
+    "color": "#6B3A1E",
+    "bg": "#3A3D32",
+    "shot": "detail",
+    "seed": 966
+   }
+  },
+  {
+   "out": "samples/flat/ballet-blush-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "flat",
+    "style": "ballet",
+    "fabric": "leather",
+    "color": "#E8B4B0",
+    "bg": "#D6DEE0",
+    "shot": "front",
+    "seed": 967
+   }
+  },
+  {
+   "out": "samples/flat/ballet-blush-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "flat",
+    "style": "ballet",
+    "fabric": "leather",
+    "color": "#E8B4B0",
+    "bg": "#D6DEE0",
+    "shot": "alt",
+    "seed": 968
+   }
+  },
+  {
+   "out": "samples/flat/ballet-blush-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "flat",
+    "style": "ballet",
+    "fabric": "leather",
+    "color": "#E8B4B0",
+    "bg": "#D6DEE0",
+    "shot": "detail",
+    "seed": 969
+   }
+  },
+  {
+   "out": "samples/tee/kids-marigold-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "tee",
+    "neck": "crew",
+    "fit": "regular",
+    "sleeve": "short",
+    "kids": true,
+    "color": "#D9A21B",
+    "bg": "#F1EBE2",
+    "shot": "front",
+    "seed": 970
+   }
+  },
+  {
+   "out": "samples/tee/kids-marigold-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "tee",
+    "neck": "crew",
+    "fit": "regular",
+    "sleeve": "short",
+    "kids": true,
+    "color": "#D9A21B",
+    "bg": "#F1EBE2",
+    "shot": "alt",
+    "seed": 971
+   }
+  },
+  {
+   "out": "samples/shirt/men-oxford-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "shirt",
+    "collar": "spread",
+    "fit": "regular",
+    "sleeve": "long",
+    "pocket": true,
+    "gender": "men",
+    "color": "#CFE0EE",
+    "bg": "#E8DFD0",
+    "shot": "front",
+    "seed": 972
+   }
+  },
+  {
+   "out": "samples/shirt/men-oxford-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "shirt",
+    "collar": "spread",
+    "fit": "regular",
+    "sleeve": "long",
+    "pocket": true,
+    "gender": "men",
+    "color": "#CFE0EE",
+    "bg": "#E8DFD0",
+    "shot": "alt",
+    "seed": 973
+   }
+  },
+  {
+   "out": "samples/shirt/men-oxford-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "shirt",
+    "collar": "spread",
+    "fit": "regular",
+    "sleeve": "long",
+    "pocket": true,
+    "gender": "men",
+    "color": "#CFE0EE",
+    "bg": "#E8DFD0",
+    "shot": "detail",
+    "seed": 974
+   }
+  },
+  {
+   "out": "samples/shirt/kids-gingham-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "shirt",
+    "collar": "camp",
+    "fit": "regular",
+    "sleeve": "short",
+    "kids": true,
+    "pattern": "gingham",
+    "color": "#F3EBDD",
+    "color2": "#2B3A67",
+    "bg": "#CBD3C0",
+    "shot": "front",
+    "seed": 975
+   }
+  },
+  {
+   "out": "samples/dress/kids-floral-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "dress",
+    "silhouette": "a-line",
+    "length": "midi",
+    "sleeve": "cap",
+    "neckline": "square",
+    "kids": true,
+    "pattern": "floral",
+    "color": "#D9A21B",
+    "color2": "#F3EBDD",
+    "bg": "#E4EAD8",
+    "shot": "front",
+    "seed": 976
+   }
+  },
+  {
+   "out": "samples/dress/kids-floral-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "dress",
+    "silhouette": "a-line",
+    "length": "midi",
+    "sleeve": "cap",
+    "neckline": "square",
+    "kids": true,
+    "pattern": "floral",
+    "color": "#D9A21B",
+    "color2": "#F3EBDD",
+    "bg": "#E4EAD8",
+    "shot": "alt",
+    "seed": 977
+   }
+  },
+  {
+   "out": "samples/skirt/kids-pleated-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "skirt",
+    "style": "pleated",
+    "length": "midi",
+    "kids": true,
+    "color": "#E8B4B0",
+    "bg": "#F1EBE2",
+    "shot": "front",
+    "seed": 978
+   }
+  },
+  {
+   "out": "samples/trousers/kids-jogger-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "trousers",
+    "leg": "jogger",
+    "length": "full",
+    "kids": true,
+    "color": "#B7B2A8",
+    "bg": "#F1EBE2",
+    "shot": "front",
+    "seed": 979
+   }
+  },
+  {
+   "out": "samples/trousers/men-straight-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "trousers",
+    "leg": "straight",
+    "length": "full",
+    "gender": "men",
+    "color": "#2B2B2B",
+    "bg": "#D6DEE0",
+    "shot": "front",
+    "seed": 980
+   }
+  },
+  {
+   "out": "samples/trousers/men-straight-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "trousers",
+    "leg": "straight",
+    "length": "full",
+    "gender": "men",
+    "color": "#2B2B2B",
+    "bg": "#D6DEE0",
+    "shot": "alt",
+    "seed": 981
+   }
+  },
+  {
+   "out": "samples/kurta/kids-yellow-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "kids": true,
+    "color": "#D9A21B",
+    "bg": "#EFE6DA",
+    "shot": "front",
+    "seed": 982
+   }
+  },
+  {
+   "out": "samples/kurta/men-ivory-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "gender": "men",
+    "color": "#EFE7D6",
+    "bg": "#D6DEE0",
+    "shot": "front",
+    "seed": 983
+   }
+  },
+  {
+   "out": "samples/kurta/men-ivory-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "kurta",
+    "length": "knee",
+    "fit": "straight",
+    "neck": "mandarin",
+    "sleeve": "long",
+    "gender": "men",
+    "color": "#EFE7D6",
+    "bg": "#D6DEE0",
+    "shot": "alt",
+    "seed": 984
+   }
+  },
+  {
+   "out": "samples/jacket/men-blazer-ink-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "jacket",
+    "style": "blazer",
+    "gender": "men",
+    "color": "#1F2430",
+    "bg": "#E8DFD0",
+    "shot": "front",
+    "seed": 985
+   }
+  },
+  {
+   "out": "samples/jacket/men-blazer-ink-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "jacket",
+    "style": "blazer",
+    "gender": "men",
+    "color": "#1F2430",
+    "bg": "#E8DFD0",
+    "shot": "alt",
+    "seed": 986
+   }
+  },
+  {
+   "out": "samples/jacket/men-blazer-ink-detail",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "jacket",
+    "style": "blazer",
+    "gender": "men",
+    "color": "#1F2430",
+    "bg": "#E8DFD0",
+    "shot": "detail",
+    "seed": 987
+   }
+  },
+  {
+   "out": "samples/tee/men-charcoal-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "tee",
+    "neck": "crew",
+    "fit": "oversized",
+    "sleeve": "short",
+    "gender": "men",
+    "color": "#2B2B2B",
+    "bg": "#E6DAC9",
+    "shot": "front",
+    "seed": 988
+   }
+  },
+  {
+   "out": "samples/sneaker/kids-low-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sneaker",
+    "style": "low",
+    "kids": true,
+    "color": "#F1EBE2",
+    "color2": "#D9A21B",
+    "bg": "#D6DEE0",
+    "shot": "front",
+    "seed": 989
+   }
+  },
+  {
+   "out": "samples/sneaker/kids-low-alt",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sneaker",
+    "style": "low",
+    "kids": true,
+    "color": "#F1EBE2",
+    "color2": "#D9A21B",
+    "bg": "#D6DEE0",
+    "shot": "alt",
+    "seed": 990
+   }
+  },
+  {
+   "out": "samples/sneaker/men-low-front",
+   "w": 1000,
+   "h": 1250,
+   "spec": {
+    "kind": "sneaker",
+    "style": "low",
+    "gender": "men",
+    "color": "#E8E1D4",
+    "color2": "#2B3A67",
+    "bg": "#E6DAC9",
+    "shot": "front",
+    "seed": 991
+   }
+  },
+  {
+   "out": "samples/scenes/rail-arch-tall",
+   "w": 1000,
+   "h": 1250,
+   "scene": {
+    "bg": "#E8D1C0",
+    "motif": "arch",
+    "motifColor": "#D9B79F",
+    "safe": "none",
+    "rail": true,
+    "floorY": 0.88,
+    "topY": 0.1,
+    "items": [
+     {
+      "spec": {
+       "kind": "kurta",
+       "length": "knee",
+       "fit": "straight",
+       "neck": "mandarin",
+       "sleeve": "three-quarter",
+       "color": "#27345F",
+       "color2": "#A33B3B",
+       "pattern": "block-print",
+       "seed": 11
+      },
+      "cx": 0.32,
+      "cy": 0.43,
+      "height": 0.656,
+      "anchor": "hang",
+      "z": 0,
+      "pin": "demo-1"
+     },
+     {
+      "spec": {
+       "kind": "saree",
+       "border": "contrast-border",
+       "color": "#2B3A67",
+       "color2": "#EFE7D6",
+       "pattern": "ikat",
+       "seed": 12
+      },
+      "cx": 0.72,
+      "cy": 0.3,
+      "height": 0.4,
+      "anchor": "hang",
+      "z": 1,
+      "rot": 1
+     }
+    ]
+   }
+  },
+  {
+   "out": "samples/scenes/rail-window-wide",
+   "w": 1600,
+   "h": 900,
+   "scene": {
+    "bg": "#2E2A27",
+    "motif": "window",
+    "motifColor": "#3C3631",
+    "safe": "left",
+    "rail": true,
+    "floorY": 0.88,
+    "topY": 0.1,
+    "items": [
+     {
+      "spec": {
+       "kind": "jacket",
+       "style": "blazer",
+       "gender": "men",
+       "color": "#1F2430",
+       "seed": 21
+      },
+      "cx": 0.56,
+      "cy": 0.36,
+      "height": 0.52,
+      "anchor": "hang",
+      "z": 0,
+      "pin": "demo-2"
+     },
+     {
+      "spec": {
+       "kind": "trousers",
+       "leg": "tapered",
+       "length": "full",
+       "gender": "men",
+       "color": "#B7B2A8",
+       "seed": 22
+      },
+      "cx": 0.74,
+      "cy": 0.45,
+      "height": 0.7,
+      "anchor": "hang",
+      "z": 1,
+      "pin": "demo-3"
+     },
+     {
+      "spec": {
+       "kind": "sneaker",
+       "style": "low",
+       "gender": "men",
+       "color": "#E8E1D4",
+       "color2": "#2B3A67",
+       "seed": 23
+      },
+      "cx": 0.87,
+      "cy": 0.8,
+      "height": 0.16,
+      "anchor": "floor",
+      "z": 2,
+      "pin": "demo-4"
+     }
+    ]
+   }
+  },
+  {
+   "out": "samples/scenes/home-steps",
+   "w": 1000,
+   "h": 1250,
+   "scene": {
+    "bg": "#E6DCCB",
+    "motif": "steps",
+    "motifColor": "#D9C9B0",
+    "safe": "none",
+    "rail": false,
+    "floorY": 0.88,
+    "topY": 0.1,
+    "items": [
+     {
+      "spec": {
+       "kind": "cushion",
+       "style": "tasselled",
+       "pattern": "paisley",
+       "color": "#D9A21B",
+       "color2": "#6B2D4F",
+       "seed": 31
+      },
+      "cx": 0.2,
+      "cy": 0.78,
+      "height": 0.2,
+      "anchor": "floor",
+      "z": 0,
+      "pin": "demo-5"
+     },
+     {
+      "spec": {
+       "kind": "vase",
+       "style": "amphora",
+       "stems": true,
+       "color": "#C9B8A3",
+       "color2": "#B5532F",
+       "seed": 32
+      },
+      "cx": 0.52,
+      "cy": 0.74,
+      "height": 0.3,
+      "anchor": "floor",
+      "z": 1,
+      "pin": "demo-6"
+     },
+     {
+      "spec": {
+       "kind": "candle",
+       "vessel": "glass",
+       "color": "#A8651F",
+       "seed": 33
+      },
+      "cx": 0.82,
+      "cy": 0.81,
+      "height": 0.13,
+      "anchor": "floor",
+      "z": 2
+     }
+    ]
+   }
+  },
+  {
+   "out": "samples/scenes/kids-circle-wide",
+   "w": 1500,
+   "h": 1000,
+   "scene": {
+    "bg": "#F1E4D6",
+    "motif": "circle",
+    "motifColor": "#E3B34A",
+    "safe": "none",
+    "rail": true,
+    "floorY": 0.88,
+    "topY": 0.1,
+    "items": [
+     {
+      "spec": {
+       "kind": "dress",
+       "silhouette": "a-line",
+       "length": "midi",
+       "sleeve": "cap",
+       "neckline": "square",
+       "kids": true,
+       "pattern": "floral",
+       "color": "#D9A21B",
+       "color2": "#F3EBDD",
+       "seed": 41
+      },
+      "cx": 0.34,
+      "cy": 0.38,
+      "height": 0.56,
+      "anchor": "hang",
+      "z": 0,
+      "pin": "demo-7"
+     },
+     {
+      "spec": {
+       "kind": "kurta-set",
+       "length": "knee",
+       "fit": "straight",
+       "neck": "mandarin",
+       "sleeve": "long",
+       "bottom": "churidar",
+       "kids": true,
+       "gender": "men",
+       "color": "#1F6F78",
+       "color2": "#F3EBDD",
+       "pattern": "block-print",
+       "seed": 42
+      },
+      "cx": 0.62,
+      "cy": 0.43,
+      "height": 0.66,
+      "anchor": "hang",
+      "z": 1,
+      "pin": "demo-8"
+     },
+     {
+      "spec": {
+       "kind": "bag",
+       "style": "potli",
+       "hardware": "gold",
+       "color": "#A33B3B",
+       "seed": 43
+      },
+      "cx": 0.86,
+      "cy": 0.77,
+      "height": 0.2,
+      "anchor": "floor",
+      "z": 2
+     }
+    ]
+   }
   }
  ]
 }

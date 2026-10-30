@@ -113,7 +113,7 @@ export default {
     ctx.cam = new Camera({ k: ctx.cam.k, tx: ctx.cam.tx, ty: ctx.cam.ty + (-oc.y1) * -ctx.cam.k * 0 + (-oc.y1 * ctx.cam.k) * 0, rot: tilt });
     // translate geometry rather than the camera: draw with centre at (0, -a)
     const k = ctx.cam.k;
-    ctx.cam = new Camera({ k, tx: ctx.W / 2, ty: baseY - oc.y1 * k * Math.cos(tilt) * 1.0 - 0, rot: tilt });
+    ctx.cam = new Camera({ k, tx: ctx.place ? ctx.cam.tx : ctx.W / 2, ty: baseY - oc.y1 * k * Math.cos(tilt) * 1.0 - 0, rot: tilt });
     await ctx.backdrop({ mode: 'surface', horizon: 0.63 });
     await drawCushion(ctx, model, {});
   },

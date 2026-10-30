@@ -10,27 +10,27 @@ import { FABRICS, fabricOf } from '../lib/fabrics.mjs';
 import { makeMaterial } from '../lib/garment.mjs';
 import { Camera } from '../lib/shade.mjs';
 
-const METALS = { gold: '#E0BA5E', silver: '#F3F4F7', oxidised: '#948D84', rosegold: '#F6BFA9' };
-const metalMat = (m) => ({ amb: 0.26, wrap: 0.08, spec: 0.9, shin: 46, metal: m === 'oxidised' ? 0.8 : 0.93, rim: 0, tex: { type: 'none', amp: 0, bump: 0 } });
-const stoneMat = { amb: 0.34, wrap: 0.1, spec: 0.95, shin: 70, rim: 0, tex: { type: 'none', amp: 0, bump: 0 } };
-const pearlMat = { amb: 0.5, wrap: 0.25, spec: 0.8, shin: 38, rim: 0.1, tex: { type: 'none', amp: 0, bump: 0 } };
+export const METALS = { gold: '#E0BA5E', silver: '#F3F4F7', oxidised: '#948D84', rosegold: '#F6BFA9' };
+export const metalMat = (m) => ({ amb: 0.26, wrap: 0.08, spec: 0.9, shin: 46, metal: m === 'oxidised' ? 0.8 : 0.93, rim: 0, tex: { type: 'none', amp: 0, bump: 0 } });
+export const stoneMat = { amb: 0.34, wrap: 0.1, spec: 0.95, shin: 70, rim: 0, tex: { type: 'none', amp: 0, bump: 0 } };
+export const pearlMat = { amb: 0.5, wrap: 0.25, spec: 0.8, shin: 38, rim: 0.1, tex: { type: 'none', amp: 0, bump: 0 } };
 
 let UID = 0;
 const gid = (p) => `${p}${++UID}`;
 
-function part(id, d, bounds, fill, mat, o = {}) {
+export function part(id, d, bounds, fill, mat, o = {}) {
   return { id, z: o.z ?? 10, d, bounds, pad: 1.5, fill, inner: o.inner || '', defs: o.defs || '', mat, bevelCm: o.bevel ?? 0.2, bevelH: o.bevelH ?? 0.28, edgeAo: o.edgeAo ?? 0.04, grid: 2, sphere: o.sphere, normalFn: o.normalFn, contact: o.contact ?? { dx: 0.1, dy: 0.18, sigma: 0.15, strength: 0.34 }, overlay: o.overlay };
 }
-const circle = (cx, cy, r) => ellipseD(cx, cy, r, r);
+export const circle = (cx, cy, r) => ellipseD(cx, cy, r, r);
 
-function stone(id, cx, cy, r, color, z, { facets = true, shape = 'round' } = {}) {
+export function stone(id, cx, cy, r, color, z, { facets = true, shape = 'round' } = {}) {
   const g = gid('sg');
   const defs = `<radialGradient id="${g}" cx=".38" cy=".34" r=".8"><stop offset="0" stop-color="${lighten(color, 0.45)}"/><stop offset=".45" stop-color="${color}"/><stop offset="1" stop-color="${darken(color, 0.4)}"/></radialGradient>`;
   let inner = `<path d="${circle(cx, cy, r)}" fill="url(#${g})"/>`;
   if (facets) for (let i = 0; i < 8; i++) { const a0 = (i / 8) * Math.PI * 2 + 0.2, a1 = ((i + 1) / 8) * Math.PI * 2 + 0.2; inner += `<path d="M${f(cx)} ${f(cy)}L${f(cx + Math.cos(a0) * r)} ${f(cy + Math.sin(a0) * r)}L${f(cx + Math.cos(a1) * r)} ${f(cy + Math.sin(a1) * r)}Z" fill="${i % 2 ? '#fff' : '#000'}" fill-opacity="${i % 2 ? 0.12 : 0.1}"/>`; }
   return part(id, circle(cx, cy, r), { x0: cx - r - 1, y0: cy - r - 1, x1: cx + r + 1, y1: cy + r + 1 }, color, stoneMat, { z, defs, inner, sphere: { u: cx, v: cy, r: r * 1.0 }, contact: { dx: 0.05, dy: 0.1, sigma: 0.1, strength: 0.3 } });
 }
-function pearl(id, cx, cy, r, z) {
+export function pearl(id, cx, cy, r, z) {
   const g = gid('pg');
   const defs = `<radialGradient id="${g}" cx=".36" cy=".32" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#F1EADD"/><stop offset="1" stop-color="#C9BFAE"/></radialGradient>`;
   return part(id, circle(cx, cy, r), { x0: cx - r - 1, y0: cy - r - 1, x1: cx + r + 1, y1: cy + r + 1 }, '#F1EADD', pearlMat, { z, defs, inner: `<path d="${circle(cx, cy, r)}" fill="url(#${g})"/>`, sphere: { u: cx, v: cy, r }, contact: { dx: 0.05, dy: 0.1, sigma: 0.1, strength: 0.3 } });
@@ -121,7 +121,7 @@ function buildOne(spec, style, { rng, flip = 1 }) {
 }
 
 /** soft draped cloth the earrings rest on */
-function clothBase(ctx, spec, { cx = 0, top = 0, w = 40, h = 30 } = {}) {
+export function clothBase(ctx, spec, { cx = 0, top = 0, w = 40, h = 30 } = {}) {
   const rng = ctx.rng.fork('cloth');
   const tone = spec.surface || mix(ctx.bg, '#5a4a40', 0.16);
   const M = makeMaterial(ctx, { color: tone, seed: spec.seed, pattern: 'solid' }, { fabric: 'silk' });
@@ -133,7 +133,7 @@ function clothBase(ctx, spec, { cx = 0, top = 0, w = 40, h = 30 } = {}) {
   return clothPiece(M, { id: 'cloth', z: 1, d: curve.d(), bounds: curve.bounds(), field: fld, bevelCm: 0.0, bevelH: 0, edgeAo: 0.0, grid: 4, noCast: true, contact: false });
 }
 
-async function paintPair(ctx, spec, pairs, { cloth = true, clothTop = 3, clothH = 26 } = {}) {
+export async function paintPair(ctx, spec, pairs, { cloth = true, clothTop = 3, clothH = 26 } = {}) {
   const k = ctx.cam.k;
   const models = pairs.map((p) => ({ pieces: p.pieces, bounds: unionBounds(p.pieces.map((q) => q.bounds)), baseY: 0, sc: 1, contactScale: 0 }));
   // cloth first
@@ -166,7 +166,34 @@ function placed(pieces, { ox = 0, oy = 0, rot = 0, flipX = false }) {
   return pieces.map((p) => ({ ...p, d: p.d, _tf: tf }));
 }
 
+/** Scene placement for jewellery: `pieces` (cm, y down, lowest point at y=0) stand on a small stone dish on the floor. */
+export async function jewelOnDish(ctx, spec, pieces, { w, h, tone } = {}) {
+  const rx = w * 0.62, ry = rx * 0.3;
+  const dishC = tone || mix(ctx.bg, '#4a4038', 0.22);
+  const rim = `M${f(-rx)} 0A${f(rx)} ${f(ry)} 0 1 1 ${f(rx)} 0A${f(rx)} ${f(ry)} 0 1 1 ${f(-rx)} 0Z`;
+  const thick = ry * 0.55;
+  const side = `M${f(-rx)} 0L${f(-rx)} ${f(thick)}A${f(rx)} ${f(ry)} 0 0 0 ${f(rx)} ${f(thick)}L${f(rx)} 0Z`;
+  const dmat = { amb: 0.4, wrap: 0.25, spec: 0.12, shin: 12, rim: 0.04, tex: { type: 'grit', amp: 0.03, bump: 0.03 } };
+  const dish = { pieces: [
+    part('dish-side', side, { x0: -rx - 1, y0: -1, x1: rx + 1, y1: thick + ry + 1 }, darken(dishC, 0.12), dmat, { z: 4, bevel: 0.25, bevelH: 0.3, contact: false }),
+    part('dish', rim, { x0: -rx - 1, y0: -ry - 1, x1: rx + 1, y1: ry + 1 }, dishC, dmat, { z: 5, bevel: ry * 0.5, bevelH: 0.35, contact: false }),
+  ], bounds: { x0: -rx, x1: rx, y0: -ry, y1: thick + ry }, baseY: thick + ry * 0.2, sc: 1 };
+  const items = { pieces, bounds: { x0: -w / 2, x1: w / 2, y0: -h, y1: 0 }, baseY: 0, sc: 1, contactScale: 0 };
+  const b = { x0: -rx, x1: rx, y0: -h - 0.4, y1: thick + ry };
+  fitObject(ctx, b, { baseFrac: 0.8 });
+  await paintObjectModels(ctx, [dish], { shadowIds: ['dish'] });
+  await paintObjectModels(ctx, [items], { shadowIds: [] });
+}
+
 export default {
+  async scene(ctx, spec) {
+    const style = ['jhumka', 'stud', 'hoop', 'chandbali', 'drop'].includes(spec.style) ? spec.style : 'jhumka';
+    const rng = ctx.rng.fork('ear-scene');
+    const size = { jhumka: 7.6, stud: 2.6, hoop: 5.6, chandbali: 8.4, drop: 7.4 }[style];
+    const sep = { jhumka: 4.2, stud: 3.0, hoop: 4.6, chandbali: 4.6, drop: 3.6 }[style] * (style === 'stud' ? 1.3 : 1);
+    const one = (flip, dx, rot) => buildOne(spec, style, { rng, flip }).map((p) => wrapTransform(p, dx, -size - 0.9, rot, flip));
+    await jewelOnDish(ctx, spec, [...one(1, -sep, -3), ...one(-1, sep, 3)], { w: sep * 2 + size * 0.7, h: size + 2 });
+  },
   async front(ctx, spec) { return render(ctx, spec, 'front'); },
   async alt(ctx, spec) { return render(ctx, spec, 'alt'); },
   async detail(ctx, spec) { return render(ctx, spec, 'detail'); },
@@ -201,7 +228,7 @@ async function render(ctx, spec, shot) {
   await paintPair(ctx, spec, pairs, { cloth: true, clothTop: size * 0.5, clothH: 60 });
 }
 
-function wrapTransform(p, dx, dy, rot, flip) {
+export function wrapTransform(p, dx, dy, rot, flip) {
   // pieces carry cm-space paths; apply the placement by transforming the path data through a matrix on the albedo group
   const a = (rot * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a);
   const mx = (x, y) => [dx + flip * (x * c - y * s), dy + (x * s + y * c)];

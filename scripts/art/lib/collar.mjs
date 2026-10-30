@@ -15,7 +15,8 @@ function leafPts(style, nsx, ys, d) {
       return { pts: [[0.5, ys + 1.3, 'c'], [nsx * 0.5, ys - 1.5], [nsx + 0.4, ys - 2.4], [nsx + 1.9, ys + 0.7, 'c'], [nsx + 1.4, ys + 4.8, 'c'], [nsx * 0.62 + 0.3, ys + 3.8], [0.5, ys + 3.0, 'c']], z: 14 };
     case 'spread':
     default:
-      return { pts: [[0.4, ys + 0.6, 'c'], [nsx * 0.5, ys - 0.9], [nsx + 0.1, ys - 1.5], [nsx + 1.0, ys + 1.0], [nsx + 1.35, ys + 6.8, 'c'], [nsx * 0.55 + 0.5, ys + 5.0], [0.4, ys + 3.3, 'c']], z: 14 };
+      // two pointed leaves that open into a V towards the collar band (no bow-tie): tips swing out and down
+      return { pts: [[1.5, ys + 0.9, 'c'], [nsx * 0.5 + 0.5, ys - 1.2], [nsx + 0.3, ys - 1.9], [nsx + 1.6, ys + 0.5], [nsx + 3.5, ys + 6.7, 'c'], [nsx * 0.6 + 1.9, ys + 4.7], [2.7, ys + 2.4, 'c']], z: 14 };
   }
 }
 
@@ -36,6 +37,15 @@ export function collarPieces(M, nk, style, { color, rng, back = false, gain = 1,
   // inner stand visible behind the neck above the shoulder line
   const standTop = Curve.through([[-nsx - 0.6, ys + 0.8, 'c'], [-nsx * 0.5, ys - 1.6], [0, ys - 2.2], [nsx * 0.5, ys - 1.6], [nsx + 0.6, ys + 0.8, 'c'], [0, ys + 2.4]], { closed: true });
   pieces.push(clothPiece(M, { id: 'collar-stand', z: 4, d: standTop.d(), bounds: standTop.bounds(), fill: color, noPattern: !!color, gain: 0.74, noCast: true, edgeAo: 0.2, bevelH: 0.15, grid: 2, contact: { strength: 0.15 } }));
+  if (style === 'spread') {
+    // collar band: the stand the leaves are sewn to, fastened with the top button, so the two leaves read as one collar
+    const bd = Curve.through([[-3.0, ys + 0.6, 'c'], [-1.3, ys + 0.1], [1.3, ys + 0.1], [3.0, ys + 0.6, 'c'], [3.1, ys + 2.5, 'c'], [1.3, ys + 3.0], [-1.3, ys + 3.0], [-3.1, ys + 2.5, 'c']], { closed: true });
+    const bff = new FoldField(rng.int(1, 1e6));
+    bff.dome({ hw: 3.2, v0: ys, v1: ys + 3, amp: 0.4, in: 0.5, out: 0.8 });
+    pieces.push(clothPiece(M, { id: 'collar-band', z: 13, d: bd.d(), bounds: bd.bounds(), fill: color, noPattern: !!color, field: bff, gain: gain * 0.96, bevelCm: 0.18, bevelH: 0.28, edgeAo: 0.2, grid: 2, contact: { dx: 0.1, dy: 0.4, sigma: 0.35, strength: 0.4 },
+      inner: `<path d="M-3 ${f(ys + 2.4)}Q0 ${f(ys + 3.1)} 3 ${f(ys + 2.4)}" fill="none" stroke="#000" stroke-opacity=".22" stroke-width=".08"/>`,
+      overlay: button(0, ys + 1.65, 0.46, mix(color || M.base, '#efe8da', 0.62), { holes: 2 }) }));
+  }
   for (const side of [1, -1]) {
     const pts = side === 1 ? lp.pts : lp.pts.map((p) => [-p[0], p[1], p[2]]);
     const c = Curve.through(pts, { closed: true });

@@ -66,7 +66,6 @@ async function main() {
   await Promise.all(jobs.map(async (job) => {
     const file = path.join(outDir, job.out + '.webp');
     if (args['skip-existing'] && fs.existsSync(file) && meta[job.out]) { skipped++; done++; return; }
-    if (!job.spec) { console.warn(`\n! ${job.out}: scene jobs are Phase B – skipped`); skipped++; done++; return; }
     try {
       const r = await pool.run({ type: 'job', job, opts: { quality } });
       fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -74,6 +73,7 @@ async function main() {
       bytes += r.webp.length;
       const m = { w: r.w, h: r.h, avg: r.avg };
       if (r.pins) m.pins = r.pins;
+      if (r.edge) m.edge = r.edge;
       if (r.blur) m.blur = r.blur;
       meta[job.out] = m;
     } catch (e) {

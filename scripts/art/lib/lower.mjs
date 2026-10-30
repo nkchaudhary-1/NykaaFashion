@@ -57,7 +57,7 @@ export function lowerKindFactory(buildFn, detailFn) {
 }
 async function run(ctx, spec, shot, buildFn, so) {
   const model = buildFn(ctx, spec, shot);
-  ctx.fitCamera(model.bounds, { mx: 0.1, top: 0.06, bottom: 0.08, kmax: 10.5, ...(model.camera || {}) });
+  ctx.fitCamera(model.bounds, { mx: 0.1, top: 0.06, bottom: 0.08, kmax: 10.5 * (spec.kids ? 1.5 : 1), ...(model.camera || {}) });
   await ctx.backdrop({ mode: 'wall', seedOffset: so });
   await (await import('./garment.mjs')).renderGarment(ctx, model);
 }

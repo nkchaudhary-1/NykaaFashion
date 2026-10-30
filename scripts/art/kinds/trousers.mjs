@@ -15,23 +15,24 @@ const LENGTH = { crop: 88, ankle: 99, full: 108 };
 
 export function buildTrousers(ctx, spec, shot) {
   const sty = LEG[spec.leg] ? spec.leg : 'straight';
-  const L = LEG[sty];
-  const total = LENGTH[spec.length] || LENGTH.ankle;
+  const kids = !!spec.kids, KV = kids ? 0.62 : 1, KH = kids ? 0.84 : 1;
+  const L = kids ? { hem: LEG[sty].hem * KH, knee: LEG[sty].knee * KH, xc: LEG[sty].xc * KH } : LEG[sty];
+  const total = (LENGTH[spec.length] || LENGTH.ankle) * KV;
   const denim = spec.fabric === 'denim';
   const M = makeMaterial(ctx, spec, { fabric: denim ? 'denim' : spec.fabric || 'cotton' });
   const rng = ctx.rng.fork('trousers-' + shot);
   const men = spec.gender === 'men';
-  const wHw = men ? 18.4 : 16.6, hipHw = men ? 21.2 : 20.8;
+  const wHw = (men ? 18.4 : 16.6) * KH, hipHw = (men ? 21.2 : 20.8) * KH;
   const top = WAIST_Y + 4.2; // below the waistband
   const hemY = WAIST_Y + total;
-  const crotchY = WAIST_Y + 31;
+  const crotchY = WAIST_Y + 31 * (kids ? 0.74 : 1);
   const fabAmp = M.mat.foldAmp ?? 1, wr = M.mat.wrink ?? 0.5;
   const kneeY = lerp(crotchY, hemY, 0.5);
   const hemOut = L.xc + L.hem / 2, hemIn = Math.max(0.4, L.xc - L.hem / 2);
   const kneeOut = L.xc + L.knee / 2 + (sty === 'flared' ? 0.5 : 0), kneeIn = Math.max(0.6, L.xc - L.knee / 2 + (sty === 'palazzo' ? 0 : 0.4));
   const pleats = !!spec.pleats;
   // full outline, clockwise from the waist-left: waist, right outer seam, hem, inner seam to crotch, left side mirrored
-  const R = [[wHw, WAIST_Y, 'c'], [wHw + 1.8, WAIST_Y + 9], [hipHw, WAIST_Y + 20], [lerp(hipHw, kneeOut, 0.25), WAIST_Y + 36], [kneeOut, kneeY], [lerp(kneeOut, hemOut, 0.5), lerp(kneeY, hemY, 0.55)], [hemOut, hemY - 0.8, 'c']];
+  const R = [[wHw, WAIST_Y, 'c'], [wHw + 1.8, WAIST_Y + 9 * KV], [hipHw, WAIST_Y + 20 * KV], [lerp(hipHw, kneeOut, 0.25), WAIST_Y + 34 * KV], [kneeOut, kneeY], [lerp(kneeOut, hemOut, 0.5), lerp(kneeY, hemY, 0.55)], [hemOut, hemY - 0.8, 'c']];
   const Hh = [[hemOut - 0.4, hemY], [lerp(hemOut, hemIn, 0.5), hemY + 0.5], [hemIn + 0.4, hemY - 0.1], [hemIn, hemY - 0.8, 'c']];
   const Ri = [[lerp(kneeIn, hemIn, 0.5), lerp(kneeY, hemY, 0.55)], [kneeIn, kneeY], [lerp(kneeIn, 1.1, 0.4), lerp(crotchY, kneeY, 0.45)], [0.6, crotchY + 2.4], [0, crotchY, 'c']];
   const right = [...R, ...Hh, ...Ri];
@@ -55,6 +56,7 @@ export function buildTrousers(ctx, spec, shot) {
     field.band({ v: crotchY - 3, w: 1.2, amp: -0.1 * fabAmp, u0: sx > 0 ? 0 : -50, u1: sx > 0 ? 50 : 0 });
     // ankle stack for long trousers on narrow legs
     if (sty !== 'wide' && sty !== 'palazzo') field.band({ v: hemY - 4.5, w: 1.3, amp: 0.14 * fabAmp, u0: sx > 0 ? 0 : -50, u1: sx > 0 ? 50 : 0 });
+    if (spec.ruched) for (let q = 1; q <= 5; q++) field.band({ v: hemY - 4.5 - q * 2.1, w: 0.8, amp: 0.34 * fabAmp, u0: sx > 0 ? 0 : -50, u1: sx > 0 ? 50 : 0 });
   }
   if (pleats) for (const sx of [-1, 1]) field.ridge({ a: [sx * 6.4, top + 1], b: [sx * (L.xc - 1), kneeY + 6], s0: 0.8, s1: 1.4, a0: 1.0, a1: 0.55, fade0: 0.05, fade1: 0.4 });
   field.noise({ amp: 0.14 * wr, fu: 0.22, fv: 0.07, oct: 3 });

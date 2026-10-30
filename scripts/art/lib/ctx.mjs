@@ -31,6 +31,73 @@ export class Ctx {
 
   id(p = 'i') { return `${p}${++UID}`; }
 
+  /**
+   * Scene support: a child context shares this film / product mask / light with its parent but carries its own spec,
+   * rng and camera. `place` = { cx, cy, height, rot } (fractions of the canvas) pins the item's bounding box on the canvas;
+   * backdrops are skipped (the scene paints one shared backdrop) and every drawn layer is also recorded in `itemMask`.
+   */
+  child(spec, place, extra = {}) {
+    const c = Object.create(this);
+    c.spec = spec;
+    c.rng = new Rng(((spec.seed ?? 1) * 2654435761) ^ hashStr(String(spec.kind) + ':' + String(spec.shot || 'front')));
+    c.place = place;
+    c.itemMask = new Float32Array(this.W * this.H);
+    c.cam = new Camera({ k: 9, tx: this.W / 2, ty: 0 });
+    c.backdrop = async () => {};
+    c.shadeAndDraw = function (layer, o = {}) { Ctx.prototype.shadeAndDraw.call(this, layer, o); alphaToMask(layer, this.W, this.H, this.itemMask); };
+    Object.assign(c, extra);
+    return c;
+  }
+
+  /** scene placement: scale so the bounds are `place.height` of the canvas tall, centred on (place.cx, place.cy) */
+  _placeCam(b) {
+    const p = this.place, bh = Math.max(1e-3, b.y1 - b.y0), bw = b.x1 - b.x0, M = 0.02;
+    let k = (p.height * this.H) / bh;
+    // keep the item inside [2%, 98%] of the frame: scale it down uniformly about its anchor (hook / base centre)
+    const hpx = p.height * this.H, top = (p.cy - p.height / 2) * this.H, bottom = (p.cy + p.height / 2) * this.H;
+    let s = 1;
+    const halfMax = Math.min(p.cx - M, 0.98 - p.cx) * this.W;
+    if ((bw * k) / 2 > halfMax) s = Math.min(s, Math.max(0.25, halfMax / ((bw * k) / 2)));
+    if (p.anchor === 'hang' && bottom > (1 - M) * this.H) s = Math.min(s, ((1 - M) * this.H - top) / hpx);
+    if (p.anchor === 'floor' && top < M * this.H) s = Math.min(s, (bottom - M * this.H) / hpx);
+    let cyPx = p.cy * this.H;
+    if (s < 0.985) {
+      k *= s;
+      const h2 = bh * k;
+      cyPx = p.anchor === 'hang' ? top + h2 / 2 : p.anchor === 'floor' ? bottom - h2 / 2 : cyPx;
+      console.warn(`! ${p.job || 'scene'}: ${this.spec.kind} scaled to ${Math.round(s * 100)}% to stay inside the frame`);
+    }
+    const rot = ((p.rot || 0) * Math.PI) / 180;
+    const c0 = new Camera({ k, tx: 0, ty: 0, rot });
+    const [px, py] = c0.fwd((b.x0 + b.x1) / 2, (b.y0 + b.y1) / 2);
+    this.cam = new Camera({ k, tx: p.cx * this.W - px, ty: cyPx - py, rot });
+    return this.cam;
+  }
+
+  /** mean colour of a film region as it will appear in the finished image (tone curve + vignette, no grain), '#rrggbb' */
+  sampleFinal(x0, x1, y0, y1, { contrast = 0.2, vignette = 0.05 } = {}) {
+    const { W, H, film } = this;
+    x0 = Math.max(0, Math.floor(x0)); x1 = Math.min(W, Math.ceil(x1)); y0 = Math.max(0, Math.floor(y0)); y1 = Math.min(H, Math.ceil(y1));
+    let sr = 0, sg = 0, sb = 0, n = 0;
+    for (let y = y0; y < y1; y++) {
+      for (let x = x0; x < x1; x++) {
+        const o = (y * W + x) * 3;
+        let r = film[o], g = film[o + 1], b = film[o + 2];
+        const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        const cv = contrast * (2 * L - 1) * L * (1 - L) * 2;
+        r += cv; g += cv; b += cv;
+        const t = L - 0.5;
+        r += 0.010 * t; b -= 0.012 * t;
+        const nx = (x / W - 0.5) * 2, ny = (y / H - 0.5) * 2;
+        const vg = 1 - vignette * smoothstep(0.45, 1.5, Math.hypot(nx, ny * 0.9));
+        r *= vg; g *= vg; b *= vg;
+        sr += clamp(r * 0.975 + 0.012, 0, 1); sg += clamp(g * 0.975 + 0.012, 0, 1); sb += clamp(b * 0.975 + 0.012, 0, 1); n++;
+      }
+    }
+    const h = (v) => Math.round((v / Math.max(n, 1)) * 255).toString(16).padStart(2, '0');
+    return '#' + h(sr) + h(sg) + h(sb);
+  }
+
   /** shared soft key-light pool (≈ ±6 % luminance): lit upper-left, falling off to the lower-right */
   poolAt(x, y) {
     const nx = x / this.W, ny = y / this.H;
@@ -42,6 +109,7 @@ export class Ctx {
   // ------------------------------------------------------------------ camera
   /** Fit cm-space bounds into the frame. Sets this.cam. */
   fitCamera(b, { mx = 0.1, top = 0.06, bottom = 0.08, kmax = 11, kmin = 2, biasY = 0 } = {}) {
+    if (this.place) return this._placeCam(b);
     const availW = this.W * (1 - 2 * mx), availH = this.H * (1 - top - bottom);
     const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
     let k = Math.min(availW / bw, availH / bh, kmax * this.u);
@@ -213,6 +281,7 @@ export class Ctx {
 
   /** Drop a soft wall shadow for a union of layers (the garment hanging a few cm off the wall). */
   wallShadow(layers, { dx = 1.9, dy = 2.6, shear = -0.035, sigma = 1.7, strength = 0.3, ambient = 0.1 } = {}) {
+    if (!layers || !layers.length) return; // nothing in frame (macro crops): an empty union would give a non-finite shear origin
     const { W, H, film } = this, k = this.cam.k;
     const mask = new Float32Array(W * H);
     for (const l of layers) alphaToMask(l, W, H, mask);

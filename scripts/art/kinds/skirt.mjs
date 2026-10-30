@@ -19,9 +19,10 @@ export function buildSkirt(ctx, spec, shot) {
   const M = makeMaterial(ctx, spec, { fabric: spec.fabric || (sty === 'slip' ? 'satin' : sty === 'pleated' ? 'chiffon' : 'cotton') });
   const rng = ctx.rng.fork('skirt-' + shot);
   const fabAmp = M.mat.foldAmp ?? 1, wr = M.mat.wrink ?? 0.5;
-  const wHw = 15.4, top = WAIST_Y;
-  const hemY = WAIST_Y + LEN[length];
-  const hemHw = HEM[sty][length];
+  const KV = spec.kids ? 0.6 : 1, KH = spec.kids ? 0.86 : 1;
+  const wHw = 15.4 * KH, top = WAIST_Y;
+  const hemY = WAIST_Y + LEN[length] * KV;
+  const hemHw = HEM[sty][length] * KH;
   const drop = sty === 'pencil' ? 0.6 : sty === 'slip' ? 1.2 : sty === 'pleated' ? 2.2 : 3.4;
   const hc = hemY - drop;
   // side seam profile

@@ -37,10 +37,12 @@ export function buildDress(ctx, spec, shot) {
   const collared = necklineType === 'collar' || (back && (spec.neckline === 'collar' || spec.silhouette === 'shirt'));
   const M = makeMaterial(ctx, spec);
   const rng = ctx.rng.fork('dress-' + shot);
-  const vh = HEM_V[length], hemHw = HEM_HW[sil][length];
-  const [bustHw, waistV, waistHw, hipV, hipHw, flare] = BODY[sil];
+  const kids = !!spec.kids, KV = kids ? 0.62 : 1, KH = kids ? 0.82 : 1;
+  const vh = HEM_V[length] * KV, hemHw = HEM_HW[sil][length] * KH;
+  const [bustHw0, waistV0, waistHw0, hipV0, hipHw0, flare] = BODY[sil];
+  const bustHw = bustHw0 * KH, waistV = waistV0 * (kids ? 0.72 : 1), waistHw = waistHw0 * KH * (kids ? 1.05 : 1), hipV = hipV0 * (kids ? 0.7 : 1), hipHw = hipHw0 * KH;
   const sleeved = sleeve !== 'none' && sil !== 'slip';
-  const ST = [18.6, 5.2], UAv = 22.0, UAhw = sil === 'shirt' ? 24.6 : lerp(22.2, bustHw, 0.6);
+  const ST = [18.6 * KH, 5.2], UAv = kids ? 17.6 : 22.0, UAhw = (sil === 'shirt' ? 24.6 : lerp(22.2, bustHw0, 0.6)) * KH;
   const slip = sil === 'slip';
   const halter = necklineType === 'halter';
 
@@ -150,7 +152,7 @@ export function buildDress(ctx, spec, shot) {
   const pieces = [];
   // ---- hanger
   const tone = pickHangerTone(ctx, spec.color);
-  pieces.push(...hangerPieces(ctx, { halfW: 18.4, drop: 5.4, tone }));
+  pieces.push(...hangerPieces(ctx, { halfW: ST[0] - 1.5, drop: 5.4, tone }));
 
   // ---- trims drawn into the body (binding, hem band…)
   let bodyInner = '';
@@ -231,17 +233,17 @@ export function buildDress(ctx, spec, shot) {
 
   // ---- sleeves
   if (sleeved) {
-    const sp = SLEEVES[sleeve] || SLEEVES.short;
+    const sp0 = SLEEVES[sleeve] || SLEEVES.short, sp = kids ? { ...sp0, len: sp0.len * 0.62, wCuff: sp0.wCuff * 0.88 } : sp0;
     for (const side of [1, -1]) {
       const sh = sleeveShape({ ST: [ST[0], ST[1]], UA: [UA[0] - 0.2, UA[1]], side, ...sp });
       const sf = new FoldField(rng.int(1, 1e6));
       const c = sh.centre;
-      sf.curveRidge({ curve: c, type: 'gauss', s: (u) => sh.widthAt(u) * 0.42, a: (u) => 1.5 * fabAmp * (1 - 0.3 * u), fade0: 0.02, fade1: 0.05 });
+      sf.curveRidge({ curve: c, type: 'gauss', s: (u) => sh.widthAt(u) * 0.42, a: (u) => 1.5 * fabAmp * (1 - 0.3 * u), fade0: 0.2, fade1: 0.1 });
       const nCrease = sleeve === 'cap' ? 1 : 3;
       for (let i = 0; i < nCrease; i++) {
         const off0 = rng.range(-0.3, 0.3), sg = i % 2 ? 1 : -1;
         const cAmp = rng.range(0.7, 1.1);
-        sf.curveRidge({ curve: c, off: (u) => off0 * sh.widthAt(u), s: (u) => 1.4 + 0.7 * u, a: (u) => sg * (0.1 + 0.55 * u) * fabAmp * cAmp, fade0: 0.35, fade1: 0.1 });
+        sf.curveRidge({ curve: c, u0: 0.3, off: (u) => off0 * sh.widthAt(u), s: (u) => 1.4 + 0.7 * u, a: (u) => sg * (0.1 + 0.55 * u) * fabAmp * cAmp, fade0: 0.35, fade1: 0.1 });
       }
       sf.noise({ amp: 0.14 * wr, fu: 0.25, fv: 0.12, oct: 2 });
       pieces.push(clothPiece(M, { id: 'sleeve' + side, z: 12, d: sh.d, bounds: sh.bounds, field: sf, patTransform: `translate(${side * 3.1} 1.7)`, bevelCm: 0.28, bevelH: 0.3, grid: 2, contact: { dx: 0.4 * side, dy: 0.6, sigma: 0.7, strength: 0.38 } }));

@@ -19,10 +19,23 @@ const BG = {
   acc: ["#e9dfd3", "#e0d4c4", "#d9d1c4", "#ecdcd3"],
 };
 const ACC_KINDS = new Set(["earrings", "necklace", "bangles", "bag", "sneaker", "heel", "flat", "boot"]);
-const pickBg = (d) => {
-  if (d.bg) return d.bg;
+const lightBg = (d) => {
   const set = ACC_KINDS.has(d.art.kind) ? BG.acc : BG[d.path.split("/")[0]] ?? BG.women;
   return set[hashString(d.id) % set.length];
+};
+const lum = (hex) => {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => {
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+/** A product keeps its authored backdrop (the Luxe labels use dark moods) unless the piece would disappear into it:
+ *  a black blazer on olive-black reads as a smudge, so low-contrast pairs fall back to the category's light palette. */
+const pickBg = (d, color) => {
+  const bg = d.bg ?? lightBg(d);
+  return color && contrast(color, bg) < 1.9 ? lightBg(d) : bg;
 };
 
 const seed = (...parts) => hashString(parts.join(":")) % 1_000_000;
@@ -45,7 +58,7 @@ const SCALE = {
 
 function productSpec(d, vi, shot) {
   const [, hex, , c2, pattern] = d.v[vi];
-  const spec = { ...d.art, color: hex, shot, seed: seed(d.id, vi, shot), bg: pickBg(d) };
+  const spec = { ...d.art, color: hex, shot, seed: seed(d.id, vi, shot), bg: pickBg(d, hex) };
   if (c2) spec.color2 = c2;
   if (pattern) spec.pattern = pattern;
   return spec;

@@ -14,8 +14,14 @@ import sneaker from './sneaker.mjs';
 import heel from './heel.mjs';
 import earrings from './earrings.mjs';
 import saree from './saree.mjs';
+import { necklace, bangles } from './jewel.mjs';
+import sweater from './sweater.mjs';
+import kurtaSet from './kurtaset.mjs';
+import { throwKind, bedding } from './linen.mjs';
+import { bowl, candle } from './tableware.mjs';
+import { boot, flat } from './footwear.mjs';
 
-const KINDS = { dress, tee, shirt, top, kurta, jacket, trousers, skirt, vase, cushion, bag, sneaker, heel, earrings, saree };
+const KINDS = { dress, tee, shirt, top, kurta, jacket, trousers, skirt, vase, cushion, bag, sneaker, heel, earrings, saree, necklace, bangles, sweater, 'kurta-set': kurtaSet, throw: throwKind, bedding, bowl, candle, boot, flat };
 export function getKind(name) {
   const k = KINDS[name];
   if (!k) throw new Error(`unknown kind "${name}" (have: ${Object.keys(KINDS).join(', ')})`);

@@ -99,6 +99,6 @@ export default {
     ctx.focusCamera(5, -(STY[spec.style]?.P || 0) - 4.4, k, { rot: -0.05, cx: 0.45, cy: 0.52 });
     await ctx.backdrop({ mode: 'wall', shaft: { strength: 0.05 }, leaves: false });
     await paintObjectModels(ctx, [m], { shadowIds: ['sole', 'upper', 'shaft', 'platform'] });
-    ctx.setDof({ axis: 'diag', dx: 0.7, dy: 0.7, focus: 0.5, band: 0.1, falloff: 0.4, sigma: 7 });
+    ctx.setDof({ axis: 'diag', dx: 0.7, dy: 0.7, focus: 0.5, band: 0.2, falloff: 0.4, sigma: 5.5 });
   },
 };

@@ -19,7 +19,8 @@ function build(ctx, spec, { flip = false, ox = 0, oy = 0, sc = 1, tag = '', z0 =
   const rng = ctx.rng.fork('sneaker' + tag);
   const c1 = spec.color || '#E8E1D4', c2 = spec.color2 || '#2B3A67', c3 = spec.color3 || mix(c2, c1, 0.5);
   const soleC = spec.soleColor || (luma(c1) < 0.3 ? '#E8E1D4' : '#F1EBE2');
-  const T = (p) => [ox + (flip ? LEN - p[0] : p[0]) * sc, oy + p[1] * sc, p[2]];
+  const kx = spec.kids ? 0.84 : spec.gender === 'men' ? 1.04 : 1; // kids: shorter, stubbier; men: a touch longer
+  const T = (p) => [ox + (flip ? LEN - p[0] : p[0]) * sc * kx, oy + p[1] * sc, p[2]];
   const TT = (pts) => pts.map(T);
   const th = chunky ? 5.4 : 3.2, thT = chunky ? 4.0 : 2.4;
   const hi = high ? 6.4 : 0; // extra collar height
@@ -87,7 +88,7 @@ function build(ctx, spec, { flip = false, ox = 0, oy = 0, sc = 1, tag = '', z0 =
     const last = lacePts[n - 1];
     const bx = T([last[0] + 0.6, last[1] - 0.6]);
     for (const s2 of [-1, 1]) {
-      const c = Curve.through([bx, [bx[0] + s2 * 0.9 * sc, bx[1] - 1.0 * sc], [bx[0] + s2 * 2.0 * sc, bx[1] - 0.5 * sc], [bx[0] + s2 * 1.3 * sc, bx[1] + 0.4 * sc], bx]);
+      const c = Curve.through([bx, [bx[0] + s2 * 0.5 * sc, bx[1] - 1.5 * sc], [bx[0] + s2 * 1.7 * sc, bx[1] - 1.9 * sc], [bx[0] + s2 * 1.6 * sc, bx[1] - 0.5 * sc], bx]);
       const tb = tube(c, 0.42 * sc, { n: 20 });
       pieces.push(clothPiece(M, { id: 'loop' + s2 + tag, z: zz(12), d: polyD([...tb.L, ...tb.R.slice().reverse()]), bounds: c.bounds(), pad: 1, fill: '#EFEADF', noPattern: true, bevelCm: 0.2 * sc, bevelH: 0.3 * sc, edgeAo: 0.1, grid: 2, contact: { dx: 0.12, dy: 0.2, sigma: 0.2, strength: 0.28 } }));
     }
@@ -109,7 +110,7 @@ function build(ctx, spec, { flip = false, ox = 0, oy = 0, sc = 1, tag = '', z0 =
 export default {
   async front(ctx, spec) {
     const m = build(ctx, spec, {});
-    fitObject(ctx, { x0: -1, x1: LEN + 1, y0: m.bounds.y0 - 0.5, y1: 0.5 }, { baseFrac: 0.76, maxW: 0.84, maxH: 0.5, kmax: 40 });
+    fitObject(ctx, { x0: -1, x1: LEN * (spec.kids ? 0.84 : 1) + 1, y0: m.bounds.y0 - 0.5, y1: 0.5 }, { baseFrac: 0.76, maxW: 0.84, maxH: 0.5, kmax: 40 });
     await ctx.backdrop({ mode: 'surface', horizon: 0.58 });
     await paintObjectModels(ctx, [m]);
   },
@@ -127,6 +128,6 @@ export default {
     ctx.focusCamera(4.0, -6.4, k, { rot: -0.06, cx: 0.45, cy: 0.52 });
     await ctx.backdrop({ mode: 'wall', shaft: { strength: 0.05 }, leaves: false });
     await paintObjectModels(ctx, [m]);
-    ctx.setDof({ axis: 'diag', dx: 0.7, dy: 0.7, focus: 0.5, band: 0.1, falloff: 0.4, sigma: 7 });
+    ctx.setDof({ axis: 'diag', dx: 0.7, dy: 0.7, focus: 0.5, band: 0.2, falloff: 0.4, sigma: 5.5 });
   },
 };

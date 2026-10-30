@@ -22,7 +22,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (!args._[0] || !args.out) { console.log('usage: node scripts/art/preview.mjs <manifest.json> --out <sheet.png> [--cols 6] [--only …] [--cell 300] [--concurrency 4]'); process.exit(1); }
   const manifest = JSON.parse(fs.readFileSync(path.resolve(args._[0]), 'utf8'));
-  const jobs = (manifest.jobs || []).filter((j) => matchOnly(args.only, j.out) && j.spec);
+  const jobs = (manifest.jobs || []).filter((j) => matchOnly(args.only, j.out) && (j.spec || j.scene));
   if (!jobs.length) { console.log('no jobs matched'); return; }
   const cols = Math.max(1, parseInt(args.cols || '6', 10));
   const cellW = parseInt(args.cell || '300', 10);
@@ -38,7 +38,12 @@ async function main() {
       // render at 2x the cell size so downsampling keeps the grain/detail honest, capped for speed
       const rw = Math.min(job.w || 1000, cellW * 2), rh = Math.round(rw * aspect);
       const r = await pool.run({ type: 'raw', job, w: rw, h: rh });
-      tiles[i] = { buf: await sharp(Buffer.from(r.png)).resize(w, h, { kernel: 'lanczos3' }).png().toBuffer(), w, h };
+      let buf = await sharp(Buffer.from(r.png)).resize(w, h, { kernel: 'lanczos3' }).png().toBuffer();
+      if (r.pins && r.pins.length) { // debug: draw pin dots (white ring, dark core) so placement can be checked by eye
+        const dots = r.pins.map((p) => `<circle cx="${(p.x * w).toFixed(1)}" cy="${(p.y * h).toFixed(1)}" r="9" fill="#e11d48" stroke="#fff" stroke-width="3"/>`).join('');
+        buf = await sharp(buf).composite([{ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">${dots}</svg>`), left: 0, top: 0 }]).png().toBuffer();
+      }
+      tiles[i] = { buf, w, h };
     } catch (e) { console.error(`! ${job.out}: ${String(e.message).split('\n')[0]}`); tiles[i] = null; }
     if (process.stdout.isTTY) process.stdout.write(`\r${++done}/${jobs.length}  `); else ++done;
   }));

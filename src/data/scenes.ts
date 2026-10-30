@@ -13,7 +13,8 @@ const SLOTS: Record<Format, Record<number, Slot[]>> = {
   wide: {
     1: [{ cx: 0.74, cy: 0.5, h: 0.86 }],
     2: [{ cx: 0.62, cy: 0.5, h: 0.84 }, { cx: 0.84, cy: 0.5, h: 0.8 }],
-    3: [{ cx: 0.55, cy: 0.5, h: 0.78 }, { cx: 0.73, cy: 0.48, h: 0.88, rot: -1 }, { cx: 0.91, cy: 0.5, h: 0.76 }],
+    // the last slot sits clear of the right edge: a wide garment at .91 was being shrunk to fit and read as a different scale
+    3: [{ cx: 0.535, cy: 0.5, h: 0.78 }, { cx: 0.715, cy: 0.48, h: 0.88, rot: -1 }, { cx: 0.865, cy: 0.5, h: 0.76 }],
     4: [{ cx: 0.5, cy: 0.5, h: 0.72 }, { cx: 0.65, cy: 0.48, h: 0.84 }, { cx: 0.8, cy: 0.5, h: 0.8 }, { cx: 0.94, cy: 0.52, h: 0.66 }],
   },
   tall: {

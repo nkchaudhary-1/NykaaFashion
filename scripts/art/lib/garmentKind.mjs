@@ -8,16 +8,17 @@ import { renderGarment } from './garment.mjs';
  */
 export function garmentKind(build, opts = {}) {
   const cam = { mx: 0.1, top: 0.06, bottom: 0.08, kmax: 10.5, ...(opts.camera || {}) };
+  const kc = (spec) => ({ ...cam, kmax: cam.kmax * (spec.kids ? 1.5 : 1) });
   return {
     async front(ctx, spec) {
       const model = build(ctx, spec, 'front');
-      ctx.fitCamera(model.bounds, { ...cam, ...(model.camera || {}) });
+      ctx.fitCamera(model.bounds, { ...kc(spec), ...(model.camera || {}) });
       await ctx.backdrop({ mode: 'wall' });
       await renderGarment(ctx, model);
     },
     async alt(ctx, spec) {
       const model = build(ctx, spec, 'alt');
-      ctx.fitCamera(model.bounds, { ...cam, ...(model.camera || {}) });
+      ctx.fitCamera(model.bounds, { ...kc(spec), ...(model.camera || {}) });
       await ctx.backdrop({ mode: 'wall', seedOffset: 3 });
       await renderGarment(ctx, model);
     },

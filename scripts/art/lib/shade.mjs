@@ -184,7 +184,12 @@ export function shadeLayer(layer, o) {
         const rim = rimK * Math.pow(1 - nz, 2.2) * 2.2;
         rr += rim * (0.5 + 0.5 * r); gg += rim * (0.5 + 0.5 * gcol); bb += rim * (0.5 + 0.5 * b);
       }
-      if (dkl > 0) { const add = dkl * 0.16 * (S - 0.9) + dkl * 0.03; rr += add; gg += add; bb += add * 1.04; }
+      if (dkl > 0) {
+        // black / ink / aubergine cloth: lifted fold contrast, a grazing rim and a broad soft sheen so structure survives at thumbnail size
+        const nd2 = nx * HALF[0] + ny * HALF[1] + nz * HALF[2];
+        const add = dkl * (0.27 * (S - 0.88) + 0.04) + dkl * 0.11 * Math.pow(1 - nz, 2.4) + dkl * 0.07 * (nd2 > 0 ? Math.pow(nd2, 5) : 0) * pool * ao;
+        rr += add; gg += add; bb += add * 1.04;
+      }
       rgb[lo] = rr < 0 ? 0 : rr > 1 ? 1 : rr;
       rgb[lo + 1] = gg < 0 ? 0 : gg > 1 ? 1 : gg;
       rgb[lo + 2] = bb < 0 ? 0 : bb > 1 ? 1 : bb;

@@ -31,7 +31,37 @@ export function ribDefs(id, color, pitch = 0.3) {
   return `<pattern id="${id}" patternUnits="userSpaceOnUse" width="${pitch}" height="${pitch}"><rect width="${pitch}" height="${pitch}" fill="${color}"/><rect x="${pitch * 0.55}" width="${pitch * 0.45}" height="${pitch}" fill="#000" fill-opacity=".2"/><rect x="${pitch * 0.1}" width="${pitch * 0.18}" height="${pitch}" fill="#fff" fill-opacity=".1"/></pattern>`;
 }
 
-export function buildUpper(ctx, spec, shot, P) {
+/**
+ * Men / kids proportions applied on top of any profile. Men: broader shoulders and chest, slightly longer body and sleeves, no
+ * bust shaping. Kids: squat torso (shorter body and sleeves), narrower shoulders, relatively wider neckline, smaller hanger.
+ */
+export function adaptProfile(P, spec) {
+  const kids = !!spec.kids, men = !kids && spec.gender === 'men' && !P.menHandled;
+  if (!kids && !men) return P;
+  if (P.topHalf || P.armholeHalf) return P;
+  const sx = kids ? 0.82 : 1.06, sy = kids ? 0.64 : 1.03;
+  const o = { ...P, bust: 0 };
+  const nw = (P.neck.width ?? 7.4), ys0 = 1.6 + (nw - 7.0) * 0.31;
+  const ST0 = P.ST, ST1 = [ST0[0] * sx, 0];
+  ST1[1] = ys0 + (ST0[1] - ys0) * ((ST1[0] - nw) / Math.max(1, ST0[0] - nw)) * (kids ? 0.95 : 1);
+  o.ST = ST1;
+  o.UA = [P.UA[0] * sx, P.UA[1] * (kids ? 0.8 : 1)];
+  o.side = P.side.map(([v, hw]) => [v * sy, hw * sx]);
+  o.hemV = P.hemV * sy;
+  o.drop = (P.drop ?? 1.2) * (kids ? 0.8 : 1);
+  const sl = typeof P.sleeve === 'object' ? P.sleeve : SLEEVE_TYPES[P.sleeve || 'none'];
+  if (sl) o.sleeve = { ...sl, len: sl.len * (kids ? 0.62 : 1.05), hang: sl.hang * (kids ? 0.9 : 1), wCuff: sl.wCuff * (kids ? 0.88 : 1.04) };
+  o.neck = { ...P.neck, width: nw * (kids ? 1.1 : 1.04), depth: (P.neck.depth ?? 6) * (kids ? 0.9 : 1) };
+  if (P.creases) o.creases = P.creases.map((v) => v * sy);
+  if (P.fold) o.fold = { ...P.fold, v0: (P.fold.v0 ?? 22) * (kids ? 0.7 : 1) };
+  if (P.waistBand) o.waistBand = P.waistBand * sy;
+  if (P.hangerHalfW) o.hangerHalfW = P.hangerHalfW * sx;
+  if (P.hemRib) o.hemRib = P.hemRib * (kids ? 0.8 : 1);
+  return o;
+}
+
+export function buildUpper(ctx, spec, shot, P0) {
+  const P = adaptProfile(P0, spec);
   const back = shot === 'alt';
   const M = makeMaterial(ctx, spec, { fabric: P.fabric });
   const rng = ctx.rng.fork('upper-' + shot);
@@ -102,7 +132,7 @@ export function buildUpper(ctx, spec, shot, P) {
 
   // ---------------------------------------------------------------- pieces
   const pieces = [];
-  pieces.push(...hangerPieces(ctx, { halfW: Math.min(P.hangerHalfW ?? ST[0] - 0.3, 19.5), drop: Math.min(ST[1] - 0.2, 6.5), tone }));
+  pieces.push(...hangerPieces(ctx, { halfW: Math.min(P.hangerHalfW ?? ST[0] - 1.5, ST[0] - 1.0, 19.5), drop: Math.min(ST[1] - 0.2, 6.5), tone }));
   const c2 = spec.color2 || mix(spec.color, '#000', 0.25);
   const trim = spec.trim && spec.trim !== 'none' ? spec.trim : null;
   let bodyInner = '', bodyDefs = '';
@@ -159,12 +189,12 @@ export function buildUpper(ctx, spec, shot, P) {
       sleeveShapes[side] = sh;
       const sf = new FoldField(rng.int(1, 1e6));
       const c = sh.centre;
-      sf.curveRidge({ curve: c, type: 'gauss', s: (u) => sh.widthAt(u) * 0.42, a: (u) => 1.5 * fabAmp * (1 - 0.3 * u), fade0: 0.02, fade1: 0.05 });
+      sf.curveRidge({ curve: c, type: 'gauss', s: (u) => sh.widthAt(u) * 0.42, a: (u) => 1.5 * fabAmp * (1 - 0.3 * u), fade0: 0.2, fade1: 0.1 });
       const nCrease = sp.len < 14 ? 1 : 3;
       for (let i = 0; i < nCrease; i++) {
         const off0 = rng.range(-0.3, 0.3), sg = i % 2 ? 1 : -1;
         const cAmp = rng.range(0.7, 1.1);
-        sf.curveRidge({ curve: c, off: (u) => off0 * sh.widthAt(u), s: (u) => 1.4 + 0.7 * u, a: (u) => sg * (0.1 + 0.55 * u) * fabAmp * cAmp, fade0: 0.35, fade1: 0.1 });
+        sf.curveRidge({ curve: c, u0: 0.3, off: (u) => off0 * sh.widthAt(u), s: (u) => 1.4 + 0.7 * u, a: (u) => sg * (0.1 + 0.55 * u) * fabAmp * cAmp, fade0: 0.35, fade1: 0.1 });
       }
       if (sp.len > 30) sf.band({ v: ST[1] + 24, w: 1.4, amp: 0.2 * fabAmp });
       sf.noise({ amp: 0.14 * wr, fu: 0.25, fv: 0.12, oct: 2 });

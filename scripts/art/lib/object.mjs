@@ -7,6 +7,7 @@ import { mix, lighten, darken, shadowOf, highlightOf } from './color.mjs';
  * object fits within maxW / maxH fractions. Returns { baseY } in px.
  */
 export function fitObject(ctx, b, { baseFrac = 0.8, maxW = 0.7, maxH = 0.68, kmax = 40, cx = 0.5, dx = 0 } = {}) {
+  if (ctx.place) { ctx._placeCam(b); return { baseY: ctx.cam.fwd(0, b.y1)[1], k: ctx.cam.k }; }
   const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
   const k = Math.min((ctx.W * maxW) / bw, (ctx.H * maxH) / bh, kmax * ctx.u);
   const baseY = ctx.H * baseFrac;

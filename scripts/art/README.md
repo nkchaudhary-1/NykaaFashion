@@ -5,9 +5,10 @@ no browser. A job is a small JSON `spec`; the engine turns it into a 1000x1250 (
 like a calm catalogue still: seamless paper backdrop, soft window light, a real hanger or table contact shadow, fine grain.
 No text and no logos ever appear in an image.
 
-Phase A ships 15 kinds (`dress kurta saree top tee shirt trousers skirt jacket sneaker heel bag earrings vase cushion`),
-three shots each (`front`, `alt`, `detail`), 17 patterns, 15 fabrics, 6 trims. Scenes, pins, `styled` shots and the
-remaining P0/P1 kinds are Phase B.
+The engine now covers 25 kinds (`dress kurta kurta-set saree top tee shirt sweater trousers skirt jacket sneaker heel boot flat bag
+earrings necklace bangles vase bowl candle cushion throw bedding`), three shots each (`front`, `alt`, `detail`), men / kids
+proportions for apparel and footwear, 17 patterns, 15 fabrics, 6 trims, and a scene compositor that hangs or stands several
+items in one shared backdrop and reports shoppable pins.
 
 ## Quick start
 
@@ -28,7 +29,7 @@ node scripts/art/preview.mjs scripts/art/samples/manifest.json --out /tmp/sheet.
   `--only 'products/p-001*'`, `--only 'samples/dress/*-front,samples/vase/*'`.
 - `--skip-existing` skips jobs whose `.webp` already exists (resume a long run).
 - `--concurrency` is the number of worker threads (the JS shading is main-thread bound, so this scales with cores).
-- Jobs that carry a `scene` instead of a `spec` are skipped with a warning (Phase B).
+- Jobs that carry a `scene` instead of a `spec` are rendered by the scene compositor (see Scenes); their pins land in the meta file.
 - Exit code is 1 if any job failed; meta is merged every 10 jobs and at the end (atomic write, keys sorted).
 - Output is deterministic: the same manifest produces byte-identical WebP and meta, independent of `--concurrency`.
   All randomness comes from a seeded PRNG (`lib/prng.mjs`); `Math.random` is never used.
@@ -47,9 +48,9 @@ node scripts/art/preview.mjs scripts/art/samples/manifest.json --out /tmp/sheet.
 Optional per-job keys: `quality` (WebP quality, default 80) and `finish` (overrides for the final pass:
 `{ grain, vignette, lightOnProduct, contrast }`).
 
-`image-meta.json` entry per `out`: `{ "w", "h", "avg": "#rrggbb", "blur"?: "data:image/webp;base64,..." }`.
-`avg` is the mean colour (CSS placeholder). `blur` (a 16 px wide WebP) is only written when `w >= 1200`. `pins` plumbing
-exists but is only filled by scenes (Phase B).
+`image-meta.json` entry per `out`: `{ "w", "h", "avg": "#rrggbb", "blur"?: "data:image/webp;base64,...", "pins"?: [{ "id", "x", "y" }], "edge"?: {...} }`.
+`avg` is the mean colour (CSS placeholder). `blur` (a 16 px wide WebP) is only written when `w >= 1200`. `pins` and `edge` are
+written by scenes only (see Scenes).
 
 ### Common spec fields
 
@@ -65,7 +66,7 @@ exists but is only filled by scenes (Phase B).
 | `trim` | see Trims |
 | `bg` | backdrop hex. Tested: bone `#F1EBE2`, sand `#E6DAC9`, clay `#D8C2AE`, blush `#EBD3CB`, sage `#CBD3C0`, mist `#D6DEE0`, stone `#D0C9BF`, and dark moods ink-olive `#3A3D32`, aubergine `#3B2432` (the hanger switches to a pale ash tone on dark paper) |
 | `hanger` | `beech` `walnut` `ash` `black` `white` `brass` (garments only; auto-picked for contrast when absent) |
-| `gender` | `men` is supported by `kurta` and `trousers`; `kids` is not implemented yet |
+| `gender`, `kids` | `gender: "men"` gives broader shoulders, longer body and sleeves, men's footwear; `kids: true` gives a squat torso, short sleeves and legs, a wider neckline, smaller hanger and a larger on-canvas scale. Supported by every apparel kind (`dress kurta kurta-set tee shirt sweater jacket trousers skirt`) and by `sneaker`; `flat` has a men's loafer |
 
 ### Patterns (`pattern`)
 
@@ -85,6 +86,33 @@ fold amplitude and crispness, opacity and translucency.
 
 `none` `contrast-border` `gota` `zari-border` `lace` `piping` `tassel`. Garments apply them where it is natural (neckline,
 hem, cuffs, placket); `ruffle` is accepted and ignored. Sarees use `border` (or `trim`) for the border style.
+
+## Scenes
+
+```jsonc
+{ "out": "scenes/story-diwali-wide", "w": 1600, "h": 900,
+  "scene": { "bg": "#efd3c6", "motif": "circle", "motifColor": "#e3b34a", "safe": "left", "rail": true, "floorY": 0.88, "topY": 0.1,
+             "items": [ { "spec": { "kind": "kurta-set", "...": "..." }, "cx": 0.55, "cy": 0.49, "height": 0.78, "anchor": "hang", "z": 0, "rot": -1, "pin": "lik-03" } ] } }
+```
+
+- One shared studio: paper wall (same light pool, window-light shaft and grain as single shots), a tonal `motif` (`arch` `window` `circle` `steps` `stripe`
+  or `none`) in `motifColor`, a floor plane below `floorY`, and, when `rail` is true and anything hangs, a thin rod across the top at `topY`.
+- Items are rendered by the normal kind code on child contexts that share the film, light and shadow system, in `z` order.
+  `cx`, `cy` are the bounding-box centre and `height` the bounding-box height as fractions of the canvas (the box includes the hanger hook for
+  garments). `hang` items hang from the rod (the hook ends on it; without a rail they use the wall peg); `floor` items stand on `floorY` with a
+  contact shadow. `rot` (degrees) swings the item a little around its centre.
+- `safe: left|right` only moves the backdrop motif out of that third of the canvas; item positions are used exactly as given.
+- `pin` ids produce `pins: [{ id, x, y }]` (0-1) in the meta: the point is on the item's visible body (about 40% down a hanging
+  garment, the visual centre of an object), never on backdrop and never under an item that overlaps it. `preview.mjs` draws the pins as red dots.
+- Items are kept inside the frame: when a bounding box would extend past 2% / 98% of the canvas (width, or the bottom of a hanging item / top of a
+  standing one) it is scaled down uniformly about its anchor (hook or base centre) and a one-line warning with the job id is printed.
+- `window` motifs on dark walls use lighter glass and clearer mullions; with two or more hanging pieces the window is moved into the clear
+  space beside the group (narrower if need be) so its cross is never sliced by a garment.
+- Wide scenes (`w >= 1500`) add `edge: { wall: ["#left", "#right"], floor: ["#left", "#right"], floorY }` to the meta: the mean colour of the
+  outermost 1% columns as they appear in the finished image (tone curve and vignette included), sampled after the backdrop and before any item
+  is drawn (wall: rows 15%-80% of the height; floor: rows from floorY+4% to floorY+10%), so letterbox bars can continue the wall seamlessly.
+- A kind may export `scene(ctx, spec)` to change how it is shown in a scene (`saree` hangs from a clip hanger, `earrings` /
+  `necklace` / `bangles` stand on a small stone dish, `throw` / `bedding` stand as folded stacks).
 
 ## Kinds
 
@@ -107,6 +135,16 @@ All kinds support the three shots. `front` = hero; `alt` = a visibly different s
 | `earrings` | `style`: `jhumka` `stud` `hoop` `chandbali` `drop`; `metal`: `gold` `silver` `oxidised` `rosegold`; stones via `color2`; `surface` (cloth colour) | pair on silk / pair staggered and rotated on a different cloth drape / single piece macro with depth-of-field |
 | `vase` | `style`: `bud` `amphora` `cylinder` `bottle`; `finish`: glossy or `matte`; `fabric: "terracotta"`; `color`, `color2` (second glaze); `stems: true` with `dry`: `pampas` `wheat` | single vase / grouped arrangement / rim and glaze macro |
 | `cushion` | `style`: `piped` `tasselled` `tufted`; `pattern`; `color2` (piping, tassels) | upright against the wall / pair arrangement / macro of piping, tassel or tufting |
+| `kurta-set` | kurta options (`length` `fit` `neck` `sleeve`) + `bottom`: `palazzo` `churidar` `pant`; `kids`, `gender`; `color2` colours the dupatta (women's sets) | kurta on a hanger with its bottom continuing below the hem and a dupatta over the shoulder / back view / macro of neck, hem or print |
+| `sweater` | `style`: `crew` `turtle` `cardigan` `vest`; `fabric` (knit default) | hanger front (cardigan has a buttoned rib placket, turtle a ribbed roll collar) / back / macro |
+| `throw` | `fabric` `cotton` `wool`; `pattern`; `color2` (woven bands and fringe) | folded stack with fringed ends / stack with the top fold pulled aside / fringe or print macro |
+| `bedding` | `pattern`; `color2` (hem band, pillow flange) | folded duvet set with a pillow / angled stack / macro |
+| `necklace` | `style`: `layered` `temple`; `metal`: `gold` `oxidised` `silver` `rosegold`; `color` nudges the metal tone, `color2` = stones | flat-lay on silk / rotated arrangement / pendant macro |
+| `bangles` | `count` (1-8); `style`: `kundan` `kada`; `metal`; `color` = enamel body, `color2` = kundan stones | stack or pair on silk / fanned arrangement / stone macro |
+| `bowl` | `style`: `bowl` `mug`; `color` = glaze outside, `color2` = glaze inside | single piece on a table / pair with a second piece / rim macro |
+| `candle` | `vessel`: `glass` `ceramic` `tin` `pillar`; `color` = glass or vessel (wax for pillars) | single candle / pair of candles / wick and wax macro |
+| `boot` | `height: ankle` (chelsea style with gusset and pull tab); `fabric` | profile on a surface / staggered pair / gusset and toe macro |
+| `flat` | `style`: `loafer` `ballet` `jutti`; `gender: "men"` | profile on a surface / staggered pair / vamp macro |
 
 ## How it works
 
@@ -128,7 +166,7 @@ Layout:
 ```
 scripts/art/
   render.mjs  preview.mjs  worker.mjs        CLIs and the worker-thread entry
-  lib/        ctx, shade, folds, fabrics, texture, patterns, trims, geometry (Catmull-Rom -> Bezier, offsets, tubes),
+  lib/        ctx, scene (compositor + pins), shade, folds, fabrics, texture, patterns, trims, geometry (Catmull-Rom -> Bezier, offsets, tubes),
               garment / upper / lower / collar / hanger (garment toolkit), object (objects on a surface), color, prng, noise
   kinds/      one file per kind + index.mjs (registry)
   samples/manifest.json                      the QA manifest
@@ -150,11 +188,15 @@ scripts/art/
 5. Register it in `kinds/index.mjs`, add entries to `samples/manifest.json` and review with `preview.mjs` at full size
    before trusting a thumbnail sheet.
 
-## Known limitations (Phase A)
+## Known limitations
 
-- Footwear and jewellery are stylised 2D constructions; they read as the right object but not as photographs.
-- Bags: side faces and the backpack straps are simple. Heels: toe boxes lack definition.
-- Very dark garments (black blazer, pencil skirt) carry little detail; shapes come mostly from the rim and fold shading.
-- `top` styles `tank` / `bodysuit` are generic; `peplum` and `tiered` hems can step visibly in macros.
-- Shirt collars in macro still look slightly bow-tie shaped.
-- `scene` jobs, `pins`, `styled` shots, `kids`, and the remaining P0/P1 kinds are Phase B.
+- Footwear and jewellery are stylised 2D constructions; they read as the right object at catalogue size but not as photographs.
+  Boots (gusset, sole) and block heels (toe box) are the least refined; sneakers use one outline per style.
+- Very dark garments keep their structure through a fold / rim lift but remain low-contrast in macros.
+- `tank` / `bodysuit` tops are generic; `peplum` and `tiered` hems can step visibly in macros.
+- Spread collars are now a band with two pointed leaves; they are still a simplified shape in extreme macros.
+- Kids / men variants are proportion changes of the adult construction (no separate patterns, plackets or collars per gender).
+- Scenes: the backdrop motifs are tonal reliefs rather than photographed architecture; items are 2D renders, so overlaps are a plain
+  painter's order with soft shadows (no occlusion-aware light).
+- Not built: `styled` shots, `sweater` `hoodie`, `flat` `sandal` / `slide` / `kolhapuri`, `boot` `knee`, `bowl` `plate-stack` / `serving`
+  (fall back to a bowl), `frame`, and the P1 kinds.
