@@ -1,4 +1,154 @@
 {
+ "placeholders/boucle-suit-16x9": {
+  "w": 1920,
+  "h": 1080,
+  "avg": "#cdbbac",
+  "edge": {
+   "wall": [
+    "#cdbbac",
+    "#cdbbac"
+   ],
+   "floor": [
+    "#cdbbac",
+    "#cdbbac"
+   ],
+   "floorY": 0.82
+  },
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoQAAkABIByJYwCdADRSpv4AAD+w/o2GU+iSsZLF9Yo9iMmWlFk96RYxRof6oAA"
+ },
+ "placeholders/boucle-suit-16x9-copy-left": {
+  "w": 1920,
+  "h": 1080,
+  "avg": "#cdbcae",
+  "edge": {
+   "wall": [
+    "#cdbcae",
+    "#cdbcae"
+   ],
+   "floor": [
+    "#cdbcae",
+    "#cdbcae"
+   ],
+   "floorY": 0.82
+  },
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoQAAkABIByJYwCdADG/sOQAAD+sK0DJhlCvb8egCBE5e7o+9llSlX3DIHqgAAA"
+ },
+ "placeholders/boucle-suit-1x1": {
+  "w": 1200,
+  "h": 1200,
+  "avg": "#cfbdad",
+  "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoQABAABIByJQBOgCKbZXYCTi4AAP7e2ZPqN2EX4tEvgZT+ubibqDjLX4rQ+DQf8xapLGgUvy36yuUAAAA="
+ },
+ "placeholders/boucle-suit-3x2": {
+  "w": 1536,
+  "h": 1024,
+  "avg": "#ccbaab",
+  "edge": {
+   "wall": [
+    "#ccbaab",
+    "#ccbaab"
+   ],
+   "floor": [
+    "#ccbaab",
+    "#ccbaab"
+   ],
+   "floorY": 0.82
+  },
+  "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoQAAsABIByJYwCdACzivAAAP7Tm5x8aTEqsytNtVhv/+fFvED4hyWxyAj07mGgAAA="
+ },
+ "placeholders/boucle-suit-3x4": {
+  "w": 1200,
+  "h": 1600,
+  "avg": "#d0bdae",
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAwCdASoQABUAPyV8tlIuJ6UisAgBwCSJYwC7ACHfUWkbG7yNtbwAAP6uvamWJuNbrWOny0Y/iBHtSePVYjjly2hBDuB9WwFQAfXvjgfvq96kAAA="
+ },
+ "placeholders/boucle-suit-4x5": {
+  "w": 1200,
+  "h": 1500,
+  "avg": "#d0bdad",
+  "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAwCdASoQABQAPyV8tVIuJ6UisAgBwCSJYwCsACG8AYQG8wAFv5AAAP6um+1aUbfGAIXuSzb/17KAGNSI2KxfEXN+1TEcG0qH9G+7dh4gMoAA"
+ },
+ "placeholders/boucle-suit-9x16": {
+  "w": 1080,
+  "h": 1920,
+  "avg": "#d0beaf",
+  "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAQBACdASoQABwAPyWCuVGuKSYisAgBwCSJYwCdACHgCmGY/ShXJ1SuAAD+rr2mVrhlHEdMy2aGtXn+dRd4RZAWVsnsANU+/CbhuukP52ewDtajFTp3iVB23owdo/EdeKRcvQAA"
+ },
+ "placeholders/kurta-set-16x9": {
+  "w": 1920,
+  "h": 1080,
+  "avg": "#c6ae99",
+  "edge": {
+   "wall": [
+    "#c6ae99",
+    "#c6ae99"
+   ],
+   "floor": [
+    "#c6ae99",
+    "#c6ae99"
+   ],
+   "floorY": 0.82
+  },
+  "blur": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACwAQCdASoQAAkABIByJQBOgBoqdAwAAP6Wm678mI2ZLq6vYvZpocHAYeieS7nHDoGda0dE+wfgAA=="
+ },
+ "placeholders/kurta-set-16x9-copy-left": {
+  "w": 1920,
+  "h": 1080,
+  "avg": "#c7af9c",
+  "edge": {
+   "wall": [
+    "#c7af9c",
+    "#c7af9c"
+   ],
+   "floor": [
+    "#c7af9c",
+    "#c7af9c"
+   ],
+   "floorY": 0.82
+  },
+  "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACQAQCdASoQAAkABIByJQBOgBXo2AAA/F1sfFvnpjcCaIfMg1/o1YSRVEla/Vd0zB5YBM+QAAA="
+ },
+ "placeholders/kurta-set-1x1": {
+  "w": 1200,
+  "h": 1200,
+  "avg": "#c9b09b",
+  "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoQABAABIByJQBOgBjeB3GDwwAA/sPznjUZOdbtuyEQ4vBMAFPmgKc/4tp4nsKeN++jkJk87jeaeRGGjOyd4gAA"
+ },
+ "placeholders/kurta-set-3x2": {
+  "w": 1536,
+  "h": 1024,
+  "avg": "#c6ad99",
+  "edge": {
+   "wall": [
+    "#c6ad99",
+    "#c6ad99"
+   ],
+   "floor": [
+    "#c6ad99",
+    "#c6ad99"
+   ],
+   "floorY": 0.82
+  },
+  "blur": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoQAAsABIByJQBOgBh2f1+AAAD+lporq7kwnZ01Dufyo9aG9vdOmpVqT1S0iEEJnyAAAA=="
+ },
+ "placeholders/kurta-set-3x4": {
+  "w": 1200,
+  "h": 1600,
+  "avg": "#c9b09c",
+  "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQBACdASoQABUAPyV8tVIuJ6UisAgBwCSJQBOmUABpY/OxonexZUTYAAD+Uul7i4dOHlKj/0PyO7LvskqdMffnFyvCZSIYMVTLRqZpI1AaCLwA"
+ },
+ "placeholders/kurta-set-4x5": {
+  "w": 1200,
+  "h": 1500,
+  "avg": "#c9b09c",
+  "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAACQAwCdASoQABQAPyV8tVIuJ6UisAgBwCSJQBOmUABpXsk4g5gIAP5S6XwenJPesZRSGeWxgCHFE+soBjZqQB7zwPQfvu0OYkVpJfUXtht1AAAA"
+ },
+ "placeholders/kurta-set-9x16": {
+  "w": 1080,
+  "h": 1920,
+  "avg": "#cab29e",
+  "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAwCdASoQABwAPyV6tFGuJ6UisAgBwCSJYwCw7CG7Ur6lY23++2AAAP5SCsxdyarwHsqZeMYB/tDfb8oG8k6l28UfWQxOrdKzbGBQW+HAKmsh7L8zwVVZdWkNFxZjxQAAAA=="
+ },
  "products/aja-01/v1-alt": {
   "w": 1000,
   "h": 1250,

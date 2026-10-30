@@ -90,3 +90,24 @@ node scripts/qa/grid.cjs  http://localhost:3200 [--routes /,/c/women] [--widths 
 node scripts/qa/flat.cjs  http://localhost:3200 [--routes …] [--widths …] [--overlays]               # no shadow / gradient / blur / non-Inter font
 node scripts/qa/overflow.cjs http://localhost:3200                                                    # no horizontal overflow
 ```
+
+## 9. Imagery placeholders
+
+Two studio photographs are cut into every ratio the layouts use, so a slot never has to crop a mismatched image:
+
+| Ratio | File suffix | Use |
+| --- | --- | --- |
+| 3:4 (preferred portrait) | `-3x4` | category, edit and story cards |
+| 4:5 | `-4x5` | product-style cards, bento tiles, phone hero |
+| 1:1 | `-1x1` | square tiles, collection thumbnails |
+| 16:9 | `-16x9` | wide banners, split sections |
+| 16:9, subject right | `-16x9-copy-left` | desktop hero — headline sits on the calm left wall |
+| 9:16 | `-9x16` | stories, vertical promos |
+| 3:2 | `-3x2` | the untouched original |
+
+![All ratios of both photographs](placeholder-ratios.jpg)
+
+Files: `public/img/placeholders/{kurta-set,boucle-suit}-<ratio>.webp`; typed keys and the slot → ratio guide are in `src/data/placeholders.ts`.
+Portrait and vertical ratios extend the seamless studio backdrop (edge colour + a damped copy of its own gradient + matched grain — never the subject);
+regenerate with `npm run photo:ratios` (sources in `scripts/placeholders/source/`; `--jpg <dir>` also writes JPGs). To use real photography, replace a file with a
+photograph of the same name (and re-measure `edge`/`pins` in `image-meta.json` if the slot uses them).

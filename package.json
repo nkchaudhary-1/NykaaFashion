@@ -12,7 +12,8 @@
     "art:manifest": "node scripts/build-art-manifest.mjs",
     "art:placeholders": "node scripts/dev-placeholders.mjs",
     "art:render": "node scripts/art/render.mjs src/data/generated/art-manifest.json",
-    "contrast": "node scripts/contrast.mjs"
+    "contrast": "node scripts/contrast.mjs",
+    "photo:ratios": "node scripts/placeholders/build.mjs"
   },
   "dependencies": {
     "framer-motion": "^14.9.0",
