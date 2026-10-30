@@ -6,7 +6,7 @@ interface Meta {
   avg: string;
   pins?: Array<{ id: string; x: number; y: number }>;
   /** backdrop colour at the left/right edges of a wide scene (before items), so a pillar-boxed cover continues the wall */
-  edge?: { wall: [string, string]; floor: [string, string]; floorY: number };
+  edge?: { wall: string[]; floor: string[]; floorY: number }; // [left, right] hex pairs
   blur?: string;
   placeholder?: boolean;
 }

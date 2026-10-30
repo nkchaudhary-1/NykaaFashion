@@ -18,7 +18,11 @@ node scripts/qa/journey.cjs http://localhost:3100 --mobile
 node scripts/qa/overflow.cjs http://localhost:3100           # horizontal-overflow scan: every route x 360/390/820/1280 + overlays
 node scripts/qa/keyboard.cjs http://localhost:3100           # keyboard-only checks
 node scripts/qa/a11y.cjs http://localhost:3100               # axe-core (npm i --no-save axe-core first)
+node scripts/qa/vitals.cjs http://localhost:3100 [--throttle]  # lab LCP / CLS / long tasks / transfer per route
+node scripts/qa/sweep.cjs <outDir> http://localhost:3100 / /c/women   # scrolling screenshots for visual review
+node scripts/qa/image-audit.mjs                              # flat / black / blown-out / orphaned images, pin sanity
 node scripts/qa/shot.cjs <url> <out.png> [--full] [--mobile]  # screenshot + console/network health check
+npm run art:manifest && npm run art:render                   # regenerate + render all imagery (~5 min, 3 workers)
 ```
 
 ## Milestones (PRD build order)
@@ -30,8 +34,8 @@ node scripts/qa/shot.cjs <url> <out.png> [--full] [--mobile]  # screenshot + con
 | 03 | **Product experience** — PDP (gallery, zoom, FLIP, sizes, size guide, reviews, complete-the-look, recommendations), wishlist, quick view, notify-me | ✅ done |
 | 04 | **Commerce** — bag, qty, coupons, price maths, OTP login/registration, addresses, 3-step checkout, payment selection, simulated confirmation | ✅ done |
 | 05 | **Account** — profile, addresses, wishlist, order history, order detail, tracking timeline, cancel / return | ✅ done |
-| 06 | **Final polish** — motion, loading/empty/error states, a11y, performance, responsive refinement | 🔄 in progress (see Pending) |
-| — | **Imagery** — procedural art engine (`scripts/art`) replacing placeholder renders | 🔄 in progress (agent-built engine; placeholders in place) |
+| 06 | **Final polish** — motion, loading/empty/error states, a11y, performance, responsive refinement | ✅ done (limits listed below) |
+| — | **Imagery** — procedural art engine (`scripts/art`): 25 product kinds, 47 editorial scenes with shoppable pins | ✅ done — all 557 images rendered and committed |
 
 ## Routes
 
@@ -53,16 +57,15 @@ The **Prototype** panel (bottom-right) lets a reviewer force intent states, add 
 - **Typography:** Instrument Serif (display) + Geist (UI). ₹ is only in Geist's latin-ext subset, so the display stack falls back to Geist for it. Pink never carries text (white-on-`#e80071` is 4.50:1); CTAs are ink; accent text uses `pink-ink`.
 - **Image loading policy:** every `<Img>` takes a `load` hint — `preload` for the single LCP image visible at every breakpoint, `eager` for the first grid row, `high` for desktop-only images (lazy, so a hidden copy never downloads, but first in the queue when shown); default is lazy. The home hero is one art-directed `<picture>` (tall cover on phones, wide on desktop) so a phone never fetches or preloads the other. Rails and below-the-fold grids never preload.
 - **Touch targets (PRD §7.4):** standalone controls are 44px; small text links get an invisible 44px hit area on coarse pointers (`tap` utility); small buttons grow to 44px on touch (`Button size="sm"`, quick add, helpful). Footer links get 44px pitch on touch.
-- **Imagery:** the sandbox cannot reach any photo host and the connected AI-image account has 0 credits, so imagery is generated procedurally (SVG → sharp → WebP) from the same catalogue data. Images are *files*: replace `public/img/<key>.webp` with a photograph of the same name and nothing else changes.
+- **Imagery:** the sandbox cannot reach any photo host and the connected AI-image account has 0 credits, so imagery is generated procedurally (SVG → shaded in JS → sharp → WebP) by `scripts/art` from the same catalogue data: 510 product shots (front / back / detail per piece, 25 kinds incl. men/kids adaptations) and 47 editorial scenes (rail, floor, tonal motifs, shared light) whose pin coordinates and wall colours land in `image-meta.json`. Pieces keep their authored backdrop unless contrast against it is under 1.9:1 (a black blazer on olive-black reads as a smudge), then fall back to the category's light palette. Images are *files*: replace `public/img/<key>.webp` with a photograph of the same name and the page keeps working (re-measure pins in `image-meta.json`). Contract and options: `scripts/art/README.md`; `docs/ART_ENGINE_BRIEF.md`.
 
-## Pending
+## Next steps (outside this prototype's scope)
 
-- [x] Mobile horizontal overflow — fixed (implicit grid tracks); `overflow.cjs` reports none at 360/390/820/1280.
-- [ ] Swap placeholder renders for the art engine's output (`npm run art:manifest && npm run art:render`) and review at desktop + mobile. Built-kind products render today; scenes (editorial covers, pins) and 10 remaining kinds are the engine's Phase B.
-- [ ] Visual QA sweep of every route at 390 / 820 / 1280 / 1728 widths with real imagery.
-- [x] Accessibility audit pass (axe + keyboard) — see QA log. Still to do: contrast re-check on text over real imagery.
-- [ ] Performance pass on production build (bundle size, LCP images, `image-meta.json` payload).
-- [ ] Optional: `Reveal` stagger tuning, hero parallax, FLIP polish.
+- [ ] **First-row SSR for listings.** Filters live in the URL, so results are computed after hydration; on a throttled phone (4x CPU, 1.6 Mbps) PLP LCP is ~3.2 s versus ~1.0 s on pages whose hero is in the HTML. Rendering the default first row on the server (or reading `searchParams` in a server component) is the fix.
+- [ ] **Real photography.** Swap files in `public/img` and re-measure pin positions; the app needs no code change.
+- [ ] **Manual assistive-tech pass** (VoiceOver / NVDA) and a real-device touch pass — automated checks are not a conformance audit.
+- [ ] **Engine polish:** footwear and jewellery are stylised, boots/loafers/block heels have crude toe boxes, every sneaker style shares one outline, kids/men are proportion changes rather than separate construction, bag side faces and backpack straps are crude, tank/bodysuit/peplum hems are generic.
+- [ ] Optional: hero parallax, further `Reveal` stagger tuning.
 
 ## Blocked / limitations
 
@@ -78,5 +81,7 @@ The **Prototype** panel (bottom-right) lets a reviewer force intent states, add 
 - Focus styling: the global `:focus-visible` ring lives in `@layer base`, so `outline-none` / `focus-visible:ring-*` utilities on components actually apply (inputs get a 2px ink underline or ring, round buttons keep their round ring).
 - Dev-mode smoke (`next dev`): 21 routes x desktop + mobile — no console errors or warnings, no error overlay (hydration included). Dev-only LCP warnings are false positives from the same image appearing several times on a page.
 - Touch-target audit (390px, 21 routes incl. signed-in): remaining sub-44px items are inline/footer text widths and `tap`-expanded links; heights meet 44px.
+- `scripts/qa/vitals.cjs` (production build, lab): LCP 170–900 ms and CLS ≤ 0.016 on 7 routes x mobile + desktop unthrottled; with mobile throttling (4x CPU, slow 4G) home / PDP / edit LCP ≈ 1.0–1.2 s, PLP ≈ 3.2 s (see Next steps). Initial JS ≈ 310–340 KB gzip (React + Next ≈ 140, Framer Motion ≈ 47, catalogue/stories data ≈ 50, icons ≈ 12). No long task over 50 ms except hydration (≤ 550 ms under 4x throttle).
+- `scripts/qa/image-audit.mjs` — 557 files: none flat, near-black, blown-out or orphaned; every meta entry has a file; all pins inside the frame (20 MB total, median 31 KB, max 134 KB).
 - Production build (`next build`, 212 static pages) ✅ · `npm run typecheck` ✅ · `npm run lint` ✅ · `npm run data:check` ✅
 - Automated + keyboard checks are not a full WCAG conformance audit; manual screen-reader testing has not been done.

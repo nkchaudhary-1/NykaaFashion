@@ -58,7 +58,7 @@ export function Hero({ story, compact }: { story: Story; compact?: boolean }) {
     <div className="relative overflow-hidden lg:[background:var(--hero-band)]" style={{ "--hero-band": band } as CSSProperties}>
       {/* Touch: 4:5 cover on top, copy below. Desktop: 16:9 cover, copy laid over its calm side. */}
       <div
-        className="relative mx-auto aspect-[4/5] w-full max-w-[640px] bg-[var(--tall-bg)] lg:aspect-video lg:w-[min(100%,calc(var(--hero-h)*16/9))] lg:max-w-none lg:bg-transparent"
+        className="relative mx-auto aspect-[4/5] w-full max-w-[640px] bg-[var(--tall-bg)] lg:aspect-video lg:w-[min(100%,calc(var(--hero-h)*16/9))] lg:max-w-none lg:bg-transparent lg:[-webkit-mask-image:linear-gradient(to_right,transparent,#000_3%,#000_97%,transparent)] lg:[mask-image:linear-gradient(to_right,transparent,#000_3%,#000_97%,transparent)]"
         style={{ "--tall-bg": imgAvg(story.cover.tall), "--hero-h": compact ? "64vh" : "min(84vh, 860px)" } as CSSProperties}
       >
         <picture>

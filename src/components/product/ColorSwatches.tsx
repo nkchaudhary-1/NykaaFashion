@@ -27,9 +27,9 @@ export function ColorPicker({ product, value, onChange }: { product: Product; va
   );
 }
 
-/** Small static swatch row for cards. */
+/** Small static swatch row for cards. Single-colour pieces keep an empty row so prices sit on one line across a grid row. */
 export function SwatchRow({ product, max = 4 }: { product: Product; max?: number }) {
-  if (product.variants.length < 2) return null;
+  if (product.variants.length < 2) return <div aria-hidden className="mt-2 h-[11px]" />;
   const shown = product.variants.slice(0, max);
   return (
     <div className="mt-2 flex items-center gap-1.5" aria-label={`${product.variants.length} colours`}>
