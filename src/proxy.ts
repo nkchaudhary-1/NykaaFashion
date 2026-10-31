@@ -53,17 +53,17 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const HEADERS = { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" };
 
-const logo = `<svg viewBox="${LOGO_VIEWBOX}" height="26" role="img" aria-label="Nykaa Fashion">${LOGO_PATHS.map((p) => `<path d="${p.d}" fill="${p.tone === "brand" ? "#fc2779" : "#242021"}"/>`).join("")}</svg>`;
+const logo = `<svg viewBox="${LOGO_VIEWBOX}" height="26" role="img" aria-label="Nykaa Fashion">${LOGO_PATHS.map((p) => `<path d="${p.d}" fill="${p.tone === "brand" ? "#fc2779" : "#15120f"}"/>`).join("")}</svg>`;
 
 function page(title: string, body: string, status: number) {
-  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${title}</title>
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f4efe8"><title>${title}</title>
 <style>
 @font-face{font-family:"Inter Display";font-weight:100 900;font-display:swap;src:url(/fonts/inter-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+2215}
-*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px;background:#f6f3ef;color:#1c2834;font:400 16px/1.55 "Inter Display",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-variation-settings:"opsz" 32;-webkit-font-smoothing:antialiased}
-main{width:min(420px,100%)}h1{margin:28px 0 8px;font-size:30px;line-height:1.1;letter-spacing:-.03em;font-weight:700}p{margin:0 0 20px;color:#414d58}
-label{display:block;margin:0 0 8px;font-size:13px;font-weight:600}input{width:100%;height:48px;padding:0 14px;border:0;border-bottom:2px solid #cdd3d3;border-radius:4px 4px 0 0;background:#fff;font:inherit;color:inherit}input:focus{outline:none;border-bottom-color:#982854}
-button{width:100%;height:48px;margin-top:14px;border:0;border-radius:4px;background:#001425;color:#fff;font:600 16px "Inter Display",system-ui,sans-serif;cursor:pointer}button:hover{background:#1c2834}button:focus-visible,input:focus-visible{outline:2px solid #1c2834;outline-offset:2px}
-.err{margin:12px 0 0;color:#b0221a;font-size:14px}.fine{margin-top:28px;font-size:12.5px;color:#646868}
+*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px;background:#f4efe8;color:#15120f;font:400 16px/1.55 "Inter Display",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-variation-settings:"opsz" 32;-webkit-font-smoothing:antialiased}
+main{width:min(460px,100%)}h1{margin:44px 0 14px;font-size:clamp(38px,9vw,60px);line-height:.96;letter-spacing:-.055em;font-weight:500}p{margin:0 0 24px;color:#403a33}
+label{display:block;margin:0 0 8px;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#675f55}input{width:100%;height:52px;padding:0 14px;border:0;border-bottom:2px solid #c0b6a6;border-radius:4px 4px 0 0;background:#faf7f2;font:inherit;color:inherit}input:focus{outline:none;border-bottom-color:#982854}
+button{width:100%;height:52px;margin-top:14px;border:0;border-radius:4px;background:#15120f;color:#f4efe8;font:600 16px "Inter Display",system-ui,sans-serif;cursor:pointer;transition:background-color .4s cubic-bezier(.16,1,.3,1)}button:hover{background:#982854;color:#fff}button:focus-visible,input:focus-visible{outline:2px solid #15120f;outline-offset:2px}
+.err{margin:12px 0 0;color:#b0221a;font-size:14px}.fine{margin-top:32px;font-size:12.5px;color:#675f55}
 </style></head><body><main>${logo}${body}</main></body></html>`;
   return new NextResponse(html, { status, headers: HEADERS });
 }
