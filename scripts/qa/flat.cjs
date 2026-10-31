@@ -66,7 +66,7 @@ const fmt = (list) => list.slice(0, 6).map((x) => `      ${x.k} ×${x.n}  ${x.ex
   let hard = 0, warn = 0;
   for (const w of WIDTHS) {
     const mobile = w < 700;
-    const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, isMobile: mobile, hasTouch: mobile });
+    const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, isMobile: mobile, hasTouch: mobile, reducedMotion: "reduce" });
     const page = await ctx.newPage();
     const check = async (label) => {
       // a route may redirect on the client after load (e.g. /checkout with an empty bag): settle and probe again

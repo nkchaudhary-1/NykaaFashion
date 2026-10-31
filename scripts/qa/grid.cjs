@@ -57,7 +57,7 @@ const probe = (tol) => {
   let findings = 0;
   for (const w of WIDTHS) {
     const mobile = w < 700;
-    const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, isMobile: mobile, hasTouch: mobile });
+    const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, isMobile: mobile, hasTouch: mobile, reducedMotion: "reduce" }); // settled state: reveals and parallax are exercised by motion.cjs
     const page = await ctx.newPage();
     for (const route of ROUTES) {
       await page.goto(BASE + route, { waitUntil: "networkidle" });

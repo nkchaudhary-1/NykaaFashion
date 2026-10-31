@@ -13,7 +13,7 @@ const AUTHED = ["/checkout", "/account", "/account/orders", "/account/orders/nf-
 
 (async () => {
   const browser = await chromium.launch();
-  const ctx = await browser.newContext({ viewport: mobile ? { width: 390, height: 844 } : { width: 1440, height: 900 }, isMobile: mobile, hasTouch: mobile });
+  const ctx = await browser.newContext({ viewport: mobile ? { width: 390, height: 844 } : { width: 1440, height: 900 }, isMobile: mobile, hasTouch: mobile, reducedMotion: "reduce" }); // mid-reveal opacity would skew colour-contrast results
   const page = await ctx.newPage();
   let total = 0;
   const audit = async (path) => {

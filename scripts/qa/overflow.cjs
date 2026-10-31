@@ -36,7 +36,7 @@ const probe = () => {
   const browser = await chromium.launch();
   let bad = 0;
   for (const w of WIDTHS) {
-    const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, isMobile: w < 700, hasTouch: w < 700 });
+    const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, isMobile: w < 700, hasTouch: w < 700, reducedMotion: "reduce" });
     const page = await ctx.newPage();
     const run = async (path) => {
       await page.goto(BASE + path, { waitUntil: "networkidle" });

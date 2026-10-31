@@ -6,6 +6,15 @@ An improved Nykaa Fashion: the **existing identity is kept** — white surfaces,
 
 See [`PROJECT_STATUS.md`](PROJECT_STATUS.md) for milestones, decisions and QA, and `/prototype` in the running app for reviewer notes.
 
+## Two designs, two branches
+
+| Branch | What it is |
+|---|---|
+| `claude/nykaa-fashion-grid-redesign` | **The current design** — the live Nykaa Fashion look on the strict grid: white surfaces, slate ink, navy buttons. Unchanged. |
+| `claude/nykaa-fashion-awards` | **The awards-style version** — same structure, pages and behaviour, in an editorial register: warm studio-paper surfaces, poster-scale type, much bigger photography on the home page, and a motion layer (smooth scroll, word-mask headline reveals, picture reveals, parallax, ticker, follower cursor with Drag/View labels, page fades). Art direction and the motion primitives: [`docs/AWARDS_DIRECTION.md`](docs/AWARDS_DIRECTION.md). |
+
+Switch with `git checkout <branch> && npm ci`. Motion always has a way out: it is off for visitors who prefer reduced motion, smooth scroll and the cursor are off on touch screens, and nothing is hidden when JavaScript is off or fails (`scripts/qa/motion.cjs` checks all four).
+
 ## Run it
 
 Needs **Node 20.9 or newer** (22 recommended — there is an `.nvmrc`) and npm. No API keys, no database, no network access to any font or image host: everything is in the repo.
@@ -13,6 +22,7 @@ Needs **Node 20.9 or newer** (22 recommended — there is an `.nvmrc`) and npm. 
 ```bash
 git clone https://github.com/nkchaudhary-1/NykaaFashion.git && cd NykaaFashion
 git checkout claude/nykaa-fashion-grid-redesign   # the repo's default branch is the earlier design — this is the live-identity version
+# git checkout claude/nykaa-fashion-awards         # …or the awards-style version (see "Two designs" above)
 npm ci                                            # or: npm install
 npm run dev                                       # → http://localhost:3000
 ```
@@ -35,7 +45,7 @@ What the gate does: every page, API route and picture needs the cookie; only the
 
 ## Stack
 
-Next.js 16 (App Router, Cache Components, Turbopack) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion · Lucide. No other runtime dependencies. Mock JSON-style data modules and `localStorage` persistence, structured so real APIs can slot in.
+Next.js 16 (App Router, Cache Components, Turbopack) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion · Lucide · Lenis (smooth scroll, awards branch). No other runtime dependencies. Mock JSON-style data modules and `localStorage` persistence, structured so real APIs can slot in.
 
 ## Commands
 
@@ -61,6 +71,7 @@ node scripts/qa/grid.cjs     http://localhost:3100              # every block si
 node scripts/qa/overflow.cjs http://localhost:3100              # horizontal-overflow scan, every route x 4 widths + overlays
 node scripts/qa/keyboard.cjs http://localhost:3100              # keyboard-only checks (skip link, combobox, focus traps, dropdowns…)
 node scripts/qa/a11y.cjs     http://localhost:3100              # axe-core on every page (npm i --no-save axe-core first)
+node scripts/qa/motion.cjs   http://localhost:3100              # awards branch: reveals settle, smooth scroll, cursor, drag rails, page fade, reduced-motion / no-JS / failed-hydration fallbacks
 node scripts/qa/vitals.cjs   http://localhost:3100 [--throttle] # lab LCP / CLS / long tasks / transfer per route
 node scripts/qa/sweep.cjs <outDir> http://localhost:3100 / /c/women   # scrolling screenshots for visual review
 ```
@@ -69,14 +80,14 @@ node scripts/qa/sweep.cjs <outDir> http://localhost:3100 / /c/women   # scrollin
 
 ```
 src/app/            routes (App Router)
-src/components/     ui/ (kit) · layout/ · product/ · plp/ · home/ · editorial/ · commerce/ · account/
+src/components/     ui/ (kit) · layout/ · motion/ (reveals, smooth scroll, cursor, ticker, parallax) · product/ · plp/ · home/ · editorial/ · commerce/ · account/
 src/data/           types · labels · categories · catalog-defs → catalog · edits · stories · scenes · commerce · content
 src/lib/            store · filters · search · recs · pricing · intent helpers · flip · mockApi · a11y
 src/stores/         wishlist/bag · account/orders · intent · checkout · ui/toasts/prefs
 scripts/placeholders/ the two supplied photographs and the tool that cuts every image from them
 scripts/qa/         Playwright journey · nav · home · links · flat · grid · overflow · keyboard · a11y · vitals · screenshot tools
 public/brand/       the supplied wordmark (inlined by components/layout/Logo.tsx)
-docs/               PRD · grid system
+docs/               PRD · grid system · awards direction
 ```
 
 ## Live content
