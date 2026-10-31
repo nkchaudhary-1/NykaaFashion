@@ -5,6 +5,7 @@ import { useState, type ReactNode } from "react";
 import { setLaunchOffset } from "@/components/launch/clock";
 import { resetNotify } from "@/components/launch/notify";
 import { Button } from "@/components/ui/Button";
+import { LayoutSwitch } from "@/components/layout/LayoutSwitch";
 import { Select, Switch } from "@/components/ui/Form";
 import { Overlay, OverlayBody, OverlayFooter, OverlayHeader } from "@/components/ui/Overlay";
 import { SimulatedTag } from "@/components/ui/Simulated";
@@ -13,6 +14,7 @@ import { editById } from "@/data/edits";
 import { labelById } from "@/data/labels";
 import { promos } from "@/data/promos";
 import { HOME_MODULES, MODE_COPY, composeHome } from "@/lib/home";
+import { DEFAULT_LAYOUT, HOME_LAYOUTS, useHomeLayout } from "@/lib/layout";
 import { KIND_LABEL } from "@/lib/promo";
 import { fmtDateTime } from "@/lib/format";
 import { resetAllStores, useStore } from "@/lib/store";
@@ -24,7 +26,7 @@ import { setPrefs, setUI, toast, usePrefs, useUI } from "@/stores/ui";
 import { cn } from "@/lib/cn";
 
 /**
- * The review controls as a flat drawer on the right: five numbered groups separated by ink rules — session intent, simulated
+ * The review controls as a flat drawer on the right: six numbered groups separated by ink rules — session intent, home layout, simulated
  * failure states, pop-ups, the analytics log, local data. Opens from the footer, the phone menu or the /prototype page (there is no floating button).
  */
 export function PrototypePanel() {
@@ -34,6 +36,7 @@ export function PrototypePanel() {
       <OverlayHeader title="Prototype controls" sub="Review simulated behaviour — nothing leaves this browser." />
       <OverlayBody flush>
         <IntentSection />
+        <LayoutSection />
         <SimulateSection />
         <PromoSection />
         <EventLog />
@@ -68,6 +71,7 @@ function Group({ n, id, title, aside, children, className }: { n: number; id: st
 function IntentSection() {
   const { intent, deal, mode } = useIntent();
   const { failModule } = usePrefs();
+  const layout = useHomeLayout();
   const W = intent.weights;
   const cat = topKey(W.category);
   const lab = topKey(W.label);
@@ -75,7 +79,7 @@ function IntentSection() {
   const opts: Array<{ id: IntentOverride; name: string }> = [{ id: "auto", name: "Auto (from signals)" }, { id: "cold", name: "Cold start" }, { id: "returning", name: "Returning" }, { id: "deal", name: "Deal intent" }];
   // What the home page is doing right now: the top of the module order for this mode (minus a module you chose to hide below).
   // The first few positions are where the modes differ, so that is what is shown.
-  const order = composeHome(mode).filter((s) => s.id !== failModule);
+  const order = composeHome(mode, layout).filter((s) => s.id !== failModule);
   const TOP = 6;
   return (
     <Group n={1} id="p-intent" title="Session intent" aside={<SimulatedTag note="A localStorage heuristic that re-orders the homepage. It is not machine learning." />} className="space-y-4">
@@ -127,10 +131,27 @@ function IntentSection() {
   );
 }
 
+function LayoutSection() {
+  const layout = useHomeLayout();
+  const { homeLayout } = usePrefs();
+  const info = HOME_LAYOUTS.find((l) => l.id === layout)!;
+  return (
+    <Group n={2} id="p-layout" title="Home layout" className="space-y-4">
+      <LayoutSwitch size="md" className="w-full" />
+      <p className="border-l-2 border-ink pl-3 text-[13px] text-ink-2">
+        <strong className="font-semibold text-ink">{info.name}</strong> — {info.blurb}
+      </p>
+      <p className="text-[12.5px] leading-relaxed text-ink-3">
+        Only the home page changes. {homeLayout === null ? `Following this build’s default (${HOME_LAYOUTS.find((l) => l.id === DEFAULT_LAYOUT)!.name}).` : "Chosen here; “Reset all data” returns to the build’s default."} A link can carry the choice: add <code>?layout=bleed</code> or <code>?layout=classic</code> to the home address.
+      </p>
+    </Group>
+  );
+}
+
 function SimulateSection() {
   const prefs = usePrefs();
   return (
-    <Group n={2} id="p-sim" title="Simulate states" className="space-y-1">
+    <Group n={3} id="p-sim" title="Simulate states" className="space-y-1">
       <Switch label="Slow network" hint="Adds ~1.4 s to simulated requests so skeletons are visible." checked={prefs.slowNetwork} onChange={(v) => setPrefs({ slowNetwork: v })} />
       <Switch label="Fail the next request" hint="Product lists and search show an inline error with retry." checked={prefs.failNext} onChange={(v) => setPrefs({ failNext: v })} />
       <Select label="Hide a home module (partial failure)" value={prefs.failModule ?? ""} onChange={(e) => setPrefs({ failModule: e.target.value || null })} fieldClassName="pt-3">
@@ -150,7 +171,7 @@ function PromoSection() {
   const [id, setId] = useState(promos[0].id);
   const dismissed = Object.keys(memory.dismissed).length;
   return (
-    <Group n={3} id="p-promo" title="Pop-ups" aside={<SimulatedTag note="Sample campaigns. What was dismissed or opened is remembered in this browser only." />} className="space-y-4">
+    <Group n={4} id="p-promo" title="Pop-ups" aside={<SimulatedTag note="Sample campaigns. What was dismissed or opened is remembered in this browser only." />} className="space-y-4">
       <p className="text-[12.5px] leading-relaxed text-ink-3">
         Small floating promotions — a picture or a muted video — appear a few seconds into browsing pages, never on bag, checkout, login or account. Closing one keeps it away for 7 days and quiets the rest for a day.
       </p>
@@ -178,7 +199,7 @@ function EventLog() {
   const events = useStore(eventsStore);
   const recent = [...events].reverse().slice(0, 8);
   return (
-    <Group n={4} id="p-ev" title={<span>Event log <span className="font-normal text-ink-3">· PRD §8.1</span></span>}>
+    <Group n={5} id="p-ev" title={<span>Event log <span className="font-normal text-ink-3">· PRD §8.1</span></span>}>
       <p className="mb-3 text-[12.5px] text-ink-3">Analytics events are logged locally — nothing is sent anywhere.</p>
       {recent.length === 0 ? (
         <p className="text-[13px] text-ink-3">No events yet. Browse, save or add something.</p>
@@ -207,7 +228,7 @@ function EventLog() {
 function DataSection() {
   const [confirm, setConfirm] = useState(false);
   return (
-    <Group n={5} id="p-data" title="Data" className="space-y-3">
+    <Group n={6} id="p-data" title="Data" className="space-y-3">
       <Button variant="secondary" size="sm" onClick={() => (accountStore.set((s) => ({ ...s, sessionUserId: "u-demo" })), toast({ title: "Signed in as the demo account", description: "Aarohi Mehta · seeded addresses and orders" }))}>
         Sign in as demo account
       </Button>

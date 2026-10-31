@@ -19,7 +19,11 @@ export type EventName =
   | "notify_me"
   | "promo_view"
   | "promo_click"
-  | "promo_dismiss";
+  | "promo_dismiss"
+  | "feed_view"
+  | "feed_load_more"
+  | "feed_tile_click"
+  | "home_layout_change";
 
 export interface TrackedEvent {
   id: number;

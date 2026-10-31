@@ -65,14 +65,21 @@ fi
 
 echo "deploying $short to $target …"
 cd "$wt"
-url="$(npx --yes "$VERCEL_CLI" deploy "${flags[@]}" "${scope[@]}" | tail -n 1)"
+# The CLI prints the progress (and the "Preview"/"Production" address) on stderr and, depending on the version and on whether stdout is a terminal, either the
+# bare address or a JSON description on stdout — so take the address from whichever of the two carries it.
+err="$(mktemp)"
+out="$(npx --yes "$VERCEL_CLI" deploy "${flags[@]}" "${scope[@]}" 2> >(tee "$err" >&2))"
+url="$(printf '%s\n' "$out" | grep -E -m1 '^https://[^[:space:]]+\.vercel\.app/?$' || true)"
+[ -n "$url" ] || url="$(sed -nE 's/^[[:space:]]*(Preview|Production)[[:space:]:]+(https:\/\/[^[:space:]]+).*/\2/p' "$err" | head -n1)"
+rm -f "$err"
+[ -n "$url" ] || die "the deployment finished but its address could not be read from the CLI output"
 echo "deployment: $url"
 
 if [ "$target" = "staging" ]; then
   npx --yes "$VERCEL_CLI" alias set "$url" "$STAGING_DOMAIN" "${scope[@]}"
   code="$(curl -s -o /dev/null -w '%{http_code}' "https://$STAGING_DOMAIN/" || true)"
   echo "staging: https://$STAGING_DOMAIN  (commit $short, answers HTTP $code)"
-  [ "$code" = "401" ] && echo "note: HTTP 401 means Vercel's own Deployment Protection is asking for a Vercel login before the site's sign-in page — see docs/RELEASE.md."
+  case "$code" in 301 | 302 | 307 | 401) echo "note: Vercel's own Deployment Protection is asking for a Vercel login before the site's sign-in page — see docs/RELEASE.md." ;; esac
 else
   echo "production: $LIVE_URL  (commit $short) — its domains follow the production deployment automatically."
 fi

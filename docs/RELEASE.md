@@ -35,7 +35,7 @@ Standing instruction from the owner (31 Oct 2026): **whenever something new is c
 
 ## Things worth knowing
 
-* **Vercel Deployment Protection.** Vercel can put its own login in front of *Preview* deployments (project → Settings → Deployment Protection → Vercel Authentication). If the staging address answers `401` or shows a Vercel login, either sign in to Vercel in that browser or switch that setting off — the site's own sign-in page protects it either way.
+* **Vercel Deployment Protection (applies to staging today).** Vercel puts its own login in front of *Preview* deployments (project → Settings → Deployment Protection → Vercel Authentication), and the staging address is a Preview. To open it, sign in to Vercel in that browser as a member of the team; the site's own Login ID / password page follows. To make staging behave like production (reachable by anyone who has the address, protected only by the site's sign-in page) switch *Vercel Authentication* off for the project — that is the owner's decision and has not been changed. Production is not affected either way.
 * **Variables.** Anything the app reads must exist in both the Preview and Production environments of the Vercel project. Today: `SITE_USERS` (both), `LOGIN_NOTIFY_URL` and `NEXT_PUBLIC_SITE_URL` (Production only, deliberately).
 * **Images.** Only the owner's two photographs are used until the owner supplies a new set. Staging and production read the same files.
 * **Pictures and the gate.** Staging serves pictures straight from `/img` behind the sign-in cookie, exactly like production (the build sees `SITE_USERS`).

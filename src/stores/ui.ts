@@ -50,6 +50,8 @@ export interface Prefs {
   failNext: boolean;
   /** Prototype control: hide a home module as if it failed to load (PRD §7.5 "Partial") */
   failModule: string | null;
+  /** Prototype control: which home page layout to show. null = whatever this build opens on (src/lib/layout.ts). */
+  homeLayout: "classic" | "bleed" | null;
   recentSearches: string[];
   savedStories: string[];
   notify: Array<{ productId: string; size?: string; contact: string; at: number }>;
@@ -63,6 +65,7 @@ export const PREFS_INITIAL: Prefs = {
   slowNetwork: false,
   failNext: false,
   failModule: null,
+  homeLayout: null,
   recentSearches: [],
   savedStories: [],
   notify: [],

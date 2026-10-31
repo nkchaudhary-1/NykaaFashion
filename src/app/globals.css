@@ -244,6 +244,39 @@ img { -webkit-user-drag: none; }
   border-color: var(--color-line);
 }
 
+/* ── Full-bleed wall ──────────────────────────────────────────────
+   The home page's second layout (docs/BLEED_LAYOUT.md): pictures run edge to edge with no gutter and no page margin, so tiles touch. It is still the page grid — 4 columns on
+   phones, 12 from 600px — with a zero gap, and its row unit is 1.25 column units, so a tile spanning c columns and c rows is exactly 4:5. The wall's own box is the
+   container (cqw), so the unit is exact with or without a scrollbar. A wall is built from blocks of twelve "base cells" (a feature tile is four of them), which makes a complete
+   rectangle at every width: two across on phones, three from 600px, four from 1024px, six from 1280px. Flat colour only — labels sit on solid strips, never on a gradient. */
+.bleed-wall { container-type: inline-size; width: 100%; }
+.bleed-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: calc(100cqw / 4 * 1.25); gap: 0; margin: 0; padding: 0; list-style: none; }
+.bleed-tile { position: relative; overflow: hidden; min-width: 0; min-height: 0; background: var(--color-sand); }
+/* b = base cell (4:5) · f = feature, 2×2 base cells · q = four across from 600px, two on phones, for pictures (4:5) · s = the same count for flat colour tiles, which need less height
+   (6:5 from 600px, 1.6:1 on phones) · w = a banner across the whole wall */
+.bleed-b { grid-column: span 2; grid-row: span 2; }
+.bleed-f { grid-column: span 4; grid-row: span 4; }
+.bleed-q { grid-column: span 2; grid-row: span 2; }
+.bleed-s { grid-column: span 2; grid-row: span 1; }
+.bleed-w { grid-column: span 4; grid-row: span 3; }
+@media (min-width: 37.5rem) {
+  .bleed-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: calc(100cqw / 12 * 1.25); }
+  .bleed-b { grid-column: span 4; grid-row: span 4; }
+  .bleed-f { grid-column: span 8; grid-row: span 8; }
+  .bleed-q { grid-column: span 3; grid-row: span 3; }
+  .bleed-s { grid-column: span 3; grid-row: span 2; }
+  .bleed-w { grid-column: span 12; grid-row: span 6; }
+}
+@media (min-width: 64rem) {
+  .bleed-b { grid-column: span 3; grid-row: span 3; }
+  .bleed-f { grid-column: span 6; grid-row: span 6; }
+  .bleed-w { grid-row: span 5; }
+}
+@media (min-width: 80rem) {
+  .bleed-b { grid-column: span 2; grid-row: span 2; }
+  .bleed-f { grid-column: span 4; grid-row: span 4; }
+}
+
 /* ── Typography (Inter Display) ───────────────────────────────── */
 @utility display-xl {
   font-weight: 500;

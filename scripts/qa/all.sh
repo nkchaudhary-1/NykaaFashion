@@ -14,11 +14,18 @@ run node scripts/qa/nav.cjs "$BASE"
 run node scripts/qa/home.cjs "$BASE"
 run node scripts/qa/home.cjs "$BASE" --mobile
 run node scripts/qa/categories.cjs "$BASE"   # Shop by category on the second fold: tiles, columns, the all-categories dialog
+run env NF_LAYOUT=bleed node scripts/qa/categories.cjs "$BASE"   # …and the same checks on the full-bleed layout (same hooks, same words, same columns)
+run node scripts/qa/bleed.cjs "$BASE"   # the full-bleed home layout: walls edge to edge, tiles touch, cells 4:5, switching, intent order (docs/BLEED_LAYOUT.md)
+run node scripts/qa/rabbit.cjs "$BASE"   # "Keep exploring": the endless feed on home and product pages, auto-load cap, Back to the same tile (docs/RABBIT_HOLE.md)
 run node scripts/qa/links.cjs "$BASE"
 run node scripts/qa/flat.cjs "$BASE"
+run env NF_LAYOUT=bleed node scripts/qa/flat.cjs "$BASE" --routes /,/p/poppy-smocked-midi-dress
 run node scripts/qa/grid.cjs "$BASE"
+run env NF_LAYOUT=bleed node scripts/qa/grid.cjs "$BASE" --routes /,/p/poppy-smocked-midi-dress
 run node scripts/qa/overflow.cjs "$BASE"
+run env NF_LAYOUT=bleed node scripts/qa/overflow.cjs "$BASE"
 run node scripts/qa/align.cjs "$BASE"
+run env NF_LAYOUT=bleed node scripts/qa/align.cjs "$BASE"
 run node scripts/qa/clip.cjs "$BASE"   # poster-scale headings: the word masks must not crop the last letter of a word
 run node scripts/qa/keyboard.cjs "$BASE"
 run node scripts/qa/journey.cjs "$BASE"
@@ -33,6 +40,7 @@ run node scripts/qa/unsplash-build-unit.mjs   # the build that cuts the site's p
 run node scripts/qa/roles.cjs   # starts its own server on :3102 with made-up accounts
 run node scripts/qa/motion.cjs "$BASE"
 run node scripts/qa/a11y.cjs "$BASE"
+run env NF_LAYOUT=bleed node scripts/qa/a11y.cjs "$BASE"
 echo
 if [ "$fail" -eq 0 ]; then
   echo "ALL QA CHECKS PASSED"

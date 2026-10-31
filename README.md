@@ -15,6 +15,10 @@ See [`PROJECT_STATUS.md`](PROJECT_STATUS.md) for milestones, decisions and QA, a
 
 Switch with `git checkout <branch> && npm ci`. Motion always has a way out: it is off for visitors who prefer reduced motion, smooth scroll and the cursor are off on touch screens, and nothing is hidden when JavaScript is off or fails (`scripts/qa/motion.cjs` checks all four).
 
+## Staging first, production when it is final
+
+New work is built on **`claude/nykaa-fashion-staging`** and published to a separate review site (`https://nykaafashion-neelesh-staging.vercel.app`, behind the same sign-in, marked by a yellow *Staging* strip); the live prototype (`claude/nykaa-fashion-awards`) changes only when the owner says a build is final: `scripts/release/deploy.sh staging` · `PROMOTE=yes scripts/release/deploy.sh production`. Procedure, promotion and rollback: [`docs/RELEASE.md`](docs/RELEASE.md). Currently on staging: a **full-bleed home layout** with no gutters between pictures ([`docs/BLEED_LAYOUT.md`](docs/BLEED_LAYOUT.md), switch in *Prototype controls → Home layout* or `?layout=bleed`) and an endless **"Keep exploring" feed** on the home and product pages ([`docs/RABBIT_HOLE.md`](docs/RABBIT_HOLE.md)).
+
 ## Run it
 
 Needs **Node 20.9 or newer** (22 recommended — there is an `.nvmrc`) and npm. No API keys, no database, no network access to any font or image host: everything is in the repo.

@@ -84,7 +84,7 @@ function Wordmark() {
  */
 export function Footer() {
   return (
-    <footer className="mt-[var(--section-y)] text-ink">
+    <footer id="footer" className="mt-[var(--section-y)] scroll-mt-[var(--header-offset)] text-ink">
       <div className="bg-luxe text-white">
         <div className="container-x grid-main gap-y-8 py-10">
           <Col span={{ base: 4, sm: 6, lg: 6 }}>

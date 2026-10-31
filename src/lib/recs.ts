@@ -49,7 +49,7 @@ export function styleWith(p: Product, n = 3): Product[] {
   return picks;
 }
 
-function similarity(a: Product, b: Product): number {
+export function similarity(a: Product, b: Product): number {
   let s = 0;
   if (catKey(a) === catKey(b)) s += 4;
   else if (a.categoryPath[0] === b.categoryPath[0]) s += 1;

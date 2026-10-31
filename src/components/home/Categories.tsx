@@ -107,7 +107,7 @@ export function CategoryTiles() {
 }
 
 /** Every category, by department: the pop-up behind "View all categories". */
-function AllCategories({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function AllCategories({ open, onClose }: { open: boolean; onClose: () => void }) {
   const depts = useMemo(
     () =>
       topCategories.map((d) => {

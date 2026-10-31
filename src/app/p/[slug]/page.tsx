@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { ExploreFeed } from "@/components/feed/ExploreFeed";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ProductDetail } from "@/components/product/ProductDetail";
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
@@ -33,7 +34,7 @@ export default function ProductPage(props: PageProps<"/p/[slug]">) {
 /**
  * Product page on the 12-column grid (docs/GRID_SYSTEM.md), in the live page's order: breadcrumb → picture rail + picture (1 + 5 columns, sticky)
  * beside the information column (6 columns) → Similar Products (4-up rail) → Customers Also Viewed (grey band of collage cards) →
- * More From {brand} (4-up rail) → More From {category} (6-up rail) → recently viewed.
+ * More From {brand} (4-up rail) → More From {category} (6-up rail) → recently viewed → the endless "More to love" feed, seeded by this product, so the page never ends in a dead end.
  */
 async function ProductContent({ params }: Pick<PageProps<"/p/[slug]">, "params">) {
   const { slug } = await params;
@@ -51,6 +52,7 @@ async function ProductContent({ params }: Pick<PageProps<"/p/[slug]">, "params">
       <MoreFromLabel product={product} />
       <MoreFromCategory product={product} />
       <RecentlyViewed excludeId={product.id} />
+      <ExploreFeed id={`pdp-${product.slug}`} seedId={product.id} eyebrow="Keep exploring" />
     </>
   );
 }
