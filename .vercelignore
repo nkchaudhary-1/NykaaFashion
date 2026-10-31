@@ -1,0 +1,7 @@
+# Keep local build output and caches out of `vercel deploy` uploads (Turbopack's dev cache alone is several hundred MB and Vercel rejects files over 100 MB).
+.next
+.next-*
+.vercel
+node_modules
+tsconfig.tsbuildinfo
+.env*.local
