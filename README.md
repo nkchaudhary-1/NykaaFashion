@@ -166,7 +166,7 @@ The look, structure and copy of the header, footer, product page, bag drawer, wi
 
 ## Imagery
 
-> **Changing:** the owner asked for Unsplash photography that matches an Indian audience (31 Oct 2026). The tooling is built and tested (next section); until a key is added and the photographs are picked, the pictures below are still the ones cut from the two supplied photographs, and any picture without an Unsplash photo behind it keeps its current image.
+> An Unsplash photography pipeline was built and trialled on 31 Oct 2026 and then stopped at the owner's request (the pictures were judged not relevant): the site uses the two supplied photographs, exactly as described below. The tooling is kept, dormant, in `scripts/unsplash` — see `docs/UNSPLASH_PLAN.md`.
 
 **Every image on the site is cut from the two photographs that were supplied** (`scripts/placeholders/source/`: a kurta set and a cream co-ord on a bouclé chair) — nothing is generated, recoloured or added. `npm run photos` rebuilds all 571 files in `public/img/<key>.webp`:
 
@@ -176,9 +176,9 @@ The look, structure and copy of the header, footer, product page, bag drawer, wi
 
 To use real photography later, replace a file with a photograph of the same name (and re-measure its `pins` in `image-meta.json` if it has any); nothing else changes.
 
-### Unsplash photography (the pipeline, in short)
+### Unsplash photography pipeline (dormant — stopped by the owner on 31 Oct 2026)
 
-Free-licence photographs from [Unsplash](https://unsplash.com), chosen by eye for an Indian audience and credited on `/credits` (footer → Photo credits). It runs on the official API only — unsplash.com's website blocks automated access, and nothing here tries to get around that. Everything is in `scripts/unsplash`; the full plan, rules and hand-off are in **`docs/UNSPLASH_PLAN.md`**.
+Built to place free-licence photographs from [Unsplash](https://unsplash.com), chosen by eye for an Indian audience and credited on `/credits` (reachable by URL; the footer link was removed with the pictures). It runs on the official API only — unsplash.com's website blocks automated access, and nothing here tries to get around that. Everything is in `scripts/unsplash`; the full plan, rules and hand-off are in **`docs/UNSPLASH_PLAN.md`**.
 
 1. Get an *Access Key* (unsplash.com/oauth/applications → New Application) and put it in the environment as `UNSPLASH_ACCESS_KEY` (never in the repo). A demo key allows 50 API requests an hour; the scripts count them, cache searches and wait for the next hour instead of failing.
 2. `npm run unsplash:search -- --phase A` — search each group (`groups.mjs`: scenes and launches first, then products), keep usable results, write numbered contact sheets to `.cache/unsplash/sheets`.

@@ -1,9 +1,11 @@
 # Unsplash photography — plan and hand-off
 
+> **STOPPED — 31 Oct 2026.** After the first batch went live the owner judged the Unsplash pictures not relevant and asked to stop using Unsplash and to stop fetching images. The site is back on the two supplied photographs: every picture, the pop-up clip, the picture metadata, the alt texts and the footer were restored from commit `cd9ca82` (the last one before this work), and `photo-assignments.json` / `photo-credits.json` are empty. **Nothing below is being run.** The toolkit (`scripts/unsplash`, the `/credits` page, the data checks, the unit tests) stays in the repository, dormant, in case another image source is chosen later. The Unsplash key was deleted from the environment; because it was shared in a screenshot it should be revoked in the owner's Unsplash developer settings. A public clothing-image dataset (alexeygrigorev/clothing-dataset) was cloned on the owner's request moments before they asked to stop fetching images; it was never opened or used and is not part of this repository.
+
 The owner's request (31 Oct 2026): *"Then use Unsplash to get the pictures. Try to match the Indian audience."* This **replaces** the earlier rule "only the two supplied photographs".
 Nykaa Fashion's own pictures are not an option (nykaafashion.com refuses this environment and the pictures are copyrighted).
 
-**If you are a new session reading this:** the toolkit below is already in the repo. Check `npm run unsplash:status`, then continue at the first unchecked stage.
+**If you are a new session reading this, and the owner has asked to resume Unsplash work:** the toolkit below is already in the repo. Check `npm run unsplash:status`, then continue at the first unchecked stage.
 Do not ask the owner to paste the key into chat — it comes in as the environment variable `UNSPLASH_ACCESS_KEY`.
 
 ## Status (keep this table current — it is the hand-off)
@@ -53,7 +55,7 @@ npm run unsplash:review -- --photo <id>          # a large preview with a 10 % g
 npm run unsplash:pick -- --focus <id> .62,.48    #   fix a focus · --anchors <id> x,y x,y … (pin positions) · --extend <id> (plain backdrop may be extended) · --drop <group> <id|n> · --list
 node scripts/unsplash/merge.mjs /tmp/picks-a.json …   # merge picks made by helpers working in parallel (each helper: UNSPLASH_MANIFEST=/tmp/picks-a.json node scripts/unsplash/pick.mjs …)
 npm run unsplash:download                        # tracking call + 2400 px original into the cache, for every picked photo (resumable); --used = only what a build placed; --no-track = originals only
-npm run unsplash:build -- [--only scenes/]       # cuts every mapped site image; writes public/img, image-meta.json, photo-assignments.json, photo-credits.json; prints warnings
+npm run unsplash:build -- [--only scenes/] [--tracked-only]   # --tracked-only = only photos already reported to Unsplash (interim deploys); cuts every mapped site image; writes public/img, image-meta.json, photo-assignments.json, photo-credits.json; prints warnings
 npm run unsplash:review -- scenes/edit           # contact sheets of the BUILT images (also launches/vrisa · products/twd · pool:p-dress · promo) — look at them
 ```
 

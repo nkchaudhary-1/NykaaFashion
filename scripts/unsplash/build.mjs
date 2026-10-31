@@ -1,5 +1,5 @@
 // Stage 4 — cut every picture on the site from the picked photographs.
-//   node scripts/unsplash/build.mjs [--only scenes/,launches/vrisa] [--plan]
+//   node scripts/unsplash/build.mjs [--only scenes/,launches/vrisa] [--plan] [--tracked-only]
 //
 // Keys, sizes and the metadata the UI reads (average colour, blur preview, wall/floor colours, shoppable pins) stay exactly as they are — only the pixels change — so no
 // component needs to know. A key with no photo behind it (its group has nothing picked yet) keeps the picture it has. Writes:
@@ -37,6 +37,7 @@ const arg = (name) => {
 };
 const ONLY = (arg("--only") ?? "").split(",").filter(Boolean);
 const PLAN_ONLY = argv.includes("--plan");
+const TRACKED_ONLY = argv.includes("--tracked-only"); // only photographs already reported to Unsplash (what an interim deploy may use while reports wait for the hourly API budget)
 const warnings = [];
 const notes = [];
 const warn = (key, msg) => warnings.push(`${key}: ${msg}`);
@@ -49,6 +50,7 @@ for (const [group, ids] of Object.entries(manifest.groups))
   for (const id of ids) {
     if (have.has(id) || missing.has(id)) continue;
     if (!manifest.photos[id]) continue;
+    if (TRACKED_ONLY && !manifest.photos[id].tracked) continue;
     if (exists(originalPath(id))) have.set(id, { id, ...manifest.photos[id] });
     else missing.add(id);
   }

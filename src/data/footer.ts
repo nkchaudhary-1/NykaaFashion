@@ -32,7 +32,6 @@ export const FOOTER_STRIP: {
     { label: "New & Next", href: "/new-and-next" },
     { label: "Offers", href: "/offers" },
     { label: "Sitemap", href: "/sitemap" },
-    { label: "Photo credits", href: "/credits" },
     { label: "Style Files", href: "/discover" },
   ],
 };
