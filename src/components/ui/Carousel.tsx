@@ -63,11 +63,70 @@ export function Carousel({ children }: { children: ReactNode }) {
   );
 }
 
-export function CarouselTrack({ label, density = "product", children, className, itemClassName }: { label: string; density?: CarouselDensity; children: ReactNode[]; className?: string; itemClassName?: string }) {
+/** Mouse users can also drag a rail (touch already swipes). A drag past 6px swallows the click that ends it, so a card is never opened by letting go. */
+function useDragScroll(ref: RefObject<HTMLUListElement | null>) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let startX = 0;
+    let startLeft = 0;
+    let dragging = false;
+    let moved = false;
+    const down = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      startX = e.clientX;
+      startLeft = el.scrollLeft;
+      dragging = true;
+      moved = false;
+    };
+    const move = (e: PointerEvent) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (!moved && Math.abs(dx) > 6) {
+        moved = true;
+        el.dataset.dragging = "";
+        el.style.scrollSnapType = "none";
+        el.setPointerCapture(e.pointerId);
+      }
+      if (moved) el.scrollLeft = startLeft - dx;
+    };
+    const up = () => {
+      if (!dragging) return;
+      dragging = false;
+      if (moved) {
+        delete el.dataset.dragging;
+        el.style.scrollSnapType = "";
+      }
+    };
+    const click = (e: MouseEvent) => {
+      if (moved) {
+        e.preventDefault();
+        e.stopPropagation();
+        moved = false;
+      }
+    };
+    el.addEventListener("pointerdown", down);
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
+    el.addEventListener("click", click, true);
+    el.addEventListener("dragstart", (e) => e.preventDefault());
+    return () => {
+      el.removeEventListener("pointerdown", down);
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerup", up);
+      el.removeEventListener("pointercancel", up);
+      el.removeEventListener("click", click, true);
+    };
+  }, [ref]);
+}
+
+export function CarouselTrack({ label, density = "product", children, className, itemClassName, cursor }: { label: string; density?: CarouselDensity; children: ReactNode[]; className?: string; itemClassName?: string; cursor?: string }) {
   const ctl = useContext(CtlCtx);
   const local = useRef<HTMLUListElement>(null);
   const ref = ctl?.ref ?? local;
   const measure = ctl?.measure;
+  useDragScroll(ref);
   useEffect(() => {
     measure?.();
     const el = ref.current;
@@ -84,6 +143,7 @@ export function CarouselTrack({ label, density = "product", children, className,
       onScroll={measure}
       aria-label={label}
       data-carousel
+      data-cursor={cursor}
       tabIndex={0}
       className={cn("snap-x-rail scrollbar-none bleed-r flex gap-x-[var(--gap)] overflow-x-auto outline-offset-[-2px]", DENSITY[density], className)}
     >

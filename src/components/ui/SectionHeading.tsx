@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
+import { Rise, RevealText } from "@/components/motion/reveal";
 import { cn } from "@/lib/cn";
 
 /** Where the right-hand column starts: 6 = the page's centre axis (default), 7 = the 7/5 split used by lead-story layouts. */
@@ -22,14 +23,24 @@ export function SectionHeading({ eyebrow, title, intro, href, hrefLabel, classNa
   return (
     <div className={cn("grid-main items-end gap-y-6", className)}>
       <div className={cn("col-span-4 min-w-0 sm:col-span-12", hasRight && SPLIT[splitAt].left)}>
-        {eyebrow && <p className={cn("eyebrow mb-4", onDark ? "text-bone" : "text-ink-3")}>{eyebrow}</p>}
-        <H className={SIZE[size]}>{title}</H>
+        {eyebrow && (
+          <Rise as="p" y={14} className={cn("eyebrow mb-5", onDark ? "text-bone" : "text-ink-3")}>
+            {eyebrow}
+          </Rise>
+        )}
+        <RevealText as={H} className={SIZE[size]}>
+          {title}
+        </RevealText>
       </div>
       {hasRight && (
         <div className={cn("col-span-4 flex min-w-0 flex-col gap-5 sm:col-span-12", SPLIT[splitAt].right, !intro && "lg:items-end")}>
-          {intro && <div className={cn("max-w-[46ch] text-[15px] leading-relaxed", onDark ? "text-bone" : "text-ink-2")}>{intro}</div>}
+          {intro && (
+            <Rise delay={120} className={cn("max-w-[46ch] text-[15px] leading-relaxed", onDark ? "text-bone" : "text-ink-2")}>
+              {intro}
+            </Rise>
+          )}
           {(href || children) && (
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Rise delay={200} className="flex flex-wrap items-center gap-x-6 gap-y-3">
               {children}
               {href && (
                 <Link href={href} className={cn("link-u tap group inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em]", onDark ? "text-bone" : "text-ink")}>
@@ -37,7 +48,7 @@ export function SectionHeading({ eyebrow, title, intro, href, hrefLabel, classNa
                   <ArrowRight size={15} className="transition-transform duration-300 ease-editorial group-hover:translate-x-1" />
                 </Link>
               )}
-            </div>
+            </Rise>
           )}
         </div>
       )}

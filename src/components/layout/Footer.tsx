@@ -7,6 +7,7 @@ import { FOOTER_DIRECTORY, FOOTER_STRIP, HELPLINE, SOCIAL } from "@/data/footer"
 import type { NavLink } from "@/data/nav";
 import { setUI, toast } from "@/stores/ui";
 import { NewsletterForm } from "./NewsletterForm";
+import { LOGO_PATHS, LOGO_VIEWBOX } from "./logo-paths";
 
 const head = "text-[13px] font-semibold uppercase tracking-[0.04em] text-ink";
 const link = "inline-block py-1.5 text-[14px] text-ink-2 transition-colors hover:text-pink [@media(pointer:coarse)]:py-3";
@@ -53,6 +54,27 @@ function SocialIcon({ name }: { name: (typeof SOCIAL)[number]["name"] }) {
     <svg aria-hidden viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
       <path d="M13.5 21v-7.6h2.6l.4-3h-3V8.5c0-.9.3-1.5 1.6-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.6V21h2.9z" />
     </svg>
+  );
+}
+
+/** The closing frame: the supplied wordmark at the width of the page, NYKAA in the brand magenta over the black band. */
+function Wordmark() {
+  return (
+    <div className="on-dark bg-luxe text-bone">
+      <div className="container-x pb-6 pt-14 sm:pt-20">
+        <Link href="/" aria-label="Nykaa Fashion home" className="block">
+          <svg aria-hidden viewBox={LOGO_VIEWBOX} className="block h-auto w-full">
+            {LOGO_PATHS.map((p) => (
+              <path key={p.d.slice(0, 24)} d={p.d} className={p.tone === "brand" ? "fill-brand" : "fill-bone"} />
+            ))}
+          </svg>
+        </Link>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-bone/20 pt-5 text-[12px] text-bone/70">
+          <p>Nykaa Fashion — a redesign prototype</p>
+          <p>Sample data only. Nothing is sold.</p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -142,6 +164,7 @@ export function Footer() {
           </Col>
         </div>
       </div>
+      <Wordmark />
     </footer>
   );
 }

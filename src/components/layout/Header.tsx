@@ -118,7 +118,7 @@ export function Header() {
   const searchLabel = <span className="truncate">{SEARCH_PLACEHOLDER}</span>;
 
   return (
-    <header ref={headerRef} className={cn("sticky top-0 z-40 bg-white transition-transform duration-500 ease-editorial", hidden && !open && "-translate-y-full")} onMouseLeave={() => schedule(() => patch({ open: null, preview: null }), 180)}>
+    <header ref={headerRef} className={cn("sticky top-0 z-40 bg-bone transition-transform duration-500 ease-expo", hidden && !open && "-translate-y-full")} onMouseLeave={() => schedule(() => patch({ open: null, preview: null }), 180)}>
       {/* ── Phones & tablets ── */}
       <div className="lg:hidden">
         <div className="container-x flex h-[52px] items-center justify-between gap-2">
@@ -363,7 +363,7 @@ function CartMenu({ count, onOpenBag }: { count: number; onOpenBag: () => void }
       </HeaderAction>
       <AnimatePresence>
         {open && latest && (
-          <motion.div role="region" aria-label="Bag preview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }} className="absolute right-0 top-full z-50 w-[380px] border border-line-strong bg-white">
+          <motion.div role="region" aria-label="Bag preview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }} className="absolute right-0 top-full z-50 w-[380px] border border-line-strong bg-paper">
             <div className="bg-sand px-5 py-4">
               {youSave > 0 && <p className="text-[14px] font-semibold text-emerald">You Saved {inr(youSave)}</p>}
               <p className="mt-0.5 text-[16px] leading-snug text-ink">Apply coupons &amp; offers to your bag to save more</p>
@@ -470,7 +470,7 @@ function AccountMenu({ compact }: { compact?: boolean }) {
       </button>
       <AnimatePresence>
         {open && (
-          <motion.div id="account-panel" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }} className="absolute right-0 top-full z-50 w-[300px] border border-line-strong bg-white p-6">
+          <motion.div id="account-panel" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }} className="absolute right-0 top-full z-50 w-[300px] border border-line-strong bg-paper p-6">
             {ready && user ? (
               <>
                 <Link href="/account" onClick={() => setOpen(false)} className="block text-center text-[24px] leading-tight text-ink hover:text-pink">

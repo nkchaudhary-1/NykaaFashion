@@ -13,10 +13,17 @@ import { MobileMenu } from "@/components/layout/MobileMenu";
 import { MobileShopSheet } from "@/components/layout/MobileShopSheet";
 import { PrototypePanel } from "@/components/layout/PrototypePanel";
 import { SearchOverlay } from "@/components/layout/SearchOverlay";
+import { Cursor } from "@/components/motion/Cursor";
+import { RevealObserver } from "@/components/motion/RevealObserver";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { NotifyMeHost } from "@/components/product/NotifyMeDialog";
 import { QuickViewHost } from "@/components/product/QuickView";
 import { SizeGuideHost } from "@/components/product/SizeGuideDialog";
 import { ToastRegion } from "@/components/ui/ToastRegion";
+
+// Reveal animations only hide anything while `html.js` is set (see the Motion section of globals.css). The class goes on before first paint and comes off again
+// if hydration has not happened after five seconds, so a script failure can never leave the page invisible.
+const JS_FLAG = "(function(){var d=document.documentElement;d.classList.add('js');setTimeout(function(){if(!d.classList.contains('hydrated'))d.classList.remove('js')},5000)})()";
 
 // The one typeface, Inter Display: Inter's variable font (optical size 14–32) is self-hosted — see the @font-face rules in globals.css and public/fonts —
 // so the app builds and renders without reaching fonts.googleapis.com. The latin file is preloaded; latin-ext (₹ lives there) loads on demand.
@@ -41,8 +48,9 @@ function HeaderFallback() {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: JS_FLAG }} />
         <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body>
@@ -74,6 +82,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <NotifyMeHost />
           <PrototypePanel />
           <ToastRegion />
+          <RevealObserver />
+          <Suspense>
+            <SmoothScroll />
+          </Suspense>
+          <Cursor />
         </Providers>
       </body>
     </html>

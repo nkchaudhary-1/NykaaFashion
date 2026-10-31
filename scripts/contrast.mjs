@@ -11,6 +11,7 @@ const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p);
 
 // [foreground, background] — every combination the UI actually draws as text. `brand` (the logo magenta) is artwork, not text, so it is not listed.
 const pairs = [
+  ["ink", "bone"], ["ink-2", "bone"], ["ink-3", "bone"], ["pink", "bone"], ["emerald", "bone"], ["blue", "bone"], ["danger", "bone"], ["amber", "bone"], ["white", "luxe"], ["bone", "luxe"], ["bone", "ink"],
   ["ink", "white"], ["ink", "paper"], ["ink", "sand"], ["ink-2", "white"], ["ink-2", "sand"], ["ink-3", "white"], ["ink-3", "paper"], ["ink-3", "sand"],
   ["white", "navy"], ["white", "ink"], ["white", "maroon"], ["white", "luxe"], ["gold", "luxe"],
   ["pink", "white"], ["pink", "paper"], ["pink", "sand"], ["pink", "pink-tint"], ["white", "pink"], ["pink-ink", "white"], ["pink-ink", "pink-tint"], ["white", "pink-ink"],

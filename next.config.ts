@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Lets two dev servers (or a dev and a production server) share one checkout: NEXT_DIST_DIR=.next-b npm run dev -- -p 3102
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
