@@ -44,8 +44,11 @@ if (!NO_TRACK) {
   for (const p of photos) {
     if (p.tracked) continue;
     await api(p.dl);
-    m.photos[p.id].tracked = new Date().toISOString().slice(0, 10);
-    saveManifest(m);
+    // re-read the manifest before writing: this can run for an hour in the background while picks are being made, and a stale copy would silently undo them
+    const fresh = loadManifest();
+    if (fresh.photos[p.id]) fresh.photos[p.id].tracked = new Date().toISOString().slice(0, 10);
+    saveManifest(fresh);
+    m.photos[p.id].tracked = fresh.photos[p.id]?.tracked;
     tracked++;
     if (tracked % 10 === 0) console.log(`  … ${tracked} tracked`);
   }

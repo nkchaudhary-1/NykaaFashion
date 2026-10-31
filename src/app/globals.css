@@ -352,7 +352,8 @@ html[data-scroll-lock="true"] body { padding-right: var(--sbw, 0px); }
    RevealObserver adds `data-in` when an element scrolls into view. Only transform / opacity / clip-path are animated — no shadows, filters or blends. */
 @media (prefers-reduced-motion: no-preference) {
   /* text: words rise out of a mask, one after another */
-  .rt-w { display: inline-block; vertical-align: top; overflow: hidden; padding: 0.12em 0 0.18em; margin: -0.12em 0 -0.18em; }
+  /* the word mask: room above and below for ascenders and descenders, and 0.1em either side — poster-scale headings are tracked up to −0.058em, so the last glyph of a word (s, &, e) reaches past its own box and was being cut off; the matching negative margin keeps every word where it was */
+  .rt-w { display: inline-block; vertical-align: top; overflow: hidden; padding: 0.12em 0.1em 0.18em; margin: -0.12em -0.1em -0.18em; }
   .rt-i { display: inline-block; transition: transform 1.05s var(--ease-expo) calc(var(--rt-delay, 0ms) + var(--i, 0) * 42ms); will-change: transform; }
   html.js [data-reveal="text"]:not([data-in]) .rt-i { transform: translate3d(0, 112%, 0); }
   [data-reveal="text"][data-in] .rt-i { will-change: auto; }

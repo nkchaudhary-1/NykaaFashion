@@ -275,77 +275,77 @@
  "placeholders/kurta-set-16x9": {
   "w": 1920,
   "h": 1080,
-  "avg": "#c1afad",
+  "avg": "#d4b1a7",
   "edge": {
    "wall": [
-    "#d5d5e1",
-    "#d1d7e3"
+    "#dbbbaf",
+    "#d2b4ae"
    ],
    "floor": [
-    "#c88769",
-    "#d2d4e0"
+    "#d5b6ab",
+    "#d5b9b4"
    ],
    "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoQAAkABIByJbACdH8ACWvaOAAA/uc+OwUWkDgwBMrWtyDzMI10Pu4zyt+KHRvV71GwrMHI5f4ClKNQti8zsQp6sAA="
+  "blur": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAAAQAgCdASoQAAkABIByJYgCdAEQfSdmZN14AP7DlIUIaSqKdWiZckJINcpA5WcdzXy3YNdLC3JxvNEAAAA="
  },
  "placeholders/kurta-set-16x9-copy-left": {
   "w": 1920,
   "h": 1080,
-  "avg": "#c6b7b8",
+  "avg": "#d4b1a7",
   "edge": {
    "wall": [
-    "#d3d0d9",
-    "#d6d6e2"
+    "#dfbdaf",
+    "#d2b4ae"
    ],
    "floor": [
-    "#dce0ec",
-    "#d5d5e1"
+    "#d5b6ab",
+    "#d5b9b4"
    ],
    "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoQAAkABIByJagCsAEKnybR9jgA/ucf47H/X9PGPQfbxSoDcA392Nq3LHQGamVp98IwSJABuNot5fKhKQ9y4AAA"
+  "blur": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAAAQAgCdASoQAAkABIByJYgCdAEQfSdmZN14AP7DlIUIaSqKdWiZckJINcpA5WcdzXy3YNdLC3JxvNEAAAA="
  },
  "placeholders/kurta-set-1x1": {
   "w": 1200,
   "h": 1200,
-  "avg": "#bda7a3",
-  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAACQAQCdASoQABAABIByJbAAAv9LsAAA/ucirhB8hEttClYBCnoT6bj//NkwGJxDXRAACVG0kjzpWSNbZWOGIAgHK/fMIw8UYh3Cw1+WC91ukS8nIKh3VLx/5+Rf4MxYAAA="
+  "avg": "#d1aea5",
+  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAwAgCdASoQABAABIByJZACdAELl3C3sZWqoAD+0yo/eYyo5GqhxHTiwr/AzewOP4YYabUZjormtxLTMLSCRH0Fy6IRilC7QFqCvoAA"
  },
  "placeholders/kurta-set-3x2": {
   "w": 1536,
   "h": 1024,
-  "avg": "#c2b0ae",
+  "avg": "#d4b1a7",
   "edge": {
    "wall": [
-    "#d5d5e1",
-    "#d1d8e4"
+    "#dbbaaf",
+    "#d2b5af"
    ],
    "floor": [
-    "#ac6e55",
-    "#d4d4e0"
+    "#d3b3a9",
+    "#cdafab"
    ],
    "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoQAAsABIByJbACdADb0LwAgAD+50AKXHnAdmI2MGZi3RDjQm3i80MFf4nz4fOlBVRz12T0snvOD7vUtrrFuBWGDidYhC7sgAA="
+  "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAQAgCdASoQAAsABIByJYgCdAEQYxVncV9AAP7DjHEO9qdSRaDchwAZc4Zc29bDWdrrK3beupe2OrCAtRJtwAAA"
  },
  "placeholders/kurta-set-3x4": {
   "w": 1200,
   "h": 1600,
-  "avg": "#b79c95",
-  "blur": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAADQAwCdASoQABUAPyV6tFGuJ6UisAgBwCSJYgAAXyqwX9M2rzMkyAAA/sPW1qC1gSIVyZNy+Wp1rrKsxvsldcsNS9Uflc3QR47lKfzJW61blNqfyVokH9PqXsvuCnY+ytxSHtDhTJIa8Wnw57uYiC+Ggl/m1g2ngniPRKmmfQgmiydQzUmvjXDc0gAAAA=="
+  "avg": "#cfaba3",
+  "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADQAwCdASoQABUAPyV6tFGuJ6UisAgBwCSJQBdgBC45aWN5ZDI8CQAA/q6zRoBB3gPTfVftJ4QxNsorsj/3/BcFWUoEMXWLmD9k70rS9pJL8Zw2iQ6S7EmcHPEppZ4yYEUEa8AA"
  },
  "placeholders/kurta-set-4x5": {
   "w": 1200,
   "h": 1500,
-  "avg": "#b89f98",
-  "blur": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAADwAwCdASoQABQAPyV6tFGuJ6UisAgBwCSJZAAIEAOqzFz5zV+H4QbAAP7D9jYVVuD+ZSh25BpuVLXPMWs3S80nFUsMEHhT2aXnDDiwSACuYRAQ+TvbJ7jqXtljJ0+cVvckBFEikujVrfOagBJLztoUY9rgsWMbrh49IC7CVL26pNpXccFWQAAA"
+  "avg": "#d0aca4",
+  "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASoQABQAPyV6tFGuJ6UisAgBwCSJQBdgBC45aV+xJ8grImUAAP6uo6oJN4aQ6uAZtRn0t2Eh/t/aZU1MsQKCJuw7piYS1aT7UksiK5buK4VH1R53gAA="
  },
  "placeholders/kurta-set-9x16": {
   "w": 1080,
   "h": 1920,
-  "avg": "#b09287",
-  "blur": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAABwBACdASoQABwAPyV6tFGuJ6UisAgBwCSJZgBTALwAX/3jbDe5lSjIM0UsoAD+s7nf+smF3ejgk+JPINegI3513VP5TqJ/yE5dZxGbf/Zn0sxbxKoTteCWTuwKNGyHIzqTcLqNL0phmj5bSW7AMH498ACbMMdCm6FcK0aZvg4ovfhiwXp+kdXUQkQlMA9DrS1HBtZKkDnszpkzCSfHobrVPOgDNJom/I8AAA=="
+  "avg": "#cba69f",
+  "blur": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAADwAwCdASoQABwAPyV6tFGuJ6UisAgBwCSJQBOgBC8jKub3EuLLHSHQAP6uxrW1udHwqHScggFbZ2MQsPLQd3C3GcTHNTiDqzF6ibsMpF5q7yGwzCn4eUcvPUhdjNri0fMKbJte9PksUXacPWEC4o+KhFjHAWkAAAA="
  },
  "products/aja-01/v1-alt": {
   "w": 1000,
@@ -3365,7 +3365,7 @@
  "scenes/cat-men": {
   "w": 1000,
   "h": 1250,
-  "avg": "#eae4d0"
+  "avg": "#a09462"
  },
  "scenes/cat-women": {
   "w": 1000,

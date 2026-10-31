@@ -165,7 +165,6 @@
   "page": "https://unsplash.com/photos/woman-in-orange-long-sleeve-shirt-with-blue-lipstick-Hii5Nkvom54?utm_source=nykaa_fashion_prototype&utm_medium=referral",
   "alt": "woman in orange long sleeve shirt with blue lipstick",
   "uses": [
-   "Home page banners",
    "New & Next · Vrisa",
    "Product pictures · Women › Indianwear"
   ]
@@ -306,6 +305,17 @@
   ]
  },
  {
+  "id": "uYtNaTymfE0",
+  "name": "MOHAMMAD AL JANNAT RAKIN",
+  "username": "aljannatrakin",
+  "profile": "https://unsplash.com/@aljannatrakin?utm_source=nykaa_fashion_prototype&utm_medium=referral",
+  "page": "https://unsplash.com/photos/a-young-man-in-a-traditional-kurta-standing-outdoors-uYtNaTymfE0?utm_source=nykaa_fashion_prototype&utm_medium=referral",
+  "alt": "A young man in a traditional kurta standing outdoors",
+  "uses": [
+   "Category pictures"
+  ]
+ },
+ {
   "id": "gmlsqzAThRk",
   "name": "Mohammed Sultan Farooqui",
   "username": "sultanfarooqui",
@@ -348,6 +358,7 @@
   "page": "https://unsplash.com/photos/a-woman-in-a-pink-outfit-leaning-against-a-wall-OiCx-ZVhI94?utm_source=nykaa_fashion_prototype&utm_medium=referral",
   "alt": "a woman in a pink outfit leaning against a wall",
   "uses": [
+   "Home page banners",
    "Style Files stories"
   ]
  },
@@ -374,17 +385,6 @@
   "uses": [
    "New & Next · Vrisa",
    "Product pictures · Women › Indianwear"
-  ]
- },
- {
-  "id": "KbYXDew9uNk",
-  "name": "Noor Alam",
-  "username": "itsmenoor2022",
-  "profile": "https://unsplash.com/@itsmenoor2022?utm_source=nykaa_fashion_prototype&utm_medium=referral",
-  "page": "https://unsplash.com/photos/a-man-in-a-yellow-kurta-and-white-pants-sits-KbYXDew9uNk?utm_source=nykaa_fashion_prototype&utm_medium=referral",
-  "alt": "A man in a yellow kurta and white pants sits",
-  "uses": [
-   "Category pictures"
   ]
  },
  {

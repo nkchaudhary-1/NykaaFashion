@@ -33,7 +33,7 @@ export function DiwaliWardrobe() {
     <>
       <div className="bg-sand lg:grid lg:min-h-[100svh]" style={{ backgroundColor: wall }}>
         <Parallax className="aspect-[4/5] sm:aspect-[16/10] lg:col-start-1 lg:row-start-1 lg:aspect-auto" amount={wide ? 52 : 26} scale={1.16}>
-          <Img imgKey={BAND} alt="Festive look — a woman in a peach kurta with a carved wooden pendant" sizes="100vw" ratio="fill" position="50% 40%" className="h-full w-full -scale-x-100" />
+          <Img imgKey={BAND} alt="Festive look — a woman in a peach chikankari kurta with a pearl necklace" sizes="100vw" ratio="fill" position="50% 40%" className="h-full w-full -scale-x-100" />
         </Parallax>
         <div className="relative z-10 bg-paper lg:pointer-events-none lg:col-start-1 lg:row-start-1 lg:bg-transparent">
           <div className="container-x py-12 [--fs:clamp(3rem,13vw,5rem)] sm:py-16 lg:grid-main lg:h-full lg:items-center lg:py-24 lg:[--fs:clamp(3.25rem,7.2vw,7.75rem)]">
