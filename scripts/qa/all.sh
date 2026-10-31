@@ -21,6 +21,7 @@ run node scripts/qa/align.cjs "$BASE"
 run node scripts/qa/keyboard.cjs "$BASE"
 run node scripts/qa/journey.cjs "$BASE"
 run node scripts/qa/journey.cjs "$BASE" --mobile
+run node scripts/qa/roles.cjs   # starts its own server on :3102 with made-up accounts
 run node scripts/qa/motion.cjs "$BASE"
 run node scripts/qa/a11y.cjs "$BASE"
 echo

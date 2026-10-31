@@ -36,7 +36,7 @@ If something does not start, run **`npm run doctor`** — it checks the Node ver
 The app has its own password gate (`src/proxy.ts`), so any host works and it does not depend on a paid Vercel plan.
 
 1. **Import** `nkchaudhary-1/NykaaFashion` at vercel.com → *Add New → Project* (Next.js is detected; no build settings needed). One-click version: [Deploy](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnkchaudhary-1%2FNykaaFashion&env=SITE_PASSWORD&envDescription=The%20password%20visitors%20must%20enter&project-name=nykaa-fashion-prototype).
-2. **Password:** *Settings → Environment Variables* → add `SITE_PASSWORD` (the password you will share) for **Production and Preview**. Optional: `GATE_SECRET` (any long random string) signs the session cookie; without it the password itself does, so changing the password signs everyone out. Optional: `SITE_EXPIRES` closes the preview at a set time.
+2. **Access:** *Settings → Environment Variables* → add `SITE_USERS` (named accounts — see "Accounts, roles and the admin dashboard"), or `SITE_PASSWORD` for one shared password, (the password you will share) for **Production and Preview**. Optional: `GATE_SECRET` (any long random string) signs the session cookie; without it the password itself does, so changing the password signs everyone out. Optional: `SITE_EXPIRES` closes the preview at a set time.
 3. **Which design is live:** *Settings → Git → Production Branch*. The repo's default branch is the earlier design — pick `claude/nykaa-fashion-grid-redesign` for the current one (or `claude/nykaa-fashion-awards` for the awards-style one). Every other branch gets its own preview URL automatically, with the same password — so with the grid branch as Production, the awards branch is always available at its own preview URL (*Deployments → the branch's latest → Visit*).
 4. **Deploying from the command line instead** (no GitHub connection needed): `npx vercel link`, then `vercel env add SITE_PASSWORD production` and `… preview`, then `vercel deploy --prod`. `.vercelignore` keeps local build caches out of the upload (Vercel rejects files over 100 MB). Set the password **before the first build** — the app serves pictures directly (instead of through the image optimiser) only when `SITE_PASSWORD` exists at build time, so if you add it later, redeploy.
 5. **Sharing outside your Vercel team:** Vercel protects *preview* deployments with Vercel Authentication by default (team members only). If the people who need to see it are not on your team, turn that off under *Settings → Deployment Protection*; the password page then does the protecting.
@@ -44,13 +44,31 @@ The app has its own password gate (`src/proxy.ts`), so any host works and it doe
 
 What the gate does: every page, API route and picture needs the cookie; only the sign-in page's own font, the share-card image and `robots.txt` are public, and every response carries `X-Robots-Tag: noindex`. A wrong password waits 0.7 s before answering. If `SITE_PASSWORD` is **not** set on Vercel, the deployment answers `503 Locked` instead of going public (set `SITE_GATE=off` to publish openly on purpose). On Vercel the pictures are served straight from `/img` (behind the cookie) rather than through the image optimiser, because the optimiser fetches its source without the visitor's credentials. Locally nothing changes unless you set the variable; to try it: `SITE_PASSWORD=secret npm run build && SITE_PASSWORD=secret npm start`.
 
+## Accounts, roles and the admin dashboard
+
+The website is opened with **named accounts** instead of one shared password. The sign-in page asks for a **Login ID** and **password**.
+
+| Account | Role | Can |
+|---|---|---|
+| Nilesh | Admin | use the site, open **Admin dashboard** (`/admin`): total logins per user, each user's login history with date and time, last login, a 14-day chart, export to CSV, clear history |
+| Kiran (Director) | Regular user | use the site normally; cannot open `/admin`, see login statistics or change accounts |
+
+How it works — and where it is honest about its limits:
+
+* **The server checks the password and the role.** Accounts live in the `SITE_USERS` environment variable (JSON, see `.env.example`) — never in the code or the browser bundle, so the passwords are not in this repository. After a correct sign-in the server sets a signed, HttpOnly session cookie naming the account; the role is looked up from the configuration on every request, so editing the cookie changes nothing. `/admin` is refused to everyone but admins **by the server** (403) before the page or any of its code is sent, and the dashboard checks the verified session again before drawing anything.
+* **Log in / out:** *Log out* (top bar on desktop, menu on phones) posts to the server, which ends the session. Failed attempts are refused after a short delay and are never counted.
+* **Login records are kept in the browser** (localStorage, one key per account: `nf.logins.v1.<id>`). A login is counted once, only after the server confirmed it — a one-time cookie set at sign-in is turned into a record, then deleted — so refreshing, opening more tabs or signing out never changes the count, and the history survives all of them.
+* **What that means:** the dashboard shows the sign-ins made **in the browser you are viewing it in**. If Kiran signs in on his own laptop, Nilesh's dashboard will not see it; and anyone who can open a browser's developer tools can read, edit or delete that browser's records. This is a temporary, no-database build. Records that cannot be edited and that cover every device need a server-side store.
+* **Run it locally with accounts:** copy `.env.example` to `.env.local`, set `SITE_USERS`, then `npm run dev`. Without it the site is open and no account features show. On Vercel: `vercel env add SITE_USERS production --sensitive` (and `preview`), then redeploy.
+* `node scripts/qa/roles.cjs` tests all of the above end to end (it starts its own throwaway server with made-up accounts).
+
 ## Sharing it safely (read before you send the link)
 
 A website cannot be made copy-proof — whatever a browser can show, it can save — so protection here means: nothing is reachable without the password, and the source is not lying around.
 
 1. **Make this GitHub repository private** (*Settings → General → Danger zone → Change visibility*). The site's password does not protect the code on GitHub: while the repo is public anyone can read and clone every branch. (Private repos can still be deployed from Vercel; only the one-click "Deploy" link above needs a public repo.)
 2. **The password gate (`src/proxy.ts`) serves nothing without the cookie** — pages, pictures, the image optimiser, the compiled JS/CSS. Only the sign-in page's own font, the share-card image and `robots.txt` are public. Production builds ship no source maps, and Vercel's source and log protection (`/_src`, `/_logs`) is on.
-3. **Send the password separately from the link**, and give it only to the people who need it. Anyone who has it can save pages and pictures; no front-end trick prevents that. (Disabling right-click or text selection only inconveniences visitors and screen-reader users — it is not implemented because it protects nothing.)
+3. **Send each person's password separately from the link**, and give it only to the people who need it. Anyone who has it can save pages and pictures; no front-end trick prevents that. (Disabling right-click or text selection only inconveniences visitors and screen-reader users — it is not implemented because it protects nothing.)
 4. **Time-box the review:** set `SITE_EXPIRES` (for example `2026-11-15` or `2026-11-15T18:00:00+05:30`) in the Vercel project and redeploy — after that moment every request gets "Preview ended", cookie or not. To cut off a reviewer earlier, change `SITE_PASSWORD` and redeploy: that signs everyone out.
 5. **Hardening already in place:** the site cannot be framed or re-hosted inside another page (`X-Frame-Options`, `frame-ancestors 'none'`), is `noindex` everywhere, sends no referrer, and `LICENSE` states that the work is shared for review only.
 

@@ -4,6 +4,7 @@ import { ChevronRight, CreditCard, FlaskConical, LogOut, MapPin, Package } from 
 import { useRouter } from "next/navigation";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { Overlay, OverlayBody } from "@/components/ui/Overlay";
+import { SessionChip } from "@/components/team/SessionChip";
 import { categories, topCategories } from "@/data/categories";
 import { primaryEdits } from "@/data/edits";
 import { deptNewIn, deptSale, type Dept } from "@/data/nav";
@@ -28,6 +29,7 @@ export function MobileMenu() {
         </button>
       </div>
       <OverlayBody>
+        <SessionChip variant="menu" onNavigate={close} />
         {ready && user ? (
           <div className="border-b border-line pb-5">
             <p className="text-[22px] leading-tight">Hi {user.name.split(" ")[0]}</p>

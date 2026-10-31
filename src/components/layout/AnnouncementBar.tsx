@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
 import { CircleHelp, FlaskConical, X } from "lucide-react";
+import { SessionChip } from "@/components/team/SessionChip";
 import { setPrefs, usePrefs } from "@/stores/ui";
 
 /** The thin black strip above the header (the live site carries "App Download" and "Help" here). It also holds the prototype notice, which can be dismissed. */
 export function AnnouncementBar() {
   const { announceDismissed } = usePrefs();
   return (
-    <div className="bg-luxe text-white">
+    <div className="on-dark bg-luxe text-white">
       <div className="container-x flex min-h-9 items-center justify-between gap-4 text-[12px] leading-snug sm:text-[12.5px]">
         {announceDismissed ? (
           <span />
@@ -26,6 +27,7 @@ export function AnnouncementBar() {
           </section>
         )}
         <nav aria-label="Utility" className="hidden shrink-0 items-center gap-6 lg:flex">
+          <SessionChip variant="bar" />
           <Link href="/account/orders" className="hover:text-white/75">
             Track order
           </Link>

@@ -13,6 +13,7 @@ import { MobileMenu } from "@/components/layout/MobileMenu";
 import { MobileShopSheet } from "@/components/layout/MobileShopSheet";
 import { PrototypePanel } from "@/components/layout/PrototypePanel";
 import { SearchOverlay } from "@/components/layout/SearchOverlay";
+import { LoginRecorder } from "@/components/team/LoginRecorder";
 import { Cursor } from "@/components/motion/Cursor";
 import { RevealObserver } from "@/components/motion/RevealObserver";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
@@ -92,6 +93,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <PrototypePanel />
           <ToastRegion />
           <RevealObserver />
+          <LoginRecorder />
           <Suspense>
             <SmoothScroll />
           </Suspense>
