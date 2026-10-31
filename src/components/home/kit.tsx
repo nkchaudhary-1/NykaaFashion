@@ -26,11 +26,18 @@ export const FINE_POINTER = "(hover: hover) and (pointer: fine)";
 export const WIDE_SCREEN = "(min-width: 1024px)";
 export const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
+const queries = new Map<string, MediaQueryList>();
+const mql = (query: string) => {
+  let m = queries.get(query);
+  if (!m) queries.set(query, (m = window.matchMedia(query)));
+  return m;
+};
+
 /** A media query as state. False on the server and for the hydration pass, then the live value (no mismatch, no flash of the wrong layout in markup that is CSS-driven). */
 export function useMedia(query: string): boolean {
   const subscribe = useMemo(
     () => (notify: () => void) => {
-      const m = window.matchMedia(query);
+      const m = mql(query);
       m.addEventListener("change", notify);
       return () => m.removeEventListener("change", notify);
     },
@@ -38,7 +45,7 @@ export function useMedia(query: string): boolean {
   );
   return useSyncExternalStore(
     subscribe,
-    () => window.matchMedia(query).matches,
+    () => mql(query).matches,
     () => false,
   );
 }

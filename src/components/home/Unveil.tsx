@@ -18,15 +18,27 @@ export function Unveil({ children, className, delay = 0 }: { children: ReactNode
   useEffect(() => {
     const el = box.current;
     if (!el || reduced) return;
-    if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return; // already on screen, or above it: leave it as it is
-    el.dataset.unveil = "hidden";
+    let armed = false;
+    // one observer does both jobs, so nothing here forces a layout while the page hydrates
     const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return;
-        el.dataset.unveil = "shown";
-        io.disconnect();
+      (entries) => {
+        const e = entries[entries.length - 1];
+        if (!armed) {
+          // first report: a frame that is already on screen, or that has been scrolled past, is left as it is; one below the fold waits for its reveal
+          if (e.isIntersecting || e.boundingClientRect.top <= 0) {
+            io.disconnect();
+            return;
+          }
+          armed = true;
+          el.dataset.unveil = "hidden";
+          return;
+        }
+        if (e.isIntersecting && e.intersectionRatio >= 0.1) {
+          el.dataset.unveil = "shown";
+          io.disconnect();
+        }
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.1 },
+      { rootMargin: "0px 0px -8% 0px", threshold: [0, 0.1] },
     );
     io.observe(el);
     return () => {
@@ -37,7 +49,8 @@ export function Unveil({ children, className, delay = 0 }: { children: ReactNode
 
   const wait = { transitionDelay: `${delay}ms` } as CSSProperties;
   return (
-    <div ref={box} className={className}>
+    // overflow-hidden: the picture is over-scaled while it waits, and a clip-path alone does not stop that scaled box from widening the page
+    <div ref={box} className={cn("overflow-hidden", className)}>
       <div className="h-full transition-[clip-path] duration-[1250ms] ease-expo [[data-unveil=hidden]_&]:[clip-path:inset(100%_0_0_0)] [[data-unveil=shown]_&]:[clip-path:inset(0_0_0_0)]" style={wait}>
         <div className={cn("h-full transition-[scale] duration-[1600ms] ease-expo [[data-unveil=hidden]_&]:scale-[1.14]")} style={wait}>
           {children}

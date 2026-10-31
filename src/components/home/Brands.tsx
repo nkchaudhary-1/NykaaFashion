@@ -130,7 +130,17 @@ export function IconicBrands() {
       {follow &&
         armed &&
         createPortal(
-          <div ref={frame} aria-hidden data-nogrid className={cn("pointer-events-none fixed left-0 top-0 z-30 overflow-hidden bg-sand transition-opacity duration-500 ease-expo", hot === null ? "opacity-0" : "opacity-100")} style={{ width: FW, height: FH }}>
+          <div
+            ref={(node) => {
+              frame.current = node;
+              // a row focused before the pictures were mounted still gets its position
+              if (node) node.style.transform = `translate3d(${p.current.x.toFixed(1)}px, ${p.current.y.toFixed(1)}px, 0)`;
+            }}
+            aria-hidden
+            data-nogrid
+            className={cn("pointer-events-none fixed left-0 top-0 z-30 overflow-hidden bg-sand transition-opacity duration-500 ease-expo", hot === null ? "opacity-0" : "opacity-100")}
+            style={{ width: FW, height: FH }}
+          >
             {rows.map((r, i) => (
               <span key={r.id} className={cn("absolute inset-0 block transition-opacity duration-500 ease-expo", i === hot ? "opacity-100" : "opacity-0")}>
                 <Img imgKey={r.img} alt="" sizes={`${FW}px`} ratio="fill" className="absolute inset-0 h-full w-full" />
