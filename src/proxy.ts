@@ -85,8 +85,7 @@ const signInPage = (next: string, error: boolean, origin: string, pathname: stri
     PREVIEW_TITLE,
     `<h1>${named ? "Sign in" : "Private preview"}</h1><p>${named ? "This prototype is private. Sign in with your Login ID and password." : "This prototype is password-protected. Enter the password you were given."}</p>
 <form method="post" action="${SIGN_IN_PATH}"><input type="hidden" name="next" value="${escapeHtml(next)}">${named ? `<label for="uid">Login ID</label><input id="uid" name="userid" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus${error ? ' aria-invalid="true"' : ""}>` : ""}<label for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="current-password" required${named ? "" : " autofocus"}${error ? ' aria-describedby="err" aria-invalid="true"' : ""}><button type="submit">${named ? "Sign in" : "Enter"}</button>${error ? `<p class="err" id="err" role="alert">${named ? "That Login ID or password isn’t right. Try again." : "That password isn’t right. Try again."}</p>` : ""}</form>
-<p class="fine">A design prototype of an improved Nykaa Fashion — not the real site. Nothing here is sold; checkout, payments and orders are simulated.</p>
-<p class="fine">Confidential — shared for review only. Please don’t copy, save or pass on the design, code or pictures.</p>`,
+<p class="fine">A design prototype of an improved Nykaa Fashion — not the real site. Nothing here is sold; checkout, payments and orders are simulated.</p>`,
     error ? 401 : 200, // 200 for the plain sign-in page: link-preview crawlers ignore a card served with an error status
     previewTags(origin, pathname),
   );
