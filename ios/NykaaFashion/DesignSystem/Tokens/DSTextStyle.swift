@@ -8,13 +8,16 @@ import Foundation
 /// the page's own labels round them ("40px" for a real 39.68). Plain data on
 /// purpose, with no SwiftUI import, so the numbers are unit-tested.
 ///
-/// OPEN: the file disagrees with itself on typeface and some weights.
-///   - The labels say "Inter …"; the actual text layers are Manrope.
-///   - H1–H5: labels say Semi Bold, layers are Bold. Label Large/Small: labels say
-///     Semi Bold, layers are Medium.
-/// This table follows the LABELS (Inter Display, as the app's primary typeface
-/// was specified). If the layers turn out to be right, only `face` below (and the
-/// bundled files) change — sizes, line heights and tracking agree either way.
+/// DECIDED: the typeface is Inter Display. The Figma file disagrees with itself —
+/// its labels say "Inter …" but its actual text layers are still Manrope — and
+/// the labels are the intended spec, so this table uses them:
+///   - face: Inter Display (not Manrope)
+///   - weights as labelled: H1–H5 SemiBold (layers say Bold), Label Large/Small
+///     SemiBold (layers say Medium)
+/// Sizes, line heights and tracking agree between labels and layers. If the
+/// weights should follow the layers instead, change each style's `face` here (and
+/// bundle the Bold file) — nothing else moves. The Figma text styles themselves
+/// still need switching to Inter Display so the file and the app agree.
 ///
 /// Pairing guidance from the file: H1 hero · H2 section · H3 card/dashboard ·
 /// H4 widget/compact · H5 label/micro.

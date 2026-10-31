@@ -124,17 +124,19 @@ Text("₹1,299").dsText(DSTextStyle.subtitleSB1.tabular())
 (The component gallery renders all 17 with their specs, for side-by-side review. Pairing guide from the file:
 H1 hero · H2 section · H3 card/dashboard · H4 widget/compact · H5 label/micro.)
 
-### Open: the Figma file disagrees with itself on typeface and weights
+### Decided: Inter Display — and the Figma file still says Manrope
+
+The typeface is **Inter Display**. The Figma file disagrees with itself, and the labels are the intended spec:
 
 | | The page's labels say | The actual text layers are |
 |---|---|---|
-| Typeface (all 17) | "Inter …" | **Manrope** |
-| H1–H5 | Semi Bold | **Bold** |
-| Label Large / Small | Semi Bold | **Medium** |
+| Typeface (all 17) | "Inter …" → **used** | Manrope |
+| H1–H5 | Semi Bold → **used** | Bold |
+| Label Large / Small | Semi Bold → **used** | Medium |
 
-Sizes, line heights and tracking agree either way. `DSTextStyle` follows the **labels** — Inter Display, which is what
-the app's primary typeface was specified as — so if the layers are the truth, only each style's `face` and the bundled
-font files change. Needs a decision from the design owner.
+Sizes, line heights and tracking agree either way. Two follow-ups sit with the design owner: switch the Figma text styles
+to Inter Display (so the file and the app agree, and tools reading the layers get the right family), and confirm the
+weights above. If the layers' weights are the intent instead, change each style's `face` in `DSTextStyle` and bundle Bold.
 
 ### How it's built
 - **Inter Display** (the optical-size cut of Inter 4.0, SIL OFL 1.1): Regular, Medium and SemiBold are bundled as
