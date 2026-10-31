@@ -24,6 +24,19 @@ let syncedAt = 0;
 let timer: ReturnType<typeof setInterval> | null = null;
 const subs = new Set<() => void>();
 
+// The offset in force, and the cookie text it was last read from. The cookie is the source of truth — another tab may move the clock, or it may expire — but only when it
+// CHANGES: with cookies blocked the control still moves this page's clock, and nothing then resets it.
+let offsetNow = 0;
+let seenRaw = "";
+function offsetFromCookie(): number {
+  const raw = readClockCookie();
+  if (raw !== seenRaw) {
+    seenRaw = raw;
+    offsetNow = clockOffset(raw);
+  }
+  return offsetNow;
+}
+
 function read(offset: number): Snap {
   const t = Date.now();
   syncedAt = t;
@@ -32,15 +45,13 @@ function read(offset: number): Snap {
 const emit = () => subs.forEach((f) => f());
 
 function tick() {
-  // the cookie is the source of truth (another tab may have moved the clock, or it may have expired): follow it
-  const offset = clockOffset(readClockCookie());
-  snap = read(offset);
+  snap = read(offsetFromCookie());
   emit();
 }
 function subscribe(cb: () => void) {
   subs.add(cb);
   if (!timer) {
-    snap = read(clockOffset(readClockCookie()));
+    snap = read(offsetFromCookie());
     timer = setInterval(tick, 1000);
   }
   return () => {
@@ -53,7 +64,7 @@ function subscribe(cb: () => void) {
 }
 function getSnapshot(): Snap {
   // nobody is ticking (the first render after a navigation): refresh a stale reading, at most once a second, so the first paint is not a minute old
-  if (!timer && Date.now() - syncedAt > 1000) snap = read(clockOffset(readClockCookie()));
+  if (!timer && Date.now() - syncedAt > 1000) snap = read(offsetFromCookie());
   return snap;
 }
 const getServerSnapshot = () => SERVER;
@@ -70,6 +81,8 @@ function writeCookie(offset: number) {
 export function setLaunchOffset(offset: number): number {
   const next = clockOffset(String(offset));
   writeCookie(next);
+  seenRaw = readClockCookie(); // whatever the browser now holds (nothing, if cookies are blocked), so the next tick does not mistake it for somebody else's change
+  offsetNow = next;
   snap = read(next);
   emit();
   return next;

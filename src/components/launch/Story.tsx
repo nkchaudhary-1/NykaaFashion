@@ -33,7 +33,7 @@ export function LaunchStory({ launch }: { launch: BrandLaunch }) {
   return (
     <Section tone="bone" id="story" aria-labelledby="story-h" className="scroll-mt-24">
       <div className="grid-main items-start gap-y-14 lg:gap-y-20">
-        <div className="col-span-4 min-w-0 sm:col-span-12 lg:col-span-4 lg:col-start-1 lg:row-start-1">
+        <div className={cn("col-span-4 min-w-0 sm:col-span-12 lg:col-start-1 lg:row-start-1", pics.length ? "lg:col-span-4" : "lg:col-span-7")}>
           <Rise as="p" y={14} className="eyebrow mb-5 text-ink-3">
             The story
           </Rise>

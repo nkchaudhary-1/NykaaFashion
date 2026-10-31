@@ -23,6 +23,7 @@ export function LaunchOffers({ launch, others }: { launch: BrandLaunch; others: 
   const time = useLaunchTime();
   const live = isLaunched(launch, time);
   const shop = shopHref(launch, true);
+  if (!launch.offers.length) return null;
   return (
     <Section tone="luxe" id="offers" aria-labelledby="offers-h" className="scroll-mt-24 [--em-color:var(--color-marigold)]">
       <div className="grid-main items-end gap-y-8">
