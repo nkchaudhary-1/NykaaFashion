@@ -28,21 +28,24 @@ const settle = (p, ms = 450) => p.waitForTimeout(ms);
     });
 
     await step("header fits from 1024 to 1728 px: nothing overflows, the New & Next entry stays on one line, Cart ends on the page margin", async () => {
-      for (const w of [1024, 1100, 1180, 1280, 1366, 1440, 1728]) {
-        await page.setViewportSize({ width: w, height: 800 });
-        await page.waitForTimeout(250);
-        const m = await page.evaluate(() => {
-          const row = document.querySelector("header .container-x");
-          const cs = getComputedStyle(row);
-          const cart = [...document.querySelectorAll("header button")].filter((b) => /^Cart/.test(b.getAttribute("aria-label") || b.textContent.trim())).pop();
-          const nn = [...document.querySelectorAll("header nav[aria-label='Primary'] a")].find((a) => /New & Next/.test(a.textContent));
-          return { sw: document.documentElement.scrollWidth, margin: row.getBoundingClientRect().right - parseFloat(cs.paddingRight) - cart.getBoundingClientRect().right, nnHeight: nn.getBoundingClientRect().height, rowH: row.getBoundingClientRect().height };
-        });
-        must(m.sw <= w, `${w}px: the page is ${m.sw}px wide`);
-        must(Math.abs(m.margin) <= 2, `${w}px: Cart ends ${Math.round(m.margin)}px from the page margin`);
-        must(m.nnHeight <= m.rowH + 1, `${w}px: the New & Next entry wraps (${Math.round(m.nnHeight)}px tall)`);
+      try {
+        for (const w of [1024, 1100, 1180, 1280, 1366, 1440, 1728]) {
+          await page.setViewportSize({ width: w, height: 800 });
+          await page.waitForTimeout(250);
+          const m = await page.evaluate(() => {
+            const row = [...document.querySelectorAll("header .container-x")].find((r) => r.querySelector("nav[aria-label='Primary']")); // the desktop row (the phone row comes first in the DOM and is not displayed)
+            const cs = getComputedStyle(row);
+            const cart = [...row.querySelectorAll("button")].filter((b) => /^Cart/.test(b.getAttribute("aria-label") || b.textContent.trim())).pop();
+            const nn = [...row.querySelectorAll("nav[aria-label='Primary'] a")].find((a) => /New & Next/.test(a.textContent));
+            return { sw: document.documentElement.scrollWidth, margin: row.getBoundingClientRect().right - parseFloat(cs.paddingRight) - cart.getBoundingClientRect().right, nnHeight: nn.getBoundingClientRect().height, rowH: row.getBoundingClientRect().height };
+          });
+          must(m.sw <= w, `${w}px: the page is ${m.sw}px wide`);
+          must(Math.abs(m.margin) <= 2, `${w}px: Cart ends ${Math.round(m.margin)}px from the page margin`);
+          must(m.nnHeight <= m.rowH + 1, `${w}px: the New & Next entry wraps (${Math.round(m.nnHeight)}px tall)`);
+        }
+      } finally {
+        await page.setViewportSize({ width: 1440, height: 900 });
       }
-      await page.setViewportSize({ width: 1440, height: 900 });
     });
 
     await step("header: utility strip (Help), Fashion | Luxe switch, Account / Wishlist / Cart", async () => {
