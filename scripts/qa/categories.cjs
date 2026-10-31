@@ -37,6 +37,16 @@ const must = (c, m) => { if (!c) throw new Error(m); };
     must(order[0] === "hero" && order[1] === "categories", `modules: ${order.slice(0, 4).join(", ")}`);
   });
 
+  await step("it starts right under the banner: nothing sits between them, and its heading is on screen after one scroll", async () => {
+    const r = await page.evaluate(() => {
+      const hero = document.querySelector('[data-module="hero"]').getBoundingClientRect();
+      const cats = document.querySelector('[data-module="categories"]').getBoundingClientRect();
+      return { gap: Math.round(cats.top - hero.bottom), catsTop: Math.round(cats.top + scrollY), vh: innerHeight };
+    });
+    must(Math.abs(r.gap) <= 2, `${r.gap} px between the banner and the category section`);
+    must(r.catsTop < r.vh * 1.25, `the section starts ${r.catsTop} px down (viewport ${r.vh} px) — more than a screen and a quarter`);
+  });
+
   await step("a heading, 12 tiles (11 categories + the all-categories tile), six across", async () => {
     must((await page.getByRole("heading", { name: /Shop by category/ }).count()) === 1, "no “Shop by category” heading");
     const c = await columns(page);

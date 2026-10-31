@@ -11,7 +11,7 @@ import { CategoryTiles } from "./Categories";
 import { CelebrationTiles } from "./Celebration";
 import { DiwaliWardrobe } from "./Diwali";
 import { FeaturedEdits } from "./Edits";
-import { SaleHero } from "./Hero";
+import { HeroIntro, SaleHero } from "./Hero";
 import { ShopTheLook } from "./Look";
 import { ModuleShell } from "./ModuleShell";
 import { OfferModule } from "./Offers";
@@ -42,6 +42,8 @@ export function HomeClient() {
     switch (id) {
       case "hero":
         return <SaleHero />;
+      case "intro":
+        return <HeroIntro />;
       case "pricestrip":
         return <PriceStrip />;
       case "coupons":

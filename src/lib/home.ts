@@ -2,14 +2,15 @@ import type { IntentMode } from "@/stores/intent";
 
 // Adaptive home composition — PRD §5.1 / §6.1: "System reorders home modules from intent signal
 // (cold → curation; returning → rail; deal-intent → discount promoted). The sale banner is first and the category tiles second in every mode.
-export type HomeModuleId = "hero" | "pricestrip" | "coupons" | "categories" | "celebration" | "brands" | "diwali" | "newin" | "edits" | "trending" | "look" | "rail" | "stories" | "brand" | "offers" | "seo";
+export type HomeModuleId = "hero" | "intro" | "pricestrip" | "coupons" | "categories" | "celebration" | "brands" | "diwali" | "newin" | "edits" | "trending" | "look" | "rail" | "stories" | "brand" | "offers" | "seo";
 
 // Modules follow the live Nykaa Fashion homepage stack (sale banner → category tiles → Celebration-ready Categories → Iconic Brands →
 // Build Diwali wardrobe → SEO copy) with the curated destinations (Luxe, Hidden Gems, Style Files) kept in view instead of behind "More".
 export const HOME_MODULES: Array<{ id: HomeModuleId; name: string }> = [
   { id: "hero", name: "Sale banner" },
-  { id: "pricestrip", name: "Price shortcuts" },
   { id: "categories", name: "Shop by category" },
+  { id: "intro", name: "Ticker & statement" },
+  { id: "pricestrip", name: "Price shortcuts" },
   { id: "coupons", name: "Offers for you" },
   { id: "celebration", name: "Celebration-ready categories" },
   { id: "brands", name: "Iconic brands" },
@@ -33,15 +34,16 @@ export interface HomeSlot {
 
 export function composeHome(mode: IntentMode): HomeSlot[] {
   const ids = (list: HomeModuleId[]): HomeSlot[] => list.map((id) => ({ id }));
-  // The banner leads every mode and "Shop by category" is always the second fold: whatever the visitor's intent, the way into the catalogue is right under the banner.
+  // The banner leads every mode and "Shop by category" is always the second fold — it starts right under the banner (the ticker and the statement that once sat between them are
+  // their own module now, "intro", further down): whatever the visitor's intent, the way into the catalogue is right under the banner.
   switch (mode) {
     case "returning":
-      return ids(["hero", "categories", "rail", "pricestrip", "coupons", "celebration", "brands", "newin", "diwali", "edits", "trending", "look", "brand", "stories", "seo"]);
+      return ids(["hero", "categories", "rail", "intro", "pricestrip", "coupons", "celebration", "brands", "newin", "diwali", "edits", "trending", "look", "brand", "stories", "seo"]);
     case "deal":
       // Deal intent promotes the offer band to the slot right under the categories (still poster-scale, still with the best-discounted pieces).
-      return [{ id: "hero" }, { id: "categories" }, { id: "offers", promoted: true }, ...ids(["rail", "pricestrip", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"])];
+      return [{ id: "hero" }, { id: "categories" }, { id: "offers", promoted: true }, ...ids(["intro", "rail", "pricestrip", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"])];
     default:
-      return ids(["hero", "categories", "pricestrip", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"]);
+      return ids(["hero", "categories", "intro", "pricestrip", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"]);
   }
 }
 

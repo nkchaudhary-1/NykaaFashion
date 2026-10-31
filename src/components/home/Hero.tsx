@@ -299,6 +299,14 @@ export function SaleHero() {
           </div>
         </div>
       </section>
+    </>
+  );
+}
+
+/** The ticker and the one-paragraph statement that used to sit inside the banner module: their own module now, so "Shop by category" can start right under the banner. */
+export function HeroIntro() {
+  return (
+    <>
       <Ticker />
       <Statement />
     </>
