@@ -5,12 +5,18 @@
 const { chromium } = require("playwright");
 const { spawn } = require("node:child_process");
 const crypto = require("node:crypto");
+const os = require("node:os");
+const path = require("node:path");
+const fs = require("node:fs");
 
 const flag = (n, d) => { const i = process.argv.indexOf(n); return i > -1 ? process.argv[i + 1] : d; };
 const given = process.argv.find((a) => a.startsWith("http"));
 const ADMIN = { id: flag("--admin-id", "Nilesh"), pw: flag("--admin-pw", crypto.randomBytes(9).toString("base64url")) };
 const USER = { id: flag("--user-id", "Kiran"), pw: flag("--user-pw", crypto.randomBytes(9).toString("base64url")) };
 const PORT = 3102;
+// With a login store (the default here: a JSON file) the dashboard shows every sign-in from every browser; --no-store runs the fallback that reads this browser's own records.
+const NO_STORE = process.argv.includes("--no-store");
+const STORE_FILE = path.join(os.tmpdir(), `nf-roles-logins-${process.pid}.json`);
 const BASE = given ?? `http://localhost:${PORT}`;
 let failures = 0;
 const step = async (name, fn) => { try { await fn(); console.log(`  ✓ ${name}`); } catch (e) { failures++; console.log(`  ✗ ${name}\n      ${String(e.message).split("\n")[0].slice(0, 260)}`); } };
@@ -32,7 +38,10 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
   let server;
   if (!given) {
     const users = JSON.stringify([{ id: ADMIN.id, password: ADMIN.pw, role: "admin" }, { id: USER.id, password: USER.pw, role: "user", title: "Director" }]);
-    server = spawn("npx", ["next", "start", "-p", String(PORT)], { env: { ...process.env, SITE_USERS: users }, detached: true, stdio: "ignore" });
+    const env = { ...process.env, SITE_USERS: users, GATE_SECRET: crypto.randomBytes(24).toString("base64url") };
+    delete env.LOGIN_STORE; delete env.KV_REST_API_URL; delete env.KV_REST_API_TOKEN;
+    if (!NO_STORE) { try { fs.rmSync(STORE_FILE); } catch {} env.LOGIN_STORE = `file:${STORE_FILE}`; }
+    server = spawn("npx", ["next", "start", "-p", String(PORT)], { env, detached: true, stdio: "ignore" });
     let up = false;
     for (let i = 0; i < 60 && !up; i++) { await new Promise((r) => setTimeout(r, 1000)); up = await fetch(BASE + "/", { headers: { accept: "text/html" } }).then((r) => r.ok, () => false); }
     if (!up) { console.log("could not start the test server (is there a production build?)"); try { process.kill(-server.pid); } catch {} process.exit(1); }
@@ -43,7 +52,8 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e).slice(0, 160)));
   page.on("console", (m) => m.type() === "error" && !/status of (401|403)|Failed to load resource/.test(m.text()) && errors.push(m.text().slice(0, 160)));
-  console.log(`Roles — ${BASE}`);
+  console.log(`Roles — ${BASE}${given ? "" : NO_STORE ? " (no login store: browser-only records)" : " (login store: file)"}`);
+  let STORE_ON = false;
 
   await step("a stranger gets the Login ID + password page and nothing behind it (pages, session, files)", async () => {
     await page.goto(BASE + "/admin", { waitUntil: "networkidle" });
@@ -106,6 +116,9 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     must((await chip.innerText()).includes("Admin"), "top bar does not say Admin");
     await Promise.all([page.waitForURL(/\/admin$/), page.getByRole("link", { name: /Admin dashboard/ }).first().click()]);
     await page.getByRole("heading", { name: "Totals" }).waitFor();
+    await page.getByText("Reading the sign-in records").waitFor({ state: "detached", timeout: 15000 });
+    STORE_ON = /Recorded on the server/.test(await page.getByRole("complementary", { name: "About these records" }).innerText());
+    must(STORE_ON === !(NO_STORE) || !!given, `the dashboard is ${STORE_ON ? "" : "not "}reading from the server, expected ${NO_STORE ? "browser records" : "the server"}`);
     const dt = (label) => page.locator("dt", { hasText: label }).locator("xpath=following-sibling::dd[1]").innerText();
     must((await dt("Total logins")).trim() === "2", `total: ${await dt("Total logins")}`);
     must((await dt(USER.id)).trim() === "1" && (await dt(ADMIN.id)).trim() === "1", "per-user counts");
@@ -130,6 +143,60 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     await page.getByRole("status").filter({ hasText: /cleared/ }).waitFor();
     const r = await records(page);
     must(!r[USER.id.toLowerCase()] && r[ADMIN.id.toLowerCase()].count === 2, JSON.stringify(Object.keys(r)));
+  });
+
+  // ── server-side records ───────────────────────────────────────────────────────────────────────────────────────
+  const DEVICE_B = { userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1", viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true };
+  const dash = async (p) => { await p.goto(BASE + "/admin", { waitUntil: "networkidle" }); await p.getByRole("heading", { name: "Totals" }).waitFor(); await p.getByText("Reading the sign-in records").waitFor({ state: "detached", timeout: 15000 }); };
+  const tile = (p, label) => p.locator("dt", { hasText: label }).locator("xpath=following-sibling::dd[1]").innerText().then((t) => t.trim());
+
+  await step(NO_STORE ? "no login store: the dashboard says its records are this browser's only" : "login store: the admin's dashboard shows a sign-in made on another device — with its date, time and device — and the admin's own browser never saw it", async () => {
+    await dash(page);
+    if (NO_STORE) {
+      must(/Recorded in this browser only/.test(await page.getByRole("complementary", { name: "About these records" }).innerText()), "the browser-only notice is missing");
+      return;
+    }
+    must((await tile(page, USER.id)).split("\n")[0] === "0", `Kiran starts at ${await tile(page, USER.id)} after his history was cleared`);
+    const dev = await browser.newContext(DEVICE_B); // another browser on another device
+    const dp = await dev.newPage();
+    await signIn(dp, USER);
+    await dev.close();
+    must(!(await records(page))[USER.id.toLowerCase()], "the admin's browser has a record of a sign-in it never saw");
+    await dash(page);
+    must((await tile(page, USER.id)).split("\n")[0] === "1", `Kiran's count on the admin's dashboard: ${await tile(page, USER.id)}`);
+    const hist = await page.locator("h3", { hasText: new RegExp(USER.id) }).locator("xpath=..").innerText();
+    must(/\d{2} \w{3} \d{4}/.test(hist) && /\d{2}:\d{2}:\d{2}/.test(hist) && /Safari · iOS/.test(hist), `history: ${hist.replace(/\n/g, " | ")}`);
+  });
+
+  await step(NO_STORE ? "no login store: the server's records endpoint answers that recording is off" : "login store: a failed sign-in is not counted; a second sign-in is; the admin API is closed to everyone else; Clear removes the records from the server", async () => {
+    if (NO_STORE) {
+      const r = await page.evaluate(() => fetch("/api/admin/logins").then((x) => x.json()));
+      must(r.store === null, `store: ${JSON.stringify(r)}`);
+      return;
+    }
+    const dev = await browser.newContext(DEVICE_B);
+    const dp = await dev.newPage();
+    await dp.goto(BASE + "/", { waitUntil: "networkidle" });
+    await dp.fill("#uid", USER.id); await dp.fill("#pw", "wrong-wrong"); await dp.click("button[type=submit]"); await dp.locator("#err").waitFor();
+    await signIn(dp, USER, USER.pw);
+    // a regular user and a stranger cannot read or clear the records
+    await dp.goto(BASE + "/", { waitUntil: "networkidle" });
+    must((await dp.evaluate(() => fetch("/api/admin/logins").then((x) => x.status))) === 403, "a regular user read the login records");
+    must((await dp.evaluate(() => fetch("/api/admin/logins", { method: "DELETE", headers: { "content-type": "application/json" }, body: "{}" }).then((x) => x.status))) === 403, "a regular user cleared the login records");
+    await dev.close();
+    const stranger = await browser.newContext();
+    const sp = await stranger.newPage();
+    await sp.goto(BASE + "/", { waitUntil: "networkidle" });
+    must((await sp.evaluate(() => fetch("/api/admin/logins").then((x) => x.status))) === 401, "a stranger reached the login records");
+    await stranger.close();
+    await dash(page);
+    must((await tile(page, USER.id)).split("\n")[0] === "2", `Kiran should be at 2 (one failed attempt not counted): ${await tile(page, USER.id)}`);
+    must((await tile(page, "Total logins")).split("\n")[0] === String(Number((await tile(page, ADMIN.id)).split("\n")[0]) + 2), "the total is not the sum of the accounts");
+    await page.getByRole("button", { name: new RegExp(`Clear ${USER.id}`) }).click();
+    await page.getByRole("button", { name: "Yes, clear" }).click();
+    await page.getByRole("status").filter({ hasText: /cleared on the server/ }).waitFor();
+    await dash(page);
+    must((await tile(page, USER.id)).split("\n")[0] === "0", "Clear did not remove the records from the server");
   });
 
   // ── Add user (sign-ins issued from the dashboard) ─────────────────────────────────────────────────────────────

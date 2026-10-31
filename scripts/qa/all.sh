@@ -25,7 +25,9 @@ run node scripts/qa/launch.cjs "$BASE"
 run node scripts/qa/promo.cjs "$BASE"   # pop-ups (PiP) end to end; takes about two minutes because campaigns appear 5–10 s into a page
 run node scripts/qa/promo-unit.mjs   # pop-up rules: routes, dates, launch states, dismissal / cool-down / visit cap
 run node scripts/qa/auth-unit.mjs   # issued sign-ins (admin "Add a user"): signature, expiry, revoke
-run node scripts/qa/roles.cjs   # starts its own server on :3102 with made-up accounts
+run node scripts/qa/login-store-unit.mjs   # server-side sign-in records: file and Redis-over-HTTP backends, device describer
+run node scripts/qa/roles.cjs   # starts its own server on :3102 with made-up accounts and a file login store
+run node scripts/qa/roles.cjs --no-store   # the same without a login store: the dashboard falls back to this browser's own records
 run node scripts/qa/motion.cjs "$BASE"
 run node scripts/qa/a11y.cjs "$BASE"
 echo

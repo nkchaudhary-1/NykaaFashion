@@ -63,6 +63,9 @@ export interface LoginEntry {
   at: string;
   /** the server's one-time id for that sign-in — what keeps a refresh from counting twice */
   event: string;
+  /** server-recorded sign-ins only: "Chrome · Windows" and the two-letter country the host reported */
+  device?: string;
+  country?: string;
 }
 export interface LoginRecord {
   id: string;
@@ -76,6 +79,9 @@ const PREFIX = "nf.logins.v1.";
 export const HISTORY_CAP = 500; // the count keeps counting; only the oldest history lines are dropped
 const keyOf = (id: string) => PREFIX + id.toLowerCase();
 const blank = (id: string): LoginRecord => ({ id, count: 0, last: null, history: [] });
+export const blankRecord = blank;
+/** "priya.sharma" → "Priya Sharma": all the server knows about an added user's name. */
+export const nameFromId = (id: string) => id.split(/[._-]+/).filter(Boolean).map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 
 let version = 0;
 const recordSubs = new Set<() => void>();
@@ -209,4 +215,68 @@ export function useIssuedUsers(): IssuedUser[] {
     issuedSnapshot,
     () => NO_ISSUED,
   );
+}
+
+// ── sign-ins recorded on the server (every browser and device) ───────────────────────────────────────────────────
+/*
+ * When the site has a login store (src/lib/login-store.ts), the proxy records every successful sign-in on the server and /api/admin/logins hands them to the
+ * admin: the dashboard then shows sign-ins from any browser or device. Without a store, `status` is "off" and the dashboard falls back to this browser's own records.
+ */
+export interface ServerLogins {
+  status: "loading" | "off" | "on" | "error";
+  users: LoginRecord[];
+}
+const SERVER_LOADING: ServerLogins = { status: "loading", users: [] };
+let serverState: ServerLogins = SERVER_LOADING;
+const serverSubs = new Set<() => void>();
+const setServer = (next: ServerLogins) => {
+  serverState = next;
+  serverSubs.forEach((f) => f());
+};
+
+export async function refreshServerLogins(): Promise<void> {
+  try {
+    const r = await fetch("/api/admin/logins", { cache: "no-store", credentials: "same-origin" });
+    const d = (await r.json().catch(() => null)) as { store?: string | null; users?: Array<{ id: string; count: number; last: string | null; history: Array<{ at: string; device?: string; country?: string }> }> } | null;
+    if (r.ok && d && d.store === null) return setServer({ status: "off", users: [] });
+    if (r.ok && d?.users) {
+      return setServer({
+        status: "on",
+        users: d.users.map((u) => ({ id: u.id, count: u.count, last: u.last, history: u.history.map((h) => ({ at: h.at, event: h.at, device: h.device, country: h.country })) })),
+      });
+    }
+    setServer({ status: "error", users: serverState.users });
+  } catch {
+    setServer({ status: "error", users: serverState.users });
+  }
+}
+
+/** The server's sign-in records, refreshed when the dashboard opens and whenever the tab comes back into view. */
+export function useServerLogins(): ServerLogins {
+  useEffect(() => {
+    void refreshServerLogins();
+    const again = () => document.visibilityState === "visible" && void refreshServerLogins();
+    document.addEventListener("visibilitychange", again);
+    window.addEventListener("focus", again);
+    return () => {
+      document.removeEventListener("visibilitychange", again);
+      window.removeEventListener("focus", again);
+    };
+  }, []);
+  return useSyncExternalStore(
+    (cb) => (serverSubs.add(cb), () => void serverSubs.delete(cb)),
+    () => serverState,
+    () => SERVER_LOADING,
+  );
+}
+
+/** Admin control: forget one account's server-side records, or everyone's. */
+export async function clearServerLogins(id?: string): Promise<boolean> {
+  try {
+    const r = await fetch("/api/admin/logins", { method: "DELETE", credentials: "same-origin", headers: { "content-type": "application/json" }, body: JSON.stringify(id ? { id } : {}) });
+    await refreshServerLogins();
+    return r.ok;
+  } catch {
+    return false;
+  }
 }
