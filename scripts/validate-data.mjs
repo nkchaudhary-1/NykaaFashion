@@ -168,6 +168,7 @@ console.log("trending searches:", TRENDING_SEARCHES.length);
     else if (!manifest.photos[id].tracked) err(`photo ${id} is used on the site but was never reported to Unsplash — run  npm run unsplash:download`);
     else if (!/^https:\/\/images\.unsplash\.com\//.test(manifest.photos[id].raw ?? "")) err(`photo ${id}: not a free Unsplash photograph (${manifest.photos[id].raw})`);
   }
+  for (const [k, m] of Object.entries(meta)) for (const pin of m.pins ?? []) if (!productById[pin.id]) err(`image-meta: ${k} has a pin on ${pin.id}, which is not a product`);
   const usedIds = new Set(Object.values(assigned));
   const creditIds = new Set(credits.map((c) => c.id));
   for (const id of usedIds) if (!creditIds.has(id)) err(`photo ${id} is used on the site but missing from photo-credits.json — run  npm run unsplash:build`);

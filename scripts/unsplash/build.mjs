@@ -292,8 +292,9 @@ for (const [key, plan] of jobs) {
   if (old.pins?.length) {
     const anchors = (plan.photo.anchors ?? []).map(src.map);
     const pins = pinsFor(box, src.pw, src.ph, anchors, old.pins.length, plan.flip);
-    if (pins.some((p) => p.source === "fallback")) warn(key, `${pins.filter((p) => p.source === "fallback").length} pin(s) on fallback positions — set the photo's anchors:  pick.mjs --anchors ${plan.photo.id} x,y x,y …`);
-    m.pins = old.pins.map((p, i) => ({ id: p.id, x: +pins[i].x.toFixed(4), y: +pins[i].y.toFixed(4) }));
+    if (pins.some((p) => p.source === "fallback")) warn(key, `${pins.filter((p) => p.source === "fallback").length} pin(s) on fallback positions — set the photo's anchors:  pick.mjs --anchors ${plan.photo.id} x,y,productId x,y,productId …`);
+    const spare = old.pins.map((p) => p.id).filter((id) => !pins.some((q) => q.id === id)); // the products the picture was meant to point at, for pins that name none
+    m.pins = pins.map((p) => ({ id: p.id ?? spare.shift() ?? old.pins[0].id, x: +p.x.toFixed(4), y: +p.y.toFixed(4) }));
   }
   if (old.edge) {
     const copy = W / H > 1.7;

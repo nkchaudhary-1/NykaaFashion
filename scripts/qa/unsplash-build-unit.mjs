@@ -34,6 +34,8 @@ console.log("Unsplash build: geometry");
   check("where() maps a photo point into the window (and mirrors with flip)", near(w.x, 0.3125, 1e-6) && near(w.y, 0.4, 1e-6) && near(where({ left: 600, top: 0, width: 960, height: 1200 }, 1800, 1200, [0.5, 0.4], true).x, 0.6875, 1e-6));
   const pins = pinsFor({ left: 600, top: 0, width: 960, height: 1200 }, 1800, 1200, [[0.5, 0.4], [0.95, 0.4], [0.62, 0.6]], 3);
   check("pins use anchors inside the window, skip those outside, and fill from the fixed spread", pins.length === 3 && pins[0].source === "anchor" && pins[1].source === "anchor" && pins[2].source === "fallback", JSON.stringify(pins));
+  const labelled = pinsFor({ left: 600, top: 0, width: 960, height: 1200 }, 1800, 1200, [[0.5, 0.4, "lik-01"], [0.95, 0.4, "gaj-01"], [0.62, 0.6]], 3);
+  check("a labelled anchor keeps its product, one outside the window is dropped, and no fallback is added when a labelled anchor is in view", labelled.length === 2 && labelled[0].id === "lik-01" && labelled[1].id === undefined && labelled.every((p) => p.source === "anchor"), JSON.stringify(labelled));
   check("colour distance: the same colour is 0, red to blue is large", deltaE([200, 30, 30], [200, 30, 30]) === 0 && deltaE([200, 30, 30], [30, 30, 200]) > 60);
 }
 
@@ -64,6 +66,7 @@ await photo("lx1", "s-luxe", ...L, { fx: 0.45, fy: 0.5, hue: 50 }); // not flagg
 await photo("dw1", "s-diwali", ...L, { fx: 0.6, fy: 0.5, hue: 10, anchors: [[0.5, 0.4], [0.62, 0.6], [0.45, 0.7]] });
 await photo("dw2", "s-diwali", ...L, { fx: 0.5, fy: 0.5, hue: 25 }); // no anchors: pins fall back, and the build says so
 await photo("dw3", "s-diwali", ...L, { fx: 0.55, fy: 0.5, hue: 35 });
+photos.dw3.anchors = [[0.5, 0.45, "gaj-02"], [0.6, 0.55, "til-03"]]; // labelled: the pins name what is under them
 await photo("vr1", "l-vrisa", ...L, { fx: 0.72, fy: 0.5, hue: 340 });
 await photo("vr2", "l-vrisa", ...P, { fx: 0.5, fy: 0.5, hue: 350 });
 await photo("vr3", "l-vrisa", ...P, { fx: 0.5, fy: 0.45, hue: 355 });
@@ -138,6 +141,8 @@ try {
   check("the plain backdrop is calm: no copy-area contrast warning for it", !/edit-festive-wide: the copy area is too busy/.test(r.out), r.out.slice(-500));
   const pins = meta["scenes/story-diwali-tall"].pins;
   check("pins sit on the photo's anchors (and keep their product ids)", pins.length === 2 && pins[0].id === meta0["scenes/story-diwali-tall"].pins[0].id && near(pins[0].x, 0.3125, 0.02) && near(pins[0].y, 0.4, 0.02) && near(pins[1].x, 0.5375, 0.02) && near(pins[1].y, 0.6, 0.02), JSON.stringify(pins));
+  const pins2 = meta["scenes/story-diwali-2"].pins;
+  check("labelled anchors give pins that name the products under them (and only the visible ones)", pins2.length >= 1 && pins2.every((p) => ["gaj-02", "til-03"].includes(p.id)), JSON.stringify(pins2));
   check("a photo without anchors gets fallback pins and a warning that says how to fix it", /story-diwali-1: \d pin\(s\) on fallback positions/.test(r.out) && !/story-diwali-tall: \d pin/.test(r.out), r.out.slice(-700));
 
   // products

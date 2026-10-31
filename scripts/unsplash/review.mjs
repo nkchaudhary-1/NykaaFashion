@@ -43,7 +43,7 @@ if (args[0] === "--photo") {
       svg += lab((W * i) / 10 + 3, 14, `.${i}`) + lab(3, (H * i) / 10 - 3, `.${i}`);
     }
     if (p.focus) svg += `<circle cx="${p.focus[0] * W}" cy="${p.focus[1] * H}" r="9" fill="none" stroke="#ff2d7a" stroke-width="3"/>${line(p.focus[0] * W - 16, p.focus[1] * H, p.focus[0] * W + 16, p.focus[1] * H, true)}${line(p.focus[0] * W, p.focus[1] * H - 16, p.focus[0] * W, p.focus[1] * H + 16, true)}`;
-    (p.anchors ?? []).forEach(([x, y], i) => (svg += `<circle cx="${x * W}" cy="${y * H}" r="11" fill="#ffd400" stroke="#000" stroke-width="2"/>${lab(x * W, y * H + 5, i + 1, "middle").replace('fill="#fff" stroke="#000"', 'fill="#000" stroke="none"')}`));
+    (p.anchors ?? []).forEach(([x, y, pid], i) => (svg += `<circle cx="${x * W}" cy="${y * H}" r="11" fill="#ffd400" stroke="#000" stroke-width="2"/>${lab(x * W, y * H + 5, i + 1, "middle").replace('fill="#fff" stroke="#000"', 'fill="#000" stroke="none"')}${pid ? lab(x * W + 15, y * H + 5, pid) : ""}`));
     const file = join(OUT, `photo-${id}.jpg`);
     writeFileSync(file, await sharp(base.data).composite([{ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${svg}</svg>`) }]).jpeg({ quality: 88 }).toBuffer());
     console.log(`${file}   ${p.w}×${p.h} · focus ${p.focus ? p.focus.join(",") : "auto"} · ${p.anchors?.length ?? 0} anchors${p.extend ? " · extend" : ""} · ${p.by?.name ?? ""}`);

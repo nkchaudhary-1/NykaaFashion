@@ -1,7 +1,9 @@
 // Stage 1 — find candidates. For every group (or the ones asked for) run its queries against Unsplash's search API (cached), keep the usable results, fetch small
 // thumbnails from the image CDN (not an API call) and lay them out as numbered contact sheets to look at.
 //
-//   node scripts/unsplash/search.mjs [--phase A|B] [--group id,id] [--limit 20] [--refresh] [--no-sheets]
+//   node scripts/unsplash/search.mjs [--phase A|B] [--group id,id] [--limit 20] [--mix 2] [--refresh] [--no-sheets]
+//   --mix N  takes the candidates from the first N queries of each group in equal shares (N API calls per group) instead of filling up from the first query alone;
+//            each thumbnail's caption says which query it came from (A, B, …) — useful when one query's meaning drifts ("slow living home" finds snails)
 //
 // Output (all under .cache/unsplash, ignored by git):
 //   search/<hash>.json         one API response per query (so re-running costs nothing)
@@ -24,6 +26,7 @@ const arg = (name) => {
 const flag = (name) => process.argv.includes(name);
 const REFRESH = flag("--refresh");
 const LIMIT = Number(arg("--limit") ?? 20);
+const MIX = Math.max(1, Number(arg("--mix") ?? 1));
 // a sheet's cells follow the photos' orientation, so a sheet stays about 1500 px on a side
 const SHEET = { landscape: { cellH: 210, perSheet: 30 }, portrait: { cellH: 380, perSheet: 20 }, squarish: { cellH: 300, perSheet: 25 } };
 const MAX_PER_PHOTOGRAPHER = 3;
@@ -76,17 +79,20 @@ async function candidatesFor(g) {
   const out = [];
   const seen = new Set();
   const byPhotographer = {};
-  for (const q of g.queries) {
+  for (const [qi, q] of g.queries.entries()) {
     if (out.length >= LIMIT) break; // enough already: the later queries are kept for when a group needs topping up
     const res = await searchQuery(q, g.orientation);
+    const share = qi < MIX ? Math.ceil(LIMIT / MIX) : LIMIT; // the first MIX queries give equal shares
+    let taken = 0;
     for (const p of res.results) {
-      if (out.length >= LIMIT) break;
+      if (out.length >= LIMIT || taken >= share) break;
       if (seen.has(p.id) || !usable(p, g)) continue;
       const who = p.by.username ?? "?";
       if ((byPhotographer[who] ?? 0) >= MAX_PER_PHOTOGRAPHER) continue;
       seen.add(p.id);
       byPhotographer[who] = (byPhotographer[who] ?? 0) + 1;
-      out.push({ ...p, query: q });
+      taken++;
+      out.push({ ...p, query: q, qi });
     }
   }
   return out;
@@ -136,7 +142,7 @@ for (const g of groups) {
   const { cellH, perSheet } = SHEET[g.orientation];
   for (let s = 0; s * perSheet < cands.length; s++) {
     const part = cands.slice(s * perSheet, (s + 1) * perSheet);
-    const cells = part.map((p, i) => ({ input: join(DIR.thumbs, `${p.id}.jpg`), label: s * perSheet + i + 1, sub: `${p.w}×${p.h} · ${(p.by.name ?? "").slice(0, 22)}`, mark: picked.has(p.id) }));
+    const cells = part.map((p, i) => ({ input: join(DIR.thumbs, `${p.id}.jpg`), label: s * perSheet + i + 1, sub: `${"ABCDEF"[p.qi ?? 0]} · ${p.w}×${p.h} · ${(p.by.name ?? "").slice(0, 20)}`, mark: picked.has(p.id) }));
     const file = join(DIR.sheets, `${g.id}-${s + 1}.jpg`);
     writeFileSync(file, await contactSheet(cells, { cols: 5, cellW: 300, cellH }));
     console.log(`  sheet ${file}`);

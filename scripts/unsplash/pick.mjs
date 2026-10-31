@@ -2,8 +2,10 @@
 //
 //   node scripts/unsplash/pick.mjs <group> <n>[@x,y] …        add photos to a group, in this order (the first is the group's primary photo)
 //   node scripts/unsplash/pick.mjs --drop <group> <id|n> …     remove from a group (n = its position in the group's list, see --list)
+//   node scripts/unsplash/pick.mjs --also <group> <id> …       put an already picked photo into another group too (it is cut for both uses)
 //   node scripts/unsplash/pick.mjs --focus <id> x,y            where the subject sits, as fractions of the photo (0–1)
-//   node scripts/unsplash/pick.mjs --anchors <id> x,y x,y …    things to pin products on (garment, bag, jewellery …), photo fractions
+//   node scripts/unsplash/pick.mjs --anchors <id> x,y[,productId] …   things to pin products on (garment, bag, jewellery …), photo fractions; name the product the pin should point at
+//                                                            (e.g. .5,.55,lik-01 on a kurta set, .62,.2,gaj-01 on the jhumkas) — without a name a pin takes the product the picture was meant for
 //   node scripts/unsplash/pick.mjs --extend <id> [off]         a plain-backdrop photo the build may extend sideways (wide banners put the subject right of the copy)
 //   node scripts/unsplash/pick.mjs --list [group]
 //
@@ -45,6 +47,16 @@ if (args[0] === "--list") {
   m.photos[id].focus = fraction(xy);
   saveManifest(m);
   console.log(`${id}: focus ${m.photos[id].focus.join(",")}`);
+} else if (args[0] === "--also") {
+  const [, g, ...ids] = args;
+  known(g);
+  for (const id of ids) {
+    if (!m.photos[id]) fail(`no picked photo ${id}`);
+    m.groups[g] = [...(m.groups[g] ?? []).filter((x) => x !== id), id];
+    console.log(`${g}: + ${id}`);
+  }
+  saveManifest(m);
+  console.log(`${g}: ${photosOf(m, g).length}/${groupById[g].want}`);
 } else if (args[0] === "--extend") {
   const [, id, off] = args;
   if (!m.photos[id]) fail(`no picked photo ${id}`);
@@ -55,7 +67,11 @@ if (args[0] === "--list") {
 } else if (args[0] === "--anchors") {
   const [, id, ...xy] = args;
   if (!m.photos[id]) fail(`no picked photo ${id}`);
-  m.photos[id].anchors = xy.map(fraction);
+  m.photos[id].anchors = xy.map((a) => {
+    const [x, y, pid] = a.split(",");
+    if (pid !== undefined && !/^[a-z0-9]+-\d+$/.test(pid)) fail(`"${pid}" is not a product id (like lik-01)`);
+    return [...fraction(`${x},${y}`), ...(pid ? [pid] : [])];
+  });
   saveManifest(m);
   console.log(`${id}: ${m.photos[id].anchors.length} anchors`);
 } else if (args[0] === "--drop") {

@@ -39,7 +39,11 @@ export function where(box, pw, ph, [ax, ay], flip = false) {
   return { x: flip ? 1 - x : x, y: (ay * ph - box.top) / box.height };
 }
 
-/** Pins for a window: the anchors that are comfortably inside it and apart from one another, best first; the rest filled from a fixed spread. `source` says which. */
+/**
+ * Pins for a window: the anchors that are comfortably inside it and apart from one another, best first. An anchor is [x, y] or [x, y, productId] — a pin on a labelled anchor
+ * points at that product (what is really under it); an unlabelled one takes the next product the picture was meant to point at. Windows with no labelled anchor in them are
+ * filled from a fixed spread, marked `source: "fallback"` so the build can say so.
+ */
 export function pinsFor(box, pw, ph, anchors, count, flip = false) {
   const out = [];
   const inside = ({ x, y }) => x > 0.12 && x < 0.88 && y > 0.12 && y < 0.88;
@@ -47,11 +51,13 @@ export function pinsFor(box, pw, ph, anchors, count, flip = false) {
   for (const a of anchors ?? []) {
     if (out.length === count) break;
     const p = where(box, pw, ph, a, flip);
-    if (inside(p) && apart(p, out, 0.16)) out.push({ ...p, source: "anchor" });
+    if (inside(p) && apart(p, out, 0.16)) out.push({ ...p, source: "anchor", id: a[2] });
   }
-  for (const [x, y] of [[0.5, 0.42], [0.42, 0.66], [0.6, 0.7], [0.5, 0.55]]) {
-    if (out.length === count) break;
-    if (apart({ x, y }, out, 0.12)) out.push({ x, y, source: "fallback" });
+  if (!out.some((p) => p.id)) {
+    for (const [x, y] of [[0.5, 0.42], [0.42, 0.66], [0.6, 0.7], [0.5, 0.55]]) {
+      if (out.length === count) break;
+      if (apart({ x, y }, out, 0.12)) out.push({ x, y, source: "fallback" });
+    }
   }
   return out.slice(0, count);
 }
