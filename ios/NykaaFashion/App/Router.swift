@@ -36,7 +36,7 @@ struct RouteView: View {
         case .category(let id):
             FeaturePlaceholder(title: "Category", detail: "id: \(id)")
         case .search(let query):
-            FeaturePlaceholder(title: "Search", detail: "query: \(query)")
+            FeaturePlaceholder(title: "Search", detail: query.isEmpty ? nil : "query: \(query)")
         }
     }
 }

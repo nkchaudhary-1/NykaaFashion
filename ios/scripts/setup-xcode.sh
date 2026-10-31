@@ -28,7 +28,7 @@ if ! xcode_out=$(xcodebuild -version 2>&1); then
 fi
 printf '%s\n' "$xcode_out"
 xcode_major=$(sed -n 's/^Xcode \([0-9][0-9]*\).*/\1/p' <<<"$xcode_out" | head -n 1)
-[[ -n "$xcode_major" && "$xcode_major" -ge 15 ]] || die "Xcode 15 or newer is required (this project uses #Preview, @Observable and iOS 17 APIs)."
+[[ -n "$xcode_major" && "$xcode_major" -ge 26 ]] || die "Xcode 26 or newer is required: the top bar uses iOS 26 Liquid Glass APIs (guarded at runtime, so the app still runs on iOS 17+, but it only compiles against the iOS 26 SDK)."
 
 say "Checking XcodeGen"
 if ! command -v xcodegen >/dev/null 2>&1; then

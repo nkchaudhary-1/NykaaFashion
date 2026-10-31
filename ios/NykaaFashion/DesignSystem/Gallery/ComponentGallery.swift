@@ -126,6 +126,13 @@ struct ComponentGallery: View {
                         .redacted(reason: .placeholder)
                 }
 
+                section("Top nav bar — at rest, then collapsed") {
+                    VStack(spacing: DSSpacing.md) {
+                        TopNavBar(isCollapsed: false, onSearch: {})
+                        TopNavBar(isCollapsed: true, onSearch: {})
+                    }
+                }
+
                 section("Section header") {
                     DSSectionHeader(title: "New in", actionTitle: "See all") {}
                 }

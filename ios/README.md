@@ -5,7 +5,7 @@ core utilities exist; every screen is a placeholder until the design is provided
 This folder is self-contained and independent of the web prototype in the repo root
 (no shared tokens, data or images) — it can be moved to its own repo unchanged.
 
-## Run it (on a Mac with Xcode 15+)
+## Run it (on a Mac with Xcode 26+)
 
 ```bash
 ./ios/scripts/setup-xcode.sh   # checks Xcode, installs XcodeGen, generates the project, opens it
@@ -52,6 +52,33 @@ the iOS 26 Liquid Glass look come free, and a custom bar re-implements all of it
 trade-off is limited styling: tint, labels and icons are easy; a floating pill, an
 elevated centre button or a fully custom shape would need a custom bar (hide the system
 one and draw ours), which I'd only do if the design requires it.
+
+## Top navigation (Home)
+
+Logo on the left, search on the right, nothing else. It is a port of One Moment's tab
+heading — same structure, metrics and behaviour — so the two apps feel identical:
+
+| | One Moment source | Here |
+|---|---|---|
+| Bar is content above the screen; system nav bar hidden on the root only | `MainTabView.TabRoot` | `TopNavScaffold` |
+| Row, glass circle button (`.glass` / `.circle` / `.large`, no frame or padding) | `headerRow`, `profileButton` | `TopNavBar` |
+| Collapse on scroll via a Bool `PreferenceKey` | `ComponentsScrollCollapse.swift` | `ScrollCollapse.swift` |
+| Numbers: padding 24/8/12, shrink 8pt, threshold 12pt, 0.2s ease-in-out, off under Reduce Motion | `AppMetrics` | `DSTopNav` (pinned by tests) |
+
+To use it on a screen: wrap the root in `TopNavScaffold(onSearch:)` and put
+`.collapsesTopNav()` on its `ScrollView`. Search pushes `Route.search` through the tab's router.
+
+Adaptations from One Moment:
+- **Logo is a placeholder.** There's no official logo file in the repo. Add it to
+  Assets.xcassets as an image set named `NykaaFashionLogo` (vector, rendering "Original")
+  and `NykaaFashionLogo` uses it automatically.
+- **Search icon is an SF Symbol.** One Moment's icons are custom Iconsax SVGs; export
+  `search-normal` from the icon library as `ic-search` and swap the one `Image(systemName:)`.
+- **OS gating.** One Moment targets iOS 26.2 only. This app supports iOS 17+, so glass
+  (iOS 26) and scroll tracking (iOS 18) are `#available`-gated: older systems get a native
+  bordered circular button and a bar that doesn't collapse. Raising the deployment target to
+  26 deletes both gates. Building needs Xcode 26+ for the glass API.
+- **Appearance.** One Moment is dark-only; this app follows the system until the design decides.
 
 ## Native vs custom
 

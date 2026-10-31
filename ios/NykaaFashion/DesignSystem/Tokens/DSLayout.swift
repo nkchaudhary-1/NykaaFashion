@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation
 
 /// 4pt spacing scale. PLACEHOLDER VALUES — replace from the design's spacing tokens.
 enum DSSpacing {
@@ -25,12 +25,4 @@ enum DSRadius {
 enum DSSize {
     /// Apple HIG minimum hit target.
     static let minTap: CGFloat = 44
-}
-
-/// Motion. One spring for state changes, one quick ease for feedback.
-/// Components that loop or travel must also respect
-/// `@Environment(\.accessibilityReduceMotion)`. PLACEHOLDER VALUES.
-enum DSMotion {
-    static let standard = Animation.spring(duration: 0.35, bounce: 0.12)
-    static let quick = Animation.easeOut(duration: 0.18)
 }

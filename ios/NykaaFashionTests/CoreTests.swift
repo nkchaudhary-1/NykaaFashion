@@ -48,6 +48,37 @@ final class EndpointTests: XCTestCase {
     }
 }
 
+/// The top bar's numbers are ported from One Moment (`AppMetrics`); these pin
+/// them so a casual edit can't silently make the two apps diverge.
+final class TopNavTests: XCTestCase {
+    func testSpacingMatchesOneMoment() {
+        XCTAssertEqual(DSTopNav.horizontalPadding, 24) // spacingL
+        XCTAssertEqual(DSTopNav.topPadding, 8)         // spacingXS
+        XCTAssertEqual(DSTopNav.bottomPadding, 12)     // spacingS
+    }
+
+    func testLogoShrinksByEightPoints() {
+        XCTAssertEqual(DSTopNav.logoHeight(collapsed: false), 32)
+        XCTAssertEqual(DSTopNav.logoHeight(collapsed: true), 24)
+    }
+
+    func testCollapsesOnlyStrictlyPastTheThreshold() {
+        XCTAssertFalse(DSTopNav.isCollapsed(contentOffset: 0, topInset: 0))
+        XCTAssertFalse(DSTopNav.isCollapsed(contentOffset: 12, topInset: 0))
+        XCTAssertTrue(DSTopNav.isCollapsed(contentOffset: 12.5, topInset: 0))
+    }
+
+    func testRubberBandingAtTheTopDoesNotCollapse() {
+        XCTAssertFalse(DSTopNav.isCollapsed(contentOffset: -80, topInset: 0))
+    }
+
+    func testTopInsetIsAddedBackBeforeComparing() {
+        // At rest under a 59pt inset the offset is -59: not scrolled.
+        XCTAssertFalse(DSTopNav.isCollapsed(contentOffset: -59, topInset: 59))
+        XCTAssertTrue(DSTopNav.isCollapsed(contentOffset: -40, topInset: 59))
+    }
+}
+
 final class ProductTests: XCTestCase {
     func testCodableRoundTrip() throws {
         let original = Product.samples[2]
