@@ -29,6 +29,7 @@ export const FOOTER_STRIP: {
     { label: "Sell on Nykaa Fashion", href: "/info/sell" },
   ],
   quick: [
+    { label: "New & Next", href: "/new-and-next" },
     { label: "Offers", href: "/offers" },
     { label: "Sitemap", href: "/sitemap" },
     { label: "Style Files", href: "/discover" },

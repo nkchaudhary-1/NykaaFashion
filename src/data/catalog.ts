@@ -1,4 +1,5 @@
 import { defs } from "./catalog-defs.ts";
+import { launchProductDefs } from "./launches.ts";
 import { labelById } from "./labels.ts";
 import type { PriceBand, Product, ProductDef, Variant } from "./types.ts";
 
@@ -187,9 +188,21 @@ export const products: Product[] = curatedOrder(defs).map((d, i) => expand(d, i)
   }
 }
 
-export const productById: Record<string, Product> = Object.fromEntries(products.map((p) => [p.id, p]));
-export const productBySlug: Record<string, Product> = Object.fromEntries(products.map((p) => [p.slug, p]));
-export const defById: Record<string, ProductDef> = Object.fromEntries(defs.map((d) => [d.id, d]));
+// Pieces of brands that are launching (data/launches.ts): real products with product pages, wishlist hearts and bag lines, but kept out of `products` —
+// so listings, search, recommendations and the home page never show them. The launch pages list them, and they are purchasable only from launch day.
+export const launchProducts: Product[] = launchProductDefs.map((d, i) => expand(d, 1000 + i));
+{
+  const taken = new Set(products.map((p) => p.slug));
+  for (const p of launchProducts) {
+    if (taken.has(p.slug)) p.slug = `${p.slug}-${p.id}`;
+    taken.add(p.slug);
+  }
+}
+const everyProduct = [...products, ...launchProducts];
+
+export const productById: Record<string, Product> = Object.fromEntries(everyProduct.map((p) => [p.id, p]));
+export const productBySlug: Record<string, Product> = Object.fromEntries(everyProduct.map((p) => [p.slug, p]));
+export const defById: Record<string, ProductDef> = Object.fromEntries([...defs, ...launchProductDefs].map((d) => [d.id, d]));
 
 export const categoryKey = (p: Product) => p.categoryPath.join("/");
 export const heroImage = (p: Product, variant = 0, shot = 0) => p.variants[variant]?.images[shot] ?? p.variants[0].images[0];

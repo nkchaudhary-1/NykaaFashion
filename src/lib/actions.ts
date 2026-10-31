@@ -16,6 +16,7 @@ export function addToBagWithFeedback(product: Product, variant: number, size: st
   if (!r.ok) {
     if (r.reason === "max") toast({ title: "You’ve reached the limit for this item", description: "That’s all we have in stock for this size.", tone: "error" });
     else if (r.reason === "oos") toast({ title: "That size just sold out", tone: "error" });
+    else if (r.reason === "locked") toast({ title: "Not on sale yet", description: r.until ? `${labelById[product.labelId].name} launches on ${new Date(r.until).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}. Save it and we’ll remind you.` : "This brand has not launched yet.", tone: "error" });
     return r;
   }
   if (typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches) setUI({ bagOpen: true, quickView: null });

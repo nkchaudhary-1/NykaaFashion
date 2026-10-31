@@ -49,6 +49,11 @@ export function MobileMenu() {
           </div>
         )}
 
+        <Link href="/new-and-next" onClick={close} className={`${row} mt-2 border-b border-line text-[17px] font-medium`}>
+          <span className="inline-flex items-center gap-2">New &amp; Next <span aria-hidden className="size-1.5 rounded-full bg-pink" /></span>
+          <ChevronRight size={16} aria-hidden className="text-ink-3" />
+        </Link>
+
         <p className={group}>Shop</p>
         {topCategories.map((top) => (
           <Disclosure key={top.id} title={<span className="text-[15px] font-medium">{top.name}</span>} headingLevel={3}>

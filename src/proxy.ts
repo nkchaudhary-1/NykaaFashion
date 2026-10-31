@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { LOGO_PATHS, LOGO_VIEWBOX } from "./components/layout/logo-paths";
+import { CLOCK_COOKIE, clockOffset, isLaunched, launchById, launchOfSlug } from "./data/launches";
 import { accountsConfig, hmac, issueSession, LOGIN_EVENT_COOKIE, randomId, readSession, safeEqual, SESSION_COOKIE, SESSION_MAX_AGE, verifyLogin } from "./lib/auth";
 
 /**
@@ -108,7 +109,26 @@ const lockedPage = (invalid = false) =>
 const forbiddenPage = () =>
   page("Admin only", `<h1>Admin only</h1><p>This area is for administrators. You are signed in, but your account does not have access to it.</p><p><a href="/" style="color:#982854">Back to the site</a></p>`, 403);
 
+/**
+ * New & Next: a product page of a brand that has not launched yet redirects to that brand's launch page (where the piece opens as a preview).
+ * Runs only for requests the gate has already let through, and honours the simulated launch clock (cookie) so the "launch day" demo reaches the real page.
+ */
+function launchGuard(req: NextRequest): NextResponse | null {
+  const slug = /^\/p\/([^/]+)\/?$/.exec(req.nextUrl.pathname)?.[1];
+  const launch = slug ? launchById[launchOfSlug[slug]] : undefined;
+  if (!launch || isLaunched(launch, Date.now() + clockOffset(req.cookies.get(CLOCK_COOKIE)?.value))) return null;
+  const res = NextResponse.redirect(new URL(`/new-and-next/${launch.id}?piece=${slug}`, req.url), 307);
+  res.headers.set("cache-control", "no-store");
+  return res;
+}
+
 export async function proxy(req: NextRequest) {
+  const res = await gate(req);
+  if (res.headers.get("x-middleware-next") !== "1") return res; // the gate answered itself (sign-in page, redirect, 401, 403 …)
+  return launchGuard(req) ?? res;
+}
+
+async function gate(req: NextRequest) {
   if (process.env.SITE_GATE === "off") return NextResponse.next();
   const accounts = accountsConfig();
   if (accounts === "invalid") return lockedPage(true); // configured but unusable: never fall open

@@ -1,6 +1,8 @@
 import { productById } from "@/data/catalog";
+import { lockedUntil } from "@/data/launches";
 import type { Product, Variant } from "@/data/types";
 import { nowMs } from "@/lib/clock";
+import { launchNow } from "@/lib/launch-clock";
 import { createStore, useStore, useStoreSelector } from "@/lib/store";
 import { track } from "@/lib/track";
 import { signal } from "@/stores/intent";
@@ -47,10 +49,12 @@ export const MAX_QTY = 6;
 
 export const stockFor = (product: Product, variant: number, size: string) => product.variants[variant]?.stock[size] ?? 0;
 
-export type AddResult = { ok: true; line: BagLine; merged: boolean } | { ok: false; reason: "no-size" | "oos" | "max" };
+export type AddResult = { ok: true; line: BagLine; merged: boolean } | { ok: false; reason: "no-size" | "oos" | "max" | "locked"; until?: number };
 
 export function addToBag(productId: string, variant: number, size: string | null, qty = 1, source = "pdp"): AddResult {
   const product = productById[productId];
+  const until = lockedUntil(productId, launchNow()); // a brand that has not launched yet: the wishlist, a bookmark or a stale tab cannot put its pieces in the bag
+  if (until) return { ok: false, reason: "locked", until };
   if (!product || !size) return { ok: false, reason: "no-size" };
   const stock = stockFor(product, variant, size);
   if (stock <= 0) return { ok: false, reason: "oos" };

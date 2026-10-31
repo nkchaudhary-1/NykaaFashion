@@ -22,7 +22,7 @@ const GROUPS: Group[] = [
   })),
   {
     title: "Edits",
-    links: [...edits.map((e) => ({ label: e.title, href: `/edits/${e.id}` })), { label: "Style Files", href: "/discover" }, { label: "Offers", href: "/offers" }],
+    links: [...edits.map((e) => ({ label: e.title, href: `/edits/${e.id}` })), { label: "Style Files", href: "/discover" }, { label: "Offers", href: "/offers" }, { label: "New & Next — brand launches", href: "/new-and-next" }],
   },
   {
     title: "Brands",

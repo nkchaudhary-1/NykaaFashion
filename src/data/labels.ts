@@ -1,3 +1,4 @@
+import { launchLabels } from "./launches.ts";
 import type { Label } from "./types.ts";
 
 // Brand names mirror the live Nykaa Fashion homepage and its House of Nykaa labels (PRD §1, §2.2). Hidden Gems, Luxe and the
@@ -40,7 +41,8 @@ export const labels: Label[] = [
   { id: "cider", name: "Cider", tagline: "Trend-led knitwear.", story: "Sample listings in the Cider range — product details on this page are illustrative.", flags: {}, tone: { bg: "#fff0f6", fg: "#7a1a47" } },
 ];
 
-export const labelById: Record<string, Label> = Object.fromEntries(labels.map((l) => [l.id, l]));
+// Brands that are about to launch (data/launches.ts) are named here so their pieces can be saved and shown, but they are not in `labels`: the brands directory and every listing stay as they were.
+export const labelById: Record<string, Label> = Object.fromEntries([...labels, ...launchLabels].map((l) => [l.id, l]));
 
 export const hiddenGemLabels = labels.filter((l) => l.flags.hiddenGem);
 export const luxeLabels = labels.filter((l) => l.flags.luxe);
