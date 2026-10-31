@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
@@ -19,9 +18,8 @@ import { QuickViewHost } from "@/components/product/QuickView";
 import { SizeGuideHost } from "@/components/product/SizeGuideDialog";
 import { ToastRegion } from "@/components/ui/ToastRegion";
 
-// The one typeface. Inter's optical-size axis (opsz 14–32) is loaded so the page can run at its display cut — "Inter Display" —
-// everywhere (globals.css sets opsz 32 on body). ₹ (U+20B9) is in latin-ext.
-const inter = Inter({ subsets: ["latin", "latin-ext"], axes: ["opsz"], variable: "--font-inter", display: "swap" });
+// The one typeface, Inter Display: Inter's variable font (optical size 14–32) is self-hosted — see the @font-face rules in globals.css and public/fonts —
+// so the app builds and renders without reaching fonts.googleapis.com. The latin file is preloaded; latin-ext (₹ lives there) loads on demand.
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -43,7 +41,10 @@ function HeaderFallback() {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en">
+      <head>
+        <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      </head>
       <body>
         <a href="#main" className="sr-only z-[100] bg-ink px-4 py-3 text-bone focus:not-sr-only focus:fixed focus:left-3 focus:top-3">
           Skip to content

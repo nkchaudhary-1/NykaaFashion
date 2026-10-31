@@ -2,6 +2,9 @@
   "name": "nykaa-fashion",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,6 +17,7 @@
     "art:render": "node scripts/art/render.mjs src/data/generated/art-manifest.json",
     "contrast": "node scripts/contrast.mjs",
     "qa": "bash scripts/qa/all.sh",
+    "doctor": "node scripts/doctor.mjs",
     "photo:ratios": "node scripts/placeholders/build.mjs"
   },
   "dependencies": {

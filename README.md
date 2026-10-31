@@ -6,6 +6,21 @@ An improved Nykaa Fashion: the **existing identity is kept** — white surfaces,
 
 See [`PROJECT_STATUS.md`](PROJECT_STATUS.md) for milestones, decisions and QA, and `/prototype` in the running app for reviewer notes.
 
+## Run it
+
+Needs **Node 20.9 or newer** (22 recommended — there is an `.nvmrc`) and npm. No API keys, no database, no network access to any font or image host: everything is in the repo.
+
+```bash
+git clone https://github.com/nkchaudhary-1/NykaaFashion.git && cd NykaaFashion
+git checkout claude/nykaa-fashion-grid-redesign   # the repo's default branch is the earlier design — this is the live-identity version
+npm ci                                            # or: npm install
+npm run dev                                       # → http://localhost:3000
+```
+
+The first page compiles for 10–30 s (Turbopack builds the catalogue and every module on demand); after that pages are quick. For the production build: `npm run build && npm start`.
+
+If something does not start, run **`npm run doctor`** — it checks the Node version, installed dependencies, which version of the prototype you have, the font files and port 3000, and says how to fix each.
+
 ## Stack
 
 Next.js 16 (App Router, Cache Components, Turbopack) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion · Lucide. No other runtime dependencies. Mock JSON-style data modules and `localStorage` persistence, structured so real APIs can slot in.
