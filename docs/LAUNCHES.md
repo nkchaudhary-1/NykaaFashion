@@ -64,7 +64,7 @@ A pre-launch, launch-day and post-launch experience for every brand Nykaa Fashio
 
 ## What happens on launch day
 
-Everything derives from one rule, `isLaunched(launch, now)` (`launchAtMs ≤ now`): the hero says **Now live** instead of counting down, **Notify me** becomes **Shop now**, offers switch from *Starts …* to *Live now*, preview cards become links to real product pages with Add to bag, the preview mosaic becomes the product listing, and the brand moves from **Coming soon** to **Recently launched** (kept there for 90 days — `RECENT_DAYS`). The featured launch is always the next one due; once nothing is upcoming, it is the newest arrival. The countdown flips to *Live now* without a reload.
+Everything derives from one rule, `isLaunched(launch, now)` (`launchAtMs ≤ now`): the hero says **Now live** instead of counting down, **Notify me** becomes **Shop now**, offers switch from *Starts …* to *Live now*, preview cards become links to real product pages with Add to bag, the preview mosaic becomes the product listing, and the brand moves from **Coming soon** to **Recently launched** (kept there for 90 days — `RECENT_DAYS`). The hub leads with the brand that launched in the last 7 days (so "Now live" is seen for its launch week), otherwise with the next one due, otherwise with the newest arrival. The countdown flips to *Live now* without a reload.
 
 **Demoing without waiting.** The *Prototype · Launch clock* control on the hub and brand pages moves the whole site's clock: real time, an hour before the featured launch, at launch, a week after. It is a cookie (`nf_launch_offset`), so the server agrees: before launch day a piece's product page redirects to the launch page and the bag refuses it; after, both work.
 
