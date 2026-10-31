@@ -15,6 +15,7 @@ struct ProfileView: View {
                 #if DEBUG
                 Section("Developer") {
                     NavigationLink("Component gallery") { ComponentGallery() }
+                    DebugTypefaceRow()
                     DebugBagStepper()
                 }
                 #endif
@@ -34,6 +35,20 @@ struct ProfileView: View {
 }
 
 #if DEBUG
+/// On-screen proof the primary typeface loaded. A font that fails to register
+/// doesn't error — the app just quietly shows the system font — so this says so.
+private struct DebugTypefaceRow: View {
+    var body: some View {
+        let loaded = DSFontRegistry.loadedFaceCount
+        let total = DSFontFace.allCases.count
+        LabeledContent("Inter Display") {
+            Text(verbatim: loaded == total
+                 ? "✓ \(loaded) of \(total) weights loaded"
+                 : "✗ \(loaded) of \(total) — showing system font")
+        }
+    }
+}
+
 /// Lets you see the Bag tab badge before a real bag exists.
 private struct DebugBagStepper: View {
     @Environment(AppState.self) private var appState

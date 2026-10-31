@@ -16,6 +16,23 @@ final class FontTests: XCTestCase {
         }
     }
 
+    func testInfoPlistListsEveryFace() {
+        // Checks the merged Info.plist itself. The launch-time fallback in
+        // DSFontRegistry would otherwise hide a plist that didn't merge.
+        let listed = Bundle(for: AppState.self).object(forInfoDictionaryKey: "UIAppFonts") as? [String] ?? []
+        for face in DSFontFace.allCases {
+            XCTAssertTrue(
+                listed.contains(face.fileName),
+                "\(face.fileName) is not in UIAppFonts of the built app. Config/Info.plist did not merge — check INFOPLIST_FILE in project.yml."
+            )
+        }
+    }
+
+    func testRegisteringMissingFacesLeavesEveryFaceLoadable() {
+        DSFontRegistry.registerMissingFaces()
+        XCTAssertEqual(DSFontRegistry.loadedFaceCount, DSFontFace.allCases.count)
+    }
+
     func testEveryFaceIsInTheAppBundle() {
         // A class from the APP module, so this resolves to the app bundle (a class
         // declared in this test file would resolve to the test bundle).

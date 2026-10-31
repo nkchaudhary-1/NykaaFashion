@@ -149,10 +149,13 @@ weights above. If the layers' weights are the intent instead, change each style'
   This governs **multi-line** text; a single line keeps the font's natural height, within ~1–2pt of Figma's box.
 - **Letter spacing** is `.tracking`, in points as Figma's px. At ≤16pt Inter Display plus −0.25 tracking is tight —
   Inter's *text* cut is the one drawn for small sizes; worth a look on device.
-- **Registration:** `Config/Info.plist` is a *partial* plist holding only `UIAppFonts`; Xcode merges it with the generated
-  keys (`GENERATE_INFOPLIST_FILE`). `TabRoot` applies Body Large 1 as the default for unstyled text.
+- **Registration, twice over:** `Config/Info.plist` is a *partial* plist holding only `UIAppFonts`; Xcode merges it with the
+  generated keys (`GENERATE_INFOPLIST_FILE`). That merge can fail silently, so at launch `DSFontRegistry` also registers any
+  bundled face the system doesn't know (a no-op when the plist worked, and it logs a warning when it had to step in).
+  In a Debug build, **Profile → Developer → "Inter Display"** shows `✓ 3 of 3 weights loaded` — on-screen proof, no test run needed.
+  `TabRoot` applies Body Large 1 as the default for unstyled text.
 - **A wrong name never fails — it silently falls back to the system font.** `FontTests` (⌘U) checks each face is
-  registered, is in the app bundle, has ₹, and that the 1.21 line-height constant matches the real font.
+  registered, the built Info.plist really lists them (the launch fallback would otherwise hide a bad merge), they are in the bundle, have ₹, and that the 1.21 line-height constant matches the real font.
   `TextStyleTests` pin all 17 styles to the Figma numbers.
 - Native chrome — tab bar labels, pushed screens' back button and title — stays in the system font on purpose, like
   the rest of the native bar.
