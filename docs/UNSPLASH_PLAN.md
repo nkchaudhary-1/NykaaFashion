@@ -10,7 +10,7 @@ Do not ask the owner to paste the key into chat — it comes in as the environme
 
 | Stage | What | State |
 |---|---|---|
-| 0 | Toolkit: `lib` ✔ · `groups` ✔ · plan ✔ · `search`, `pick`, `download`, `status`, `build`, `review`, unit test, `/credits` page — being added in this order (check `ls scripts/unsplash` and `git log -- scripts/unsplash`) | in progress |
+| 0 | Toolkit: `groups`, `search`, `pick`, `download`, `build`, `review`, `status`; `/credits` page + footer/sitemap links; `data:check` rules; two unit tests (`scripts/qa/unsplash-unit.mjs` against a local stand-in for Unsplash, `scripts/qa/unsplash-build-unit.mjs` on made-up photographs) | **done and tested without a key** — the build has never seen a real photograph, so expect to tune framing at the first review |
 | 1 | Key present: `UNSPLASH_ACCESS_KEY` in the environment | owner action (below) |
 | 2 | Phase A search + contact sheets (scenes, launches) | not started |
 | 3 | Phase A picks → download → build → review → QA → deploy | not started |
@@ -45,19 +45,21 @@ A demo key is enough but slow (≈ 4 hours of API budget for everything, phase A
 
 ```
 npm run unsplash:status                          # key, cache, per group: candidates · picked/want · tracked
-npm run unsplash:search -- --phase A             # or --group s-festive,l-vrisa; --refresh ignores the cache
-                                                 #   → .cache/unsplash/sheets/<group>-<n>.jpg   (20 numbered thumbnails per sheet — look at them)
+npm run unsplash:search -- --phase A             # or --group s-festive,l-vrisa; --refresh ignores the cache; --limit 30 for more candidates
+                                                 #   → .cache/unsplash/sheets/<group>-<n>.jpg   (20–30 numbered thumbnails per sheet — look at them)
 npm run unsplash:pick -- s-festive 3 7@.4,.5 12  # indices from the sheets; @x,y = where the subject sits (fractions of the photo)
-npm run unsplash:download                        # tracking call + 2400 px original into the cache, for every picked photo
-npm run unsplash:build -- [--only scenes/]       # cuts every mapped site image; writes public/img, image-meta.json, photo-credits.json
-npm run unsplash:review -- [prefix]              # contact sheets of the BUILT images (what visitors will see) — look at them
+npm run unsplash:review -- --photo <id>          # a large preview with a 10 % grid, the focus (+) and anchors: read x,y off it
+npm run unsplash:pick -- --focus <id> .62,.48    #   fix a focus · --anchors <id> x,y x,y … (pin positions) · --extend <id> (plain backdrop may be extended) · --drop <group> <id|n> · --list
+npm run unsplash:download                        # tracking call + 2400 px original into the cache, for every picked photo (resumable)
+npm run unsplash:build -- [--only scenes/]       # cuts every mapped site image; writes public/img, image-meta.json, photo-assignments.json, photo-credits.json; prints warnings
+npm run unsplash:review -- scenes/edit           # contact sheets of the BUILT images (also launches/vrisa · products/twd · pool:p-dress · promo) — look at them
 ```
 
 1. **Search** (`search.mjs`): per group, queries in order until enough usable candidates; filters free/size/orientation/brands/sponsored, ≤ 3 per photographer; thumbnails from the CDN; numbered contact sheets. Candidates: `.cache/unsplash/candidates/<group>.json`.
-2. **Look and pick** — this is the step that matches the Indian audience, and it is done by eye: open each sheet (Read tool), choose from the briefs in `groups.mjs`, give each pick a focus point when the subject is not centred. Picks go to `scripts/unsplash/manifest.json` (committed): id, size, dominant colour, photographer, links, groups (ordered — the **first** pick of a group is its primary), `focus`, optional `anchors` for shoppable pins.
+2. **Look and pick** — this is the step that matches the Indian audience, and it is done by eye: open each sheet (Read tool), choose from the briefs in `groups.mjs`, and give each pick a focus point when the subject is not centred (`review --photo` shows a grid to read it from). For story scenes read `src/data/scenes.ts` first: every picture of a story carries shoppable pins, so each photo must show what its pins stand for — and set its `--anchors`. Picks go to `scripts/unsplash/manifest.json` (committed): id, size, dominant colour, photographer, links, groups (ordered — the **first** pick of a group is its primary), `focus`, optional `anchors` for shoppable pins.
 3. **Download** (`download.mjs`): tracking call (counted), original into `.cache/unsplash/originals/<id>.jpg`. Resumable.
 4. **Build** (`build.mjs`): the mapping rules are in `slots.mjs` (scenes, launches, pop-ups: explicit) and in `build.mjs` (products: by the product's kind, colour-aware, three windows per photo). Writes only keys that have a photo.
-5. **Review** (`review.mjs`): sheets of built images, grouped by slot. Fix focus / anchors / picks and rebuild — never accept a build unseen.
+5. **Review** (`review.mjs`): sheets of built images, one shape per sheet (wide · 3:2 · tall). Fix focus / anchors / picks and rebuild — never accept a build unseen. The build also prints warnings: a subject too far left for the copy of a wide banner, a heading that would not keep 3:1 contrast, pins on fallback positions, a portrait photo in a wide slot, a picture over its size budget.
 
 ### Slot map
 

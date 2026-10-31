@@ -30,7 +30,7 @@ const GROUPS: Group[] = [
   },
   {
     title: "Help & company",
-    links: [{ label: "Help Center", href: "/help" }, ...Object.entries(INFO_PAGES).map(([slug, p]) => ({ label: p.title, href: `/info/${slug}` })), { label: "Prototype notes", href: "/prototype" }],
+    links: [{ label: "Help Center", href: "/help" }, ...Object.entries(INFO_PAGES).map(([slug, p]) => ({ label: p.title, href: `/info/${slug}` })), { label: "Photo credits", href: "/credits" }, { label: "Prototype notes", href: "/prototype" }],
   },
   {
     title: "Your account",

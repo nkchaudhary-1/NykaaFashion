@@ -204,12 +204,21 @@ function placePins(spec, ids, view) {
 
 // ── Run ───────────────────────────────────────────────────────────────────────────────────────────────────────
 const meta = JSON.parse(readFileSync(META, "utf8"));
+// pictures cut from Unsplash photographs (scripts/unsplash/build.mjs) are not this script's to overwrite
+const OWNED = (() => {
+  try {
+    return new Set(Object.keys(JSON.parse(readFileSync(join(root, "src/data/generated/photo-assignments.json"), "utf8"))));
+  } catch {
+    return new Set();
+  }
+})();
 let done = 0;
 const skipped = [];
 for (const key of Object.keys(meta)) {
   if (key.startsWith("placeholders/")) continue; // the ratio variants are build.mjs's
   if (key === "promo/vrisa-teaser") continue; // the first frame of the clip — promo-video.mjs makes it
   if (ONLY && !key.startsWith(ONLY)) continue;
+  if (OWNED.has(key)) continue;
   const old = meta[key];
   const W = old.w, H_ = old.h;
   const spec = productSpec(key) ?? sceneSpec(key, W, H_) ?? launchSpec(key) ?? promoSpec(key);

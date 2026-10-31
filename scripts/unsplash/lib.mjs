@@ -10,10 +10,13 @@ import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { root } from "../placeholders/lib.mjs";
 
+export { root };
+
 export const API = (process.env.UNSPLASH_API ?? "https://api.unsplash.com").replace(/\/+$/, "");
 export const CACHE = process.env.UNSPLASH_CACHE ?? join(root, ".cache/unsplash");
 export const LIBRARY = join(root, "scripts/placeholders/unsplash"); // the originals we keep (≈ 2000 px wide) and manifest.json
-export const CREDITS_JSON = join(root, "src/data/generated/photo-credits.json");
+export const CREDITS_JSON = process.env.UNSPLASH_CREDITS ?? join(root, "src/data/generated/photo-credits.json"); // what /credits shows: the photos the build placed, by photographer
+export const ASSIGNMENTS_JSON = process.env.UNSPLASH_ASSIGNMENTS ?? join(root, "src/data/generated/photo-assignments.json"); // image key → photo id, for every picture the build cut from Unsplash
 export const UTM = "utm_source=nykaa_fashion_prototype&utm_medium=referral"; // Unsplash's attribution links carry these
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -63,10 +66,13 @@ export async function api(path, params = {}) {
   throw new Error(`Unsplash kept failing for ${url.pathname}`);
 }
 
+/** The unsized image URL of a photo: from an API / candidate record (urls.raw) or from the manifest (raw). */
+export const rawOf = (p) => p.urls?.raw ?? p.raw ?? "";
+
 /** Only free-licence photos on Unsplash's own image host: never Unsplash+ (plus.unsplash.com) and never a third-party URL. */
 export function isFree(p) {
   try {
-    const host = new URL(p.urls?.raw ?? "").hostname;
+    const host = new URL(rawOf(p)).hostname;
     return (host === "images.unsplash.com" || host === process.env.UNSPLASH_ALLOW_HOST) && !p.premium && !p.plus;
   } catch {
     return false;
@@ -75,7 +81,7 @@ export function isFree(p) {
 
 /** A size of the photo from Unsplash's image CDN (imgix): not an API call, so it does not use the hourly budget. */
 export const cdn = (p, params) => {
-  const u = new URL(p.urls.raw);
+  const u = new URL(rawOf(p));
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, String(v));
   return u.toString();
 };
@@ -88,5 +94,7 @@ export async function fetchBuffer(url) {
   }
   throw new Error(`image kept failing: ${url.slice(0, 90)}`);
 }
+/** Where the build finds a photo's original (a 2400 px JPEG fetched by download.mjs). */
+export const originalPath = (id) => join(CACHE, "originals", `${id}.jpg`);
 export const hash = (s) => createHash("sha1").update(s).digest("hex").slice(0, 12);
 export const exists = existsSync;

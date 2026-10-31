@@ -10,7 +10,7 @@ const VERBOSE = process.argv.includes("--verbose");
 const PUBLIC = [
   "/", "/discover", "/discover/the-block-print-revival", "/discover/quiet-luxe-the-case-for-fewer-better-things", "/edits", "/edits/luxe", "/edits/hidden-gems", "/edits/the-offer-edit", "/edits/festive", "/edits/responsible",
   "/c/women", "/c/women/dresses", "/c/men", "/c/kids", "/c/home/cushions", "/p/poppy-smocked-midi-dress", "/p/satin-corset-top", "/p/sequin-slip-mini", "/search?q=kurta", "/search?q=zzzz",
-  "/brands", "/brands/ajrakh-and-ash", "/brands/puma", "/offers", "/wishlist", "/bag", "/login", "/help", "/prototype", "/info/shipping", "/sitemap", "/new-and-next", "/new-and-next/vrisa", "/new-and-next/halden", "/new-and-next/kiln-and-linen", "/new-and-next/hm", "/new-and-next/cider", "/404-not-a-page",
+  "/brands", "/brands/ajrakh-and-ash", "/brands/puma", "/offers", "/wishlist", "/bag", "/login", "/help", "/prototype", "/info/shipping", "/sitemap", "/credits", "/new-and-next", "/new-and-next/vrisa", "/new-and-next/halden", "/new-and-next/kiln-and-linen", "/new-and-next/hm", "/new-and-next/cider", "/404-not-a-page",
 ];
 const AUTHED = ["/account", "/account/orders", "/account/orders/nf-26100377", "/account/addresses"];
 const ROUTES = flag("--routes", "") ? flag("--routes", "").split(",") : PUBLIC;

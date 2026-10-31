@@ -106,20 +106,20 @@ export const transpose = (a, w, h) => {
   return o;
 };
 
-/** Pad the photograph by PAD on every side. Left/right first (on the original rows), then top/bottom (on the widened rows). */
-export function extendCanvas(src, w, h, grain, rand) {
+/** Pad the photograph by `pad` (default PAD) on every side. Left/right first (on the original rows), then top/bottom (on the widened rows). */
+export function extendCanvas(src, w, h, grain, rand, pad = PAD) {
   let a = transpose(src, w, h); // now h wide × w tall: "top" is the photograph's left
-  a = extendTop(a, h, w, PAD, grain, rand); // left
-  a = flipRows(a, h, w + PAD);
-  a = extendTop(a, h, w + PAD, PAD, grain, rand); // right
-  a = flipRows(a, h, w + 2 * PAD);
-  a = transpose(a, h, w + 2 * PAD); // back to (w + 2PAD) × h
-  const W = w + 2 * PAD;
-  a = extendTop(a, W, h, PAD, grain, rand); // top
-  a = flipRows(a, W, h + PAD);
-  a = extendTop(a, W, h + PAD, PAD, grain, rand); // bottom
-  a = flipRows(a, W, h + 2 * PAD);
-  return { data: a, w: W, h: h + 2 * PAD };
+  a = extendTop(a, h, w, pad, grain, rand); // left
+  a = flipRows(a, h, w + pad);
+  a = extendTop(a, h, w + pad, pad, grain, rand); // right
+  a = flipRows(a, h, w + 2 * pad);
+  a = transpose(a, h, w + 2 * pad); // back to (w + 2·pad) × h
+  const W = w + 2 * pad;
+  a = extendTop(a, W, h, pad, grain, rand); // top
+  a = flipRows(a, W, h + pad);
+  a = extendTop(a, W, h + pad, pad, grain, rand); // bottom
+  a = flipRows(a, W, h + 2 * pad);
+  return { data: a, w: W, h: h + 2 * pad };
 }
 
 // ── Output ─────────────────────────────────────────────────────────────────────────────────────────────────────

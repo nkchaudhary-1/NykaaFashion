@@ -98,7 +98,7 @@ console.log("trending searches:", TRENDING_SEARCHES.length);
 {
   const meta = JSON.parse((await import("node:fs")).readFileSync(resolve(root, "src/data/generated/image-meta.json"), "utf8"));
   const KINDS = ["launch", "collection", "offer", "announcement", "notification"];
-  const STATIC_PAGES = new Set(["/", "/offers", "/search", "/wishlist", "/brands", "/discover", "/edits", "/new-and-next", "/help", "/sitemap"]);
+  const STATIC_PAGES = new Set(["/", "/offers", "/search", "/wishlist", "/brands", "/discover", "/edits", "/new-and-next", "/help", "/sitemap", "/credits"]);
   const INFO = new Set(["shipping", "terms", "privacy", "about", "careers", "press"]);
   const hrefOk = (href) => {
     if (!/^\/(?!\/)/.test(href)) return false;
@@ -142,6 +142,38 @@ console.log("trending searches:", TRENDING_SEARCHES.length);
     } else if (c.media?.type !== "image") err(`${w}: media.type must be "image" or "video"`);
   }
   console.log(`pop-ups: ${promos.length} campaigns (${promos.filter((c) => c.media.type === "video").length} video)`);
+}
+
+// Unsplash photographs (scripts/unsplash): every picture drawn from one must have its photo in the manifest, that photo must have been reported to Unsplash
+// (their API guideline for any photo chosen for use) and be credited on /credits; nothing credited may be unused. Empty until the first build.
+{
+  const fs = await import("node:fs");
+  const read = (f, fallback) => {
+    try {
+      return JSON.parse(fs.readFileSync(resolve(root, f), "utf8"));
+    } catch {
+      return fallback;
+    }
+  };
+  const meta = read("src/data/generated/image-meta.json", {});
+  const manifest = read("scripts/unsplash/manifest.json", { photos: {}, groups: {} });
+  const assigned = read("src/data/generated/photo-assignments.json", {});
+  const credits = read("src/data/generated/photo-credits.json", []);
+  const keys = Object.keys(assigned);
+  for (const k of keys) {
+    const id = assigned[k];
+    if (!meta[k]) err(`photo-assignments: ${k} has no entry in image-meta.json`);
+    if (!existsSync(resolve(root, "public/img", `${k}.webp`))) err(`photo-assignments: public/img/${k}.webp is missing`);
+    if (!manifest.photos[id]) err(`photo-assignments: ${k} uses photo ${id}, which is not in scripts/unsplash/manifest.json`);
+    else if (!manifest.photos[id].tracked) err(`photo ${id} is used on the site but was never reported to Unsplash — run  npm run unsplash:download`);
+    else if (!/^https:\/\/images\.unsplash\.com\//.test(manifest.photos[id].raw ?? "")) err(`photo ${id}: not a free Unsplash photograph (${manifest.photos[id].raw})`);
+  }
+  const usedIds = new Set(Object.values(assigned));
+  const creditIds = new Set(credits.map((c) => c.id));
+  for (const id of usedIds) if (!creditIds.has(id)) err(`photo ${id} is used on the site but missing from photo-credits.json — run  npm run unsplash:build`);
+  for (const id of creditIds) if (!usedIds.has(id)) err(`photo-credits.json credits ${id}, which no picture uses — run  npm run unsplash:build`);
+  for (const c of credits) if (!c.name || !/^https:\/\/unsplash\.com\//.test(c.page ?? "") || !/utm_source=/.test(c.page)) err(`credit ${c.id}: needs the photographer's name and a link to the photo on unsplash.com with the utm tags`);
+  console.log(`unsplash: ${usedIds.size} photographs placed (${keys.length} pictures) · ${Object.keys(manifest.photos).length} picked`);
 }
 
 // Optional: check generated imagery exists on disk (after rendering).

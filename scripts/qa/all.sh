@@ -26,6 +26,8 @@ run node scripts/qa/promo.cjs "$BASE"   # pop-ups (PiP) end to end; takes about 
 run node scripts/qa/promo-unit.mjs   # pop-up rules: routes, dates, launch states, dismissal / cool-down / visit cap
 run node scripts/qa/notify-unit.mjs   # the one-line "someone signed in" notification: shape, nothing configured, failures never block
 run node scripts/qa/auth-unit.mjs   # issued sign-ins (admin "Add a user"): signature, expiry, revoke
+run node scripts/qa/unsplash-unit.mjs   # the photo-curation toolkit against a local stand-in for Unsplash (no key, no network)
+run node scripts/qa/unsplash-build-unit.mjs   # the build that cuts the site's pictures from picked photographs, on made-up photographs
 run node scripts/qa/roles.cjs   # starts its own server on :3102 with made-up accounts
 run node scripts/qa/motion.cjs "$BASE"
 run node scripts/qa/a11y.cjs "$BASE"
