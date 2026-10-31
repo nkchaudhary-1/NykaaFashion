@@ -9,4 +9,6 @@ enum DSMotion {
     /// The top bar collapsing on scroll. Same curve and duration as One Moment's
     /// tab heading.
     static let collapse = Animation.easeInOut(duration: 0.2)
+    /// The soft edge blur fading in once the screen has scrolled.
+    static let edgeBlur = Animation.easeInOut(duration: 0.25)
 }

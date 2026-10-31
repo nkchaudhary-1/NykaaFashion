@@ -1,18 +1,22 @@
 import SwiftUI
 
-// The home top navigation: Nykaa Fashion logo on the left, search on the right.
-// Nothing else.
+// The home top navigation: Nykaa Fashion logo on the left, search on the right,
+// and a soft gradient behind them that blends scrolled content into the
+// background. Nothing else.
 //
-// Ported from One Moment's `MainTabView.TabRoot` (`headerRow` + `profileButton`),
+// Ported from One Moment's `rdl-redesign` branch (`MainTabView.TabRoot`),
 // keeping its structure and behaviour:
-//   - the bar is CONTENT above the screen, not a toolbar; the system navigation
-//     bar is hidden on the root screen only, so pushed screens keep their own
-//     bar and back button
+//   - the bar is a `safeAreaBar` the screen scrolls UNDER, not a block above it
+//   - `TopEdgeBlur` fades in behind it once the screen has scrolled, so content
+//     dissolves into the background instead of meeting a hard edge
+//   - `.scrollEdgeEffectStyle(.soft, for: .top)` lets the system's own edge
+//     effect do the same for the scroll view
 //   - the right-hand control is a native glass circle button that owns its own
 //     metrics: no frame, no padding, `controlSize(.large)` is the only lever
-//   - scrolling the screen below collapses the logo by `DSTopNav.logoShrink`
-//   - `.easeInOut(0.2)`, switched off under Reduce Motion
-//   - a screen without a scroll view never publishes, so its bar never collapses
+//   - scrolling collapses the logo (44 → 32pt), `.easeInOut(0.2)`, off under
+//     Reduce Motion
+//   - the system navigation bar is hidden on the root screen only, so pushed
+//     screens keep their own bar and back button
 
 /// The row itself. Stateless: whoever owns the scroll state passes `isCollapsed`.
 struct TopNavBar: View {
@@ -39,7 +43,7 @@ struct TopNavBar: View {
             Image(systemName: "magnifyingglass")
                 .imageScale(.large)
         }
-        // Native Liquid Glass, exactly as One Moment's profile button. Don't add
+        // Native Liquid Glass, exactly as One Moment's header buttons. Don't add
         // a background, stroke, shadow, clip or frame: glass draws its own.
         .buttonStyle(.glass)
         .buttonBorderShape(.circle)
@@ -48,7 +52,7 @@ struct TopNavBar: View {
     }
 }
 
-/// A screen with the top bar above it.
+/// A screen with the top bar over it.
 ///
 /// Owns the collapsed state, so each tab keeps its own — reading the preference
 /// anywhere shared would collapse every tab at once. Wrap a tab's ROOT screen in
@@ -57,7 +61,10 @@ struct TopNavScaffold<Content: View>: View {
     var onSearch: () -> Void
     private let content: Content
 
-    /// True once the screen below has scrolled past the threshold.
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// True once the screen below has scrolled past the threshold. A screen with
+    /// no scroll view never publishes, so this stays false: full-size logo, no blur.
     @State private var isCollapsed = false
 
     init(onSearch: @escaping () -> Void, @ViewBuilder content: () -> Content) {
@@ -66,20 +73,30 @@ struct TopNavScaffold<Content: View>: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            TopNavBar(isCollapsed: isCollapsed, onSearch: onSearch)
-                .padding(.horizontal, DSTopNav.horizontalPadding)
-                .padding(.top, DSTopNav.topPadding)
-                .padding(.bottom, DSTopNav.bottomPadding)
-
-            content
-        }
-        // The logo row is content, so the 44pt system bar goes. Applied to the
-        // root only: pushed screens keep their own bar and back button.
-        .toolbar(.hidden, for: .navigationBar)
-        .onPreferenceChange(ScrollCollapseKey.self) { scrolled in
-            isCollapsed = scrolled
-        }
+        content
+            // Order matters: the blur is added before the bar, so the bar and
+            // its glass button draw on top of it.
+            // At rest nothing is under the bar, so the blur stays out of the
+            // way and only appears once the screen has scrolled.
+            .overlay(alignment: .top) {
+                TopEdgeBlur()
+                    .opacity(isCollapsed ? 1 : 0)
+                    .animation(reduceMotion ? nil : DSMotion.edgeBlur, value: isCollapsed)
+            }
+            .safeAreaBar(edge: .top, spacing: 0) {
+                TopNavBar(isCollapsed: isCollapsed, onSearch: onSearch)
+                    .padding(.horizontal, DSTopNav.horizontalPadding)
+                    .padding(.top, DSTopNav.topPadding)
+                    .padding(.bottom, DSTopNav.bottomPadding)
+            }
+            .scrollEdgeEffectStyle(.soft, for: .top)
+            .background(DSColor.background.ignoresSafeArea())
+            // The bar is content, so the 44pt system bar goes. Applied to the
+            // root only: pushed screens keep their own bar and back button.
+            .toolbar(.hidden, for: .navigationBar)
+            .onPreferenceChange(ScrollCollapseKey.self) { scrolled in
+                isCollapsed = scrolled
+            }
     }
 }
 
@@ -88,9 +105,10 @@ struct TopNavScaffold<Content: View>: View {
         ScrollView {
             LazyVStack(spacing: DSSpacing.lg) {
                 ForEach(0..<30, id: \.self) { index in
-                    Text("Row \(index)")
-                        .frame(maxWidth: .infinity, minHeight: 56)
-                        .background(DSColor.fill, in: RoundedRectangle(cornerRadius: DSRadius.md))
+                    RoundedRectangle(cornerRadius: DSRadius.lg, style: .continuous)
+                        .fill(Color.orange.opacity(0.35))
+                        .frame(height: 160)
+                        .overlay { Text(verbatim: "Card \(index + 1)") }
                 }
             }
             .padding(.horizontal, DSSpacing.gutter)

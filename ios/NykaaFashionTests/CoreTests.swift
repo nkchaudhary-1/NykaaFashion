@@ -57,9 +57,13 @@ final class TopNavTests: XCTestCase {
         XCTAssertEqual(DSTopNav.bottomPadding, 12)     // spacingS
     }
 
-    func testLogoShrinksByEightPoints() {
-        XCTAssertEqual(DSTopNav.logoHeight(collapsed: false), 32)
-        XCTAssertEqual(DSTopNav.logoHeight(collapsed: true), 24)
+    func testLogoGoesFrom44To32PointsOnScroll() {
+        XCTAssertEqual(DSTopNav.logoHeight(collapsed: false), 44)
+        XCTAssertEqual(DSTopNav.logoHeight(collapsed: true), 32)
+    }
+
+    func testEdgeBlurReach() {
+        XCTAssertEqual(DSTopNav.blurHeight, 230)
     }
 
     func testCollapsesOnlyStrictlyPastTheThreshold() {

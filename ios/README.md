@@ -55,15 +55,18 @@ one and draw ours), which I'd only do if the design requires it.
 
 ## Top navigation (Home)
 
-Logo on the left, search on the right, nothing else. It is a port of One Moment's tab
-heading — same structure, metrics and behaviour — so the two apps feel identical:
+Logo on the left, search on the right, and a soft gradient behind them that blends
+scrolled content into the background. Nothing else. It is a port of One Moment's top bar
+from its **`rdl-redesign` branch** (not `main`, which still has the older block-above-content
+header) — same structure, metrics and behaviour — so the two apps feel identical:
 
 | | One Moment source | Here |
 |---|---|---|
-| Bar is content above the screen; system nav bar hidden on the root only | `MainTabView.TabRoot` | `TopNavScaffold` |
+| Bar is a `safeAreaBar` the screen scrolls **under**; system nav bar hidden on the root only | `MainTabView.TabRoot` | `TopNavScaffold` |
+| Soft blur + background-colour gradient behind the bar, fading in only once scrolled | `ComponentsTopEdgeBlur.swift`, `.scrollEdgeEffectStyle(.soft, for: .top)` | `TopEdgeBlur`, same modifier |
 | Row, glass circle button (`.glass` / `.circle` / `.large`, no frame or padding) | `headerRow`, `profileButton` | `TopNavBar` |
 | Collapse on scroll via a Bool `PreferenceKey` | `ComponentsScrollCollapse.swift` | `ScrollCollapse.swift` |
-| Numbers: padding 24/8/12, shrink 8pt, threshold 12pt, 0.2s ease-in-out, off under Reduce Motion | `AppMetrics` | `DSTopNav` (pinned by tests) |
+| Numbers: padding 24/8/12, logo 44 → 32pt, threshold 12pt, blur reach 230pt, 0.2s bar / 0.25s blur ease-in-out, off under Reduce Motion | `AppMetrics` | `DSTopNav` (pinned by tests) |
 
 To use it on a screen: wrap the root in `TopNavScaffold(onSearch:)` and put
 `.collapsesTopNav()` on its `ScrollView`. Search pushes `Route.search` through the tab's router.
@@ -72,9 +75,13 @@ Adaptations from One Moment:
 - **Logo is a placeholder.** There's no official logo file in the repo. Add it to
   Assets.xcassets as an image set named `NykaaFashionLogo` (vector, rendering "Original")
   and `NykaaFashionLogo` uses it automatically.
+- **One glass button, not two.** One Moment's Today bar has camera + profile sharing a
+  `GlassEffectContainer`; Nykaa has only search, so no container.
 - **Search icon is an SF Symbol.** One Moment's icons are custom Iconsax SVGs; export
   `search-normal` from the icon library as `ic-search` and swap the one `Image(systemName:)`.
-- **Appearance.** One Moment is dark-only; this app follows the system until the design decides.
+- **Background.** The blur tints with `DSColor.background` (system background), so it
+  blends in light and dark. One Moment is dark-only; this app follows the system until the
+  design decides.
 
 ## Native vs custom
 

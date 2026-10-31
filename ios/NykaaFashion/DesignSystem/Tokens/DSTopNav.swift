@@ -2,9 +2,10 @@ import Foundation
 
 /// Metrics and logic for the home top bar.
 ///
-/// Ported from One Moment's tab heading (`MainTabView.TabRoot.headerRow`,
-/// `ScrollCollapse`, `AppMetrics`) so both apps behave the same. No SwiftUI
-/// import on purpose: this is plain arithmetic, which keeps it unit-testable.
+/// Ported from One Moment's `rdl-redesign` branch (`MainTabView.TabRoot`,
+/// `ScrollCollapse`, `TopEdgeBlur`, `AppMetrics`) so both apps behave the same.
+/// No SwiftUI import on purpose: this is plain arithmetic, which keeps it
+/// unit-testable.
 enum DSTopNav {
 
     // MARK: Spacing
@@ -18,15 +19,13 @@ enum DSTopNav {
     static let bottomPadding = DSSpacing.md
 
     // MARK: Logo size
+    // One Moment: `logoHeadingHeight` / `logoHeadingCollapsedHeight`.
 
-    /// Logo height at rest. One Moment's heading is 32pt.
-    static let restingLogoHeight: CGFloat = 32
-
-    /// Height the logo loses once the screen scrolls (`headingShrink`).
-    static let logoShrink: CGFloat = 8
+    static let restingLogoHeight: CGFloat = 44
+    static let collapsedLogoHeight: CGFloat = 32
 
     static func logoHeight(collapsed: Bool) -> CGFloat {
-        collapsed ? restingLogoHeight - logoShrink : restingLogoHeight
+        collapsed ? collapsedLogoHeight : restingLogoHeight
     }
 
     // MARK: Collapse
@@ -37,9 +36,15 @@ enum DSTopNav {
     static let collapseOffset: CGFloat = 12
 
     /// `contentOffset.y` is negative while the content sits below a top inset
-    /// (or is pulled past the top), so the inset is added back before comparing.
+    /// (the bar itself is one), so the inset is added back before comparing.
     /// Strictly greater: exactly at the threshold is still "not scrolled".
     static func isCollapsed(contentOffset: CGFloat, topInset: CGFloat) -> Bool {
         contentOffset + topInset > collapseOffset
     }
+
+    // MARK: Edge blur
+
+    /// How far down the soft blur under the bar reaches, status bar included
+    /// (`navBlurHeight`).
+    static let blurHeight: CGFloat = 230
 }

@@ -2,8 +2,10 @@ import SwiftUI
 
 /// Home. The top bar is real; everything below it is PLACEHOLDER content, there
 /// so the screen scrolls and the bar's behaviour can be seen:
-///   - scroll down past 12pt → the logo shrinks 32 → 24pt
-///   - scroll back to the top → it returns
+///   - the cards scroll UNDER the bar and dissolve into the background through
+///     the soft gradient behind it (no hard edge)
+///   - scroll down past 12pt → the logo shrinks 44 → 32pt and the gradient fades in
+///   - scroll back to the top → the logo returns and the gradient fades out
 ///   - scrolling the "New in" row sideways does NOT affect the bar
 ///   - tap a product → pushed screen with its own native bar and back button
 ///
@@ -104,7 +106,7 @@ private struct PlaceholderCard: View {
 
     private var caption: String {
         index == 0
-            ? "Scroll down: the logo shrinks. Scroll back up: it returns."
+            ? "Scroll down: this fades out under the bar and the logo shrinks. Scroll back up: it returns."
             : "Placeholder card"
     }
 }
