@@ -17,6 +17,7 @@ run node scripts/qa/links.cjs "$BASE"
 run node scripts/qa/flat.cjs "$BASE"
 run node scripts/qa/grid.cjs "$BASE"
 run node scripts/qa/overflow.cjs "$BASE"
+run node scripts/qa/align.cjs "$BASE"
 run node scripts/qa/keyboard.cjs "$BASE"
 run node scripts/qa/journey.cjs "$BASE"
 run node scripts/qa/journey.cjs "$BASE" --mobile

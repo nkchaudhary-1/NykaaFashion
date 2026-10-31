@@ -80,9 +80,11 @@ node scripts/qa/links.cjs    http://localhost:3100              # every nav/foot
 node scripts/qa/flat.cjs     http://localhost:3100              # no shadows / gradients / filters, one typeface, corner policy (4px · pill · 16px)
 node scripts/qa/grid.cjs     http://localhost:3100              # every block sits on the 12/4-column grid at 4 widths
 node scripts/qa/overflow.cjs http://localhost:3100              # horizontal-overflow scan, every route x 4 widths + overlays
+node scripts/qa/align.cjs    http://localhost:3100              # layout sanity: text over text, clipped or off-page text, voids in stretched columns, near-miss alignment, underfilled rails, stretched pictures (every route x 390/820/1024/1440)
 node scripts/qa/keyboard.cjs http://localhost:3100              # keyboard-only checks (skip link, combobox, focus traps, dropdowns…)
 node scripts/qa/a11y.cjs     http://localhost:3100              # axe-core on every page (npm i --no-save axe-core first)
 node scripts/qa/motion.cjs   http://localhost:3100              # awards branch: reveals settle, smooth scroll, cursor, drag rails, page fade, reduced-motion / no-JS / failed-hydration fallbacks
+node scripts/og-image.cjs                                      # re-render the link-preview image public/brand/og.jpg
 node scripts/qa/vitals.cjs   http://localhost:3100 [--throttle] # lab LCP / CLS / long tasks / transfer per route
 node scripts/qa/sweep.cjs <outDir> http://localhost:3100 / /c/women   # scrolling screenshots for visual review
 ```
