@@ -8,11 +8,11 @@ This folder is self-contained and independent of the web prototype in the repo r
 ## Run it (on a Mac with Xcode 15+)
 
 ```bash
-brew install xcodegen
-cd ios
-xcodegen generate            # creates NykaaFashion.xcodeproj from project.yml
-open NykaaFashion.xcodeproj
+./ios/scripts/setup-xcode.sh   # checks Xcode, installs XcodeGen, generates the project, opens it
 ```
+
+Or by hand: `brew install xcodegen && cd ios && xcodegen generate && open NykaaFashion.xcodeproj`.
+Xcode itself comes from the Mac App Store (needs your Apple ID) — the script tells you if it's missing.
 
 Then set your Team and bundle ID (`project.yml` → `DEVELOPMENT_TEAM`,
 `PRODUCT_BUNDLE_IDENTIFIER`, both marked `TODO`) and run on an iPhone simulator.
