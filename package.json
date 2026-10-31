@@ -12,13 +12,12 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "data:check": "node scripts/validate-data.mjs",
-    "art:manifest": "node scripts/build-art-manifest.mjs",
-    "art:placeholders": "node scripts/dev-placeholders.mjs",
-    "art:render": "node scripts/art/render.mjs src/data/generated/art-manifest.json",
     "contrast": "node scripts/contrast.mjs",
     "qa": "bash scripts/qa/all.sh",
     "doctor": "node scripts/doctor.mjs",
-    "photo:ratios": "node scripts/placeholders/build.mjs"
+    "photo:ratios": "node scripts/placeholders/build.mjs",
+    "photo:fill": "node scripts/placeholders/fill.mjs",
+    "photos": "node scripts/placeholders/build.mjs && node scripts/placeholders/fill.mjs"
   },
   "dependencies": {
     "framer-motion": "^14.9.0",

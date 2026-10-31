@@ -23,7 +23,7 @@ export interface CategoryNode {
   image?: string;
 }
 
-/** Options consumed by the art engine (scripts/art) — never read at runtime by the UI. */
+/** Authoring options from the retired procedural renderer — kept with the catalogue data, never read by the UI (images are crops of the supplied photographs). */
 export interface ArtBase {
   kind: string;
   [option: string]: string | number | boolean | undefined;

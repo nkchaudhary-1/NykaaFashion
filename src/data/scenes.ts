@@ -2,7 +2,7 @@ import type { SceneDef, SceneItem } from "./types.ts";
 
 // Editorial scenes (edit covers, story covers, shoppable look-boards).
 // Each scene composes real catalogue products so shoppable pins always resolve to a product.
-// Rendered by scripts/art → /public/img/scenes/<key>.webp (+ pin coordinates in image-meta.json).
+// Each scene key is a crop of the supplied photographs (scripts/placeholders/fill.mjs → /public/img/scenes/<key>.webp); the products named here are the ones its shoppable pins point at.
 
 type Slot = { cx: number; cy: number; h: number; rot?: number };
 type Format = "wide" | "tall" | "land";

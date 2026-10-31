@@ -152,3488 +152,3488 @@
  "products/aja-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#989196"
+  "avg": "#cab29e"
  },
  "products/aja-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#6e6a7b"
+  "avg": "#c5aa95"
  },
  "products/aja-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#989196"
+  "avg": "#c7ad98"
  },
  "products/aja-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d3a99b"
+  "avg": "#c3a790"
  },
  "products/aja-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a2513e"
+  "avg": "#c8af9b"
  },
  "products/aja-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5aea0"
+  "avg": "#cab19c"
  },
  "products/aja-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ada5a7"
+  "avg": "#ccb8a7"
  },
  "products/aja-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#59576e"
+  "avg": "#d0bcab"
  },
  "products/aja-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#afa6a7"
+  "avg": "#d0bdae"
  },
  "products/aja-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9c9ea7"
+  "avg": "#cebaaa"
  },
  "products/aja-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#73798c"
+  "avg": "#d1bdad"
  },
  "products/aja-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9c9ea7"
+  "avg": "#d0bdae"
  },
  "products/aja-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c7a098"
+  "avg": "#ccb8a7"
  },
  "products/aja-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c69e97"
+  "avg": "#cebaa9"
  },
  "products/gaj-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3d2c5"
+  "avg": "#cbb6a5"
  },
  "products/gaj-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbc8b6"
+  "avg": "#c1a58f"
  },
  "products/gaj-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d0c3"
+  "avg": "#c1a690"
  },
  "products/gaj-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3d2c4"
+  "avg": "#cab6a5"
  },
  "products/gaj-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6d5c7"
+  "avg": "#c2a791"
  },
  "products/gaj-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d1cabb"
+  "avg": "#cab5a4"
  },
  "products/gaj-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bbb6a5"
+  "avg": "#c0a48e"
  },
  "products/gaj-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cdc5b6"
+  "avg": "#c3a892"
  },
  "products/gaj-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbcabc"
+  "avg": "#cbb7a6"
  },
  "products/gaj-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d9c7b8"
+  "avg": "#c2a791"
  },
  "products/gaj-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d6c7b4"
+  "avg": "#cbb6a5"
  },
  "products/gaj-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c6b59f"
+  "avg": "#c2a791"
  },
  "products/gaj-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5c6b3"
+  "avg": "#c2a691"
  },
  "products/gaj-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d3b8"
+  "avg": "#c3a790"
  },
  "products/gaj-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3d0b1"
+  "avg": "#cbb6a5"
  },
  "products/gaj-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d3b7"
+  "avg": "#ccb9a8"
  },
  "products/gaj-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfc4bf"
+  "avg": "#c7ad98"
  },
  "products/gaj-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dec3bd"
+  "avg": "#cebaaa"
  },
  "products/hav-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b6b4b4"
+  "avg": "#ccb8a7"
  },
  "products/hav-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#7b899d"
+  "avg": "#d0bcab"
  },
  "products/hav-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b6b4b4"
+  "avg": "#d0bdae"
  },
  "products/hav-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#afa59c"
+  "avg": "#cbb6a5"
  },
  "products/hav-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aea49a"
+  "avg": "#cfbdad"
  },
  "products/hav-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cbcac8"
+  "avg": "#cfbdad"
  },
  "products/hav-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#acb4bf"
+  "avg": "#d0bcab"
  },
  "products/hav-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cccbca"
+  "avg": "#cdb9a9"
  },
  "products/hav-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b1aab0"
+  "avg": "#d0bdae"
  },
  "products/hav-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#6f7991"
+  "avg": "#d0bcab"
  },
  "products/hav-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b1aab0"
+  "avg": "#ccb8a7"
  },
  "products/hav-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7d5c9"
+  "avg": "#d0bdae"
  },
  "products/hav-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7d5c8"
+  "avg": "#cdb9a8"
  },
  "products/hea-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbc7ae"
+  "avg": "#c9b09a"
  },
  "products/hea-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddcbb3"
+  "avg": "#cab19e"
  },
  "products/hea-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8c3a9"
+  "avg": "#cbb19c"
  },
  "products/hea-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcd0bd"
+  "avg": "#cab09b"
  },
  "products/hea-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcd0bd"
+  "avg": "#c9b09c"
  },
  "products/hea-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d5c1"
+  "avg": "#cab09b"
  },
  "products/hea-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3d8c6"
+  "avg": "#d1bfaf"
  },
  "products/hea-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dacdba"
+  "avg": "#cfbbaa"
  },
  "products/hea-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2d7c4"
+  "avg": "#d1beaf"
  },
  "products/hea-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7bca7"
+  "avg": "#d1bfb0"
  },
  "products/hea-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4b39d"
+  "avg": "#d1bfaf"
  },
  "products/hea-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfd4c2"
+  "avg": "#d1bfb0"
  },
  "products/hea-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbd1bf"
+  "avg": "#d0bcab"
  },
  "products/hea-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ded3c0"
+  "avg": "#d1beae"
  },
  "products/hea-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c2bea6"
+  "avg": "#d1beaf"
  },
  "products/hea-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bdb9a0"
+  "avg": "#d1beaf"
  },
  "products/hea-05/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d6c4"
+  "avg": "#c9af9a"
  },
  "products/hea-05/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d6c4"
+  "avg": "#c9b09c"
  },
  "products/hea-05/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0d6c4"
+  "avg": "#cab09a"
  },
  "products/ind-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a6a9b1"
+  "avg": "#d0bdae"
  },
  "products/ind-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#7e8a9f"
+  "avg": "#d0bcab"
  },
  "products/ind-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9ea2aa"
+  "avg": "#cebbaa"
  },
  "products/ind-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b8b8ba"
+  "avg": "#cebbab"
  },
  "products/ind-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#546a8e"
+  "avg": "#d0bcab"
  },
  "products/ind-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b1b2b6"
+  "avg": "#d0bdad"
  },
  "products/ind-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#8a95a4"
+  "avg": "#c4a892"
  },
  "products/ind-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#7f8b9d"
+  "avg": "#c7ac98"
  },
  "products/ind-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#8a95a4"
+  "avg": "#cab19d"
  },
  "products/ind-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4ddd0"
+  "avg": "#c7ad98"
  },
  "products/ind-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4ddd0"
+  "avg": "#cab29e"
  },
  "products/ind-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c2bdb7"
+  "avg": "#d1bfb0"
  },
  "products/ind-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#acacae"
+  "avg": "#d0bcab"
  },
  "products/ind-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b7b5b1"
+  "avg": "#d1beaf"
  },
  "products/jun-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ac9d96"
+  "avg": "#cbb7a5"
  },
  "products/jun-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#716862"
+  "avg": "#d2bfaf"
  },
  "products/jun-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ab9b94"
+  "avg": "#cfbcac"
  },
  "products/jun-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0cfc2"
+  "avg": "#cbb6a5"
  },
  "products/jun-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0cec1"
+  "avg": "#cfbcac"
  },
  "products/jun-01/v3-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b8ab9a"
+  "avg": "#cbb6a5"
  },
  "products/jun-01/v3-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b7aa99"
+  "avg": "#cebaaa"
  },
  "products/jun-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7dcca"
+  "avg": "#d0bdad"
  },
  "products/jun-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6dcc9"
+  "avg": "#d1bead"
  },
  "products/jun-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6dcc9"
+  "avg": "#ccb8a7"
  },
  "products/jun-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8d5cd"
+  "avg": "#cfbdad"
  },
  "products/jun-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8d5cc"
+  "avg": "#cdbaaa"
  },
  "products/jun-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cac3b2"
+  "avg": "#cfbcac"
  },
  "products/jun-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b1b19e"
+  "avg": "#d0bcab"
  },
  "products/jun-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c9c2b1"
+  "avg": "#ccb7a6"
  },
  "products/jun-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b09996"
+  "avg": "#cebbaa"
  },
  "products/jun-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b19997"
+  "avg": "#cebaaa"
  },
  "products/jun-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e9dad1"
+  "avg": "#cfbcac"
  },
  "products/jun-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6dcd4"
+  "avg": "#d1bdac"
  },
  "products/jun-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#eadcd3"
+  "avg": "#ccb7a6"
  },
  "products/jun-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c2b4ac"
+  "avg": "#cfbcac"
  },
  "products/jun-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c3b5ad"
+  "avg": "#cdbaa9"
  },
  "products/jun-04/v3-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1c8ba"
+  "avg": "#cdb9a9"
  },
  "products/jun-04/v3-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2c8ba"
+  "avg": "#cebaaa"
  },
  "products/jun-05/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b2aca8"
+  "avg": "#d0bdae"
  },
  "products/jun-05/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#676973"
+  "avg": "#d0bcab"
  },
  "products/jun-05/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b3aeab"
+  "avg": "#cebaaa"
  },
  "products/jun-05/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dac7af"
+  "avg": "#d0bdad"
  },
  "products/jun-05/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dac8b2"
+  "avg": "#ccb8a8"
  },
  "products/kor-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ebe1d2"
+  "avg": "#c4a892"
  },
  "products/kor-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#eae1d2"
+  "avg": "#c6ac97"
  },
  "products/kor-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ece2d4"
+  "avg": "#cab19c"
  },
  "products/kor-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dddad3"
+  "avg": "#c7ac97"
  },
  "products/kor-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dedad4"
+  "avg": "#cab29d"
  },
  "products/kor-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d7c8"
+  "avg": "#ccb8a7"
  },
  "products/kor-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6dccc"
+  "avg": "#d1bead"
  },
  "products/kor-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d7c8"
+  "avg": "#cfbdad"
  },
  "products/kor-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1e0d6"
+  "avg": "#cab19c"
  },
  "products/kor-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6e2d7"
+  "avg": "#c6ac98"
  },
  "products/kor-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2e1d7"
+  "avg": "#c7ad98"
  },
  "products/kor-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cfd9db"
+  "avg": "#cab09c"
  },
  "products/kor-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ccd6d8"
+  "avg": "#c3a791"
  },
  "products/kor-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6dbcb"
+  "avg": "#d0bdae"
  },
  "products/kor-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e9dfcd"
+  "avg": "#d0bcab"
  },
  "products/kor-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6dccb"
+  "avg": "#ccb8a7"
  },
  "products/lik-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e8d0c5"
+  "avg": "#cab19c"
  },
  "products/lik-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6bdb6"
+  "avg": "#c6ab97"
  },
  "products/lik-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7cfc2"
+  "avg": "#c7ac96"
  },
  "products/lik-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d1cdbc"
+  "avg": "#cab09c"
  },
  "products/lik-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d2cdbb"
+  "avg": "#c6ab95"
  },
  "products/lik-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcbe80"
+  "avg": "#c6ab96"
  },
  "products/lik-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dab45f"
+  "avg": "#c7ad98"
  },
  "products/lik-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddbf82"
+  "avg": "#cab19c"
  },
  "products/lik-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#92a7a1"
+  "avg": "#c6ab96"
  },
  "products/lik-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#90a59f"
+  "avg": "#cab19c"
  },
  "products/lik-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c0a6a1"
+  "avg": "#cab19d"
  },
  "products/lik-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#754556"
+  "avg": "#c8af9a"
  },
  "products/lik-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c4aca2"
+  "avg": "#c6ab95"
  },
  "products/lik-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#afaba9"
+  "avg": "#cab19d"
  },
  "products/lik-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b7b2af"
+  "avg": "#c4a892"
  },
  "products/lik-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8b09c"
+  "avg": "#c4a892"
  },
  "products/lik-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#be6651"
+  "avg": "#c5aa95"
  },
  "products/lik-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d9b3a0"
+  "avg": "#cab19d"
  },
  "products/lik-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cfcdb2"
+  "avg": "#c2a68f"
  },
  "products/lik-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cbc9ae"
+  "avg": "#cab29d"
  },
  "products/lik-05/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ca9e9b"
+  "avg": "#c7ac97"
  },
  "products/lik-05/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#8a303e"
+  "avg": "#c6ab97"
  },
  "products/lik-05/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cfa5a1"
+  "avg": "#cab29d"
  },
  "products/lit-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddd09e"
+  "avg": "#cab29d"
  },
  "products/lit-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#deb85d"
+  "avg": "#c5aa95"
  },
  "products/lit-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddd09e"
+  "avg": "#c3a790"
  },
  "products/lit-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7ddd2"
+  "avg": "#cab29d"
  },
  "products/lit-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d6ddd1"
+  "avg": "#c6ac96"
  },
  "products/lit-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a1ada8"
+  "avg": "#c7ac97"
  },
  "products/lit-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#749897"
+  "avg": "#c6ac98"
  },
  "products/lit-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a1aeaa"
+  "avg": "#cab29d"
  },
  "products/lit-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7b48c"
+  "avg": "#c6ab95"
  },
  "products/lit-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8b58c"
+  "avg": "#cab09b"
  },
  "products/lit-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0b093"
+  "avg": "#cab29d"
  },
  "products/lit-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c9775f"
+  "avg": "#c7ad98"
  },
  "products/lit-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfaf92"
+  "avg": "#c7ac97"
  },
  "products/lit-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#afbba7"
+  "avg": "#cab29d"
  },
  "products/lit-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#afbba7"
+  "avg": "#c6aa95"
  },
  "products/lit-03/v3-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#eedeb1"
+  "avg": "#cab29e"
  },
  "products/lit-03/v3-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#eddcaf"
+  "avg": "#c8ae99"
  },
  "products/lit-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfcebf"
+  "avg": "#c6ab95"
  },
  "products/lit-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7bdb3"
+  "avg": "#c8ae9a"
  },
  "products/lit-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d0c1"
+  "avg": "#cab19d"
  },
  "products/lit-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b7b6a4"
+  "avg": "#c6ab96"
  },
  "products/lit-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b7b7a4"
+  "avg": "#cab19c"
  },
  "products/lit-05/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dadfd3"
+  "avg": "#c3a791"
  },
  "products/lit-05/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7dcd6"
+  "avg": "#c8ae9a"
  },
  "products/lit-05/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d9ded3"
+  "avg": "#cab19d"
  },
  "products/lit-05/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dddbc5"
+  "avg": "#c7ad99"
  },
  "products/lit-05/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcdac4"
+  "avg": "#cab19d"
  },
  "products/lit-06/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6d6cd"
+  "avg": "#c7ab94"
  },
  "products/lit-06/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2d5cd"
+  "avg": "#ccb7a6"
  },
  "products/lit-06/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2d3cb"
+  "avg": "#cdbaa9"
  },
  "products/lit-06/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d0c6"
+  "avg": "#c7aa94"
  },
  "products/lit-06/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0cac1"
+  "avg": "#cfbbab"
  },
  "products/lit-07/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d59b9c"
+  "avg": "#c5a993"
  },
  "products/lit-07/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#af3c69"
+  "avg": "#c5aa95"
  },
  "products/lit-07/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d49b9c"
+  "avg": "#cab19d"
  },
  "products/lit-07/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a1b29e"
+  "avg": "#c2a690"
  },
  "products/lit-07/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a2b3a0"
+  "avg": "#cab29e"
  },
  "products/lit-08/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4cbbd"
+  "avg": "#cab19d"
  },
  "products/lit-08/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c9c2b7"
+  "avg": "#c6ab96"
  },
  "products/lit-08/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4cbbd"
+  "avg": "#c5aa94"
  },
  "products/lit-08/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a19c98"
+  "avg": "#cab29e"
  },
  "products/lit-08/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a19d99"
+  "avg": "#c7ad98"
  },
  "products/loo-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbdbd1"
+  "avg": "#d0bdad"
  },
  "products/loo-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dedacc"
+  "avg": "#d1bdad"
  },
  "products/loo-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbdad1"
+  "avg": "#ccb7a6"
  },
  "products/loo-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d2c2b4"
+  "avg": "#cfbcac"
  },
  "products/loo-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d1c1b3"
+  "avg": "#ccb8a7"
  },
  "products/loo-01/v3-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a0afa6"
+  "avg": "#cebaa9"
  },
  "products/loo-01/v3-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a0afa5"
+  "avg": "#cbb6a5"
  },
  "products/loo-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ded1bb"
+  "avg": "#d0bdae"
  },
  "products/loo-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7c8ad"
+  "avg": "#d0bcab"
  },
  "products/loo-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddd0bb"
+  "avg": "#cdbaaa"
  },
  "products/loo-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aeaa92"
+  "avg": "#d0bdae"
  },
  "products/loo-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aeaa92"
+  "avg": "#cebbab"
  },
  "products/loo-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8d6cd"
+  "avg": "#cfbdad"
  },
  "products/loo-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5cdbc"
+  "avg": "#d0bcab"
  },
  "products/loo-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7d5cc"
+  "avg": "#ccb8a7"
  },
  "products/loo-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a8aaa7"
+  "avg": "#d0bdae"
  },
  "products/loo-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aaaca9"
+  "avg": "#cbb7a6"
  },
  "products/loo-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5d9c8"
+  "avg": "#ccb7a6"
  },
  "products/loo-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d6c9b6"
+  "avg": "#d1bead"
  },
  "products/loo-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3d7c6"
+  "avg": "#d0bdae"
  },
  "products/loo-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bdbba2"
+  "avg": "#cdbaa9"
  },
  "products/loo-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bcb9a0"
+  "avg": "#cebaaa"
  },
  "products/maa-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d2c9ba"
+  "avg": "#c3a791"
  },
  "products/maa-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c2bcb0"
+  "avg": "#c7ad99"
  },
  "products/maa-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cec6b8"
+  "avg": "#cab19c"
  },
  "products/maa-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5c0b6"
+  "avg": "#c7ad97"
  },
  "products/maa-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d1bab1"
+  "avg": "#cab29e"
  },
  "products/maa-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cfae8e"
+  "avg": "#cab09c"
  },
  "products/maa-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#be9159"
+  "avg": "#c8ae9a"
  },
  "products/maa-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ceab86"
+  "avg": "#c6ab95"
  },
  "products/maa-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c2b9b9"
+  "avg": "#c7ad97"
  },
  "products/maa-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9a99a1"
+  "avg": "#c9b09c"
  },
  "products/maa-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bcb5b8"
+  "avg": "#cab29e"
  },
  "products/maa-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcc1ac"
+  "avg": "#c5aa94"
  },
  "products/maa-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cfa38a"
+  "avg": "#c5aa95"
  },
  "products/maa-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddc1ac"
+  "avg": "#cab29d"
  },
  "products/maa-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d2cdb6"
+  "avg": "#c4a892"
  },
  "products/maa-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cac7ae"
+  "avg": "#cab19c"
  },
  "products/mau-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c3a5a3"
+  "avg": "#cab5a3"
  },
  "products/mau-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b99594"
+  "avg": "#d1bead"
  },
  "products/mau-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c3a5a3"
+  "avg": "#cfbdad"
  },
  "products/mau-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#6a5a60"
+  "avg": "#ccb8a7"
  },
  "products/mau-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#68585e"
+  "avg": "#d0bdae"
  },
  "products/mau-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a49d96"
+  "avg": "#cdb9a8"
  },
  "products/mau-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#706d6b"
+  "avg": "#d1bdad"
  },
  "products/mau-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a49e97"
+  "avg": "#cebbaa"
  },
  "products/mau-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#5d523b"
+  "avg": "#cdbaaa"
  },
  "products/mau-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#5d523b"
+  "avg": "#d0bdae"
  },
  "products/mau-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b7ab9a"
+  "avg": "#cbb7a5"
  },
  "products/mau-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#817d68"
+  "avg": "#d0bcab"
  },
  "products/mau-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b6aa99"
+  "avg": "#cfbcac"
  },
  "products/mau-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a79b9c"
+  "avg": "#cbb6a5"
  },
  "products/mau-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a79b9c"
+  "avg": "#d0bdad"
  },
  "products/mir-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d6bca6"
+  "avg": "#cdb9a8"
  },
  "products/mir-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c0a281"
+  "avg": "#d0bcab"
  },
  "products/mir-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5bba5"
+  "avg": "#d0bdae"
  },
  "products/mir-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aa9e9f"
+  "avg": "#ccb9a8"
  },
  "products/mir-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aa9e9f"
+  "avg": "#cebaaa"
  },
  "products/mir-01/v3-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3c5bb"
+  "avg": "#cbb6a5"
  },
  "products/mir-01/v3-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3c6bc"
+  "avg": "#d0bdae"
  },
  "products/mir-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#eae0d0"
+  "avg": "#cfbdad"
  },
  "products/mir-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5dccb"
+  "avg": "#d1bead"
  },
  "products/mir-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e9dece"
+  "avg": "#cebaaa"
  },
  "products/mir-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a7ad9d"
+  "avg": "#d0bdae"
  },
  "products/mir-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a7ae9e"
+  "avg": "#cebbab"
  },
  "products/mir-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aa9e97"
+  "avg": "#cbb6a5"
  },
  "products/mir-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#736b67"
+  "avg": "#cfbbab"
  },
  "products/mir-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aa9e97"
+  "avg": "#cebbab"
  },
  "products/mir-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d3bba6"
+  "avg": "#cebbab"
  },
  "products/mir-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4bda8"
+  "avg": "#d0bdad"
  },
  "products/mit-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddd5c7"
+  "avg": "#c9af99"
  },
  "products/mit-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbd4c7"
+  "avg": "#c9b19d"
  },
  "products/mit-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcd5c6"
+  "avg": "#c9af9a"
  },
  "products/mit-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2d5c2"
+  "avg": "#cbb19c"
  },
  "products/mit-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d6c4"
+  "avg": "#c9af9a"
  },
  "products/mit-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3d8c7"
+  "avg": "#c9af99"
  },
  "products/mit-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4dbca"
+  "avg": "#c8af9b"
  },
  "products/mit-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5dac9"
+  "avg": "#c9b09a"
  },
  "products/mit-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcd3c2"
+  "avg": "#cab09b"
  },
  "products/mit-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0d7c6"
+  "avg": "#cab09a"
  },
  "products/mit-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5c1ab"
+  "avg": "#cab19c"
  },
  "products/mit-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cab29c"
+  "avg": "#c6ac98"
  },
  "products/mit-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#decfba"
+  "avg": "#c9af9a"
  },
  "products/mit-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d2c1"
+  "avg": "#c9af9a"
  },
  "products/mit-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3d9c9"
+  "avg": "#c8af9b"
  },
  "products/mit-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e3d8c7"
+  "avg": "#c9af99"
  },
  "products/mit-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dad1c2"
+  "avg": "#cbb19c"
  },
  "products/mit-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7cec0"
+  "avg": "#cab09b"
  },
  "products/noo-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#746361"
+  "avg": "#c7ad98"
  },
  "products/noo-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b6a693"
+  "avg": "#c7ad99"
  },
  "products/noo-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#887770"
+  "avg": "#cab29d"
  },
  "products/noo-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aca49d"
+  "avg": "#cab19c"
  },
  "products/noo-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#727073"
+  "avg": "#c5ab96"
  },
  "products/noo-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b2a89f"
+  "avg": "#c4a892"
  },
  "products/noo-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#afb09c"
+  "avg": "#cebbaa"
  },
  "products/noo-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#385844"
+  "avg": "#d1bdac"
  },
  "products/noo-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aeb09c"
+  "avg": "#cfbdad"
  },
  "products/nor-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5e1d7"
+  "avg": "#cdbaa9"
  },
  "products/nor-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5e1d8"
+  "avg": "#cfbbab"
  },
  "products/nor-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4e0d6"
+  "avg": "#cebbaa"
  },
  "products/nor-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a8a59d"
+  "avg": "#cdb9a9"
  },
  "products/nor-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a8a49d"
+  "avg": "#cfbcac"
  },
  "products/nor-01/v3-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b5b4a3"
+  "avg": "#cbb7a6"
  },
  "products/nor-01/v3-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b5b4a3"
+  "avg": "#cebaaa"
  },
  "products/nor-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ccd6da"
+  "avg": "#ccb8a7"
  },
  "products/nor-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cbd4d9"
+  "avg": "#d0bcab"
  },
  "products/nor-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cdd6da"
+  "avg": "#cfbcad"
  },
  "products/nor-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2e2dd"
+  "avg": "#ccb8a8"
  },
  "products/nor-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1e1db"
+  "avg": "#cfbdad"
  },
  "products/nor-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5c7b2"
+  "avg": "#d0bdae"
  },
  "products/nor-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c2b193"
+  "avg": "#cfbbab"
  },
  "products/nor-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d6c9b4"
+  "avg": "#cdb9a9"
  },
  "products/nor-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aca8a5"
+  "avg": "#cfbdad"
  },
  "products/nor-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aba7a3"
+  "avg": "#ccb9a8"
  },
  "products/nor-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d6d1c1"
+  "avg": "#ccb8a8"
  },
  "products/nor-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5cbb5"
+  "avg": "#d0bcab"
  },
  "products/nor-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4cfbf"
+  "avg": "#d0bdad"
  },
  "products/nor-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b9c4b6"
+  "avg": "#cbb7a6"
  },
  "products/nor-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b9c4b6"
+  "avg": "#d0bdae"
  },
  "products/nor-05/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ded7c8"
+  "avg": "#cebbab"
  },
  "products/nor-05/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcd5c6"
+  "avg": "#d1bdad"
  },
  "products/nor-05/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ded6c8"
+  "avg": "#cbb7a6"
  },
  "products/nor-05/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9c9d9f"
+  "avg": "#cfbcac"
  },
  "products/nor-05/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9c9d9f"
+  "avg": "#cebbab"
  },
  "products/nyk-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d2c3"
+  "avg": "#cebbaa"
  },
  "products/nyk-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1cfbf"
+  "avg": "#d0bcab"
  },
  "products/nyk-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d1c3"
+  "avg": "#cebbab"
  },
  "products/nyk-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c9bcbe"
+  "avg": "#cdbaa9"
  },
  "products/nyk-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c8bbbc"
+  "avg": "#d0bdad"
  },
  "products/nyk-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5dac9"
+  "avg": "#cbb6a5"
  },
  "products/nyk-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfd1bd"
+  "avg": "#d1bead"
  },
  "products/nyk-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6dac9"
+  "avg": "#cfbdad"
  },
  "products/nyk-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aba59f"
+  "avg": "#cdbaaa"
  },
  "products/nyk-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aba59f"
+  "avg": "#cebbab"
  },
  "products/nyk-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfd0c4"
+  "avg": "#cfbcad"
  },
  "products/nyk-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d0c5b6"
+  "avg": "#d0bcab"
  },
  "products/nyk-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddcfc3"
+  "avg": "#cebbaa"
  },
  "products/nyk-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b8a297"
+  "avg": "#d0bdad"
  },
  "products/nyk-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b8a297"
+  "avg": "#ccb8a7"
  },
  "products/nyk-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e8d6c6"
+  "avg": "#ccb8a7"
  },
  "products/nyk-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5d5c2"
+  "avg": "#d1bead"
  },
  "products/nyk-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e8d6c5"
+  "avg": "#d0bdae"
  },
  "products/nyk-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9c9297"
+  "avg": "#cbb7a6"
  },
  "products/nyk-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9d9398"
+  "avg": "#cfbcad"
  },
  "products/ora-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#6e6b5b"
+  "avg": "#cebaaa"
  },
  "products/ora-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a9a18b"
+  "avg": "#cfbbab"
  },
  "products/ora-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#6e6b5c"
+  "avg": "#d0bdad"
  },
  "products/ora-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#8f959c"
+  "avg": "#cdbaa9"
  },
  "products/ora-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#8e949c"
+  "avg": "#cebaaa"
  },
  "products/ora-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9a9ca0"
+  "avg": "#ccb9a8"
  },
  "products/ora-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#737885"
+  "avg": "#cfbcab"
  },
  "products/ora-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9a9ca0"
+  "avg": "#d0beaf"
  },
  "products/ora-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#807f74"
+  "avg": "#ccb8a6"
  },
  "products/ora-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#807f73"
+  "avg": "#d0bdae"
  },
  "products/ora-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a9acaa"
+  "avg": "#cebbab"
  },
  "products/ora-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#636465"
+  "avg": "#d0bcab"
  },
  "products/ora-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a9acaa"
+  "avg": "#cbb7a5"
  },
  "products/ora-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b2b7aa"
+  "avg": "#cebbaa"
  },
  "products/ora-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b3b7ab"
+  "avg": "#cebbab"
  },
  "products/pip-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcd1c3"
+  "avg": "#cab6a4"
  },
  "products/pip-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcd1c1"
+  "avg": "#c3a892"
  },
  "products/pip-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d9cec1"
+  "avg": "#c2a691"
  },
  "products/pip-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ead9cd"
+  "avg": "#cbb7a5"
  },
  "products/pip-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1cfc2"
+  "avg": "#c3a892"
  },
  "products/pip-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7d6ca"
+  "avg": "#c0a48e"
  },
  "products/pip-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e9d8cc"
+  "avg": "#cbb7a6"
  },
  "products/pip-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e6d5c9"
+  "avg": "#c3a892"
  },
  "products/pip-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddcab8"
+  "avg": "#c3a791"
  },
  "products/pip-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cdb097"
+  "avg": "#cbb6a5"
  },
  "products/pip-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcc9b7"
+  "avg": "#cdb9a8"
  },
  "products/pip-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cac0b4"
+  "avg": "#c4a892"
  },
  "products/pip-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cac0b4"
+  "avg": "#cbb7a6"
  },
  "products/pip-03/v3-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7dbcd"
+  "avg": "#c8ae99"
  },
  "products/pip-03/v3-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5dacb"
+  "avg": "#cdb9a8"
  },
  "products/pip-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2d4c1"
+  "avg": "#cbb7a6"
  },
  "products/pip-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dccdb8"
+  "avg": "#c1a58f"
  },
  "products/pip-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0d1bf"
+  "avg": "#c1a58f"
  },
  "products/ran-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dac2af"
+  "avg": "#d1bfb0"
  },
  "products/ran-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d1af9d"
+  "avg": "#d0bcab"
  },
  "products/ran-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5b4a1"
+  "avg": "#d1bfb0"
  },
  "products/ran-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c4bdb4"
+  "avg": "#d1bfb0"
  },
  "products/ran-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b6b1ae"
+  "avg": "#d1bfb0"
  },
  "products/ran-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d9bdab"
+  "avg": "#d1bfb0"
  },
  "products/ran-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bc7e6a"
+  "avg": "#d0bcab"
  },
  "products/ran-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5b4a2"
+  "avg": "#d2c0b1"
  },
  "products/ran-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bcb5ad"
+  "avg": "#d1bfb0"
  },
  "products/ran-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#787984"
+  "avg": "#cfbbaa"
  },
  "products/ran-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b2aca6"
+  "avg": "#d1bfb0"
  },
  "products/ran-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dec6a5"
+  "avg": "#d1beaf"
  },
  "products/ran-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcc19c"
+  "avg": "#d1bfb0"
  },
  "products/ran-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cac7b4"
+  "avg": "#d1beae"
  },
  "products/ran-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#8c977f"
+  "avg": "#d1bdac"
  },
  "products/ran-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bebda9"
+  "avg": "#d1bfaf"
  },
  "products/rsv-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#634d48"
+  "avg": "#cebbaa"
  },
  "products/rsv-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c5ac80"
+  "avg": "#d0bcab"
  },
  "products/rsv-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#5f4944"
+  "avg": "#cdb9a8"
  },
  "products/rsv-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bdb5ab"
+  "avg": "#cdbaa9"
  },
  "products/rsv-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bcb4aa"
+  "avg": "#ccb8a7"
  },
  "products/rsv-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8c5b7"
+  "avg": "#cfbbab"
  },
  "products/rsv-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a17373"
+  "avg": "#d1bdad"
  },
  "products/rsv-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7c4b6"
+  "avg": "#cbb7a6"
  },
  "products/rsv-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b1b7a7"
+  "avg": "#cbb7a6"
  },
  "products/rsv-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#8da292"
+  "avg": "#d0bcab"
  },
  "products/rsv-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b4baaa"
+  "avg": "#cebbab"
  },
  "products/rsv-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e9d7cb"
+  "avg": "#c6aa93"
  },
  "products/rsv-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e8d7cb"
+  "avg": "#ccb7a6"
  },
  "products/rsv-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7d5c9"
+  "avg": "#cdb9a8"
  },
  "products/rsv-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#decdc3"
+  "avg": "#c6aa93"
  },
  "products/rsv-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddcbc1"
+  "avg": "#cebaaa"
  },
  "products/rsv-05/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d5c1b6"
+  "avg": "#c7ac97"
  },
  "products/rsv-05/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d2bcb3"
+  "avg": "#cbb6a5"
  },
  "products/rsv-05/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7c2b9"
+  "avg": "#cebaaa"
  },
  "products/rsv-05/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cbcabc"
+  "avg": "#c8ae98"
  },
  "products/rsv-05/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cbcbbc"
+  "avg": "#ccb7a6"
  },
  "products/saa-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfd4c7"
+  "avg": "#cab6a5"
  },
  "products/saa-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cec2b5"
+  "avg": "#c1a590"
  },
  "products/saa-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbd0c3"
+  "avg": "#c2a690"
  },
  "products/saa-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddd0c0"
+  "avg": "#cbb6a5"
  },
  "products/saa-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#daccbc"
+  "avg": "#c2a791"
  },
  "products/saa-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfd1c2"
+  "avg": "#c2a791"
  },
  "products/saa-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cec4b8"
+  "avg": "#cab5a3"
  },
  "products/saa-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bbb0a4"
+  "avg": "#c2a791"
  },
  "products/saa-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cec3b7"
+  "avg": "#c1a58f"
  },
  "products/saa-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e9d8ce"
+  "avg": "#cbb7a6"
  },
  "products/saa-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ecdbd0"
+  "avg": "#c3a892"
  },
  "products/saa-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e9d9ce"
+  "avg": "#c0a48e"
  },
  "products/str-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2d8cc"
+  "avg": "#c8ac95"
  },
  "products/str-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d8cd"
+  "avg": "#ccb7a6"
  },
  "products/str-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d7cc"
+  "avg": "#cdb9a8"
  },
  "products/str-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d7c9"
+  "avg": "#c8ac96"
  },
  "products/str-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e4d8c9"
+  "avg": "#cbb7a5"
  },
  "products/str-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ded1c1"
+  "avg": "#c8ac96"
  },
  "products/str-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddd2c3"
+  "avg": "#ccb7a6"
  },
  "products/str-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ded1c1"
+  "avg": "#cebbaa"
  },
  "products/str-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8cdbe"
+  "avg": "#c5a891"
  },
  "products/str-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7ccbd"
+  "avg": "#cebaa9"
  },
  "products/str-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7cfc2"
+  "avg": "#c5a891"
  },
  "products/str-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbd3c8"
+  "avg": "#ccb7a6"
  },
  "products/str-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7cfc2"
+  "avg": "#cebbaa"
  },
  "products/str-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7cec2"
+  "avg": "#c7ab94"
  },
  "products/str-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7cdc1"
+  "avg": "#c9b4a2"
  },
  "products/str-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dbccc5"
+  "avg": "#c7ab95"
  },
  "products/str-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d3c6c2"
+  "avg": "#ccb7a6"
  },
  "products/str-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dacbc5"
+  "avg": "#ccb8a7"
  },
  "products/str-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5d5cc"
+  "avg": "#c7ab95"
  },
  "products/str-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e2d2c9"
+  "avg": "#cdbaa9"
  },
  "products/til-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c1a29a"
+  "avg": "#c4a892"
  },
  "products/til-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a16a6f"
+  "avg": "#c9af9b"
  },
  "products/til-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c4a69b"
+  "avg": "#cab29d"
  },
  "products/til-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#aab19e"
+  "avg": "#c7ac97"
  },
  "products/til-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#afb39f"
+  "avg": "#cab19d"
  },
  "products/til-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9097a0"
+  "avg": "#d0bdad"
  },
  "products/til-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#333f5c"
+  "avg": "#d0bcab"
  },
  "products/til-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#8e969f"
+  "avg": "#cbb7a6"
  },
  "products/til-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a89093"
+  "avg": "#d0bdae"
  },
  "products/til-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a99193"
+  "avg": "#cebbab"
  },
  "products/til-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d8c4ba"
+  "avg": "#c7ad97"
  },
  "products/til-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4bdb4"
+  "avg": "#ccb7a5"
  },
  "products/til-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7c2b8"
+  "avg": "#cdbaaa"
  },
  "products/til-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7dcce"
+  "avg": "#c7ad98"
  },
  "products/til-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e7dccf"
+  "avg": "#cebbab"
  },
  "products/til-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1dfd3"
+  "avg": "#cab29e"
  },
  "products/til-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e5e0d1"
+  "avg": "#c8ae9a"
  },
  "products/til-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1dfd3"
+  "avg": "#c5aa94"
  },
  "products/til-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#949c8c"
+  "avg": "#cab09b"
  },
  "products/til-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#929a8a"
+  "avg": "#c4a993"
  },
  "products/twd-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cda89c"
+  "avg": "#ccb9a8"
  },
  "products/twd-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bd867d"
+  "avg": "#d1bdac"
  },
  "products/twd-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cca79a"
+  "avg": "#d0bdae"
  },
  "products/twd-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e1d2c2"
+  "avg": "#cdbaa9"
  },
  "products/twd-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0d0c0"
+  "avg": "#cfbcab"
  },
  "products/twd-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfccbc"
+  "avg": "#d0bdad"
  },
  "products/twd-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4c0a7"
+  "avg": "#d0bdac"
  },
  "products/twd-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddcab9"
+  "avg": "#cbb7a6"
  },
  "products/twd-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c6c4b4"
+  "avg": "#d0bdae"
  },
  "products/twd-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c6c4b4"
+  "avg": "#cebaaa"
  },
  "products/twd-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c5c0bd"
+  "avg": "#cfbcac"
  },
  "products/twd-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#6c738a"
+  "avg": "#d0bcab"
  },
  "products/twd-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c4bfbc"
+  "avg": "#cdbaa9"
  },
  "products/twd-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c6acac"
+  "avg": "#d0bdad"
  },
  "products/twd-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bb9b9e"
+  "avg": "#d0bcab"
  },
  "products/twd-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c6acab"
+  "avg": "#cdbaaa"
  },
  "products/twd-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#eadecc"
+  "avg": "#cfbcad"
  },
  "products/twd-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e9ddcb"
+  "avg": "#cbb7a6"
  },
  "products/twd-05/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c1c1ba"
+  "avg": "#cdbaa9"
  },
  "products/twd-05/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9faea9"
+  "avg": "#d0bcab"
  },
  "products/twd-05/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bfbfb8"
+  "avg": "#d0bdad"
  },
  "products/twd-05/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ddb7ae"
+  "avg": "#cdbaaa"
  },
  "products/twd-05/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcb6ad"
+  "avg": "#cfbcac"
  },
  "products/twd-06/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9ca292"
+  "avg": "#cebbaa"
  },
  "products/twd-06/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#3d6050"
+  "avg": "#cfbcab"
  },
  "products/twd-06/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#9da494"
+  "avg": "#cebbab"
  },
  "products/twd-07/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a79b95"
+  "avg": "#cebaaa"
  },
  "products/twd-07/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#807975"
+  "avg": "#d1bdac"
  },
  "products/twd-07/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a89d97"
+  "avg": "#cebbab"
  },
  "products/twd-07/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d3a896"
+  "avg": "#cbb7a5"
  },
  "products/twd-07/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d3a796"
+  "avg": "#cfbcac"
  },
  "products/ves-01/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4b9a9"
+  "avg": "#c5aa94"
  },
  "products/ves-01/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b48b71"
+  "avg": "#cbb6a5"
  },
  "products/ves-01/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4b8a8"
+  "avg": "#cebaaa"
  },
  "products/ves-01/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c1b2aa"
+  "avg": "#c5aa94"
  },
  "products/ves-01/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c0b1a9"
+  "avg": "#cbb6a5"
  },
  "products/ves-02/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bfb7aa"
+  "avg": "#c8ad96"
  },
  "products/ves-02/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a39c92"
+  "avg": "#ccb7a5"
  },
  "products/ves-02/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bdb5aa"
+  "avg": "#ccb8a6"
  },
  "products/ves-02/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c5b9aa"
+  "avg": "#c9ae98"
  },
  "products/ves-02/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c5b8a9"
+  "avg": "#cbb7a5"
  },
  "products/ves-03/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d0bfb0"
+  "avg": "#c4a892"
  },
  "products/ves-03/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#bea99c"
+  "avg": "#cbb6a5"
  },
  "products/ves-03/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cdbcad"
+  "avg": "#cebaaa"
  },
  "products/ves-03/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#434336"
+  "avg": "#c4a892"
  },
  "products/ves-03/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#424235"
+  "avg": "#cebaaa"
  },
  "products/ves-04/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#393c31"
+  "avg": "#c7aa94"
  },
  "products/ves-04/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#3b3d32"
+  "avg": "#ccb7a5"
  },
  "products/ves-04/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#3a3c31"
+  "avg": "#cebbab"
  },
  "products/ves-04/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfd4c6"
+  "avg": "#c7ab94"
  },
  "products/ves-04/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfd3c5"
+  "avg": "#cebaaa"
  },
  "products/ves-05/v1-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0ccc1"
+  "avg": "#c5a891"
  },
  "products/ves-05/v1-detail": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4bfb3"
+  "avg": "#ccb7a6"
  },
  "products/ves-05/v1-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#e0ccc1"
+  "avg": "#cbb7a5"
  },
  "products/ves-05/v2-alt": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dcccc2"
+  "avg": "#c6aa93"
  },
  "products/ves-05/v2-front": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dac9c0"
+  "avg": "#cebbaa"
  },
  "scenes/auth-side": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ceb5a4"
+  "avg": "#c5aa94"
  },
  "scenes/cat-home": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dac9b5"
+  "avg": "#d1bfb0"
  },
  "scenes/cat-kids": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c3bd91"
+  "avg": "#c6ab95"
  },
  "scenes/cat-men": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b2b7b3"
+  "avg": "#cfbdad"
  },
  "scenes/cat-women": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7b98b"
+  "avg": "#cab29d"
  },
  "scenes/edit-festive-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#c99f88"
+  "avg": "#cab29d"
  },
  "scenes/edit-festive-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#ceaaa0",
+  "avg": "#c5ac97",
   "edge": {
    "wall": [
-    "#edd2c5",
-    "#dabeb1"
+    "#c5ac97",
+    "#c5ac97"
    ],
    "floor": [
-    "#d8bfb3",
-    "#d3baae"
+    "#c5ac97",
+    "#c5ac97"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAkAAwBSJZACdADiZYJPT+AA/vOkgXOOxMNZmzaU6TtFYGcx0OK1cIZ1yanI2rZXsH5E3dsfbSVO7wmeDxhyfpeq3Y/vrBAAAA=="
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkABIByJQBOgBUs7CEAAP5kCEluQ2i6QXa1hPYE5omxNzI0A8+81mpLCEHQDEYaM7J3iAAAAA=="
  },
  "scenes/edit-hidden-gems-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a69491"
+  "avg": "#cab29d"
  },
  "scenes/edit-hidden-gems-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#ccb7aa",
+  "avg": "#c5ac97",
   "edge": {
    "wall": [
-    "#e7d0c0",
-    "#dfc9b9"
+    "#c5ac97",
+    "#c5ac97"
    ],
    "floor": [
-    "#d2beae",
-    "#cdb9a9"
+    "#c5ac97",
+    "#c5ac97"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoQAAkAAwBSJQBOgCPTa4DarogAAP7yCC2aF93wR/IfE7DWNgq0t42SbavMJlIxiMIPAMVB7nDIHY+R9pCfN1+ibsqgAA=="
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkABIByJQBOgBUs7CEAAP5kCEluQ2i6QXa1hPYE5omxNzI0A8+81mpLCEHQDEYaM7J3iAAAAA=="
  },
  "scenes/edit-house-of-nykaa-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dab3b1"
+  "avg": "#cab19d"
  },
  "scenes/edit-house-of-nykaa-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#e0c0ba",
+  "avg": "#c5ac97",
   "edge": {
    "wall": [
-    "#f1dad9",
-    "#e9d3d2"
+    "#c5ac97",
+    "#c5ac97"
    ],
    "floor": [
-    "#ddc7c5",
-    "#d7c2c1"
+    "#c5ac97",
+    "#c5ac97"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoQAAkAAwBSJZACdAEPAo+zFwAA/vT6YDurV26PuspskMKWuBVIasi54Lrkm27zHiHuEPTBIetdohK0lDiAAA=="
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkABIByJQBOgBUs7CEAAP5kCEluQ2i6QXa1hPYE5omxNzI0A8+81mpLCEHQDEYaM7J3iAAAAA=="
  },
  "scenes/edit-luxe-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#56413c"
+  "avg": "#cfbcac"
  },
  "scenes/edit-luxe-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#332a27",
+  "avg": "#cdbcac",
   "edge": {
    "wall": [
-    "#221d1a",
-    "#211c19"
+    "#cdbcac",
+    "#cdbcac"
    ],
    "floor": [
-    "#1f1a17",
-    "#1e1a16"
+    "#cdbcac",
+    "#cdbcac"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoQAAkAAwBSJZQAAxZKA/xu4AD+9Ynrb2vjSZJUV9vKqsjek1msp0TSfsZsvxBMAAA="
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkABIByJYwCdADBDJwAAP7D/bGpcrwhcxPiN6PQtRigLHTKn3FGb/NsAAAA"
  },
  "scenes/edit-new-in-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d4bcae"
+  "avg": "#cfbdad"
  },
  "scenes/edit-new-in-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#d9c6b5",
+  "avg": "#cdbcac",
   "edge": {
    "wall": [
-    "#e7ddd0",
-    "#dfd6c9"
+    "#cdbcac",
+    "#cdbcac"
    ],
    "floor": [
-    "#d3cabe",
-    "#cec5b9"
+    "#cdbcac",
+    "#cdbcac"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADwAQCdASoQAAkAAwBSJQBOgCFS26uVUAAA/vT9ZMcWTABwVT0L4WqwPvworBYzt7hZzDwfHNr8nW5iH+o0wAAA"
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkABIByJYwCdADBDJwAAP7D/bGpcrwhcxPiN6PQtRigLHTKn3FGb/NsAAAA"
  },
  "scenes/edit-responsible-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b3b7a9"
+  "avg": "#cfbdad"
  },
  "scenes/edit-responsible-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#c2c7b7",
+  "avg": "#cdbcac",
   "edge": {
    "wall": [
-    "#d6ddc9",
-    "#cfd6c3"
+    "#cdbcac",
+    "#cdbcac"
    ],
    "floor": [
-    "#c4cab7",
-    "#bfc4b2"
+    "#cdbcac",
+    "#cdbcac"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADQAQCdASoQAAkAAwBSJYwAAtrPDWPXYAD+86GOuxowiJbsxl2jBDUs1lqgoz9p5KlZym7YlLNgH6uCn6cQAA=="
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkABIByJYwCdADBDJwAAP7D/bGpcrwhcxPiN6PQtRigLHTKn3FGb/NsAAAA"
  },
  "scenes/edit-the-offer-edit-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#43403a"
+  "avg": "#cab29d"
  },
  "scenes/edit-the-offer-edit-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#312f2d",
+  "avg": "#c5ac97",
   "edge": {
    "wall": [
-    "#211c18",
-    "#201b17"
+    "#c5ac97",
+    "#c5ac97"
    ],
    "floor": [
-    "#1e1a15",
-    "#1d1915"
+    "#c5ac97",
+    "#c5ac97"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoQAAkAAwBSJZQC7AEVLYC1ligAAP72n26qxfzR+Hi+xDWO3WYoBNvafpbZtJCT97PlRxQcNPQN9tiM2qMSpHaBXAAAAA=="
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkABIByJQBOgBUs7CEAAP5kCEluQ2i6QXa1hPYE5omxNzI0A8+81mpLCEHQDEYaM7J3iAAAAA=="
  },
  "scenes/edit-under-1500-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#ded2c2"
+  "avg": "#cfbdad"
  },
  "scenes/edit-under-1500-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#e0d5c5",
+  "avg": "#cdbcac",
   "edge": {
    "wall": [
-    "#e7ddd0",
-    "#dfd6c9"
+    "#cdbcac",
+    "#cdbcac"
    ],
    "floor": [
-    "#d3cabe",
-    "#cec5b9"
+    "#cdbcac",
+    "#cdbcac"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAABwAQCdASoQAAkAAwBSJYwCdAFAAAD+8JhMFva40Z06rCXTsTpe6NORo5qKMAAA"
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkABIByJYwCdADBDJwAAP7D/bGpcrwhcxPiN6PQtRigLHTKn3FGb/NsAAAA"
  },
  "scenes/edit-under-3000-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#a6a9a7"
+  "avg": "#cab19d"
  },
  "scenes/edit-under-3000-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#b5bdbd",
+  "avg": "#c5ac97",
   "edge": {
    "wall": [
-    "#d5dcdd",
-    "#ced5d6"
+    "#c5ac97",
+    "#c5ac97"
    ],
    "floor": [
-    "#c3c9c9",
-    "#bec4c4"
+    "#c5ac97",
+    "#c5ac97"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoQAAkAAwBSJZwAAuhIDg+XkAD+86BuDdgjmjaB2SamoHLs7l25HMcLdhD5/ccL9GQVVG2OYh8/7vroLQAAAA=="
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkABIByJQBOgBUs7CEAAP5kCEluQ2i6QXa1hPYE5omxNzI0A8+81mpLCEHQDEYaM7J3iAAAAA=="
  },
  "scenes/story-block-print-1": {
   "w": 1500,
   "h": 1000,
-  "avg": "#a09396",
+  "avg": "#c6ad99",
   "pins": [
    {
     "id": "aja-01",
-    "x": 0.1993,
-    "y": 0.361
+    "x": 0.5208,
+    "y": 0.5469
    },
    {
     "id": "aja-03",
-    "x": 0.4997,
-    "y": 0.358
+    "x": 0.5228,
+    "y": 0.374
    },
    {
     "id": "aja-04",
-    "x": 0.7997,
-    "y": 0.285
+    "x": 0.4492,
+    "y": 0.8477
    }
   ],
   "edge": {
    "wall": [
-    "#e8d5c4",
-    "#deccbb"
+    "#c6ad99",
+    "#c6ad99"
    ],
    "floor": [
-    "#d3c2b2",
-    "#cfbeaf"
+    "#c6ad99",
+    "#c6ad99"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAABQAgCdASoQAAsAAwBSJQBOgMXS5ecR9BsLIAAA/gra+Uw0t9K0SfhVt49WJN/PUNdbXXwXnCBdRAmX55ALB98xwpZRRnU53aqj+eNVAps/nFavuD5ArkREtrVr802i3SpZ9L2fEoca4AAA"
+  "blur": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoQAAsABIByJQBOgBh2g1dIAAD+lporq7kwnZ01Dufyo9aG9vdOmn849UtIhBCZ8gAAAA=="
  },
  "scenes/story-block-print-2": {
   "w": 1500,
   "h": 1000,
-  "avg": "#d2c1b0",
+  "avg": "#c2a690",
   "pins": [
    {
     "id": "ran-01",
-    "x": 0.2003,
-    "y": 0.76
+    "x": 0.5,
+    "y": 0.5292
    },
    {
     "id": "ind-04",
-    "x": 0.4997,
-    "y": 0.748
+    "x": 0.497,
+    "y": 0.2639
    },
    {
     "id": "ran-04",
-    "x": 0.7983,
-    "y": 0.759
+    "x": 0.29,
+    "y": 0.8741
    }
   ],
   "edge": {
    "wall": [
-    "#e2d2c1",
-    "#d1c1b0"
+    "#c2a690",
+    "#c2a690"
    ],
    "floor": [
-    "#cebfb0",
-    "#cabcac"
+    "#c2a690",
+    "#c2a690"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoQAAsAAwBSJYgCdAEPAf2Of4YAAP7zeZzSN67ErsREWFaxxYSO3LgcE5Yl37wiDmxP6SInEHR3e1BgSnfEYaM7J4QEtgAA"
+  "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoQAAsABIByJYgCdAC1wxSHKivIAP6NAHWDWsCtCbf01AacTrm/6/A4OAOxCICenuQQ8ErjustMhQgYLB9G7vshyfAAAA=="
  },
  "scenes/story-block-print-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#98888a",
+  "avg": "#cab29d",
   "pins": [
    {
     "id": "aja-01",
-    "x": 0.28,
-    "y": 0.3616
+    "x": 0.4899,
+    "y": 0.4803
    },
    {
     "id": "aja-04",
-    "x": 0.6995,
-    "y": 0.2752
+    "x": 0.3793,
+    "y": 0.7281
    }
   ]
  },
  "scenes/story-block-print-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#b9a49d",
+  "avg": "#c5ac97",
   "pins": [
    {
     "id": "aja-01",
-    "x": 0.5222,
-    "y": 0.3544
+    "x": 0.5802,
+    "y": 0.5307
    },
    {
     "id": "aja-03",
-    "x": 0.7144,
-    "y": 0.3522
+    "x": 0.5823,
+    "y": 0.3043
    },
    {
     "id": "ran-01",
-    "x": 0.8653,
-    "y": 0.7667
+    "x": 0.7311,
+    "y": 0.8248
    }
   ],
   "edge": {
    "wall": [
-    "#e7d0c0",
-    "#dfc9b9"
+    "#c5ac97",
+    "#c5ac97"
    ],
    "floor": [
-    "#d2beae",
-    "#cdb9a9"
+    "#c5ac97",
+    "#c5ac97"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAkAAwBSJYgCdAD1ktoDqKQA/vII8PvXu31P/s+sirGPUjwu8XpBVrpYdWRdBhI5N19AXZgaJ1Yw5ZBGU3X6KEYc+AAA"
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkABIByJQBOgBUs7CEAAP5kCEluQ2i6QXa1hPYE5omxNzI0A8+81mpLCEHQDEYaM7J3iAAAAA=="
  },
  "scenes/story-diwali-1": {
   "w": 1500,
   "h": 1000,
-  "avg": "#d4b3a5",
+  "avg": "#c6ad99",
   "pins": [
    {
     "id": "lik-01",
-    "x": 0.1997,
-    "y": 0.419
+    "x": 0.5208,
+    "y": 0.5469
    },
    {
     "id": "lik-03",
-    "x": 0.4997,
-    "y": 0.451
+    "x": 0.5228,
+    "y": 0.374
    },
    {
     "id": "gaj-01",
-    "x": 0.7803,
-    "y": 0.83
+    "x": 0.4492,
+    "y": 0.8477
    }
   ],
   "edge": {
    "wall": [
-    "#edd7cb",
-    "#e5d1c5"
+    "#c6ad99",
+    "#c6ad99"
    ],
    "floor": [
-    "#d8c5b9",
-    "#d4c1b6"
+    "#c6ad99",
+    "#c6ad99"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoQAAsAAwBSJZACdAEQzXMc9eZgAP7wOhKpl4gxQ+NZYL8daez0oDtO65X2WgUXiBaF04XZG8yG2w5en0vrv65zSfEDXDPfbqxYe2oAAAA="
+  "blur": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoQAAsABIByJQBOgBh2g1dIAAD+lporq7kwnZ01Dufyo9aG9vdOmn849UtIhBCZ8gAAAA=="
  },
  "scenes/story-diwali-2": {
   "w": 1500,
   "h": 1000,
-  "avg": "#dbbdab",
+  "avg": "#c2a690",
   "pins": [
    {
     "id": "til-03",
-    "x": 0.1923,
-    "y": 0.689
+    "x": 0.5,
+    "y": 0.5292
    },
    {
     "id": "gaj-02",
-    "x": 0.485,
-    "y": 0.747
+    "x": 0.497,
+    "y": 0.2639
    },
    {
     "id": "gaj-03",
-    "x": 0.764,
-    "y": 0.683
+    "x": 0.29,
+    "y": 0.8741
    }
   ],
   "edge": {
    "wall": [
-    "#ead3c5",
-    "#e3ccbf"
+    "#c2a690",
+    "#c2a690"
    ],
    "floor": [
-    "#d6c0b3",
-    "#d2bdb0"
+    "#c2a690",
+    "#c2a690"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoQAAsAAwBSJQBOgBu1RhZD7UtwAP7039m126TWwFq1twulM3S111eK9qRfgw5vuDPNWcawNFXK0q2DZXRhMr1MrSaRi4AA"
+  "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoQAAsABIByJYgCdAC1wxSHKivIAP6NAHWDWsCtCbf01AacTrm/6/A4OAOxCICenuQQ8ErjustMhQgYLB9G7vshyfAAAA=="
  },
  "scenes/story-diwali-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#cba094",
+  "avg": "#cab29d",
   "pins": [
    {
     "id": "lik-01",
-    "x": 0.2995,
-    "y": 0.4192
+    "x": 0.4914,
+    "y": 0.4818
    },
    {
     "id": "til-01",
-    "x": 0.6995,
-    "y": 0.4032
+    "x": 0.3804,
+    "y": 0.7304
    }
   ]
  },
  "scenes/story-diwali-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#cfaaa1",
+  "avg": "#c5ac97",
   "pins": [
    {
     "id": "lik-03",
-    "x": 0.5334,
-    "y": 0.4111
+    "x": 0.5802,
+    "y": 0.5307
    },
    {
     "id": "til-01",
-    "x": 0.7137,
-    "y": 0.4511
+    "x": 0.5823,
+    "y": 0.3043
    },
    {
     "id": "gaj-01",
-    "x": 0.8478,
-    "y": 0.8333
+    "x": 0.7311,
+    "y": 0.8248
    }
   ],
   "edge": {
    "wall": [
-    "#edd2c5",
-    "#e1c6b9"
+    "#c5ac97",
+    "#c5ac97"
    ],
    "floor": [
-    "#d8bfb3",
-    "#d3baae"
+    "#c5ac97",
+    "#c5ac97"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoQAAkAAwBSJZACdADpLncV0zQA/vOkgXOOxMNZqbJxJym/zhfD7CGiPbIilGXshzsQ3sH5DbfyCjWAQ64oW5P0vVbsf31ggAA="
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQAAkABIByJQBOgBUs7CEAAP5kCEluQ2i6QXa1hPYE5omxNzI0A8+81mpLCEHQDEYaM7J3iAAAAA=="
  },
  "scenes/story-one-dress-1": {
   "w": 1500,
   "h": 1000,
-  "avg": "#e2c7c0",
+  "avg": "#ccbaab",
   "pins": [
    {
     "id": "twd-02",
-    "x": 0.1997,
-    "y": 0.387
+    "x": 0.4785,
+    "y": 0.459
    },
    {
     "id": "str-01",
-    "x": 0.516,
-    "y": 0.79
+    "x": 0.4557,
+    "y": 0.7129
    },
    {
     "id": "pip-03",
-    "x": 0.8063,
-    "y": 0.77
+    "x": 0.5404,
+    "y": 0.8301
    }
   ],
   "edge": {
    "wall": [
-    "#efdad7",
-    "#e8d3d0"
+    "#ccbaab",
+    "#ccbaab"
    ],
    "floor": [
-    "#dbc7c4",
-    "#d7c4c0"
+    "#ccbaab",
+    "#ccbaab"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADwAQCdASoQAAsAAwBSJQBOgCHf60I3L4AA/vIvE/IYMKNugrC7mPlqKtuRSSHIy+C/108Oj0Qgy1SKAAA="
+  "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoQAAsABIByJYwCdACzivAAAP7Tm5x8aTEqsytNtVhv/+fFvED4hyWxyAj07mGgAAA="
  },
  "scenes/story-one-dress-2": {
   "w": 1500,
   "h": 1000,
-  "avg": "#d6c0b9",
+  "avg": "#cbb7a6",
   "pins": [
    {
     "id": "twd-02",
-    "x": 0.1997,
-    "y": 0.387
+    "x": 0.5278,
+    "y": 0.35
    },
    {
     "id": "ves-04",
-    "x": 0.608,
-    "y": 0.782
+    "x": 0.5667,
+    "y": 0.7833
    },
    {
     "id": "pip-02",
-    "x": 0.7997,
-    "y": 0.816
+    "x": 0.42,
+    "y": 0.66
    }
   ],
   "edge": {
    "wall": [
-    "#ebd3d0",
-    "#e5cdca"
+    "#cbb7a6",
+    "#cbb7a6"
    ],
    "floor": [
-    "#d7c1be",
-    "#d4bebb"
+    "#cbb7a6",
+    "#cbb7a6"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoQAAsAAwBSJQBOgB6QRlydAAD+64tmfyZhBGMRDtz8AYhsauwOJYG0lyxrdQ0looiyJ/leQ2+sAAAA"
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAsABIByJQBOgB9x53OmEgAA/sPX+qCZl5Mi1iN9PqMwKfyhqovJ0AoCpV4vLlPAyH7HlIAAAA=="
  },
  "scenes/story-one-dress-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#dfc5be",
+  "avg": "#cfbdad",
   "pins": [
    {
     "id": "twd-02",
-    "x": 0.2995,
-    "y": 0.3872
+    "x": 0.5329,
+    "y": 0.3859
    },
    {
     "id": "str-01",
-    "x": 0.7255,
-    "y": 0.804
+    "x": 0.5818,
+    "y": 0.6767
    }
   ]
  },
  "scenes/story-one-dress-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#dac6be",
+  "avg": "#cdbcac",
   "pins": [
    {
     "id": "twd-02",
-    "x": 0.5178,
-    "y": 0.38
-   },
-   {
-    "id": "twd-02",
-    "x": 0.7144,
+    "x": 0.5607,
     "y": 0.4156
    },
    {
+    "id": "twd-02",
+    "x": 0.5356,
+    "y": 0.7481
+   },
+   {
     "id": "pip-03",
-    "x": 0.87,
-    "y": 0.7756
+    "x": 0.42,
+    "y": 0.66
    }
   ],
   "edge": {
    "wall": [
-    "#f1dad9",
-    "#dcc2c2"
+    "#cdbcac",
+    "#cdbcac"
    ],
    "floor": [
-    "#ddc7c5",
-    "#d3bdbc"
+    "#cdbcac",
+    "#cdbcac"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoQAAkAAwBSJQBOgCPpyX4mAAD+9PojLuTtetgrGa45IOaGPY16bFaqYH/snAktcAA="
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkABIByJYwCdADBDJwAAP7D/bGpcrwhcxPiN6PQtRigLHTKn3FGb/NsAAAA"
  },
  "scenes/story-quiet-luxe-1": {
   "w": 1500,
   "h": 1000,
-  "avg": "#4d4239",
+  "avg": "#ccbaab",
   "pins": [
    {
     "id": "mau-01",
-    "x": 0.1997,
-    "y": 0.387
+    "x": 0.4785,
+    "y": 0.459
    },
    {
     "id": "mau-03",
-    "x": 0.4997,
-    "y": 0.358
+    "x": 0.4557,
+    "y": 0.7129
    },
    {
     "id": "ves-04",
-    "x": 0.896,
-    "y": 0.792
+    "x": 0.5404,
+    "y": 0.8301
    }
   ],
   "edge": {
    "wall": [
-    "#26211c",
-    "#221d19"
+    "#ccbaab",
+    "#ccbaab"
    ],
    "floor": [
-    "#221d19",
-    "#211d19"
+    "#ccbaab",
+    "#ccbaab"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAABQAgCdASoQAAsAAwBSJYwCdAEf52oz6hnG/IAA/vM06irc+yHbDLowhXqUoALkLUowIhgVYVnKgsstg24g8D55NdopOQCGjb0rfBDON1AnHrY0lAAAAA=="
+  "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoQAAsABIByJYwCdACzivAAAP7Tm5x8aTEqsytNtVhv/+fFvED4hyWxyAj07mGgAAA="
  },
  "scenes/story-quiet-luxe-2": {
   "w": 1500,
   "h": 1000,
-  "avg": "#3e3d38",
+  "avg": "#cbb7a6",
   "pins": [
    {
     "id": "ora-01",
-    "x": 0.1997,
-    "y": 0.297
+    "x": 0.5278,
+    "y": 0.35
    },
    {
     "id": "ora-02",
-    "x": 0.4997,
-    "y": 0.308
+    "x": 0.5667,
+    "y": 0.7833
    },
    {
     "id": "ves-05",
-    "x": 0.803,
-    "y": 0.816
+    "x": 0.42,
+    "y": 0.66
    }
   ],
   "edge": {
    "wall": [
-    "#22221d",
-    "#20201c"
+    "#cbb7a6",
+    "#cbb7a6"
    ],
    "floor": [
-    "#1e1e1a",
-    "#1e1e1a"
+    "#cbb7a6",
+    "#cbb7a6"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoQAAsAAwBSJZwAAvxQxOufnAAA/q3HRubQfk+RyFqGwXNVygzhSNbaIMLGgD0ea1CNkcde8QX7bJyOPluBjBAJQAA="
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAsABIByJQBOgB9x53OmEgAA/sPX+qCZl5Mi1iN9PqMwKfyhqovJ0AoCpV4vLlPAyH7HlIAAAA=="
  },
  "scenes/story-quiet-luxe-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#3f3934",
+  "avg": "#cfbdad",
   "pins": [
    {
     "id": "mau-02",
-    "x": 0.2995,
-    "y": 0.2976
+    "x": 0.4678,
+    "y": 0.3863
    },
    {
     "id": "ves-03",
-    "x": 0.7515,
-    "y": 0.7776
+    "x": 0.4188,
+    "y": 0.6775
    }
   ]
  },
  "scenes/story-quiet-luxe-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#3a3029",
+  "avg": "#cdbcac",
   "pins": [
    {
     "id": "mau-01",
-    "x": 0.5347,
-    "y": 0.38
+    "x": 0.5607,
+    "y": 0.4156
    },
    {
     "id": "mau-03",
-    "x": 0.7144,
-    "y": 0.3533
+    "x": 0.5356,
+    "y": 0.7481
    },
    {
     "id": "ves-01",
-    "x": 0.8691,
-    "y": 0.7522
+    "x": 0.42,
+    "y": 0.66
    }
   ],
   "edge": {
    "wall": [
-    "#221d1a",
-    "#211c19"
+    "#cdbcac",
+    "#cdbcac"
    ],
    "floor": [
-    "#1f1a17",
-    "#1e1a16"
+    "#cdbcac",
+    "#cdbcac"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADwAQCdASoQAAkAAwBSJYwCdAEf51fSqAAA/vWJ63CyBarc1u7VpfxyQ80/STHhEpMWfoeLRz4JCAAA"
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkABIByJYwCdADBDJwAAP7D/bGpcrwhcxPiN6PQtRigLHTKn3FGb/NsAAAA"
  },
  "scenes/story-slow-home-1": {
   "w": 1500,
   "h": 1000,
-  "avg": "#d7c2ad",
+  "avg": "#ccbaab",
   "pins": [
    {
     "id": "ran-01",
-    "x": 0.2013,
-    "y": 0.677
+    "x": 0.4785,
+    "y": 0.459
    },
    {
     "id": "mit-01",
-    "x": 0.4997,
-    "y": 0.748
+    "x": 0.4557,
+    "y": 0.7129
    },
    {
     "id": "hea-01",
-    "x": 0.7997,
-    "y": 0.764
+    "x": 0.5404,
+    "y": 0.8301
    }
   ],
   "edge": {
    "wall": [
-    "#e8ddcb",
-    "#e1d6c5"
+    "#ccbaab",
+    "#ccbaab"
    ],
    "floor": [
-    "#d4cab9",
-    "#d0c6b6"
+    "#ccbaab",
+    "#ccbaab"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAQAgCdASoQAAsAAwBSJZgCdAEPChOmrnVQAP72EPM5Bz82b+6Mys8+N8yelxsbUM2nRf4CKdvuH29MKtudUrLJACAoig5t8z4ly1gpv26bITIh3egAAA=="
+  "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoQAAsABIByJYwCdACzivAAAP7Tm5x8aTEqsytNtVhv/+fFvED4hyWxyAj07mGgAAA="
  },
  "scenes/story-slow-home-2": {
   "w": 1500,
   "h": 1000,
-  "avg": "#dbcdb8",
+  "avg": "#cbb7a6",
   "pins": [
    {
     "id": "hea-03",
-    "x": 0.1997,
-    "y": 0.688
+    "x": 0.5278,
+    "y": 0.35
    },
    {
     "id": "mit-04",
-    "x": 0.466,
-    "y": 0.757
+    "x": 0.5667,
+    "y": 0.7833
    },
    {
     "id": "hea-04",
-    "x": 0.7987,
-    "y": 0.693
+    "x": 0.42,
+    "y": 0.66
    }
   ],
   "edge": {
    "wall": [
-    "#e5d8c6",
-    "#ddd2c0"
+    "#cbb7a6",
+    "#cbb7a6"
    ],
    "floor": [
-    "#d1c5b4",
-    "#cdc2b1"
+    "#cbb7a6",
+    "#cbb7a6"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADwAQCdASoQAAsAAwBSJQBOgCHhbqBybcAA/vTcg4X1y61rawaV2irKcQg99FeV7KZwK2LhNUCZZQAA"
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAsABIByJQBOgB9x53OmEgAA/sPX+qCZl5Mi1iN9PqMwKfyhqovJ0AoCpV4vLlPAyH7HlIAAAA=="
  },
  "scenes/story-slow-home-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#d7ccbb",
+  "avg": "#d0bdad",
   "pins": [
    {
     "id": "ran-03",
-    "x": 0.296,
-    "y": 0.7408
+    "x": 0.4534,
+    "y": 0.3779
    },
    {
     "id": "mit-02",
-    "x": 0.6995,
-    "y": 0.76
+    "x": 0.4055,
+    "y": 0.6627
    }
   ]
  },
  "scenes/story-slow-home-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#dfd1bd",
+  "avg": "#cdbcac",
   "pins": [
    {
     "id": "ran-02",
-    "x": 0.5356,
-    "y": 0.7622
+    "x": 0.5607,
+    "y": 0.4156
    },
    {
     "id": "mit-03",
-    "x": 0.7153,
-    "y": 0.7856
+    "x": 0.5356,
+    "y": 0.7481
    },
    {
     "id": "hea-01",
-    "x": 0.8647,
-    "y": 0.8144
+    "x": 0.42,
+    "y": 0.66
    }
   ],
   "edge": {
    "wall": [
-    "#e4dac9",
-    "#ddd3c3"
+    "#cdbcac",
+    "#cdbcac"
    ],
    "floor": [
-    "#d1c7b7",
-    "#cbc2b2"
+    "#cdbcac",
+    "#cdbcac"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoQAAkAAwBSJQBOgCHf45CXAAD+9NTS2955IH7iBdLx9y2RW/KOUfQ0XoEP7oAA"
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkABIByJYwCdADBDJwAAP7D/bGpcrwhcxPiN6PQtRigLHTKn3FGb/NsAAAA"
  },
  "scenes/story-wear-less-1": {
   "w": 1500,
   "h": 1000,
-  "avg": "#bec2b3",
+  "avg": "#ccbaab",
   "pins": [
    {
     "id": "loo-01",
-    "x": 0.1997,
-    "y": 0.265
+    "x": 0.4785,
+    "y": 0.459
    },
    {
     "id": "jun-05",
-    "x": 0.5467,
-    "y": 0.409
+    "x": 0.4557,
+    "y": 0.7129
    },
    {
     "id": "loo-04",
-    "x": 0.7997,
-    "y": 0.285
+    "x": 0.5404,
+    "y": 0.8301
    }
   ],
   "edge": {
    "wall": [
-    "#dbe1ce",
-    "#ccd2be"
+    "#ccbaab",
+    "#ccbaab"
    ],
    "floor": [
-    "#c9cebc",
-    "#c5cab9"
+    "#ccbaab",
+    "#ccbaab"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADQAQCdASoQAAsAAwBSJYwAAlwngYbbeAD+86j/ooyz3eeu2fnW9ynDth3KDGCD721uo0dVfJx/styGXusg13+W3WxPIAAA"
+  "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoQAAsABIByJYwCdACzivAAAP7Tm5x8aTEqsytNtVhv/+fFvED4hyWxyAj07mGgAAA="
  },
  "scenes/story-wear-less-2": {
   "w": 1500,
   "h": 1000,
-  "avg": "#b1b7a5",
+  "avg": "#cbb7a6",
   "pins": [
    {
     "id": "mir-03",
-    "x": 0.1997,
-    "y": 0.285
+    "x": 0.5278,
+    "y": 0.35
    },
    {
     "id": "jun-03",
-    "x": 0.4997,
-    "y": 0.358
+    "x": 0.5667,
+    "y": 0.7833
    },
    {
     "id": "str-04",
-    "x": 0.808,
-    "y": 0.8
+    "x": 0.42,
+    "y": 0.66
    }
   ],
   "edge": {
    "wall": [
-    "#d8decb",
-    "#ccd2bf"
+    "#cbb7a6",
+    "#cbb7a6"
    ],
    "floor": [
-    "#c6cbb9",
-    "#c2c7b6"
+    "#cbb7a6",
+    "#cbb7a6"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADQAQCdASoQAAsAAwBSJYwAAvxQXZsugAD9AiI6nDg645f6XpPClwO/RlGDluqWWcGd42svTdC25IPDqSE32RooeFi1vbYyKKvuFlAA"
+  "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAsABIByJQBOgB9x53OmEgAA/sPX+qCZl5Mi1iN9PqMwKfyhqovJ0AoCpV4vLlPAyH7HlIAAAA=="
  },
  "scenes/story-wear-less-tall": {
   "w": 1000,
   "h": 1250,
-  "avg": "#b3b7a9",
+  "avg": "#cfbcac",
   "pins": [
    {
     "id": "loo-04",
-    "x": 0.2995,
-    "y": 0.2784
+    "x": 0.5248,
+    "y": 0.3907
    },
    {
     "id": "jun-05",
-    "x": 0.625,
-    "y": 0.3608
+    "x": 0.5743,
+    "y": 0.6852
    }
   ]
  },
  "scenes/story-wear-less-wide": {
   "w": 1600,
   "h": 900,
-  "avg": "#c1c6b5",
+  "avg": "#cdbcac",
   "pins": [
    {
     "id": "loo-04",
-    "x": 0.5347,
-    "y": 0.28
+    "x": 0.5607,
+    "y": 0.4156
    },
    {
     "id": "jun-05",
-    "x": 0.6753,
-    "y": 0.4022
+    "x": 0.5356,
+    "y": 0.7481
    },
    {
     "id": "loo-01",
-    "x": 0.8647,
-    "y": 0.2578
+    "x": 0.42,
+    "y": 0.66
    }
   ],
   "edge": {
    "wall": [
-    "#d6ddc9",
-    "#cfd6c3"
+    "#cdbcac",
+    "#cdbcac"
    ],
    "floor": [
-    "#c4cab7",
-    "#bfc4b2"
+    "#cdbcac",
+    "#cdbcac"
    ],
-   "floorY": 0.88
+   "floorY": 0.82
   },
-  "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoQAAkAAwBSJYwAAto/9K6hAAD+86Bfz+YwdRVsRYbwXAAOuCLL0xFZ1xOC/q2dK9wiff1cFP04gAAA"
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkABIByJYwCdADBDJwAAP7D/bGpcrwhcxPiN6PQtRigLHTKn3FGb/NsAAAA"
  }
 }

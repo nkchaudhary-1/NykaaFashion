@@ -62,7 +62,7 @@ What changes is structure: one grid, a different composition per section, cleare
 | `Carousel`, `CarouselTrack`, `CarouselArrows` | `ui/Carousel.tsx` | Horizontal rail with density presets (`product` 4-up, `tile` 6-up, `wide` 3-up, `feature` 2-up). Arrows live in the heading (desktop only; touch swipes; the track is a focusable scroll region). |
 | `BentoTile` | `ui/BentoTile.tsx` | Image + flat caption strip. `ratio="fill"` takes the height of the rows it spans (give its parent `relative` and `aspect-*`/rows). |
 | `ProductCard` | `product/ProductCard.tsx` | 4:5 image, label, name, price (discount only when real). `fill` stretches the image to the height the grid gives (feature cards). |
-| `Img` | `ui/Img.tsx` | The only way to render art: average-colour placeholder, `ratio`, `ratio="fill"`, `load` hints. |
+| `Img` | `ui/Img.tsx` | The only way to render a picture: average-colour placeholder, `ratio`, `ratio="fill"`, `load` hints. |
 
 ## 5. Composition catalogue
 
@@ -107,9 +107,9 @@ node scripts/qa/flat.cjs  http://localhost:3200 [--routes …] [--widths …] [-
 node scripts/qa/overflow.cjs http://localhost:3200                                                    # no horizontal overflow
 ```
 
-## 9. Imagery placeholders
+## 9. Imagery
 
-Two studio photographs are cut into every ratio the layouts use, so a slot never has to crop a mismatched image:
+Every image on the site is cut from the two supplied studio photographs (see README → Imagery). They are cut into every ratio the layouts use, so a slot never has to crop a mismatched image:
 
 | Ratio | File suffix | Use |
 | --- | --- | --- |
@@ -125,5 +125,5 @@ Two studio photographs are cut into every ratio the layouts use, so a slot never
 
 Files: `public/img/placeholders/{kurta-set,boucle-suit}-<ratio>.webp`; typed keys and the slot → ratio guide are in `src/data/placeholders.ts`.
 Portrait and vertical ratios extend the seamless studio backdrop (edge colour + a damped copy of its own gradient + matched grain — never the subject);
-regenerate with `npm run photo:ratios` (sources in `scripts/placeholders/source/`; `--jpg <dir>` also writes JPGs). To use real photography, replace a file with a
+regenerate with `npm run photo:ratios` (sources in `scripts/placeholders/source/`; `--jpg <dir>` also writes JPGs). Every other key (product views, category / edit / story scenes, the auth panel) is cut at its own size by `npm run photo:fill`, and `npm run photos` does both. To use real photography, replace a file with a
 photograph of the same name (and re-measure `edge`/`pins` in `image-meta.json` if the slot uses them).

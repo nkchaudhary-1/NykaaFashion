@@ -12,7 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Node tooling (art engine, QA runners, data scripts) — plain scripts, not app code.
+    // Node tooling (image tooling, QA runners, data scripts) — plain scripts, not app code.
     "scripts/**",
   ]),
 ]);
