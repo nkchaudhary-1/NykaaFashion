@@ -51,6 +51,7 @@ npm run unsplash:search -- --phase A             # or --group s-festive,l-vrisa;
 npm run unsplash:pick -- s-festive 3 7@.4,.5 12  # indices from the sheets; @x,y = where the subject sits (fractions of the photo)
 npm run unsplash:review -- --photo <id>          # a large preview with a 10 % grid, the focus (+) and anchors: read x,y off it
 npm run unsplash:pick -- --focus <id> .62,.48    #   fix a focus · --anchors <id> x,y x,y … (pin positions) · --extend <id> (plain backdrop may be extended) · --drop <group> <id|n> · --list
+node scripts/unsplash/merge.mjs /tmp/picks-a.json …   # merge picks made by helpers working in parallel (each helper: UNSPLASH_MANIFEST=/tmp/picks-a.json node scripts/unsplash/pick.mjs …)
 npm run unsplash:download                        # tracking call + 2400 px original into the cache, for every picked photo (resumable); --used = only what a build placed; --no-track = originals only
 npm run unsplash:build -- [--only scenes/]       # cuts every mapped site image; writes public/img, image-meta.json, photo-assignments.json, photo-credits.json; prints warnings
 npm run unsplash:review -- scenes/edit           # contact sheets of the BUILT images (also launches/vrisa · products/twd · pool:p-dress · promo) — look at them
@@ -90,6 +91,7 @@ Colour variants: a product's variant picks the photo from its pool whose central
 ## Working it efficiently
 
 - Run `search` in the background (`run_in_background`) — with a demo key it will pause for the next hour mid-way — and read the contact sheets as they appear (each group's sheets are written as soon as that group is done). Search phase A first (it is what you pick from first), then phase B.
+- Phase A was picked by hand in one session (59 photographs: sheets → picks → focus points and labelled anchors from `review --photo` → build → review sheets with the pins drawn on them → large views of every banner, because a faint photographer watermark ("JSSODHIPHOTOGRAPHY") only showed at full size). Look at banners at ≥ 1400 px before accepting them.
 - Order of picking: launches and wide banners first (they have the strictest needs: calm left side, subject right), then categories, edits, stories (with `--anchors`), then the product pools. Product pools are tolerant — good candidates for sub-agents: one per 3–4 pools, each reading its sheets and running `pick`, told the brief, the rejections above and to report what it could not fill.
 - `download` is the slow part on a demo key (one counted call per photo): start it as soon as phase A is picked and let it run in the background while you review the build from the originals already cached (originals come first, tracking after).
 - Deploying needs Vercel access in the new session (see Owner actions); everything else works offline from the cache.
@@ -100,6 +102,13 @@ Colour variants: a product's variant picks the photo from its pool whose central
 - **B — products (≈ 60 photos):** the 23 `p-*` pools. Deploy again.
 
 After each phase: `npm run data:check && npm run typecheck && npm run lint`, then the full QA (`scripts/qa/prod.sh 3100` then `scripts/qa/all.sh`), including `scripts/qa/unsplash-unit.mjs`; deploy as in README → "Host it on Vercel" from a clean worktree (`git checkout --detach <sha>; git clean -fdq`, then `vercel deploy --prod --scope neelesh6`); live check with the scripts used earlier (sign in as the regular user, look at Home, a category, a story, New & Next, a product page, a pop-up, `/credits`). Add the QA result and the decisions to `PROJECT_STATUS.md`.
+
+## What the first real build taught (31 Oct 2026)
+
+- The home page draws its hero (slides 1 and 3) and the Diwali band from `placeholders/<subject>-<ratio>` — the old two-photograph ratio set, now rebuilt from `h-indian` / `h-western` — and its category tiles and rails from **product** pictures, so the products (phase B) matter as much as the banners.
+- Wide banners need the subject right of the heading: a plain-backdrop photo is flagged `extend` (sideways only: the photograph's own top and bottom are never stretched, which smears a figure cut by the bottom edge). A heading that cannot keep 3:1 gets a small uniform exposure change (×0.7–×1.35), reported at the end of a build.
+- Search drift: "slow living home" found snails, "block printing" found letterpress, "indian celebration" found Holi crowds. `search.mjs --mix 2` takes half the candidates from each of the first two queries and labels each thumbnail A / B with its query; the query order in `groups.mjs` was reworked from that.
+- Pins: every picture of a story carries shoppable pins, so the photographs are anchored with the product each pin should name (`pick.mjs --anchors <id> x,y,productId …`); the build keeps only anchors that are visible in a window.
 
 ## Known limits
 
