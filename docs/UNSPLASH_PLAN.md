@@ -11,9 +11,9 @@ Do not ask the owner to paste the key into chat — it comes in as the environme
 | Stage | What | State |
 |---|---|---|
 | 0 | Toolkit: `groups`, `search`, `pick`, `download`, `build`, `review`, `status`; `/credits` page + footer/sitemap links; `data:check` rules; two unit tests (`scripts/qa/unsplash-unit.mjs` against a local stand-in for Unsplash, `scripts/qa/unsplash-build-unit.mjs` on made-up photographs) | **done and tested without a key** — the build has never seen a real photograph, so expect to tune framing at the first review |
-| 1 | Key present: `UNSPLASH_ACCESS_KEY` in the environment | owner action (below) |
-| 2 | Phase A search + contact sheets (scenes, launches) | not started |
-| 3 | Phase A picks → download → build → review → QA → deploy | not started |
+| 1 | Key present: `UNSPLASH_ACCESS_KEY` | **done** — the owner shared the Access Key as a screenshot; it is used from a file outside the repo (never committed). Demo tier: 50 calls an hour |
+| 2 | Phase A search + contact sheets (scenes, launches) | **done** (25 + 18 API calls; `--mix 2` re-search for the groups whose first query drifted) |
+| 3 | Phase A picks → download → build → review → QA → deploy | picks **done** (59 photographs in `manifest.json`, with focus points and product-labelled anchors for the stories), originals cached; next: build, review, fix framing, report to Unsplash (`download --used`), QA, deploy |
 | 4 | Phase B search + picks (products) → build → review → QA → deploy | not started |
 | 5 | Pop-up video re-cut from the Vrisa photo; docs; PROJECT_STATUS | not started |
 
@@ -51,7 +51,7 @@ npm run unsplash:search -- --phase A             # or --group s-festive,l-vrisa;
 npm run unsplash:pick -- s-festive 3 7@.4,.5 12  # indices from the sheets; @x,y = where the subject sits (fractions of the photo)
 npm run unsplash:review -- --photo <id>          # a large preview with a 10 % grid, the focus (+) and anchors: read x,y off it
 npm run unsplash:pick -- --focus <id> .62,.48    #   fix a focus · --anchors <id> x,y x,y … (pin positions) · --extend <id> (plain backdrop may be extended) · --drop <group> <id|n> · --list
-npm run unsplash:download                        # tracking call + 2400 px original into the cache, for every picked photo (resumable)
+npm run unsplash:download                        # tracking call + 2400 px original into the cache, for every picked photo (resumable); --used = only what a build placed; --no-track = originals only
 npm run unsplash:build -- [--only scenes/]       # cuts every mapped site image; writes public/img, image-meta.json, photo-assignments.json, photo-credits.json; prints warnings
 npm run unsplash:review -- scenes/edit           # contact sheets of the BUILT images (also launches/vrisa · products/twd · pool:p-dress · promo) — look at them
 ```
