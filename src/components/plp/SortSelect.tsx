@@ -38,11 +38,11 @@ export function SortSelect({ value, onChange, className, variant = "inline" }: {
   }
   return (
     <div className={cn("relative inline-flex items-center", className)}>
-      <label htmlFor={id} className="mr-3 whitespace-nowrap text-[13px] text-ink-3">
+      <label htmlFor={id} className="eyebrow mr-3 whitespace-nowrap text-ink-3">
         Sort by
       </label>
       <div className="relative">
-        <select id={id} value={value} onChange={(e) => onChange(e.target.value as SortKey)} className="h-11 appearance-none border border-ink bg-transparent pl-4 pr-10 text-[13.5px] text-ink transition-colors hover:bg-sand focus:bg-sand">
+        <select id={id} value={value} onChange={(e) => onChange(e.target.value as SortKey)} className="h-11 appearance-none border border-line-strong bg-transparent pl-4 pr-10 text-[13.5px] text-ink transition-colors duration-300 hover:border-ink focus:border-ink">
           {options}
         </select>
         <ChevronDown size={16} aria-hidden className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" />

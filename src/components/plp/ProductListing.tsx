@@ -1,15 +1,13 @@
 "use client";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SlidersHorizontal } from "lucide-react";
+import { ArrowRight, RefreshCw, SlidersHorizontal } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Button } from "@/components/ui/Button";
-import { Chip } from "@/components/ui/Chip";
 import { GRID_CLASS } from "@/components/product/ProductGrid";
 import { Overlay, OverlayBody, OverlayFooter, OverlayHeader } from "@/components/ui/Overlay";
-import { ErrorState } from "@/components/ui/States";
 import { GridSkeleton } from "@/components/ui/Skeleton";
-import { EditTile } from "@/components/editorial/EditTile";
 import { primaryEdits } from "@/data/edits";
 import type { Product } from "@/data/types";
 import { useIsDesktop } from "@/hooks/useMediaQuery";
@@ -18,6 +16,7 @@ import { activeChips, activeCount, applyFilters, computeFacets, parseFilters, re
 import { useMockQuery } from "@/lib/mockApi";
 import { track } from "@/lib/track";
 import { signal } from "@/stores/intent";
+import { FilterChip } from "./FilterChip";
 import { FilterPanel, type FacetKey, type FilterChange } from "./FilterPanel";
 import type { Feature } from "./features";
 import { ListingGrid } from "./ListingGrid";
@@ -88,7 +87,7 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], hide = [], 
   const nounOf = (n: number) => (n === 1 ? noun.replace(/s$/, "") : noun);
   const ready = query.status === "ready" || !!query.data;
   const countLine = (className: string) => (
-    <p className={cn("whitespace-nowrap text-[13.5px] text-ink-2", className)} aria-live="polite">
+    <p className={cn("whitespace-nowrap text-[13px] text-ink-3", className)} aria-live="polite">
       {ready ? (
         <>
           <span className="font-medium tabular-nums text-ink">{liveCount}</span> {nounOf(liveCount)}
@@ -132,11 +131,11 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], hide = [], 
           {chips.length > 0 && (
             <div className="flex flex-wrap items-center gap-2" aria-label="Applied filters" role="group">
               {chips.map((c) => (
-                <Chip key={`${c.key}-${c.value ?? ""}`} removable onClick={() => push(removeChip(filters, c))}>
+                <FilterChip key={`${c.key}-${c.value ?? ""}`} removable onClick={() => push(removeChip(filters, c))}>
                   {c.label}
-                </Chip>
+                </FilterChip>
               ))}
-              <button type="button" onClick={clearAll} className="link-u tap ml-1 px-1 py-2 text-[12.5px] font-medium uppercase tracking-[0.1em]">
+              <button type="button" onClick={clearAll} className="link-u tap ml-1 px-1 py-2 text-[11px] font-medium uppercase tracking-[0.14em]">
                 Clear all
               </button>
             </div>
@@ -147,8 +146,15 @@ export function ProductListing({ pool, scopeKey, categoryScope = [], hide = [], 
           {resultsHeading !== false && <h2 className="sr-only">{resultsHeading}</h2>}
           {query.status === "error" && (
             <Grid>
-              <Col span={{ base: 4, sm: 12 }}>
-                <ErrorState title="We couldn’t load these products" text="The connection dropped before the list arrived. Your filters are saved in the URL — try again." onRetry={query.retry} />
+              <Col span={{ base: 4, sm: 12, lg: 8 }}>
+                <div role="alert" className="border-t border-ink py-10 sm:py-14">
+                  <p className="eyebrow text-ink-3">Connection</p>
+                  <h2 className="display-md mt-5 max-w-[18ch]">We couldn’t load these products.</h2>
+                  <p className="mt-5 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">The connection dropped before the list arrived. Your filters are saved in the URL — try again.</p>
+                  <Button variant="secondary" size="lg" className="mt-8" icon={<RefreshCw size={15} />} onClick={query.retry}>
+                    Try again
+                  </Button>
+                </div>
               </Col>
             </Grid>
           )}
@@ -198,10 +204,11 @@ function Results({ items, source, filters, pool, features, onClear, onRelax, nou
   if (items.length === 0) {
     const relax = relaxSuggestions(pool, filters);
     return (
-      <Grid className="items-center gap-y-10 py-4 sm:py-8">
-        <Col span={{ base: 4, sm: 12, lg: 6 }}>
-          <h2 className="display-sm">Nothing matches those filters</h2>
-          <p className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">Try relaxing one of them — or step into an edit and let someone else do the choosing.</p>
+      <Grid className="gap-y-12 border-t border-ink py-10 sm:py-14">
+        <Col span={{ base: 4, sm: 12, lg: 7 }}>
+          <p className="eyebrow text-ink-3">No match</p>
+          <h2 className="display-md mt-5 max-w-[16ch]">Nothing matches those filters.</h2>
+          <p className="mt-5 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">Try relaxing one of them — or step into an edit and let someone else do the choosing.</p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             {relax.map((r) => (
               <Button key={`${r.chip.key}-${r.chip.value ?? ""}`} variant="secondary" onClick={() => onRelax(r.chip)}>
@@ -213,10 +220,19 @@ function Results({ items, source, filters, pool, features, onClear, onRelax, nou
             </Button>
           </div>
         </Col>
-        <Col span={{ base: 4, sm: 12, lg: 6 }} className="grid grid-cols-2 gap-x-[var(--gap)]">
-          {primaryEdits.slice(0, 2).map((e) => (
-            <EditTile key={e.id} edit={e} sizes="(min-width:1024px) 25vw, 50vw" source="no-results" />
-          ))}
+        <Col span={{ base: 4, sm: 12, lg: 4 }} start={{ lg: 9 }}>
+          <p className="eyebrow mb-4 text-ink-3">Or start from an edit</p>
+          <ul className="border-t border-ink">
+            {primaryEdits.slice(0, 3).map((e, i) => (
+              <li key={e.id} className="border-b border-line">
+                <Link href={`/edits/${e.id}`} className="group flex items-baseline gap-4 py-4" onClick={() => track("collection_open", { editId: e.id, source: "no-results" })}>
+                  <span className="text-[11px] tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="min-w-0 flex-1 text-[19px] font-medium leading-tight tracking-[-0.025em]">{e.title}</span>
+                  <ArrowRight size={16} aria-hidden className="shrink-0 transition-transform duration-500 ease-expo group-hover:translate-x-1" />
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Col>
       </Grid>
     );
@@ -229,13 +245,19 @@ function Results({ items, source, filters, pool, features, onClear, onRelax, nou
       <div ref={gridRef}>
         <ListingGrid cells={plan.cells} source={source} />
       </div>
-      <div className="mt-14 grid-main items-center gap-y-6 border-t border-line pt-8 lg:mt-16">
+      <div className="mt-16 grid-main items-end gap-y-8 border-t border-line pt-8 lg:mt-24">
         <div className="col-span-4 min-w-0 sm:col-span-6">
-          <p className="text-[13px] tabular-nums text-ink-2" aria-live="polite">
-            Showing {plan.shown} of {total} {noun}
+          <p className="flex items-baseline gap-3 tabular-nums" aria-live="polite">
+            <span className="sr-only">Showing </span>
+            <span className="display-md">{plan.shown}</span>
+            <span className="text-[13px] text-ink-3">
+              <span aria-hidden>/ </span>
+              <span className="sr-only">of </span>
+              {total} {noun}
+            </span>
           </p>
-          <div role="progressbar" aria-label={`${noun} shown`} aria-valuemin={0} aria-valuemax={total} aria-valuenow={plan.shown} className="mt-3 h-0.5 w-full max-w-[420px] bg-line">
-            <div className="h-full bg-pink transition-[width] duration-500 ease-editorial" style={{ width: `${(plan.shown / total) * 100}%` }} />
+          <div role="progressbar" aria-label={`${noun} shown`} aria-valuemin={0} aria-valuemax={total} aria-valuenow={plan.shown} className="mt-5 h-px w-full max-w-[420px] bg-line">
+            <div className="h-0.5 -translate-y-px bg-ink transition-[width] duration-700 ease-expo" style={{ width: `${(plan.shown / total) * 100}%` }} />
           </div>
         </div>
         <div className="col-span-4 sm:col-span-6 sm:flex sm:justify-end">
@@ -252,7 +274,7 @@ function Results({ items, source, filters, pool, features, onClear, onRelax, nou
               Show {more} more
             </Button>
           ) : (
-            <p className="display-xs text-ink-2">You’ve seen them all.</p>
+            <p className="display-sm text-ink-2">You’ve seen them all.</p>
           )}
         </div>
       </div>

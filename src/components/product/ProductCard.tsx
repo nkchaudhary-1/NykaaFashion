@@ -1,14 +1,14 @@
 "use client";
 import Link from "next/link";
 import { Eye } from "lucide-react";
-import { useRef, useState, type PointerEvent as RPointerEvent, type ReactNode } from "react";
+import { useRef, useState, type FocusEvent, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Img, SIZES, type LoadHint } from "@/components/ui/Img";
-import { Price } from "@/components/ui/Price";
 import { labelById } from "@/data/labels";
 import type { Product } from "@/data/types";
 import { cn } from "@/lib/cn";
 import { captureFlip } from "@/lib/flip";
+import { inr } from "@/lib/format";
 import { setUI } from "@/stores/ui";
 import { SwatchRow } from "./ColorSwatches";
 import { SaveButton } from "./SaveButton";
@@ -31,9 +31,29 @@ interface Props {
   onOpen?: () => void;
 }
 
+/** The quiet price line: the price in medium weight, the struck MRP and the saving in green — only when a real discount exists (PRD §6.1). */
+function CardPrice({ price, mrp }: { price: number; mrp: number }) {
+  const off = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
+  return (
+    <p className="flex flex-wrap items-baseline gap-x-2.5 tabular-nums">
+      <span className="text-[14px] font-medium text-ink">{inr(price)}</span>
+      {off > 0 && (
+        <>
+          <span className="sr-only">, was {inr(mrp)}</span>
+          <s aria-hidden className="text-[12.5px] font-normal text-ink-3">
+            {inr(mrp)}
+          </s>
+          <span className="text-[12px] font-medium text-emerald">{off}% off</span>
+        </>
+      )}
+    </p>
+  );
+}
+
 /**
- * Taste-first product card (PRD §5.4): image-forward, label above name, price with discount ONLY when one exists,
- * no sale chrome by default. Multi-shot: hover swaps on mouse, swipe on touch. Save is always one tap.
+ * Taste-first product card (PRD §5.4), awards finish: a silent picture that scales ever so slowly under the pointer (inside its clipped frame, so the card
+ * stays on the grid) and crossfades to the second shot, then a small uppercase brand, the name, a quiet price. Multi-shot: hover swaps on mouse, swipe on
+ * touch, and a keyboard focus ring on any control inside the card does what the hover does. Save is always one tap.
  */
 export function ProductCard({ product: p, load, source = "grid", variant = 0, sizes = SIZES.card, ratio = "4/5", fill, className, hideQuickView, footer, onOpen }: Props) {
   const label = labelById[p.labelId];
@@ -66,25 +86,34 @@ export function ProductCard({ product: p, load, source = "grid", variant = 0, si
     captureFlip(p.id, box.current, shot, source);
     onOpen?.();
   };
+  // keyboard: tabbing onto a control inside the card shows the second shot, like hovering it
+  const onFocus = (e: FocusEvent) => {
+    if (hasAlt && e.target.matches(":focus-visible")) setShot(1);
+  };
+  const onBlur = (e: FocusEvent) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setShot(0);
+  };
 
   return (
-    <article className={cn("group/card relative flex h-full flex-col", className)}>
-      <div
-        ref={box}
-        className={cn("relative touch-pan-y overflow-hidden", fill && "aspect-[4/5] sm:aspect-auto sm:min-h-0 sm:flex-1")}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onPointerEnter={(e) => e.pointerType === "mouse" && hasAlt && setShot(1)}
-        onPointerLeave={(e) => e.pointerType === "mouse" && setShot(0)}
-      >
+    <article
+      className={cn("group/card relative flex h-full flex-col", className)}
+      onPointerEnter={(e) => e.pointerType === "mouse" && hasAlt && setShot(1)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setShot(0)}
+      onFocus={onFocus}
+      onBlur={onBlur}
+    >
+      <div ref={box} className={cn("relative touch-pan-y overflow-hidden bg-sand", fill && "aspect-[4/5] sm:aspect-auto sm:min-h-0 sm:flex-1")} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
         {/* Image link is a pointer convenience; the text link below is the one assistive tech announces. */}
         <Link href={`/p/${p.slug}`} aria-hidden tabIndex={-1} draggable={false} onClick={open} className={cn("block", fill && "absolute inset-0")}>
-          <Img imgKey={v.images[0]} alt="" sizes={sizes} load={load} ratio={fill ? "fill" : ratio} className={cn(fill && "h-full", p.soldOut && "opacity-60")} />
-          {hasAlt && (
-            <span className={cn("absolute inset-0 block transition-opacity duration-500 ease-editorial", shot > 0 ? "opacity-100" : "opacity-0")}>
-              <Img imgKey={v.images[Math.min(1, v.images.length - 1)]} alt="" sizes={sizes} ratio={fill ? "fill" : ratio} className="h-full" />
-            </span>
-          )}
+          {/* the moving layer: it scales inside the clipped frame (1.04 over 1.2 s) while the card is hovered or a control in it has keyboard focus */}
+          <div data-nogrid className={cn("relative transition-transform duration-[1200ms] ease-expo group-hover/card:scale-[1.04] group-has-[:focus-visible]/card:scale-[1.04]", fill && "h-full")}>
+            <Img imgKey={v.images[0]} alt="" sizes={sizes} load={load} ratio={fill ? "fill" : ratio} className={cn(fill && "h-full", p.soldOut && "opacity-60")} />
+            {hasAlt && (
+              <span className={cn("absolute inset-0 block transition-opacity duration-[800ms] ease-expo", shot > 0 ? "opacity-100" : "opacity-0")}>
+                <Img imgKey={v.images[Math.min(1, v.images.length - 1)]} alt="" sizes={sizes} ratio={fill ? "fill" : ratio} className="h-full" />
+              </span>
+            )}
+          </div>
         </Link>
 
         {/* status — text labels, never colour alone */}
@@ -109,18 +138,21 @@ export function ProductCard({ product: p, load, source = "grid", variant = 0, si
             type="button"
             aria-label={`Quick view ${p.name}`}
             onClick={() => setUI({ quickView: { productId: p.id, variant } })}
-            className="absolute inset-x-0 bottom-0 hidden h-11 translate-y-full items-center justify-center gap-2 border-t border-line bg-white text-[11px] font-semibold uppercase tracking-[0.09em] text-ink transition-transform duration-300 ease-editorial hover:bg-bone focus-visible:translate-y-0 group-hover/card:translate-y-0 lg:flex"
+            className="absolute inset-x-0 bottom-0 hidden h-11 translate-y-full items-center justify-center gap-2 border-t border-line bg-bone text-[11px] font-medium uppercase tracking-[0.14em] text-ink transition-transform duration-500 ease-expo hover:bg-paper focus-visible:translate-y-0 group-hover/card:translate-y-0 lg:flex"
           >
             <Eye size={14} aria-hidden /> Quick view
           </button>
         )}
       </div>
 
-      <Link href={`/p/${p.slug}`} draggable={false} onClick={open} className={cn("flex flex-col pt-3 outline-offset-4", !fill && "flex-1")}>
-        <p className="truncate text-[13px] font-bold leading-tight text-ink">{p.soldOut && <span className="sr-only">Sold out: </span>}{label.name}</p>
-        <h3 className="mt-1 line-clamp-2 text-[13.5px] font-normal leading-[1.35] text-ink-2">{p.name}</h3>
-        <div className="mt-auto pt-1.5">
-          <Price price={p.price} mrp={p.mrp} size="md" />
+      <Link href={`/p/${p.slug}`} draggable={false} onClick={open} className={cn("flex flex-col pt-4 outline-offset-4", !fill && "flex-1")}>
+        <p className="truncate text-[11px] font-medium uppercase leading-tight tracking-[0.14em] text-ink">
+          {p.soldOut && <span className="sr-only">Sold out: </span>}
+          {label.name}
+        </p>
+        <h3 className="mt-1.5 line-clamp-2 text-[14px] font-normal leading-[1.35] text-ink-2">{p.name}</h3>
+        <div className="mt-auto pt-2.5">
+          <CardPrice price={p.price} mrp={p.mrp} />
           <SwatchRow product={p} />
         </div>
       </Link>

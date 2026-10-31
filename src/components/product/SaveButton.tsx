@@ -21,7 +21,7 @@ export function SaveButton({ product, variant = 0, source = "card", className, t
         saveWithFeedback(product, variant, source);
         setPop((n) => n + 1);
       }}
-      className={cn("inline-flex size-10 items-center justify-center transition-colors duration-200 [@media(pointer:coarse)]:size-11", tone === "light" ? "bg-white text-ink hover:bg-bone" : "text-ink hover:bg-sand", className)}
+      className={cn("inline-flex size-10 items-center justify-center transition-colors duration-200 [@media(pointer:coarse)]:size-11", tone === "light" ? "bg-bone text-ink hover:bg-white" : "text-ink hover:bg-sand", className)}
     >
       <Heart key={pop} size={size} strokeWidth={1.6} className={cn("transition-colors duration-200", saved ? "fill-pink stroke-pink" : "fill-transparent", pop > 0 && saved && "animate-pop")} />
     </button>

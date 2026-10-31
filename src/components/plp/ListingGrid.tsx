@@ -1,11 +1,10 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { CSSProperties } from "react";
 import { ProductCard } from "@/components/product/ProductCard";
-import { CELL, GRID_CLASS } from "@/components/product/ProductGrid";
-import { BentoTile } from "@/components/ui/BentoTile";
-import { SIZES } from "@/components/ui/Img";
+import { CELL, CardRise, GRID_CLASS } from "@/components/product/ProductGrid";
+import { Img, SIZES } from "@/components/ui/Img";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
 import type { Product } from "@/data/types";
@@ -18,7 +17,8 @@ import { themeSurface } from "./surfaces";
 /**
  * The listing grid: 4-up cards (3-up on tablets, 2-up on phones) with feature inserts placed by `planCells` so every row
  * stays complete. Features are explicitly placed (column + row) at tablet and desktop, which lets the cards flow around
- * them in DOM order; on phones a feature is a full row.
+ * them in DOM order; on phones a feature is a full row. The first row is on screen when the page opens, so it is never
+ * hidden; every later card rises by its column.
  */
 export function ListingGrid({ cells, source }: { cells: Cell[]; source: string }) {
   return (
@@ -26,9 +26,9 @@ export function ListingGrid({ cells, source }: { cells: Cell[]; source: string }
       {cells.map((c) =>
         c.type === "card" ? (
           <li key={c.product.id} data-card={c.index} className={CELL}>
-            <Reveal delay={(c.index % 4) * 70} className="h-full">
+            <CardRise index={c.index} first={c.index < 4} className="h-full">
               <ProductCard product={c.product} source={source} load={c.index < 4 ? "eager" : undefined} />
-            </Reveal>
+            </CardRise>
           </li>
         ) : (
           <li
@@ -42,7 +42,7 @@ export function ListingGrid({ cells, source }: { cells: Cell[]; source: string }
               c.desktop ? cn("lg:col-span-6 lg:row-span-2 lg:[grid-row-start:var(--rl)]", c.desktop.side === "L" ? "lg:col-start-1" : "lg:col-start-7") : "lg:hidden",
             )}
           >
-            <Reveal className="h-full">
+            <Reveal className="h-full" y={36}>
               <FeatureBody feature={c.feature} product={c.product} source={source} />
             </Reveal>
           </li>
@@ -68,19 +68,31 @@ function FeatureBody({ feature, product, source }: { feature: Feature; product?:
           track("collection_open", { editId: feature.editId, source: `${source}:feature` });
         }
       : undefined;
+    // a big silent picture (it fills the 6 × 2 box the grid gives it) with its caption on the page below, not over the picture
     return (
-      <div className="relative aspect-[5/4] h-full sm:aspect-auto">
-        <BentoTile href={feature.href} imgKey={feature.imgKey} title={feature.title} meta={feature.meta} ratio="fill" sizes={SIZES.half} size="lg" position={feature.position ?? "50% 35%"} onClick={open} />
-      </div>
+      <Link href={feature.href} onClick={open} className="group flex h-full flex-col">
+        <div className="relative aspect-[5/4] overflow-hidden bg-sand sm:aspect-auto sm:min-h-0 sm:flex-1">
+          <div data-nogrid className="absolute inset-0 transition-transform duration-[1200ms] ease-expo group-hover:scale-[1.04] group-focus-visible:scale-[1.04]">
+            <Img imgKey={feature.imgKey} alt="" sizes={SIZES.half} ratio="fill" position={feature.position ?? "50% 35%"} className="absolute inset-0 h-full" />
+          </div>
+        </div>
+        <div className="flex items-start justify-between gap-6 pt-4">
+          <div className="min-w-0">
+            <p className="display-sm">{feature.title}</p>
+            {feature.meta && <p className="mt-2.5 line-clamp-2 max-w-[46ch] text-[14px] leading-snug text-ink-2">{feature.meta}</p>}
+          </div>
+          <ArrowUpRight size={24} strokeWidth={1.4} aria-hidden className="mt-1 shrink-0 transition-transform duration-500 ease-expo group-hover:-translate-y-1 group-hover:translate-x-1" />
+        </div>
+      </Link>
     );
   }
   const surface = themeSurface(feature.tone);
   return (
-    <div className={cn("flex h-full min-h-[300px] flex-col justify-between gap-8 p-6 sm:p-8 lg:p-10", surface.cls, surface.dark && "on-dark")}>
+    <div className={cn("flex h-full min-h-[300px] flex-col justify-between gap-8 p-6 sm:p-8 lg:p-12", surface.cls, surface.dark && "on-dark")}>
       {feature.eyebrow && <p className="eyebrow">{feature.eyebrow}</p>}
       <div>
-        <p className="max-w-[22ch] text-[24px] font-medium leading-[1.1] tracking-[-0.022em] sm:text-[28px] lg:text-[32px]">{feature.title}</p>
-        <p className="mt-4 line-clamp-6 max-w-[46ch] text-[15px] leading-relaxed">{feature.text}</p>
+        <p className="display-md max-w-[16ch]">{feature.title}</p>
+        <p className="mt-5 line-clamp-6 max-w-[46ch] text-[15px] leading-relaxed">{feature.text}</p>
       </div>
       {feature.href && (
         <Link href={feature.href} className="link-u tap group inline-flex items-center gap-2 self-start text-[12px] font-semibold uppercase tracking-[0.09em]">

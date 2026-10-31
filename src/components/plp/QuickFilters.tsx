@@ -1,10 +1,10 @@
 "use client";
 import { useLayoutEffect, useRef, useState } from "react";
-import { Chip } from "@/components/ui/Chip";
 import { Swatch } from "@/components/product/ColorSwatches";
 import { cn } from "@/lib/cn";
 import { PRICE_RANGES, type Facets, type FilterState } from "@/lib/filters";
 import type { FacetKey, FilterChange } from "./FilterPanel";
+import { FilterChip } from "./FilterChip";
 
 interface Quick {
   id: string;
@@ -109,14 +109,14 @@ export function QuickFilters({ facets, filters, hide, poolSize, onChange, classN
   }, [sig]);
   if (!groups.length) return <div className={className} />;
   return (
-    <div ref={ref} role="group" aria-label="Quick filters" className={cn("-mx-1 flex h-12 flex-wrap content-start gap-x-2 gap-y-2 overflow-hidden px-1 py-1", className)}>
+    <div ref={ref} role="group" aria-label="Quick filters" className={cn("-mx-1 flex h-12 flex-wrap content-start gap-x-2 gap-y-2 overflow-hidden px-1 py-1.5", className)}>
       {groups.map((g, gi) => (
         <div key={g.id} data-qfg role="group" aria-label={g.label} inert={gi >= fit} className={cn("flex shrink-0 items-center gap-2", gi > 0 && "ml-1 border-l border-line-strong pl-3")}>
           {g.items.map((q) => (
-            <Chip key={q.id} selected={q.on} onClick={() => onChange(q.next, q.meta)}>
+            <FilterChip key={q.id} selected={q.on} onClick={() => onChange(q.next, q.meta)}>
               {q.swatch && <Swatch hex={q.swatch} size={12} />}
               {q.label}
-            </Chip>
+            </FilterChip>
           ))}
         </div>
       ))}
