@@ -5,12 +5,16 @@
 const { chromium } = require("playwright");
 const { spawn } = require("node:child_process");
 const crypto = require("node:crypto");
+const http = require("node:http");
 
 const flag = (n, d) => { const i = process.argv.indexOf(n); return i > -1 ? process.argv[i + 1] : d; };
 const given = process.argv.find((a) => a.startsWith("http"));
 const ADMIN = { id: flag("--admin-id", "Nilesh"), pw: flag("--admin-pw", crypto.randomBytes(9).toString("base64url")) };
 const USER = { id: flag("--user-id", "Kiran"), pw: flag("--user-pw", crypto.randomBytes(9).toString("base64url")) };
 const PORT = 3102;
+const NOTIFY_PORT = 3198;
+const notes = []; // what the site sent to the notification endpoint: { path, body, headers }
+let notifyServer = null;
 const BASE = given ?? `http://localhost:${PORT}`;
 let failures = 0;
 const step = async (name, fn) => { try { await fn(); console.log(`  ✓ ${name}`); } catch (e) { failures++; console.log(`  ✗ ${name}\n      ${String(e.message).split("\n")[0].slice(0, 260)}`); } };
@@ -32,7 +36,9 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
   let server;
   if (!given) {
     const users = JSON.stringify([{ id: ADMIN.id, password: ADMIN.pw, role: "admin" }, { id: USER.id, password: USER.pw, role: "user", title: "Director" }]);
-    server = spawn("npx", ["next", "start", "-p", String(PORT)], { env: { ...process.env, SITE_USERS: users }, detached: true, stdio: "ignore" });
+    notifyServer = http.createServer((req, res) => { let b = ""; req.on("data", (c) => (b += c)); req.on("end", () => { notes.push({ path: req.url, body: b, headers: req.headers }); res.writeHead(200).end("ok"); }); });
+    await new Promise((r) => notifyServer.listen(NOTIFY_PORT, "127.0.0.1", r));
+    server = spawn("npx", ["next", "start", "-p", String(PORT)], { env: { ...process.env, SITE_USERS: users, GATE_SECRET: crypto.randomBytes(24).toString("base64url"), LOGIN_NOTIFY_URL: `http://127.0.0.1:${NOTIFY_PORT}/a-private-topic` }, detached: true, stdio: "ignore" });
     let up = false;
     for (let i = 0; i < 60 && !up; i++) { await new Promise((r) => setTimeout(r, 1000)); up = await fetch(BASE + "/", { headers: { accept: "text/html" } }).then((r) => r.ok, () => false); }
     if (!up) { console.log("could not start the test server (is there a production build?)"); try { process.kill(-server.pid); } catch {} process.exit(1); }
@@ -61,6 +67,7 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
       must(/Login ID or password/.test(await page.locator("#err").innerText()), "no clear error");
     }
     must(Object.keys(await records(page)).length === 0, "a failed sign-in left a record");
+    if (!given) must(notes.length === 0, `a failed sign-in sent a notification: ${JSON.stringify(notes)}`);
   });
 
   await step("the regular user signs in: role checked, one login recorded, no admin link", async () => {
@@ -77,11 +84,22 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     must(s.user.role === "user" && s.accounts === undefined, `session: ${JSON.stringify(s)}`);
   });
 
+  await step("a USER sign-in sends the admin exactly one line — that someone signed in, and when — with no name, device or anything else", async () => {
+    if (given) return;
+    await page.waitForTimeout(400);
+    must(notes.length === 1, `${notes.length} notification(s) after one sign-in`);
+    const n = notes[0];
+    must(n.path === "/a-private-topic" && /^text\/plain/.test(n.headers["content-type"]), `${n.path} ${n.headers["content-type"]}`);
+    must(/^Someone signed in to the prototype — \w{3}, \d{1,2} \w{3} \d{4}, \d{1,2}:\d{2} (am|pm) IST$/.test(n.body), `text: ${n.body}`);
+    must(!n.body.includes(USER.id) && !/director|mozilla|chrome|headless|linux|127\.0|localhost/i.test(n.body + JSON.stringify(n.headers.title ?? "")), `the notification says more than it should: ${n.body}`);
+  });
+
   await step("refreshing, navigating and reopening do not add logins; the record persists", async () => {
     await page.reload({ waitUntil: "networkidle" });
     await page.goto(BASE + "/c/women", { waitUntil: "networkidle" });
     await page.goto(BASE + "/", { waitUntil: "networkidle" });
     must((await records(page))[USER.id.toLowerCase()].count === 1, "a refresh counted as a login");
+    if (!given) must(notes.length === 1, `a refresh sent a notification (${notes.length} in total)`);
   });
 
   await step("the regular user cannot open /admin (403 from the server) or read the statistics", async () => {
@@ -112,6 +130,7 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     must(/\d{2} \w{3} \d{4}/.test(await page.locator("#history-h").locator("xpath=..").innerText()), "no dated history lines");
     const rowText = await page.getByRole("row", { name: new RegExp(USER.id) }).first().innerText();
     must(/\d{2} \w{3} \d{4}, \d{2}:\d{2}:\d{2}/.test(rowText), `Kiran's last login: ${rowText}`);
+    if (!given) must(notes.length === 1, `the admin's sign-in was announced (${notes.length} notifications)`);
   });
 
   await step("a second admin login counts; a failed one does not; counts stay separate", async () => {
@@ -174,6 +193,7 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     // typed the way people type it: lower case, no dashes
     await signIn(dp, NEW, NEW.pw.toLowerCase().replaceAll("-", ""));
     must((await records(dp))[NEW.id]?.count === 2, "second sign-in not recorded");
+    if (!given) { await dp.waitForTimeout(400); must(notes.length === 3 && notes.slice(1).every((x) => !x.body.includes(NEW.id)), `an added user's two sign-ins should add two nameless notifications (${notes.length} in total)`); }
     await d.close();
   });
 
@@ -212,6 +232,18 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     await signIn(dp, NEW); // still works: removing a row from the list does not end access
     must((await records(dp))[NEW.id]?.count === 1, "the removed user could not sign in");
     await d.close();
+  });
+
+  await step("if the notification endpoint is down, signing in still works (quickly)", async () => {
+    if (given) return;
+    await new Promise((r) => { notifyServer.closeAllConnections?.(); notifyServer.close(r); });
+    const k = await browser.newContext();
+    const kp = await k.newPage();
+    const t0 = Date.now();
+    await signIn(kp, USER);
+    must(Date.now() - t0 < 6000, `signing in took ${Date.now() - t0} ms with the endpoint down`);
+    await kp.getByRole("group", { name: "Your session" }).waitFor();
+    await k.close();
   });
 
   await step("a forged or edited session cookie does not open the site or the admin page", async () => {
@@ -259,6 +291,7 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
   must(errors.length === 0, `console errors: ${errors.join(" | ")}`);
   await browser.close();
   if (server) try { process.kill(-server.pid, "SIGTERM"); } catch {}
+  try { notifyServer?.close(); } catch {}
   console.log(failures ? `\n${failures} roles check(s) failed` : "\nAccounts and roles OK");
   process.exit(failures ? 1 : 0);
 })();

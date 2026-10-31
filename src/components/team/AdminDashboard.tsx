@@ -85,7 +85,7 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
         <aside aria-label="About these records" className="order-2 border border-line-strong bg-paper p-5 text-[14px] leading-relaxed text-ink-2 sm:p-6 lg:order-1 lg:col-span-7">
           <p>
             <strong className="font-medium text-ink">Recorded in this browser only.</strong> This temporary dashboard reads sign-ins saved in this browser&rsquo;s storage. Sign-ins made on other devices or in other browsers are not included, and anyone who can open this
-            browser&rsquo;s developer tools can read, change or delete the records. For records that cannot be edited, a server-side store is needed.
+            browser&rsquo;s developer tools can read, change or delete the records. To be told whenever someone signs in with a user account, from any device, set up the sign-in notification (README → Sign-in notification).
           </p>
           {!available && <p className="mt-2 font-medium text-danger">Browser storage is unavailable here (private mode or blocked), so nothing can be recorded or shown.</p>}
         </aside>

@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { LOGO_PATHS, LOGO_VIEWBOX } from "./components/layout/logo-paths";
 import { CLOCK_COOKIE, clockOffset, isLaunched, launchById, launchOfSlug } from "./data/launches";
+import { notifyUserSignIn } from "./lib/notify";
 import { accountsConfig, hmac, issueSession, LOGIN_EVENT_COOKIE, randomId, readSession, safeEqual, SESSION_COOKIE, sessionAge, verifyLogin } from "./lib/auth";
 
 /**
@@ -153,7 +154,15 @@ async function gate(req: NextRequest) {
         await wait(700); // a small tax on guessing; Vercel adds its own rate limits
         return signInPage(next, true, req.nextUrl.origin, "/", true);
       }
-      // Authentication succeeded: the signed session says who this is; the one-time event cookie lets the app write exactly one login record.
+      // Authentication succeeded. A USER sign-in (not the admin's) sends the admin one line — "someone signed in" and when — and nothing else, nothing stored (lib/notify.ts).
+      if (account.role === "user") {
+        try {
+          await notifyUserSignIn();
+        } catch {
+          /* not delivered; the sign-in goes ahead */
+        }
+      }
+      // The signed session says who this is; the one-time event cookie lets the app write exactly one login record in this browser (the dashboard's own, browser-only history).
       const res = NextResponse.redirect(new URL(next, req.url), 303);
       res.cookies.set({ name: SESSION_COOKIE, value: await issueSession(account.id, account.until), httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: sessionAge(account.until) }); // an issued sign-in ends with its access
       res.cookies.set({ name: LOGIN_EVENT_COOKIE, value: randomId(), httpOnly: false, secure, sameSite: "lax", path: "/", maxAge: 120 });

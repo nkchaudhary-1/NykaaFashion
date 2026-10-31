@@ -86,6 +86,15 @@ A small window in the corner — a picture or a **muted, looping video** — tha
 
 **A campaign is one object** in `src/data/promos.ts` plus its picture (and optional video); a campaign tied to a brand launch (`launchId`) writes its own copy — countdown before launch, *Now live → Shop now* after. Rules, template and limits: [`docs/PROMOS.md`](docs/PROMOS.md). To see them: *Prototype controls → Pop-ups* (show any campaign now, bring dismissed ones back), or add `?promo=<campaign id>` to any URL. `node scripts/qa/promo-unit.mjs` and `node scripts/qa/promo.cjs` test the rules and the behaviour end to end.
 
+### Sign-in notification — know when someone has opened it
+
+Set one environment variable and every time someone signs in with a **user** account (never the admin's), you get **one line**: *"Someone signed in to the prototype — Sat, 31 Oct 2026, 4:42 pm IST"*. That is all: no name or Login ID, no device, browser, IP address or location. **Nothing is stored** — there is no database and no log on the site; the notification list on your phone or laptop is the log. A failed attempt sends nothing, and a notification service that is slow or down never stops anyone signing in.
+
+* **ntfy.sh (simplest; free; no account):** pick a long random topic (for example `nf-` plus 20 random letters — treat it like a password), set `LOGIN_NOTIFY_URL=https://ntfy.sh/<topic>`, then install the ntfy app (iOS / Android) or open `https://ntfy.sh/<topic>` in a browser and subscribe to the topic. ntfy keeps messages for about 12 hours, so open the app within that time to catch up.
+* **Discord or Slack:** make an incoming webhook for a channel you own and use its URL as `LOGIN_NOTIFY_URL` (the site sends the JSON each expects). Any endpoint that accepts a plain-text `POST` also works.
+* **Vercel:** *Settings → Environment Variables → `LOGIN_NOTIFY_URL`* (mark it sensitive), then redeploy. Unset, nothing is sent.
+* `node scripts/qa/notify-unit.mjs` tests the message and the failure cases; `scripts/qa/roles.cjs` checks, against a stand-in endpoint, that a user sign-in sends exactly one nameless line while a wrong password, a refresh and the admin's own sign-in send nothing, and that a dead endpoint doesn't block signing in.
+
 ## Sharing it safely (read before you send the link)
 
 A website cannot be made copy-proof — whatever a browser can show, it can save — so protection here means: nothing is reachable without the password, and the source is not lying around.
@@ -124,6 +133,7 @@ node scripts/qa/flat.cjs     http://localhost:3100              # no shadows / g
 node scripts/qa/grid.cjs     http://localhost:3100              # every block sits on the 12/4-column grid at 4 widths
 node scripts/qa/overflow.cjs http://localhost:3100              # horizontal-overflow scan, every route x 4 widths + overlays
 node scripts/qa/align.cjs    http://localhost:3100              # layout sanity: text over text, clipped or off-page text, voids in stretched columns, near-miss alignment, underfilled rails, stretched pictures (every route x 390/820/1024/1440)
+node scripts/qa/notify-unit.mjs                                  # the one-line sign-in notification: message, nothing configured, failures never block
 node scripts/qa/promo.cjs    http://localhost:3100              # pop-ups (PiP): timing, muted video, dismissal rules, quiet pages, phone / tablet / desktop, prototype controls, axe
 node scripts/qa/promo-unit.mjs                                 # the pop-up rules in Node (routes, dates, launch states, cool-down, visit cap)
 node scripts/qa/launch.cjs   http://localhost:3100              # New & Next: countdown, Notify me, previews + wishlist, pre-launch guards, automatic switch to Shop now, template pages
