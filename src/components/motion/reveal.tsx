@@ -65,12 +65,13 @@ export function Fade({ children, as: Tag = "div", className, delay, style, ...re
 
 /**
  * A picture frame that is uncovered from its bottom edge (clip-path) while the picture settles from a slight over-scale. Layout is untouched: only the paint is clipped.
- * Wrap pictures only — the clip would also hide anything positioned outside the frame. Not for the first screen's LCP image (use `.settle` there).
+ * The observed element is the plain wrapper; the clipped, overflow-hidden frame (`.rm-frame`) sits inside it, so an IntersectionObserver never sees a zero-area target
+ * and the over-scaled picture cannot widen the page. Wrap pictures only — the frame also clips anything positioned outside it. Not for the first screen's LCP image (use `.settle`).
  */
 export function RevealMedia({ children, as: Tag = "div", className, delay, style, ...rest }: { children: ReactNode; as?: ElementType; className?: string; delay?: number; style?: CSSProperties } & Record<string, unknown>) {
   return (
     <Tag className={cn(className)} data-reveal="media" style={{ ...style, ...delayStyle(delay) }} suppressHydrationWarning {...rest}>
-      {children}
+      <div className="rm-frame">{children}</div>
     </Tag>
   );
 }

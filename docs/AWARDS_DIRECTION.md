@@ -41,13 +41,18 @@ All reveal components are server-renderable (they only emit `data-reveal`); one 
 | `<RevealText as="h2" className="display-lg">…</RevealText>` | Headline / paragraph: words rise out of a mask. `<em>` inside is kept. `delay` in ms. |
 | `<Rise y={28} delay={80}>` | Block fades up. `as` picks the element (`li`, `p`, `section` …). |
 | `<Fade>` | Opacity only. |
-| `<RevealMedia>` | A picture frame: uncovered bottom-up (clip-path) while the picture settles from 1.14×. **Pictures only**, never the LCP image. |
+| `<RevealMedia>` | A picture frame: uncovered bottom-up (clip-path) while the picture settles from 1.14×. The observed wrapper is unclipped and the clipped `overflow-hidden` frame sits inside it, so tall pictures still reveal and the over-scale cannot widen the page. **Pictures only** (the frame clips anything outside it), never the LCP image. |
 | `<Stagger step={80}>` | Adds the rise to each DOM child in turn (children must be host elements). |
 | `<Parallax amount={70}>` | Picture drifts against the scroll inside a clipped frame (`absolute inset-0` layer, `data-nogrid`). Still under reduced motion. |
 | `<Marquee seconds={42}>` | Endless ticker, pauses on hover/focus, static + scrollable for reduced motion. |
 | `.settle` (CSS) | The first-screen hero picture eases from 1.1× to 1× on load without ever being hidden. Put it on a layer *inside* an `overflow-hidden` frame. |
 | `data-cursor="View"` / `"Drag"` | Turns the follower into a labelled disc over that element (fine pointers only). |
 | `ui/Reveal` | Legacy wrapper, now `Rise`. Existing call sites keep working. |
+| `home/Unveil`, `home/kit` | The home page's own picture reveal (same effect, watches the outer frame), `useMedia` (SSR-safe media query), the pointer-following brand picture and the hero's progress segments (Web Animations API, they also time the auto-advance). |
+
+Heading accents: `display-*` sets `<em>` to `--em-color` (raspberry by default); `.on-dark` turns it into the surrounding text colour, because raspberry on near-black is 2.7:1. Override per band with `[&_em]:text-…` only where the colour passes 4.5:1.
+
+Reduced motion in client components: read it with `useSyncExternalStore` (server snapshot `false`) as `motion/Parallax` does, never with `useReducedMotion()` while rendering SSR markup — the server and the first client render would disagree and React warns in development.
 | `SectionHeading` / `PageHeader` | Titles already use `RevealText`; eyebrow, intro and links rise. |
 
 Timing: `--ease-expo` for reveals and picture moves, `--ease-editorial` for UI state changes; reveals 0.9–1.25 s; per-word stagger 42 ms; hover 0.3–0.4 s for controls, up to 1.2 s for pictures. Animate `transform`, `opacity` and `clip-path` only.
@@ -64,5 +69,5 @@ Timing: `--ease-expo` for reveals and picture moves, `--ease-editorial` for UI s
 ## File ownership while building in parallel
 
 * Foundation (`globals.css`, `components/motion/*`, `components/ui/*`, `components/layout/*`, `app/layout.tsx`, `app/template.tsx`): lead.
-* Home (`components/home/*`, `app/page.tsx`, `data/home-content.ts`): home agent.
-* Pages (`components/{plp,product,editorial,commerce,account,brands,...}`, `app/**/page.tsx` other than home): pages agent.
+* Home (`components/home/*`, `app/page.tsx`, `data/home-content.ts`): one file per module (Hero, Strips, Categories, Celebration, Brands, Diwali, Rails, Edits, Trending, Look, Stories, Spotlight, Offers, Seo) composed in `HomeClient`; module ids, `ModuleShell` and tracking are unchanged.
+* Pages (`components/{plp,product,editorial,commerce,account}`, `app/**/page.tsx` other than home): listings use `plp/ListingHeader` for full-width poster titles and `plp/FilterChip` for the toolbar; `product/CardPrice` and the column-staggered `CardRise` give the cards their finish.

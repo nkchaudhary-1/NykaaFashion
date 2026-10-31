@@ -36,6 +36,7 @@ const pending = () => {
   await page.goto(BASE + "/", { waitUntil: "networkidle" });
 
   await step("page is marked js + hydrated; Lenis and the cursor are active for a mouse", async () => {
+    await page.waitForFunction(() => document.documentElement.classList.contains("lenis") && document.documentElement.classList.contains("has-cursor"), null, { timeout: 4000 }).catch(() => {}); // both start in an effect, a beat after networkidle
     const c = await classes(page);
     for (const k of ["js", "hydrated", "lenis", "has-cursor"]) must(c.split(/\s+/).includes(k), `<html> is missing "${k}" (has: ${c})`);
   });
@@ -193,7 +194,7 @@ const pending = () => {
   await p5.goto(BASE + "/", { waitUntil: "domcontentloaded" });
   await step("if the scripts never load, the page shows itself after five seconds", async () => {
     must((await classes(p5)).includes("js"), "inline script did not set the js flag");
-    await p5.waitForTimeout(5600);
+    await p5.waitForTimeout(7200); // the flag goes at 5 s; staggered reveals then finish their own transitions (delay + ~1 s)
     const r = await p5.evaluate(() => ({ js: document.documentElement.classList.contains("js"), hid: [...document.querySelectorAll("[data-reveal]")].filter((el) => Number(getComputedStyle(el).opacity) < 1).length }));
     must(!r.js && r.hid === 0, `failsafe did not release the page: ${JSON.stringify(r)}`);
   });

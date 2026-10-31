@@ -195,7 +195,8 @@ body {
     outline-offset: 2px;
   }
   .on-dark :focus-visible, [data-theme="dark"] :focus-visible { outline-color: #fff; }
-  .on-dark em { color: inherit; }
+  /* on dark surfaces the heading accent takes the text colour (pink on near-black is 2.7:1) — a variable, because the display-* utilities outrank anything in this layer */
+  .on-dark, [data-theme="dark"] { --em-color: currentColor; }
 }
 
 /* Controls take the live site's 4px corner; pills (size chips, toggles) and circles opt in with rounded-full. Layered, so utilities win. */
@@ -250,7 +251,7 @@ img { -webkit-user-drag: none; }
   line-height: 0.94;
   letter-spacing: -0.058em;
   text-wrap: balance;
-  & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
+  & em { font-style: normal; font-weight: inherit; color: var(--em-color, var(--color-pink)); }
 }
 @utility display-lg {
   font-weight: 500;
@@ -258,7 +259,7 @@ img { -webkit-user-drag: none; }
   line-height: 0.98;
   letter-spacing: -0.05em;
   text-wrap: balance;
-  & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
+  & em { font-style: normal; font-weight: inherit; color: var(--em-color, var(--color-pink)); }
 }
 @utility display-md {
   font-weight: 500;
@@ -266,7 +267,7 @@ img { -webkit-user-drag: none; }
   line-height: 1.02;
   letter-spacing: -0.042em;
   text-wrap: balance;
-  & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
+  & em { font-style: normal; font-weight: inherit; color: var(--em-color, var(--color-pink)); }
 }
 @utility display-sm {
   font-weight: 500;
@@ -274,14 +275,14 @@ img { -webkit-user-drag: none; }
   line-height: 1.1;
   letter-spacing: -0.034em;
   text-wrap: balance;
-  & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
+  & em { font-style: normal; font-weight: inherit; color: var(--em-color, var(--color-pink)); }
 }
 @utility display-xs {
   font-weight: 600;
   font-size: 1.0625rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  & em { font-style: normal; font-weight: inherit; color: var(--color-pink); }
+  & em { font-style: normal; font-weight: inherit; color: var(--em-color, var(--color-pink)); }
 }
 @utility eyebrow {
   font-size: 0.6875rem;
@@ -361,17 +362,18 @@ html[data-scroll-lock="true"] body { padding-right: var(--sbw, 0px); }
   html.js [data-reveal="rise"]:not([data-in]) { opacity: 0; transform: translate3d(0, var(--rt-y, 28px), 0); }
   html.js [data-reveal="fade"]:not([data-in]) { opacity: 0; }
 
-  /* imagery: the frame is uncovered from its bottom edge while the picture settles from a slight over-scale (clip-path only changes the paint, never the layout) */
-  [data-reveal="media"] { transition: clip-path 1.25s var(--ease-expo) var(--rt-delay, 0ms); clip-path: inset(0 0 0 0); }
-  [data-reveal="media"] > * { transition: transform 1.6s var(--ease-expo) var(--rt-delay, 0ms); }
-  html.js [data-reveal="media"]:not([data-in]) { clip-path: inset(100% 0 0 0); }
-  html.js [data-reveal="media"]:not([data-in]) > * { transform: scale(1.14); }
+  /* imagery: the frame inside the wrapper is uncovered from its bottom edge while the picture settles from a slight over-scale (clip-path only changes the paint, never the layout) */
+  [data-reveal="media"] > .rm-frame { transition: clip-path 1.25s var(--ease-expo) var(--rt-delay, 0ms); clip-path: inset(0 0 0 0); }
+  [data-reveal="media"] > .rm-frame > * { transition: transform 1.6s var(--ease-expo) var(--rt-delay, 0ms); }
+  html.js [data-reveal="media"]:not([data-in]) > .rm-frame { clip-path: inset(100% 0 0 0); }
+  html.js [data-reveal="media"]:not([data-in]) > .rm-frame > * { transform: scale(1.14); }
 
   /* a hero picture that is already visible settles into place instead of fading in (keeps it paintable for LCP) */
   .settle { animation: settle 2s var(--ease-expo) both; }
   @keyframes settle { from { transform: scale(1.1); } to { transform: scale(1); } }
 }
 .rt-w { white-space: nowrap; }
+.rm-frame { height: 100%; overflow: hidden; }
 
 /* ticker (components/motion/Marquee.tsx): one row of content twice, the track slides by exactly half its width */
 .marquee-track { display: flex; width: max-content; animation: marquee var(--marquee-d, 42s) linear infinite; }
