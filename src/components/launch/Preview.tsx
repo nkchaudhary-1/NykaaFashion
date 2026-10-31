@@ -77,7 +77,7 @@ export function PieceCard({ product: p, launch, live, lead, sizes }: { product: 
           {body}
         </Link>
       ) : (
-        <button type="button" aria-label={`Preview ${p.name}`} aria-haspopup="dialog" onClick={() => openPiece(p.slug)} className="block w-full text-left outline-offset-4">
+        <button type="button" aria-haspopup="dialog" onClick={() => openPiece(p.slug)} className="block w-full text-left outline-offset-4">
           {body}
         </button>
       )}
@@ -150,12 +150,12 @@ export function PreviewSection({ launch, here }: { launch: BrandLaunch; here?: b
   );
 }
 
-/** The mosaic's closing tile, in the brand's own colours: the size of the range, and the way on (see all · shop all · be reminded). */
+/** The mosaic's closing tile, in the brand's own colours: the size of the range, and the way on (see all · shop all · be reminded). A little shorter than the pieces above it (5:4), so its content is not spread thin. */
 function RangeTile({ launch, live, count, here, href, shopHref: shopTo }: { launch: BrandLaunch; live: boolean; count: number; here?: boolean; href: string; shopHref: string }) {
   const { bg, fg } = launch.brand.tone;
   const at = launchAtMs(launch);
   const style = { backgroundColor: bg, color: fg };
-  const frame = "flex aspect-[4/5] flex-col justify-between p-4 sm:aspect-auto sm:min-h-[22rem] sm:p-6 lg:aspect-[4/5] lg:min-h-0";
+  const frame = "flex aspect-[4/5] flex-col justify-between p-4 sm:aspect-auto sm:min-h-[16rem] sm:p-6 lg:aspect-[5/4] lg:min-h-0";
   const figure = (
     <span className="block">
       <span className="block font-medium leading-[0.85] tracking-[-0.06em] tabular-nums [font-size:clamp(3.75rem,7vw,7rem)]">{count}</span>

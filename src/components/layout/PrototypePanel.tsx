@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { RotateCcw } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { setLaunchOffset } from "@/components/launch/clock";
+import { resetNotify } from "@/components/launch/notify";
 import { Button } from "@/components/ui/Button";
 import { Select, Switch } from "@/components/ui/Form";
 import { Overlay, OverlayBody, OverlayFooter, OverlayHeader } from "@/components/ui/Overlay";
@@ -212,8 +214,8 @@ function DataSection() {
       <div>
         {confirm ? (
           <div className="flex flex-wrap items-center gap-2" role="alert">
-            <span className="text-[13px] text-ink-2">Clear bag, wishlist, account and signals?</span>
-            <Button variant="danger" size="sm" onClick={() => (resetAllStores(), setConfirm(false), toast({ title: "Prototype reset", description: "All local data cleared." }))}>
+            <span className="text-[13px] text-ink-2">Clear bag, wishlist, account, signals, pop-ups, reminders and the launch clock?</span>
+            <Button variant="danger" size="sm" onClick={() => (resetAllStores(), resetNotify(), setLaunchOffset(0), setConfirm(false), toast({ title: "Prototype reset", description: "All local data cleared — bag, wishlist, account, signals, pop-ups, launch reminders and the launch clock." }))}>
               Yes, reset
             </Button>
             <Button variant="ghost" size="sm" onClick={() => setConfirm(false)}>

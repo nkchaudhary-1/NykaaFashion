@@ -198,7 +198,7 @@ export function Header() {
                     href="/new-and-next"
                     aria-current={pathname === "/new-and-next" || pathname.startsWith("/new-and-next/") ? "page" : undefined}
                     className={cn(
-                      "relative inline-flex h-full items-center gap-2 px-3 text-[16px] font-medium text-ink transition-colors after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-pink after:transition-transform after:duration-300 after:ease-editorial hover:text-pink",
+                      "relative inline-flex h-full items-center gap-2 whitespace-nowrap px-3 text-[16px] font-medium text-ink transition-colors after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-pink after:transition-transform after:duration-300 after:ease-editorial hover:text-pink",
                       pathname.startsWith("/new-and-next") ? "after:scale-x-100" : "after:scale-x-0",
                     )}
                   >

@@ -121,3 +121,15 @@ export function parseContact(raw: string): { ok: true; contact: string } | { ok:
   const digits = v.replace(/[\s-]/g, "").replace(/^(\+91|91|0)(?=\d{10}$)/, "");
   return /^[6-9]\d{9}$/.test(digits) ? { ok: true, contact: digits } : { ok: false, error: "Enter a valid 10-digit mobile number or an email address." };
 }
+
+/** Forgets every reminder and removes the key — the Prototype panel's "Reset all data". */
+export function resetNotify() {
+  state = EMPTY;
+  loaded = true;
+  try {
+    window.localStorage.removeItem(KEY);
+  } catch {
+    /* storage blocked: nothing to remove */
+  }
+  emit();
+}
