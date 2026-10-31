@@ -41,7 +41,7 @@ export function ProfileView() {
       <ul className="grid grid-cols-3 gap-[var(--gap)]">
         {stats.map((s) => (
           <li key={s.href}>
-            <Link href={s.href} className="group flex h-full flex-col justify-between gap-6 rounded-[var(--radius-sm)] border border-line-strong bg-white p-4 transition-colors hover:border-ink sm:p-6">
+            <Link href={s.href} className="group flex h-full flex-col justify-between gap-6 border border-line bg-paper p-4 transition-colors duration-500 hover:border-ink sm:p-6">
               <ArrowUpRight size={18} aria-hidden className="self-end text-ink-3 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink" />
               <span>
                 <span className="display-md block tabular-nums">{s.n}</span>

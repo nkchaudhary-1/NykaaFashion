@@ -38,7 +38,7 @@ export function SavedPaymentsView() {
   return (
     <section aria-labelledby="sp-h">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h2 id="sp-h" className="text-[24px] font-semibold tracking-[-0.015em]">Saved payments</h2>
+        <h2 id="sp-h" className="display-md">Saved payments</h2>
         <Button icon={<Plus size={16} aria-hidden />} onClick={() => setAdding(true)}>Add payment method</Button>
       </div>
       <SimulatedNotice className="mt-5 max-w-[62ch]">
@@ -50,7 +50,7 @@ export function SavedPaymentsView() {
       ) : (
         <ul ref={list} className="mt-8 grid grid-cols-1 gap-[var(--gap)] sm:grid-cols-2 lg:grid-cols-3">
           {methods.map((m) => (
-            <li key={m.id} className="flex flex-col justify-between gap-6 rounded-[var(--radius-sm)] border border-line-strong bg-white p-5 sm:p-6">
+            <li key={m.id} className="flex flex-col justify-between gap-6 border border-line-strong bg-paper p-5 sm:p-6">
               <div>
                 <span className="inline-flex size-10 items-center justify-center rounded-[var(--radius-sm)] bg-sand text-ink-2">
                   {m.kind === "upi" ? <Smartphone size={20} strokeWidth={1.5} aria-hidden /> : <CreditCard size={20} strokeWidth={1.5} aria-hidden />}
@@ -75,7 +75,7 @@ export function SavedPaymentsView() {
             </li>
           ))}
           <li>
-            <button type="button" onClick={() => setAdding(true)} className="flex h-full min-h-[200px] w-full flex-col items-center justify-center gap-3 rounded-[var(--radius-sm)] border border-dashed border-line-strong p-6 text-[15px] font-semibold text-ink transition-colors hover:border-ink hover:bg-paper">
+            <button type="button" onClick={() => setAdding(true)} className="flex h-full min-h-[200px] w-full flex-col items-center justify-center gap-3 border border-dashed border-line-strong p-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:border-ink hover:bg-paper">
               <Plus size={22} strokeWidth={1.4} aria-hidden /> Add a new method
             </button>
           </li>

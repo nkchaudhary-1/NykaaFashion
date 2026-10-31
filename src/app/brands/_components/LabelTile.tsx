@@ -13,21 +13,22 @@ export const labelImage = (id: string) => {
 };
 
 /**
- * A label as a tile on the grid: a real piece from the label with its monogram in the corner, then name and origin.
- * Width comes from the column it sits in (a carousel slot or a `span-3` cell).
+ * A label as a tile on the grid: a real piece from the label (scaling slowly inside its clipped frame on hover or focus) with its monogram in the corner,
+ * then name and origin on the page beneath it. Width comes from the column it sits in (a carousel slot or a `span-3` cell). `meta` replaces the
+ * default "origin · N products" line.
  */
-export function LabelTile({ label, onDark, sizes = SIZES.tile, load, ratio = "4/5" }: { label: Label; onDark?: boolean; sizes?: string; load?: "eager"; ratio?: string }) {
+export function LabelTile({ label, onDark, sizes = SIZES.tile, load, ratio = "4/5", meta }: { label: Label; onDark?: boolean; sizes?: string; load?: "eager"; ratio?: string; meta?: string }) {
   const n = productsByLabel(label.id).length;
   return (
     <Link href={`/brands/${label.id}`} className="group block">
-      <div className="relative overflow-hidden bg-sand">
-        <Img imgKey={labelImage(label.id)} alt="" sizes={sizes} ratio={ratio} load={load} className="transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]" />
+      <div data-cursor="View" className="relative overflow-hidden bg-sand">
+        <div data-nogrid className="transition-transform duration-[1200ms] ease-expo group-hover:scale-[1.04] group-focus-visible:scale-[1.04]">
+          <Img imgKey={labelImage(label.id)} alt="" sizes={sizes} ratio={ratio} load={load} />
+        </div>
         <LabelMonogram label={legible(label)} size="sm" className="absolute left-0 top-0" />
       </div>
-      <p className={cn("mt-3 text-[15px] font-medium leading-tight tracking-[-0.01em]", onDark && "text-bone")}>{label.name}</p>
-      <p className={cn("mt-1 truncate text-[12.5px] tabular-nums", onDark ? "text-bone" : "text-ink-3")}>
-        {[label.origin, `${n} ${n === 1 ? "product" : "products"}`].filter(Boolean).join(" · ")}
-      </p>
+      <p className={cn("mt-4 text-[16px] font-medium leading-tight tracking-[-0.02em]", onDark && "text-bone")}>{label.name}</p>
+      <p className={cn("mt-1.5 truncate text-[12.5px] tabular-nums", onDark ? "text-bone" : "text-ink-3")}>{meta ?? [label.origin, `${n} ${n === 1 ? "product" : "products"}`].filter(Boolean).join(" · ")}</p>
     </Link>
   );
 }

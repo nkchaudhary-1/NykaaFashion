@@ -21,7 +21,7 @@ function CheckDot({ className }: { className?: string }) {
 export function SavingsStrip({ amount, className }: { amount: number; className?: string }) {
   if (amount <= 0) return null;
   return (
-    <p role="status" className={cn("flex items-center gap-2.5 rounded-[var(--radius-sm)] border border-emerald/40 bg-emerald-tint px-3 py-2.5 text-[14px] text-ink", className)}>
+    <p role="status" className={cn("flex items-center gap-2.5 border border-emerald/40 bg-emerald-tint px-3 py-2.5 text-[14px] text-ink", className)}>
       <CheckDot className="text-emerald" />
       <span aria-hidden>Yay! You are saving {inr(amount)}.</span>
       <span className="sr-only">You’re saving {inr(amount)} on this order</span>
@@ -40,8 +40,8 @@ export function PriceSummary({ b, title = "Price Summary", as: H = "h2", bare, c
   const afterCoupon = b.subtotal - b.couponDiscount;
   const reduced = b.productDiscount > 0 || b.couponDiscount > 0;
   return (
-    <section aria-labelledby={id} className={cn(!bare && "rounded-[var(--radius-sm)] border border-line-strong bg-white p-4 sm:p-5", className)}>
-      <H id={id} className={bare ? "sr-only" : "text-[20px] font-semibold leading-tight tracking-[-0.01em]"}>{title}</H>
+    <section aria-labelledby={id} className={cn(!bare && "border border-line-strong bg-paper p-5 sm:p-6", className)}>
+      <H id={id} className={bare ? "sr-only" : "text-[19px] font-medium leading-tight tracking-[-0.02em]"}>{title}</H>
       <p className={cn("text-[14px] text-ink-2", bare ? "mb-1" : "mt-1.5")}>Prices are inclusive of all taxes</p>
       <dl className="mt-3 tabular-nums">
         <div className={row}>
@@ -76,7 +76,7 @@ export function PriceSummary({ b, title = "Price Summary", as: H = "h2", bare, c
             <dd>{rs(b.codFee)}</dd>
           </div>
         )}
-        <div className="flex items-baseline justify-between gap-4 pb-1 pt-3 text-[18px] font-bold">
+        <div className="mt-1 flex items-baseline justify-between gap-4 border-t border-ink pb-1 pt-4 text-[20px] font-medium tracking-[-0.02em]">
           <dt>You Pay</dt>
           <dd>{inr(b.total)}</dd>
         </div>

@@ -10,17 +10,17 @@ export function PdpSkeleton() {
       </div>
       <div className="container-x pb-[var(--section-y)]">
         <Grid className="gap-y-8">
-          <Col span={{ base: 4, sm: 6, lg: 6 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 1, lg: 1 }} className="-mx-[var(--gutter)] sm:mx-0">
-            <div className="lg:grid lg:grid-cols-6 lg:gap-x-[var(--gap)]">
+          <Col span={{ base: 4, sm: 6, lg: 7 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 1, lg: 1 }} className="-mx-[var(--gutter)] sm:mx-0">
+            <div className="lg:grid lg:grid-cols-7 lg:gap-x-[var(--gap)]">
               <div className="hidden space-y-3 lg:col-span-1 lg:block">
                 {[0, 1, 2].map((i) => (
                   <Skeleton key={i} className="aspect-[4/5] w-full" />
                 ))}
               </div>
-              <Skeleton className="aspect-[4/5] w-full lg:col-span-5" />
+              <Skeleton className="aspect-[4/5] w-full lg:col-span-6 lg:max-h-[calc(100svh-var(--header-h)-2rem)]" />
             </div>
           </Col>
-          <Col span={{ base: 4, sm: 6, lg: 6 }} start={{ sm: 7, lg: 7 }} rowStart={{ sm: 1, lg: 1 }}>
+          <Col span={{ base: 4, sm: 6, lg: 5 }} start={{ sm: 7, lg: 8 }} rowStart={{ sm: 1, lg: 1 }} className="lg:pl-6">
             <Skeleton className="h-3 w-24" />
             <Skeleton className="mt-4 h-7 w-3/5" />
             <Skeleton className="mt-3 h-4 w-4/5" />

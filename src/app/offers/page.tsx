@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { OffersTracker } from "@/components/editorial/Trackers";
 import { OfferCodes } from "@/components/commerce/OfferCodes";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { ListingHeader } from "@/components/plp/ListingHeader";
 import { Section } from "@/components/layout/Section";
 import { interleave, type Feature } from "@/components/plp/features";
 import { ProductListing } from "@/components/plp/ProductListing";
@@ -28,15 +28,15 @@ export default function OffersPage() {
   return (
     <>
       <OffersTracker />
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Offers" }]} eyebrow="The Offer Edit" title={<>Fewer sales. <em>Better ones.</em></>} intro="A discount appears only where a price has genuinely moved. Browse the markdowns, or take a code to your bag." />
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Offers" }]} eyebrow="The Offer Edit" title={<>Fewer sales. <em>Better ones.</em></>} intro="A discount appears only where a price has genuinely moved. Browse the markdowns, or take a code to your bag." />
       <Section y="none" className="pb-[var(--section-y)]" aria-labelledby="codes">
-        <h2 id="codes" className="mb-5 text-[20px] font-semibold tracking-[-0.01em]">
-          Coupon codes <span className="ml-1 text-[14px] font-normal text-ink-3">· simulated</span>
+        <h2 id="codes" className="display-sm mb-8 flex flex-wrap items-baseline gap-x-4 border-t border-ink pt-6">
+          Coupon codes <span className="eyebrow text-ink-3">Simulated</span>
         </h2>
         <OfferCodes
           aside={
-            <nav aria-label="Shortcuts" className="flex h-full flex-col justify-center gap-4 rounded-[var(--radius-sm)] border border-line-strong bg-sand p-5 sm:p-6">
-              <p className="text-[17px] font-semibold">Shortcuts</p>
+            <nav aria-label="Shortcuts" className="flex h-full flex-col justify-center gap-5 border border-line-strong bg-sand p-5 sm:p-8">
+              <p className="eyebrow text-ink-3">Shortcuts</p>
               <ul className="flex flex-wrap gap-2">
                 {SHORTCUTS.map((s) => (
                   <li key={s.href}>
@@ -48,8 +48,8 @@ export default function OffersPage() {
           }
         />
       </Section>
-      <Section y="none" className="border-t border-line pb-10 pt-[var(--section-y)] sm:pb-12">
-        <SectionHeading level={2} eyebrow="The Offer Edit" title="The markdowns." />
+      <Section y="none" className="border-t border-line pb-12 pt-[var(--section-y)] sm:pb-16">
+        <SectionHeading level={2} eyebrow="The Offer Edit" title="The markdowns." size="lg" />
       </Section>
       <Suspense fallback={<div className="container-x"><GridSkeleton count={8} /></div>}>
         <ProductListing pool={pool} scopeKey="offers" source="offers" hide={["offers"]} features={features} />

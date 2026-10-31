@@ -35,7 +35,7 @@ function GreyField({ id, label, error, children }: { id: string; label: string; 
  */
 function PrimaryButton({ enabled, label, hint, type = "submit" }: { enabled: boolean; label: string; hint?: string; type?: "submit" | "button" }) {
   return (
-    <button type={type} disabled={!enabled} className={cn("inline-flex h-12 w-full items-center justify-center rounded-[var(--radius-sm)] text-[16px] font-semibold transition-colors", enabled ? "bg-navy text-white hover:bg-ink" : "cursor-not-allowed bg-stone text-ink-3")}>
+    <button type={type} disabled={!enabled} className={cn("inline-flex h-12 w-full items-center justify-center rounded-[var(--radius-sm)] text-[16px] font-semibold transition-colors", enabled ? "bg-navy text-bone hover:bg-pink hover:text-white" : "cursor-not-allowed bg-stone text-ink-3")}>
       {label}
       {hint && <span className="sr-only"> ({hint})</span>}
     </button>
@@ -107,7 +107,7 @@ export function LoginForm({ onSignedIn, continueHref = "/account", headingAs: H 
     onSignedIn();
   };
 
-  const title = "text-center text-[24px] font-semibold leading-tight tracking-[-0.015em] sm:text-[26px]";
+  const title = "text-center text-[26px] font-medium leading-tight tracking-[-0.035em] sm:text-[30px]";
   const sub = "mt-2 text-center text-[16px] leading-snug text-ink-2";
 
   if (ready && user) {

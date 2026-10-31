@@ -76,7 +76,7 @@ export function OrdersView() {
   }
   return (
     <section aria-labelledby="or-h">
-      <h2 id="or-h" className="display-sm">Orders &amp; tracking</h2>
+      <h2 id="or-h" className="display-md">Orders &amp; tracking</h2>
       <Tabs items={FILTERS.map((x) => ({ ...x, count: orders.filter((o) => inFilter(o, x.id)).length }))} value={f} onChange={setF} label="Filter orders" className="mt-6" />
       {list.length === 0 ? (
         <p className="py-14 text-center text-[14px] text-ink-3">No orders in this view.</p>

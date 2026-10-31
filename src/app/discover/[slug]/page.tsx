@@ -11,7 +11,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
 import { SIZES } from "@/components/ui/Img";
-import { ArticleSkeleton } from "@/components/ui/PageSkeletons";
+import { StorySkeleton } from "@/components/plp/PageSkeletons";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { productById } from "@/data/catalog";
 import { editById } from "@/data/edits";
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps<"/discover/[slug]">
 
 export default function StoryPage(props: PageProps<"/discover/[slug]">) {
   return (
-    <Suspense fallback={<ArticleSkeleton />}>
+    <Suspense fallback={<StorySkeleton />}>
       <StoryContent params={props.params} />
     </Suspense>
   );
@@ -50,10 +50,10 @@ const FIGURES: Array<[FigureLayout, FigureLayout]> = [
 
 /** Vertical rhythm: what sits above a block depends on what the block above it is. */
 function gapBefore(prev: StoryBlock["t"] | null, cur: StoryBlock["t"]): string {
-  if (!prev) return "mt-12 sm:mt-16 lg:mt-20";
-  if (cur === "p") return prev === "p" ? "mt-6 sm:mt-7" : prev === "h" ? "mt-5" : "mt-12 sm:mt-16";
-  if (cur === "scene") return prev === "p" ? "mt-12 sm:mt-16" : "mt-14 sm:mt-20";
-  return "mt-14 sm:mt-20"; // headings and pull quotes
+  if (!prev) return "mt-12 sm:mt-16 lg:mt-24";
+  if (cur === "p") return prev === "p" ? "mt-6 sm:mt-8" : prev === "h" ? "mt-6" : "mt-14 sm:mt-20";
+  if (cur === "scene") return prev === "p" ? "mt-16 sm:mt-24" : "mt-16 sm:mt-24";
+  return "mt-16 sm:mt-24"; // headings and pull quotes
 }
 
 // The reading column: 4 columns on phones, 10 centred on tablets (2–11), 8 centred on desktop (3–10); text stops at ~62 characters.
@@ -96,7 +96,7 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
               <div key={i} className={cn("container-x", gap)}>
                 <Grid>
                   <Col span={{}} className={READ}>
-                    <p className={cn("max-w-[62ch]", i === 0 ? "text-[18px] leading-[1.7] text-ink sm:text-[19px] 2xl:text-[20px]" : "text-[17px] leading-[1.75] text-ink-2 2xl:text-[18px]", i === 0 && "first-letter:float-left first-letter:mr-3 first-letter:mt-1.5 first-letter:text-[64px] sm:first-letter:text-[84px] first-letter:font-medium first-letter:leading-[0.78] first-letter:text-ink")}>{b.text}</p>
+                    <p className={cn("max-w-[62ch]", i === 0 ? "text-[19px] leading-[1.7] text-ink sm:text-[21px] 2xl:text-[22px]" : "text-[17px] leading-[1.8] text-ink-2 sm:text-[18px] 2xl:text-[19px]", i === 0 && "first-letter:float-left first-letter:mr-3 first-letter:mt-1.5 first-letter:text-[64px] sm:first-letter:text-[84px] first-letter:font-medium first-letter:leading-[0.78] first-letter:text-ink")}>{b.text}</p>
                   </Col>
                 </Grid>
               </div>
@@ -106,7 +106,7 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
               <div key={i} className={cn("container-x", gap)}>
                 <Grid>
                   <Col span={{}} className={READ}>
-                    <h2 className="display-sm max-w-[26ch]">{b.text}</h2>
+                    <h2 className="display-md max-w-[22ch]">{b.text}</h2>
                   </Col>
                 </Grid>
               </div>
@@ -117,7 +117,7 @@ async function StoryContent({ params }: Pick<PageProps<"/discover/[slug]">, "par
             return (
               <div key={i} className={cn("container-x", gap)}>
                 <Grid>
-                  <Col as="blockquote" span={{}} className={cn("col-span-4 border-t border-ink pt-6 sm:col-span-11 sm:pt-8 lg:col-span-8", right ? "sm:col-start-2 lg:col-start-4" : "sm:col-start-1 lg:col-start-2")}>
+                  <Col as="blockquote" span={{}} className={cn("col-span-4 border-t border-ink pt-6 sm:col-span-11 sm:pt-10 lg:col-span-8", right ? "sm:col-start-2 lg:col-start-4" : "sm:col-start-1 lg:col-start-2")}>
                     <p className="display-md max-w-[24ch]">
                       <span className="text-pink">“</span>
                       {b.text}
@@ -157,7 +157,7 @@ function ShopTheStory({ story, title, productIds, editTitle, editHref }: { story
   return (
     <Section tone="paper" className="mt-16 border-y border-line sm:mt-24" aria-label={title}>
       <Carousel>
-        <SectionHeading level={2} eyebrow={title} title="Own the story." href={editHref} hrefLabel={editTitle ? `Shop ${editTitle}` : undefined}>
+        <SectionHeading level={2} size="lg" eyebrow={title} title="Own the story." href={editHref} hrefLabel={editTitle ? `Shop ${editTitle}` : undefined}>
           <CarouselArrows />
         </SectionHeading>
         <div className="mt-10">
@@ -179,9 +179,9 @@ function KeepReading({ next, more }: { next: Story; more: Story[] }) {
   return (
     <Section aria-labelledby="nx">
       <Carousel>
-        <SectionHeading level={2} eyebrow="Next in the Style Files" title={<span id="nx">Keep reading.</span>} href={`/discover/${next.id}`} hrefLabel="Read next" />
+        <SectionHeading level={2} size="lg" eyebrow="Next in the Style Files" title={<span id="nx">Keep reading.</span>} href={`/discover/${next.id}`} hrefLabel="Read next" />
         <div className="mt-10 sm:mt-14">
-          <CarouselTrack label="More stories" density="wide">
+          <CarouselTrack label="More stories" density="wide" cursor="Drag">
             {more.map((s) => (
               <StoryCard key={s.id} story={s} as="h3" source="next-story" />
             ))}

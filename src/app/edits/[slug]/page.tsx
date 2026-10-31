@@ -7,16 +7,17 @@ import { LookStrip } from "@/components/editorial/LookStrip";
 import { ShoppableImage } from "@/components/editorial/ShoppableImage";
 import { StoryCard } from "@/components/editorial/StoryCard";
 import { EditOpenTracker } from "@/components/editorial/Trackers";
+import { LabelTile } from "@/app/brands/_components/LabelTile";
 import { Col, Grid } from "@/components/layout/Grid";
+import { RevealMedia } from "@/components/motion/reveal";
 import { Section } from "@/components/layout/Section";
 import { highlightNotes, interleave, labelTiles, type Feature } from "@/components/plp/features";
 import { ProductListing } from "@/components/plp/ProductListing";
-import { BentoTile } from "@/components/ui/BentoTile";
 import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
 import { SIZES } from "@/components/ui/Img";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GridSkeleton } from "@/components/ui/Skeleton";
-import { ListingPageSkeleton } from "@/components/ui/PageSkeletons";
+import { ListingSkeleton } from "@/components/plp/PageSkeletons";
 import { edits, editById, primaryEdits } from "@/data/edits";
 import { labelById } from "@/data/labels";
 import { editProducts } from "@/data/queries";
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: PageProps<"/edits/[slug]">): 
 
 export default function EditPage(props: PageProps<"/edits/[slug]">) {
   return (
-    <Suspense fallback={<ListingPageSkeleton band />}>
+    <Suspense fallback={<ListingSkeleton band />}>
       <EditContent params={props.params} />
     </Suspense>
   );
@@ -63,16 +64,14 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
       {labels.length > 1 && (
         <Section y="sm" aria-labelledby="makers">
           <Carousel>
-            <SectionHeading level={2} eyebrow="Label stories" title={<span id="makers">Meet the labels.</span>} intro="Every label in this edit, with the story behind it." href="/brands" hrefLabel="All labels">
+            <SectionHeading level={2} size="lg" eyebrow="Label stories" title={<span id="makers">Meet the labels.</span>} intro="Every label in this edit, with the story behind it." href="/brands" hrefLabel="All labels">
               <CarouselArrows />
             </SectionHeading>
-            <div className="mt-10">
-              <CarouselTrack label="Labels in this edit" density="tile">
-                {labels.map(([id, n]) => {
-                  const l = labelById[id];
-                  const rep = pool.find((p) => p.labelId === id && !p.soldOut) ?? pool.find((p) => p.labelId === id)!;
-                  return <BentoTile key={id} href={`/brands/${id}`} imgKey={rep.variants[0].images[0]} title={l.name} meta={`${n} in this edit`} sizes={SIZES.tile} />;
-                })}
+            <div className="mt-12">
+              <CarouselTrack label="Labels in this edit" density="tile" cursor="Drag">
+                {labels.map(([id, n]) => (
+                  <LabelTile key={id} label={labelById[id]} meta={`${n} in this edit`} sizes={SIZES.tile} />
+                ))}
               </CarouselTrack>
             </div>
           </Carousel>
@@ -84,13 +83,15 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
           {/* 8 + 4: the shoppable scene beside a heading and the pieces in it */}
           <Grid className="items-stretch gap-y-8">
             <Col span={{ base: 4, sm: 12, lg: 8 }}>
-              <ShoppableImage imgKey={look.scene} alt={look.caption} sizes="(min-width:1024px) 66vw, 100vw" ratio="3/2" />
-              <p className="mt-3 text-[13px] text-ink-3">{look.caption}</p>
+              <RevealMedia>
+                <ShoppableImage imgKey={look.scene} alt={look.caption} sizes="(min-width:1024px) 66vw, 100vw" ratio="3/2" />
+              </RevealMedia>
+              <p className="mt-4 text-[14px] text-ink-3">{look.caption}</p>
             </Col>
             <Col span={{ base: 4, sm: 12, lg: 4 }} className="flex flex-col justify-between gap-10">
               <div>
                 <p className="eyebrow text-ink-3">{look.story.kicker}</p>
-                <h2 id="look-h" className="display-sm mt-4">
+                <h2 id="look-h" className="display-md mt-5">
                   Shop the look.
                 </h2>
               </div>
@@ -101,8 +102,8 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
       )}
 
       <section id="pieces" aria-labelledby="pieces-h" className="scroll-mt-24 pb-4 pt-[var(--section-y)]">
-        <div className="container-x mb-10">
-          <SectionHeading level={2} eyebrow="Shop the edit" title={<span id="pieces-h">All products.</span>} />
+        <div className="container-x mb-12">
+          <SectionHeading level={2} size="lg" eyebrow="Shop the edit" title={<span id="pieces-h">All products.</span>} />
         </div>
         <Suspense fallback={<div className="container-x"><GridSkeleton count={8} /></div>}>
           <ProductListing pool={pool} scopeKey={`edit:${edit.id}`} source={`edit:${edit.id}`} hide={edit.id === "responsible" ? ["responsible"] : edit.id === "the-offer-edit" ? ["offers"] : []} categoryScope={[]} resultsHeading={false} features={features} />
@@ -117,10 +118,10 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
       ))}
 
       <Section tone="paper" y="sm" className="border-t border-line" aria-labelledby="more-edits">
-        <SectionHeading level={2} eyebrow="Keep going" title={<span id="more-edits">More edits.</span>} href="/edits" hrefLabel="All edits" />
-        <div className="mt-10">
+        <SectionHeading level={2} size="lg" eyebrow="Keep going" title={<span id="more-edits">More edits.</span>} href="/edits" hrefLabel="All edits" />
+        <div className="mt-12">
           <Carousel>
-            <CarouselTrack label="More edits" density="wide">
+            <CarouselTrack label="More edits" density="wide" cursor="Drag">
               {more.map((e) => (
                 <EditTile key={e.id} edit={e} source="more-edits" sizes="(min-width:1024px) 33vw, (min-width:600px) 45vw, 90vw" ratio="5/4" />
               ))}

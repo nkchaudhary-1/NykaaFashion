@@ -77,19 +77,19 @@ export function CouponsAndOffers({ lines, applied, error, viewAll, withInput, cl
   return (
     <section ref={root} aria-labelledby={head} className={className}>
       <div className="flex items-center justify-between gap-3">
-        <h2 id={head} tabIndex={-1} className="text-[20px] font-semibold leading-tight tracking-[-0.01em]">Coupons and Offers</h2>
+        <h2 id={head} tabIndex={-1} className="text-[19px] font-medium leading-tight tracking-[-0.02em]">Coupons and Offers</h2>
         {viewAll && (
-          <Link href={viewAll.href} onClick={viewAll.onClick} className="link-u tap inline-flex items-center gap-1 text-[15px] font-semibold text-pink">
+          <Link href={viewAll.href} onClick={viewAll.onClick} className="link-u tap inline-flex items-center gap-1 text-[13px] font-medium text-pink">
             View all <ChevronRight size={18} strokeWidth={2.2} aria-hidden />
           </Link>
         )}
       </div>
 
       {(on || offer) && (
-        <div className="relative mt-4 rounded-[var(--radius-md)] bg-pink-tint p-4">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-ink-2">Best coupon</p>
+        <div className="relative mt-4 bg-sand p-4">
+          <p className="eyebrow text-ink-2">Best coupon</p>
           <div className="relative mt-6">
-            <span className="absolute -top-[26px] right-4 rounded-t-[10px] bg-white px-4 pb-1 pt-1.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-blue">Only for you</span>
+            <span className="absolute -top-[26px] right-4 bg-white px-4 pb-1 pt-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-blue">Only for you</span>
             <div className="flex min-h-[4.25rem] items-center justify-between gap-3 rounded-[var(--radius-sm)] bg-white px-4 py-3 text-[15px]">
               {on ? (
                 <>
@@ -137,7 +137,7 @@ export function CouponsAndOffers({ lines, applied, error, viewAll, withInput, cl
 export function CouponOffers({ lines, applied, error, className }: { lines: PricedLine[]; applied: string | null; error: string | null; className?: string }) {
   return (
     <section id="offers" aria-labelledby="offers-h" className={cn("scroll-mt-32 border-t border-line-strong pt-6", className)}>
-      <h2 id="offers-h" className="text-[20px] font-semibold leading-tight tracking-[-0.01em]">Available offers</h2>
+      <h2 id="offers-h" className="text-[19px] font-medium leading-tight tracking-[-0.02em]">Available offers</h2>
       <p className="mt-1.5 text-[14px] text-ink-2">Tap Apply — each code is checked against what’s in your bag.</p>
       <ul tabIndex={0} aria-label="Available offers" className="snap-x-rail scrollbar-none mt-5 flex gap-x-[var(--gap)] overflow-x-auto outline-offset-[-2px] max-sm:-mr-[var(--gutter)] max-sm:pr-[var(--gutter)] sm:grid sm:grid-cols-2 sm:gap-y-[var(--gap)] sm:overflow-visible">
         {coupons.filter((c) => !c.expired).map((c) => {
@@ -145,10 +145,10 @@ export function CouponOffers({ lines, applied, error, className }: { lines: Pric
           const on = applied === c.code && !error;
           const blocked = !r.ok && lines.length > 0;
           return (
-            <li key={c.code} className={cn("flex w-[82%] shrink-0 flex-col justify-between gap-5 border bg-white p-5 sm:w-auto", on ? "border-emerald" : "border-line")}>
+            <li key={c.code} className={cn("flex w-[82%] shrink-0 flex-col justify-between gap-5 border bg-paper p-5 sm:w-auto", on ? "border-emerald" : "border-line")}>
               <div>
                 <p className="inline-flex h-6 items-center border border-dashed border-pink px-2 text-[12.5px] font-semibold tabular-nums tracking-[0.08em] text-pink">{c.code}</p>
-                <p className="mt-3 text-[16px] font-semibold leading-snug">{c.title}</p>
+                <p className="mt-3 text-[16px] font-medium leading-snug tracking-[-0.01em]">{c.title}</p>
                 <p className="mt-1.5 text-[14px] leading-snug text-ink-2">{c.description}</p>
                 {blocked && <p className="mt-2 text-[12.5px] leading-snug text-ink-3">{r.reason}</p>}
               </div>

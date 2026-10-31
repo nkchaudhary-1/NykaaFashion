@@ -21,8 +21,8 @@ export function LoginFlow() {
       <Grid className="gap-y-8 sm:gap-y-0">
         <Col span={{ base: 4, sm: 6, lg: 6 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 1, lg: 1 }} className="relative aspect-[16/10] max-sm:-mx-[var(--gutter)] sm:-ml-[var(--edge)] sm:aspect-auto sm:min-h-[560px] lg:min-h-[680px]">
           <Img imgKey="scenes/auth-side" alt="" sizes="(min-width:600px) 56vw, 100vw" ratio="fill" load="eager" position="50% 40%" className="absolute inset-0 h-full" />
-          <div className="edge-l absolute inset-x-0 bottom-0 bg-pink-tint py-4 pr-5 sm:py-5 sm:pr-8">
-            <p className="display-xs max-w-[24ch] sm:text-[22px]">Your bag, wishlist and orders — wherever you shop.</p>
+          <div className="edge-l absolute inset-x-0 bottom-0 bg-bone py-5 pr-5 sm:py-7 sm:pr-8">
+            <p className="display-sm max-w-[24ch]">Your bag, wishlist and orders — wherever you shop.</p>
           </div>
         </Col>
 

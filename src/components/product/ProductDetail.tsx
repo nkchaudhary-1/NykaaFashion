@@ -47,8 +47,8 @@ const STICKY_GALLERY = [
   "[@media(min-height:640px)]:sm:ease-editorial",
 ].join(" ");
 
-const sectionY = "mt-6 border-t border-line pt-6";
-const h2 = "text-[18px] font-semibold leading-tight";
+const sectionY = "mt-9 border-t border-line pt-9";
+const h2 = "text-[19px] font-medium leading-tight tracking-[-0.02em]";
 
 export function ProductDetail({ product }: { product: Product }) {
   const groupRef = useRef<HTMLDivElement>(null);
@@ -152,17 +152,17 @@ export function ProductDetail({ product }: { product: Product }) {
     <>
       <section aria-label="Product" className="container-x pb-[var(--section-y)]">
         <Grid className="gap-y-8">
-          {/* Gallery: thumbnail rail + picture from 1024px (1 + 5 of the 12 columns), a full-width swipe track below; full bleed on phones. */}
-          <Col span={{ base: 4, sm: 6, lg: 6 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 1, lg: 1 }} className={cn("-mx-[var(--gutter)] sm:mx-0", STICKY_GALLERY)}>
+          {/* Gallery: thumbnail rail + a large picture from 1024px (1 + 6 of the 12 columns), a full-width swipe track below; full bleed on phones. */}
+          <Col span={{ base: 4, sm: 6, lg: 7 }} start={{ sm: 1, lg: 1 }} rowStart={{ sm: 1, lg: 1 }} className={cn("-mx-[var(--gutter)] sm:mx-0", STICKY_GALLERY)}>
             <Gallery key={sel.variant} images={v.images} name={product.name} colorName={v.colorName} heroRef={heroRef} startIndex={sel.variant === inStockVariantIndex(product) ? startShot : 0} />
           </Col>
 
           {/* Information: label → brand → title → rating → price, then size and bag, delivery, coupons, product information, reviews, the brand. */}
-          <Col span={{ base: 4, sm: 6, lg: 6 }} start={{ sm: 7, lg: 7 }} rowStart={{ sm: 1, lg: 1 }}>
+          <Col span={{ base: 4, sm: 6, lg: 5 }} start={{ sm: 7, lg: 8 }} rowStart={{ sm: 1, lg: 1 }} className="lg:pl-6">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 {tags.length > 0 && (
-                  <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] font-semibold uppercase leading-none tracking-[0.1em] text-blue">
+                  <p className="eyebrow flex flex-wrap items-center gap-x-2.5 gap-y-1 text-blue">
                     {tags.map((t, i) => (
                       <Fragment key={t}>
                         {i > 0 && <span aria-hidden className="h-3 w-px bg-blue/40" />}
@@ -171,35 +171,37 @@ export function ProductDetail({ product }: { product: Product }) {
                     ))}
                   </p>
                 )}
-                <Link href={`/brands/${label.id}`} className={cn("tap block text-[22px] font-semibold leading-tight text-ink transition-colors hover:text-pink", tags.length > 0 && "mt-3")}>
+                <Link href={`/brands/${label.id}`} className={cn("eyebrow tap block text-ink transition-colors duration-300 hover:text-pink", tags.length > 0 && "mt-5")}>
                   {label.name}
                 </Link>
-                <h1 className="mt-1.5 text-[16px] font-normal leading-snug text-ink-3">{product.name}</h1>
+                <h1 className="display-md mt-3">{product.name}</h1>
               </div>
-              <button type="button" onClick={share} aria-label={`Share ${product.name}`} className="inline-flex size-11 shrink-0 items-center justify-center border border-line-strong text-ink transition-colors hover:border-ink hover:bg-sand">
+              <button type="button" onClick={share} aria-label={`Share ${product.name}`} className="inline-flex size-11 shrink-0 items-center justify-center text-ink transition-colors duration-300 hover:bg-sand">
                 <Share2 size={18} strokeWidth={1.5} />
               </button>
             </div>
 
-            <a href="#reviews" className="tap mt-4 inline-flex items-stretch overflow-hidden rounded-[var(--radius-sm)] border border-line-strong text-[13.5px] transition-colors hover:border-ink">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 font-semibold tabular-nums">
-                {product.rating.toFixed(1)} <Star size={13} aria-hidden className="fill-ink text-ink" />
-                <span className="sr-only">out of 5 stars</span>
+            <a href="#reviews" className="tap mt-5 inline-flex items-center gap-2 text-[13px] text-ink-2 transition-colors duration-300 hover:text-ink">
+              <Star size={14} aria-hidden className="fill-ink text-ink" />
+              <span className="font-medium tabular-nums text-ink">
+                {product.rating.toFixed(1)}
+                <span className="sr-only"> out of 5 stars</span>
               </span>
-              <span className="inline-flex items-center border-l border-line-strong px-3 py-1.5 tabular-nums text-ink-3">Based on {product.ratingCount.toLocaleString("en-IN")} ratings</span>
+              <span aria-hidden className="h-3 w-px bg-line-strong" />
+              <span className="link-u tabular-nums">Based on {product.ratingCount.toLocaleString("en-IN")} ratings</span>
             </a>
 
-            <div className="mt-5">
+            <div className="mt-7">
               <p className="flex flex-wrap items-baseline gap-x-3 tabular-nums">
-                <span className={cn("text-[26px] font-bold leading-none", product.soldOut ? "text-ink-3" : "text-ink")}>{inr(product.price)}</span>
+                <span className={cn("text-[30px] font-medium leading-none tracking-[-0.025em]", product.soldOut ? "text-ink-3" : "text-ink")}>{inr(product.price)}</span>
                 {discount > 0 && (
                   <>
                     <span className="sr-only">, was {inr(product.mrp)}</span>
-                    <span className="text-[17px] font-semibold text-emerald">{discount}% Off</span>
+                    <span className="text-[15px] font-medium text-emerald">{discount}% off</span>
                   </>
                 )}
               </p>
-              <p className="mt-2 text-[13px] tabular-nums text-ink-3">
+              <p className="mt-2.5 text-[12.5px] tabular-nums text-ink-3">
                 {discount > 0 && (
                   <>
                     MRP <s>{inr(product.mrp)}</s>{" "}
@@ -320,7 +322,7 @@ function WishlistButton({ product, variant }: { product: Product; variant: numbe
         saveWithFeedback(product, variant, "pdp");
         setPop((n) => n + 1);
       }}
-      className="inline-flex h-12 shrink-0 items-center justify-center gap-2 border border-ink px-4 text-[15px] font-semibold text-ink transition-colors hover:bg-sand @max-[21rem]:w-12 @max-[21rem]:px-0"
+      className="inline-flex h-12 shrink-0 items-center justify-center gap-2 border border-line-strong px-4 text-[14px] font-medium text-ink transition-colors duration-300 hover:border-ink @max-[21rem]:w-12 @max-[21rem]:px-0"
     >
       <Heart key={pop} size={18} strokeWidth={1.6} aria-hidden className={cn("transition-colors duration-200", saved ? "fill-pink stroke-pink" : "fill-transparent", pop > 0 && saved && "animate-pop")} />
       <span className="@max-[21rem]:sr-only">{saved ? "Wishlisted" : "Add to Wishlist"}</span>
@@ -347,18 +349,18 @@ function Coupons({ product }: { product: Product }) {
   return (
     <section aria-labelledby="coupons-h" className="@container">
       <h2 id="coupons-h" className={cn(h2, "flex flex-wrap items-baseline gap-x-2")}>
-        Coupons <span className="text-[13px] font-normal text-ink-3">• {list.length} available · simulated</span>
+        Coupons <span className="text-[13px] font-normal text-ink-3">{list.length} available · simulated</span>
       </h2>
       {/* side by side only when the column is wide enough to hold two tickets (a container query, so it follows the column, not the window) */}
       <ul className="mt-4 grid grid-cols-1 gap-3 @lg:grid-cols-2">
         {list.map((c) => (
           <li key={c.code} className="flex flex-col border border-line bg-paper">
             <div className="flex flex-1 items-start gap-3 p-3.5">
-              <span className="inline-flex size-10 shrink-0 items-center justify-center border border-line bg-white text-pink">
-                <BadgePercent size={20} strokeWidth={1.5} aria-hidden />
+              <span className="inline-flex size-8 shrink-0 items-center justify-center text-pink">
+                <BadgePercent size={22} strokeWidth={1.4} aria-hidden />
               </span>
               <div className="min-w-0">
-                <p className="text-[15px] font-semibold leading-tight">{c.title}</p>
+                <p className="text-[15px] font-medium leading-tight">{c.title}</p>
                 <p className="mt-1 line-clamp-3 text-[12.5px] leading-snug text-ink-3">{c.description}</p>
               </div>
             </div>
@@ -381,7 +383,7 @@ function ProductInformation({ product, label }: { product: Product; label: Label
     <span className="flex items-start gap-3.5 py-1">
       <Icon size={20} strokeWidth={1.4} aria-hidden className="mt-0.5 shrink-0 text-ink-2" />
       <span className="flex flex-col text-left">
-        <span className="text-[15px] font-semibold text-ink">{title}</span>
+        <span className="text-[15px] font-medium text-ink">{title}</span>
         <span className="mt-0.5 text-[13.5px] font-normal text-ink-3">{sub}</span>
       </span>
     </span>

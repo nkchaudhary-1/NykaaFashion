@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { CreditCard, Heart, LogOut, MapPin, Package, User } from "lucide-react";
 import { useEffect, useRef, type ReactNode } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { ListingHeader } from "@/components/plp/ListingHeader";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { cn } from "@/lib/cn";
 import { initials } from "@/lib/format";
@@ -21,7 +21,7 @@ const NAV = [
 
 /** One look for every nav entry: a flat square tab on phones and tablets, a full-width row on desktop. Current = pink tint with a pink edge. */
 const item = "relative flex shrink-0 items-center gap-2.5 whitespace-nowrap border text-[14px] font-medium transition-colors h-11 px-4 max-lg:rounded-[var(--radius-sm)] lg:h-12 lg:w-full lg:gap-3 lg:border-x-0 lg:border-t-0 lg:text-[15px]";
-const on = "border-pink bg-pink-tint text-pink lg:border-line lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-[3px] lg:before:bg-pink lg:before:content-['']";
+const on = "border-ink bg-ink text-bone lg:border-line lg:bg-transparent lg:text-ink lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-[3px] lg:before:bg-ink lg:before:content-['']";
 const off = "border-line-strong text-ink hover:border-ink lg:border-line lg:hover:bg-paper";
 
 /**
@@ -57,9 +57,10 @@ export function AccountShell({ children }: { children: ReactNode }) {
           <Skeleton className="mt-4 h-14 w-72" />
         </div>
       ) : (
-        <PageHeader
+        <ListingHeader
           crumbs={[{ name: "Home", href: "/" }, { name: "Account" }]}
           eyebrow="Your account"
+          size="lg"
           title={`Hello, ${user.name.split(" ")[0]}.`}
           intro="Orders, addresses and saved pieces. This is a prototype account — everything stays on this device."
         />

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { Suspense } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { ListingHeader } from "@/components/plp/ListingHeader";
 import { SimulatedNotice } from "@/components/ui/Simulated";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { INFO_PAGES } from "@/data/content";
@@ -60,7 +60,7 @@ async function Content({ params }: Pick<PageProps<"/info/[slug]">, "params">) {
   const more = MORE.filter((m) => m.href !== `/info/${slug}`).slice(0, 3);
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: page.title }]} title={page.title} intro={page.intro} size="lg" />
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: page.title }]} title={page.title} intro={page.intro} />
       <div className="container-x pb-4 sm:pb-8">
         <Grid className="gap-y-10">
           {/* 3 / 9: the rail (sticky on desktop) | the content */}
@@ -77,7 +77,7 @@ async function Content({ params }: Pick<PageProps<"/info/[slug]">, "params">) {
                   </h2>
                   <div className="space-y-5 lg:col-span-6">
                     {s.p.map((para, i) => (
-                      <p key={i} className="max-w-[62ch] text-[16px] leading-[1.7] text-ink-2">
+                      <p key={i} className="max-w-[62ch] text-[16px] leading-[1.75] text-ink-2 sm:text-[17px]">
                         {para}
                       </p>
                     ))}

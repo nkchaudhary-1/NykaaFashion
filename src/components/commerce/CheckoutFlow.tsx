@@ -144,7 +144,7 @@ export function CheckoutFlow() {
 
   // Phones & tablets: the summary is a flat disclosure — on top while choosing address and payment, then just above the pay button.
   const summaryDisclosure = (
-    <Disclosure title={<span className="text-[16px] font-semibold">Order summary · <span className="tabular-nums">{inr(price.total)}</span></span>} className="rounded-[var(--radius-sm)] border border-line-strong bg-white px-4 [&>h2]:py-1" headingLevel={2}>
+    <Disclosure title={<span className="text-[16px] font-semibold">Order summary · <span className="tabular-nums">{inr(price.total)}</span></span>} className="border border-line-strong bg-paper px-4 [&>h2]:py-1" headingLevel={2}>
       <SummaryBody lines={lines} price={price} bare />
     </Disclosure>
   );
@@ -298,9 +298,9 @@ export function CheckoutFlow() {
 /** One step of the flow: a square numbered marker, the title, and "Change" once it is done. The current step is outlined in ink. */
 function StepCard({ id, n, title, state, onChange, children }: { id: string; n: number; title: string; state: "done" | "current" | "todo"; onChange?: () => void; children?: ReactNode }) {
   return (
-    <section id={`step-${n}`} aria-labelledby={id} className={cn("rounded-[var(--radius-sm)] border bg-white", state === "current" ? "border-ink" : "border-line-strong")}>
+    <section id={`step-${n}`} aria-labelledby={id} className={cn("border bg-paper", state === "current" ? "border-ink" : "border-line-strong")}>
       <header className="flex items-center justify-between gap-3 px-5 py-4 sm:px-7 sm:py-5">
-        <h2 id={id} className={cn("flex items-center gap-3.5 text-[18px] font-semibold tracking-[-0.01em]", state === "todo" && "text-ink-3")}>
+        <h2 id={id} className={cn("flex items-center gap-3.5 text-[20px] font-medium tracking-[-0.025em]", state === "todo" && "text-ink-3")}>
           <StepMark n={n} state={state} className="size-8 text-[13px]" />
           {title}
         </h2>

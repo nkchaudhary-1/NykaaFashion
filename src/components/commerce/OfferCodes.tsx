@@ -30,13 +30,13 @@ export function OfferCodes({ className, aside }: { className?: string; aside?: R
     <ul className={cn("grid-main gap-y-[var(--gap)]", className)}>
       {active.map((c) => (
         <Col as="li" key={c.code} span={{ base: 4, sm: 6, lg: 4 }}>
-          <div className="flex h-full flex-col overflow-hidden rounded-[var(--radius-sm)] border border-line-strong">
-            <div className="flex-1 bg-paper p-5">
-              <p className="text-[17px] font-semibold leading-snug text-ink">{c.title}</p>
-              <p className="mt-1.5 text-[14px] leading-snug text-ink-2">{c.description}</p>
+          <div className="flex h-full flex-col overflow-hidden border border-line-strong">
+            <div className="flex-1 bg-paper p-5 sm:p-6">
+              <p className="display-xs">{c.title}</p>
+              <p className="mt-2.5 text-[14px] leading-snug text-ink-2">{c.description}</p>
             </div>
-            <button type="button" onClick={() => copy(c.code)} className="flex h-12 items-center justify-between rounded-none border-t border-dashed border-line-strong bg-white px-5 text-[14px] transition-colors hover:bg-sand">
-              <span className="font-medium uppercase tabular-nums tracking-[0.12em] text-ink-2">{c.code}</span>
+            <button type="button" onClick={() => copy(c.code)} className="flex h-12 items-center justify-between rounded-none border-t border-dashed border-line-strong bg-bone px-5 text-[14px] transition-colors duration-300 hover:bg-sand sm:px-6">
+              <span className="font-medium uppercase tabular-nums tracking-[0.16em] text-ink-2">{c.code}</span>
               <span className="inline-flex items-center gap-1.5 font-semibold text-pink">
                 {copied === c.code && <Check size={15} aria-hidden />}
                 Copy Code

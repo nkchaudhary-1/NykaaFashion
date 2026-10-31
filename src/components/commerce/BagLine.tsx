@@ -65,7 +65,7 @@ function YouPay({ line, className }: { line: ResolvedLine; className?: string })
     <div className={cn("text-right tabular-nums", className)}>
       <p className="flex items-center justify-end gap-1.5 text-[15px] text-ink-2">
         <Info size={14} strokeWidth={1.6} aria-hidden className="text-ink-3" />
-        You Pay <strong className="text-[18px] font-bold text-ink">{inr(p.price * qty)}</strong>
+        You Pay <strong className="text-[18px] font-medium tracking-[-0.01em] text-ink">{inr(p.price * qty)}</strong>
       </p>
       {off > 0 && (
         <p className="mt-0.5 text-[14px]">
@@ -143,13 +143,13 @@ export function BagLineRow({ line, compact, onNavigate }: { line: ResolvedLine; 
       <li className="border-b border-line py-5 first:pt-1">
         <div className="flex gap-4">
           {/* a pointer convenience only: the name link beside it is the one that takes focus (a focusable-but-skipped anchor would confuse the drawer's focus trap) */}
-          <div aria-hidden onClick={() => (onNavigate?.(), router.push(href))} className="w-24 shrink-0 cursor-pointer self-start border border-line">
+          <div aria-hidden onClick={() => (onNavigate?.(), router.push(href))} className="w-24 shrink-0 cursor-pointer self-start">
             <Img imgKey={v.images[0]} alt="" sizes="96px" ratio="4/5" />
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="truncate text-[16px] font-semibold leading-snug">{label.name}</p>
+                <p className="eyebrow mb-1.5 truncate text-ink">{label.name}</p>
                 <Link href={href} onClick={onNavigate} className="link-u block truncate text-[15px] leading-snug text-ink-2">
                   {p.name}
                 </Link>
@@ -167,14 +167,14 @@ export function BagLineRow({ line, compact, onNavigate }: { line: ResolvedLine; 
   }
 
   return (
-    <li className="grid grid-cols-4 gap-x-[var(--gap)] border-b border-line py-6 sm:grid-cols-12 lg:grid-cols-8">
-      <Link href={href} onClick={onNavigate} className="col-span-1 self-start border border-line sm:col-span-2" tabIndex={-1} aria-hidden>
+    <li className="grid grid-cols-4 gap-x-[var(--gap)] border-b border-line py-7 sm:grid-cols-12 lg:grid-cols-8">
+      <Link href={href} onClick={onNavigate} className="col-span-1 self-start sm:col-span-2" tabIndex={-1} aria-hidden>
         <Img imgKey={v.images[0]} alt="" sizes="(min-width:1024px) 14vw, (min-width:600px) 16vw, 25vw" ratio="4/5" />
       </Link>
       <div className="col-span-3 min-w-0 sm:col-span-10 lg:col-span-6">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="truncate text-[16px] font-semibold leading-snug">{label.name}</p>
+            <p className="eyebrow mb-1.5 truncate text-ink">{label.name}</p>
             <Link href={href} onClick={onNavigate} className="link-u line-clamp-2 text-[15px] leading-snug text-ink-2 sm:truncate">
               {p.name}
             </Link>

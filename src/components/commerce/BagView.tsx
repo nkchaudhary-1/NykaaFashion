@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, ShoppingBag } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { BagLineRow } from "@/components/commerce/BagLine";
 import { BuyBar } from "@/components/commerce/BuyBar";
@@ -9,11 +9,11 @@ import { FreeShippingBar } from "@/components/commerce/FreeShippingBar";
 import { PriceSummary } from "@/components/commerce/PriceSummary";
 import { TrustStrip } from "@/components/commerce/TrustStrip";
 import { Col, Grid } from "@/components/layout/Grid";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { ListingHeader } from "@/components/plp/ListingHeader";
 import { Section } from "@/components/layout/Section";
 import { ProductCard } from "@/components/product/ProductCard";
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
-import { BentoTile } from "@/components/ui/BentoTile";
+import { EditTile } from "@/components/editorial/EditTile";
 import { LinkButton } from "@/components/ui/Button";
 import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
 import { SIZES } from "@/components/ui/Img";
@@ -22,16 +22,13 @@ import { SimulatedNotice } from "@/components/ui/Simulated";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { productById } from "@/data/catalog";
 import { editById } from "@/data/edits";
-import { editProducts } from "@/data/queries";
 import type { Product } from "@/data/types";
 import { priceBag } from "@/lib/pricing";
 import { popular, styleWith } from "@/lib/recs";
 import { useHydrated, useStore } from "@/lib/store";
 import { useBag, wishlistStore } from "@/stores/commerce";
-import { signal } from "@/stores/intent";
 
 const CRUMBS = [{ name: "Home", href: "/" }, { name: "Bag" }];
-const HEADER = "pb-8 sm:pb-10";
 
 /** Two complements for what is in the bag — one per line in turn (never something already bagged), padded with what is popular. */
 function complementsFor(ids: string[]): Product[] {
@@ -77,7 +74,7 @@ export function BagView() {
   if (!ready) {
     return (
       <>
-        <PageHeader title="Your bag" size="md" crumbs={CRUMBS} className={HEADER} />
+        <ListingHeader title="Your bag" crumbs={CRUMBS} />
         <BagSkeleton />
       </>
     );
@@ -87,7 +84,7 @@ export function BagView() {
     const saved = wishlist.map((w) => productById[w.productId]).filter(Boolean).slice(0, 8);
     return (
       <>
-        <PageHeader title="Your bag" size="md" crumbs={CRUMBS} className={HEADER} />
+        <ListingHeader title="Your bag" crumbs={CRUMBS} />
         <EmptyBag saved={saved} />
       </>
     );
@@ -95,7 +92,7 @@ export function BagView() {
 
   return (
     <>
-      <PageHeader title="Your bag" size="md" crumbs={CRUMBS} className={HEADER} intro={`${count} ${count === 1 ? "piece" : "pieces"} in your bag. Offers and delivery are worked out below — nothing is charged.`} />
+      <ListingHeader title="Your bag" crumbs={CRUMBS} count={count} noun="pieces" intro="Offers and delivery are worked out below — nothing is charged." />
 
       {/* 8 / 4 — lines, then coupons and offers, on the left; a sticky Price Summary on the right (it spans both rows so it stays in view).
           Below 1024px the order is the live bag's: lines → Coupons and Offers → Price Summary → the buy bar. */}
@@ -152,7 +149,7 @@ export function BagView() {
           <Grid className="gap-y-10">
             <Col span={{ base: 4, sm: 12, lg: 4 }} className="flex flex-col">
               <p className="eyebrow text-ink-3">Goes with your bag</p>
-              <h2 className="display-sm mt-5">Complete your order.</h2>
+              <h2 className="display-md mt-5">Complete your order.</h2>
               <p className="mt-4 max-w-[36ch] text-[15px] leading-relaxed text-ink-2">Pieces chosen to sit with what you’ve picked — same occasions, same eye for detail.</p>
               <LinkButton href="/edits" variant="secondary" size="lg" className="mt-8 self-start" iconRight={<ArrowRight size={16} />}>
                 Explore the edits
@@ -171,46 +168,40 @@ export function BagView() {
   );
 }
 
-const pieces = (n: number) => `${n} ${n === 1 ? "piece" : "pieces"}`;
-const SHORTCUTS = [
-  { id: "new-in", img: "scenes/edit-new-in-tall", title: "New in" },
-  { id: "hidden-gems", img: "scenes/edit-hidden-gems-tall", title: "Hidden Gems" },
-  { id: "the-offer-edit", img: "scenes/edit-the-offer-edit-tall", title: "The Offer Edit" },
-  { id: "under-1500", img: "scenes/edit-under-1500-tall", title: "Under ₹1,500" },
-];
+const SHORTCUTS = ["new-in", "hidden-gems", "the-offer-edit", "under-1500"];
 
-/** Empty bag: a 6-column message panel beside a 2×2 of shortcuts, then a rail of what you saved (or what is popular). */
+/** Empty bag: a typographic message (columns 1–6) beside a 2×2 of edits (8–12), then a rail of what you saved (or what is popular). */
 function EmptyBag({ saved }: { saved: Product[] }) {
   const list = saved.length ? saved : popular(8);
   const label = saved.length ? "From your wishlist" : "Popular right now";
   return (
     <>
       <div className="container-x pb-[var(--section-y)]">
-        <Grid className="gap-y-[var(--gap)]">
-          <Col span={{ base: 4, sm: 12, lg: 6 }} rows={{ lg: 2 }} className="flex flex-col justify-between gap-12 bg-pink-tint p-6 sm:p-10">
-            <ShoppingBag size={40} strokeWidth={1.1} aria-hidden className="text-pink" />
+        <Grid className="gap-y-14 border-t border-ink pt-10 sm:pt-14">
+          <Col span={{ base: 4, sm: 12, lg: 6 }} className="flex flex-col justify-between gap-12">
             <div>
-              <h2 className="display-md">Your bag is empty</h2>
-              <p className="mt-4 max-w-[38ch] text-[15px] leading-relaxed text-ink-2">Nothing here yet. Start from an edit, or pick up where you left off.</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <LinkButton href="/edits" size="lg">Explore the edits</LinkButton>
-                <LinkButton href="/discover" variant="secondary" size="lg">Read the Style Files</LinkButton>
-              </div>
+              <p className="eyebrow text-ink-3">Nothing here yet</p>
+              <h2 className="display-lg mt-6">Your bag is empty</h2>
+              <p className="mt-6 max-w-[38ch] text-[15px] leading-relaxed text-ink-2">Start from an edit, or pick up where you left off.</p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <LinkButton href="/edits" size="lg">Explore the edits</LinkButton>
+              <LinkButton href="/discover" variant="secondary" size="lg">Read the Style Files</LinkButton>
             </div>
           </Col>
-          {SHORTCUTS.map((s) => (
-            <Col key={s.id} span={{ base: 2, sm: 6, lg: 3 }}>
-              <BentoTile href={`/edits/${s.id}`} imgKey={s.img} title={s.title} meta={pieces(editProducts(editById[s.id]).length)} ratio="5/4" sizes={SIZES.tile} onClick={() => signal("edit_open", { editId: s.id })} />
-            </Col>
-          ))}
+          <Col span={{ base: 4, sm: 12, lg: 5 }} start={{ lg: 8 }} className="grid grid-cols-2 gap-x-[var(--gap)] gap-y-8">
+            {SHORTCUTS.map((id) => (
+              <EditTile key={id} edit={editById[id]} source="bag-empty" ratio="4/5" sizes="(min-width:1024px) 20vw, 45vw" />
+            ))}
+          </Col>
         </Grid>
       </div>
       <Section tone="paper" className="border-y border-line">
         <Carousel>
-          <SectionHeading eyebrow={saved.length ? "Saved for later" : "Start here"} title={`${label}.`}>
+          <SectionHeading size="lg" eyebrow={saved.length ? "Saved for later" : "Start here"} title={`${label}.`}>
             <CarouselArrows />
           </SectionHeading>
-          <div className="mt-10">
+          <div className="mt-12">
             <CarouselTrack label={label} density="product">
               {list.map((p) => (
                 <div key={p.id} className="flex h-full flex-col">

@@ -56,6 +56,12 @@ export const SEO_BLOCKS: Array<{ title: string; body: string }> = [
   { title: "Sustainability", body: "The Responsible Collection brings together natural dyes, organic cotton, handloom and repairable pieces, so choosing better is one filter away." },
 ];
 
+/** The ticker under the hero: the departments and destinations that exist on this site (plain words — no numbers, no claims). */
+export const HOME_TICKER: string[] = ["Season sale", "Festive & wedding", "Luxe", "Hidden Gems", "House of Nykaa", "Responsible", "New in", "Style Files"];
+
+/** The one-paragraph statement under the ticker. `accent` is set in the raspberry (an <em> in the heading style). */
+export const HOME_STATEMENT = { eyebrow: "The edit", before: "House labels and big names for women, men, kids and home, gathered by ", accent: "occasion", after: "." };
+
 /** Service promises under the home page (generic marketplace copy). */
 export const SERVICE_PROMISES: Array<{ title: string; body: string }> = [
   { title: "Genuine products", body: "Every label and listing is verified before it goes live." },

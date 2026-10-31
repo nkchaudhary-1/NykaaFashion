@@ -5,6 +5,7 @@ import { AddressBlock, OrderItemsList, OrderTimeline } from "@/components/accoun
 import { PriceSummary } from "@/components/commerce/PriceSummary";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Section } from "@/components/layout/Section";
+import { RevealText, Rise } from "@/components/motion/reveal";
 import { ProductCard } from "@/components/product/ProductCard";
 import { LinkButton } from "@/components/ui/Button";
 import { Carousel, CarouselArrows, CarouselTrack } from "@/components/ui/Carousel";
@@ -22,7 +23,7 @@ function SuccessMark() {
   const reduce = useReducedMotion();
   const draw = (delay: number, duration: number) => ({ hidden: { pathLength: 0 }, visible: { pathLength: 1, transition: { duration: reduce ? 0.01 : duration, delay: reduce ? 0 : delay, ease: "easeInOut" as const } } });
   return (
-    <motion.svg initial="hidden" animate="visible" width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden className="text-emerald">
+    <motion.svg initial="hidden" animate="visible" width="88" height="88" viewBox="0 0 64 64" fill="none" aria-hidden className="size-[72px] text-emerald sm:size-[88px]">
       <motion.rect x="1.5" y="1.5" width="61" height="61" stroke="currentColor" strokeWidth="1.5" variants={draw(0, 0.8)} />
       <motion.path d="M20 33l8 8 16-17" stroke="currentColor" strokeWidth="2.4" strokeLinecap="square" strokeLinejoin="miter" variants={draw(0.7, 0.5)} />
     </motion.svg>
@@ -39,23 +40,27 @@ export function ConfirmationView({ id }: { id: string }) {
   const first = user.name.split(" ")[0];
   return (
     <>
-      {/* 6 / 6 header: the message on the left, the prototype notice and the way forward on the centre axis */}
+      {/* The message at poster scale across the page, then a quiet row: the order on the left, the prototype notice and the way forward on the centre axis */}
       <header className="container-x pb-12 pt-10 sm:pb-16 sm:pt-16">
-        <Grid className="items-end gap-y-8">
+        <SuccessMark />
+        <p className="eyebrow mt-8 text-ink-3">Order placed · simulated</p>
+        <RevealText as="h1" className="display-xl mt-5 min-w-0">
+          {`Thank you, ${first}.`}
+        </RevealText>
+        <Grid className="mt-10 items-start gap-y-8 border-t border-line pt-6 sm:mt-14">
           <Col span={{ base: 4, sm: 12, lg: 6 }}>
-            <SuccessMark />
-            <p className="eyebrow mt-8 text-ink-3">Order placed · simulated</p>
-            <h1 className="display-lg mt-4">Thank you, {first}.</h1>
-            <p className="lede mt-6">
+            <Rise as="p" delay={100} className="lede">
               Order <strong className="font-medium tabular-nums tracking-[0.02em] text-ink">{order.number}</strong> is confirmed. Estimated delivery <strong className="font-medium text-ink">{fmtDateLong(order.eta)}</strong>.
-            </p>
+            </Rise>
           </Col>
           <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }}>
-            <SimulatedNotice className="max-w-[56ch]"><strong>This is a prototype.</strong> No payment was taken, no order was placed with a label, and nothing will ship. The tracking below is simulated.</SimulatedNotice>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <LinkButton href={`/account/orders/${order.id}`} size="lg" iconRight={<ArrowRight size={16} />}>Track order</LinkButton>
-              <LinkButton href="/edits" variant="secondary" size="lg">Continue shopping</LinkButton>
-            </div>
+            <Rise delay={180}>
+              <SimulatedNotice className="max-w-[56ch]"><strong>This is a prototype.</strong> No payment was taken, no order was placed with a label, and nothing will ship. The tracking below is simulated.</SimulatedNotice>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <LinkButton href={`/account/orders/${order.id}`} size="lg" iconRight={<ArrowRight size={16} />}>Track order</LinkButton>
+                <LinkButton href="/edits" variant="secondary" size="lg">Continue shopping</LinkButton>
+              </div>
+            </Rise>
           </Col>
         </Grid>
       </header>
@@ -65,7 +70,7 @@ export function ConfirmationView({ id }: { id: string }) {
         <Grid className="gap-y-14 border-t border-ink pt-10">
           <Col span={{ base: 4, sm: 12, lg: 6 }} className="space-y-12">
             <section aria-labelledby="oi">
-              <h2 id="oi" className="display-xs mb-5">In this order</h2>
+              <h2 id="oi" className="display-sm mb-6">In this order</h2>
               <OrderItemsList order={order} />
             </section>
             <section aria-labelledby="od" className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-[var(--gap)]">
@@ -83,7 +88,7 @@ export function ConfirmationView({ id }: { id: string }) {
           </Col>
 
           <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }}>
-            <section aria-labelledby="ot" className="rounded-[var(--radius-sm)] border border-line-strong bg-white p-6 sm:p-8 lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:transition-[top] lg:duration-500 lg:ease-editorial">
+            <section aria-labelledby="ot" className="border border-line-strong bg-paper p-6 sm:p-8 lg:sticky lg:top-[calc(var(--header-offset)+16px)] lg:transition-[top] lg:duration-500 lg:ease-editorial">
               <h2 id="ot" className="display-xs">What happens next <span className="ml-1 align-middle text-[12px] font-normal tracking-normal text-ink-3">(simulated)</span></h2>
               <p className="mb-7 mt-1.5 text-[13px] text-ink-3">Each step moves on when you press “Simulate” on the order page.</p>
               <OrderTimeline order={order} />
@@ -94,10 +99,10 @@ export function ConfirmationView({ id }: { id: string }) {
 
       <Section tone="paper" className="border-y border-line">
         <Carousel>
-          <SectionHeading eyebrow="While you wait" title="You may also like.">
+          <SectionHeading size="lg" eyebrow="While you wait" title="You may also like.">
             <CarouselArrows />
           </SectionHeading>
-          <div className="mt-10">
+          <div className="mt-12">
             <CarouselTrack label="You may also like" density="product">
               {popular(8).map((p) => (
                 <div key={p.id} className="flex h-full flex-col">

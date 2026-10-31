@@ -5,30 +5,36 @@ import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Expand, X } from "lu
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { Img } from "@/components/ui/Img";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useFocusTrap, useScrollLock } from "@/lib/a11y";
 import { cn } from "@/lib/cn";
 import { imgSrc } from "@/lib/img";
 import { useHydrated } from "@/lib/store";
 
 const SHOT_NAMES = ["front view", "back view", "fabric detail", "styled view"];
-// 5 of the 12 columns on desktop (next to a 1-column thumbnail rail), 6 on tablets, full bleed on phones. The desktop size is generous
+// 6 of the 12 columns on desktop (next to a 1-column thumbnail rail), 6 on tablets, full bleed on phones. The desktop size is generous
 // on purpose: the hover zoom shows the picture at 2× and should stay sharp.
-const MAIN_SIZES = "(min-width:1024px) 60vw, (min-width:600px) 52vw, 100vw";
+const MAIN_SIZES = "(min-width:1024px) 62vw, (min-width:600px) 52vw, 100vw";
+/** From 1024px with a mouse the pictures are laid on top of one another and crossfade; everywhere else the track scrolls (swipe, snap). */
+const STACKED = "(min-width: 64rem) and (hover: hover) and (pointer: fine)";
 
 /**
- * PDP gallery (PRD §5.5/§7.1), as on the live page: a vertical thumbnail rail (with ▲ ▼) beside one large picture on desktop; on tablets and
- * phones the picture is a full-width swipe track with a flat dash indicator and a live "Image 2 of 3" line. One scroll-snap track serves
- * touch (swipe), fine pointers (thumbnails, ▲ ▼, hover-zoom) and the keyboard (the track is a focusable group: ← → browse, Enter opens the
- * lightbox). Click opens the lightbox. `heroRef` is the FLIP target for the card → PDP transition.
+ * PDP gallery (PRD §5.5/§7.1): a vertical thumbnail rail (with ▲ ▼) beside one large picture on desktop — the pictures lie on top of one another and
+ * crossfade — and, on tablets and phones, a full-width swipe track with a flat dash indicator and a live "Image 2 of 3" line. One focusable group serves
+ * touch (swipe), mice (thumbnails, ▲ ▼, hover-zoom) and the keyboard (← → browse, Enter opens the lightbox). Click opens the lightbox. `heroRef` is the
+ * FLIP target for the card → PDP transition.
  */
 export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { images: string[]; name: string; colorName: string; heroRef: RefObject<HTMLDivElement | null>; startIndex?: number }) {
   const track = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
-  const [index, setIndex] = useState(startIndex);
+  // the slide the shopper picked; until then the one the card was showing (FLIP carries its shot in as `startIndex`)
+  const [picked, setPicked] = useState<number | null>(null);
+  const index = picked ?? startIndex;
   const [lightbox, setLightbox] = useState<number | null>(null);
   const raf = useRef(0);
   const aim = useRef<number | null>(null); // the slide a ▲ ▼ / thumbnail / key press is scrolling to
   const settle = useRef(0);
+  const stack = useMediaQuery(STACKED);
   const alt = (i: number) => `${name} in ${colorName} — ${SHOT_NAMES[i] ?? `view ${i + 1}`}`;
   const last = images.length - 1;
   const many = images.length > 1;
@@ -41,20 +47,25 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
     };
   }, [heroRef]);
 
+  /** Moves the scroll-snap track to slide `n` (a DOM side effect only; the counter is state, set by `goTo` and `onScroll`). */
+  const scrollTrack = useCallback((n: number, smooth: boolean) => {
+    const el = track.current;
+    if (!el) return;
+    // While this scroll is in flight the track passes through the slides in between — scroll events must not pull the counter back to
+    // the slide it started from (and a second ▲ ▼ press must step from where the first is heading).
+    window.clearTimeout(settle.current);
+    aim.current = smooth ? n : null;
+    if (smooth) settle.current = window.setTimeout(() => (aim.current = null), 1200);
+    el.scrollTo({ left: n * el.clientWidth, behavior: smooth ? "smooth" : "auto" });
+  }, []);
+
   const goTo = useCallback(
     (i: number, smooth = true) => {
-      const el = track.current;
-      if (!el) return;
       const n = Math.max(0, Math.min(last, i));
-      // While this scroll is in flight the track passes through the slides in between — scroll events must not pull the counter back to
-      // the slide it started from (and a second ▲ ▼ press must step from where the first is heading).
-      window.clearTimeout(settle.current);
-      aim.current = smooth ? n : null;
-      if (smooth) settle.current = window.setTimeout(() => (aim.current = null), 1200);
-      el.scrollTo({ left: n * el.clientWidth, behavior: smooth ? "smooth" : "auto" });
-      setIndex(n);
+      if (!stack) scrollTrack(n, smooth); // stacked pictures just crossfade: the new one fades in over the old, nothing scrolls
+      setPicked(n);
     },
-    [last],
+    [last, stack, scrollTrack],
   );
 
   useEffect(
@@ -65,12 +76,16 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
     [],
   );
 
-  // Land on the shot the shopper was looking at on the card (FLIP carries the current shot).
+  // Land on the shot the shopper was looking at on the card — once, on arrival (the counter already shows it: see `index`).
+  const landed = useRef(false);
   useEffect(() => {
-    if (startIndex > 0) goTo(startIndex, false);
-  }, [startIndex, goTo]);
+    if (landed.current || startIndex === 0) return;
+    landed.current = true;
+    scrollTrack(startIndex, false);
+  }, [startIndex, scrollTrack]);
 
   const onScroll = () => {
+    if (stack) return;
     cancelAnimationFrame(raf.current);
     raf.current = requestAnimationFrame(() => {
       const el = track.current;
@@ -80,7 +95,7 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
         if (at !== aim.current) return; // still travelling
         aim.current = null;
       }
-      setIndex(at);
+      setPicked(at);
     });
   };
 
@@ -105,16 +120,18 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
   };
 
   const rail = "inline-flex h-9 w-full items-center justify-center text-ink transition-colors hover:bg-sand disabled:pointer-events-none disabled:text-line-strong";
+  // desktop pictures are as tall as the window allows (below the header), so the whole picture is in view while the information scrolls past
+  const cap = stack ? "w-full max-h-[calc(100svh-var(--header-h)-2rem)]" : undefined;
 
   return (
-    <div className="lg:grid lg:grid-cols-6 lg:gap-x-[var(--gap)]">
+    <div className="lg:grid lg:grid-cols-7 lg:gap-x-[var(--gap)]">
       {/* thumbnail rail (desktop) */}
       {many && (
         <div className="hidden lg:col-span-1 lg:block">
           <ul aria-label="Product images" className="flex flex-col gap-3">
             {images.map((k, i) => (
               <li key={k}>
-                <button type="button" onClick={() => goTo(i)} aria-label={`Show ${SHOT_NAMES[i] ?? `image ${i + 1}`}`} aria-current={index === i} className={cn("relative block w-full overflow-hidden border transition-colors", index === i ? "border-ink" : "border-line opacity-80 hover:border-ink-3 hover:opacity-100")}>
+                <button type="button" onClick={() => goTo(i)} aria-label={`Show ${SHOT_NAMES[i] ?? `image ${i + 1}`}`} aria-current={index === i} className={cn("relative block w-full overflow-hidden border transition-[border-color,opacity] duration-500 ease-expo", index === i ? "border-ink" : "border-transparent opacity-70 hover:opacity-100")}>
                   <Img imgKey={k} alt="" sizes="96px" ratio="4/5" />
                 </button>
               </li>
@@ -131,7 +148,7 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
         </div>
       )}
 
-      <div className={cn("min-w-0", many ? "lg:col-span-5" : "lg:col-span-6")}>
+      <div className={cn("min-w-0", many ? "lg:col-span-6" : "lg:col-span-7")}>
         <div ref={stage} className="group/gal relative">
           <div
             ref={track}
@@ -141,20 +158,20 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
             role="group"
             aria-roledescription="gallery"
             aria-label={`${name} images — use arrow keys to browse`}
-            className="scrollbar-none flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain focus-visible:outline-offset-[-3px] [@media(hover:hover)_and_(pointer:fine)]:overflow-x-hidden"
+            className={cn("scrollbar-none focus-visible:outline-offset-[-3px]", stack ? "grid overflow-hidden" : "flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [@media(hover:hover)_and_(pointer:fine)]:overflow-x-hidden")}
           >
             {images.map((k, i) => (
               <div
                 key={k}
                 // the first shot is audited against the column grid; the ones waiting off-screen in the track are not
                 {...(i > 0 ? { "data-nogrid": "" } : {})}
-                className="zoomable relative w-full shrink-0 snap-center overflow-hidden"
+                className={cn("zoomable relative w-full overflow-hidden", stack ? cn("col-start-1 row-start-1 transition-opacity duration-[900ms] ease-expo", index === i ? "opacity-100" : "pointer-events-none opacity-0") : "shrink-0 snap-center")}
                 onPointerMove={onMove}
                 onPointerEnter={(e) => e.pointerType === "mouse" && e.currentTarget.setAttribute("data-zoom", "1")}
                 onPointerLeave={(e) => e.pointerType === "mouse" && e.currentTarget.removeAttribute("data-zoom")}
                 onClick={() => setLightbox(i)}
               >
-                <Img imgKey={k} alt={alt(i)} sizes={MAIN_SIZES} ratio="4/5" load={i === 0 ? "preload" : undefined} />
+                <Img imgKey={k} alt={alt(i)} sizes={MAIN_SIZES} ratio="4/5" load={i === 0 ? "preload" : undefined} className={cap} />
               </div>
             ))}
           </div>
@@ -163,22 +180,25 @@ export function Gallery({ images, name, colorName, heroRef, startIndex = 0 }: { 
             type="button"
             onClick={() => setLightbox(index)}
             aria-label="Open image full screen"
-            className="absolute right-3 top-3 z-10 hidden size-11 items-center justify-center border border-ink bg-white text-ink opacity-0 transition-[opacity,background-color,color] hover:bg-ink hover:text-white focus-visible:opacity-100 group-hover/gal:opacity-100 lg:inline-flex"
+            className="absolute right-0 top-0 z-10 hidden size-11 items-center justify-center bg-bone text-ink opacity-0 transition-[opacity,background-color] duration-300 hover:bg-white focus-visible:opacity-100 group-hover/gal:opacity-100 lg:inline-flex"
           >
             <Expand size={18} strokeWidth={1.6} />
           </button>
         </div>
 
         {many && (
-          <div className="flex items-center justify-between gap-4 px-[var(--gutter)] pt-3 sm:px-0 lg:block lg:p-0">
-            {/* phones and tablets: a visible caption + flat dashes; desktop has the thumbnail rail and keeps the announcement for screen readers */}
+          <div className="flex items-center justify-between gap-4 px-[var(--gutter)] pt-3 sm:px-0 lg:pt-4">
+            {/* phones and tablets: a visible caption + flat dashes; desktop shows a quiet numeral beside the thumbnail rail and keeps the announcement for screen readers */}
             <p aria-live="polite" className="text-[12px] tabular-nums text-ink-3 lg:sr-only">
               Image {index + 1} of {images.length}
+            </p>
+            <p aria-hidden className="hidden text-[11px] font-medium tabular-nums tracking-[0.16em] text-ink-3 lg:block">
+              {String(index + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
             </p>
             <div aria-hidden className="flex gap-1.5 lg:hidden">
               {images.map((_, i) => (
                 <button key={i} type="button" tabIndex={-1} onClick={() => goTo(i)} className="flex h-6 w-9 items-center">
-                  <span className={cn("block h-[3px] w-full transition-colors duration-300", i === index ? "bg-pink" : "bg-line-strong")} />
+                  <span className={cn("block h-[3px] w-full transition-colors duration-300", i === index ? "bg-ink" : "bg-line-strong")} />
                 </button>
               ))}
             </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { ListingHeader } from "@/components/plp/ListingHeader";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Section } from "@/components/layout/Section";
 import { LabelDirectory } from "@/components/product/LabelDirectory";
@@ -21,15 +21,15 @@ export default function BrandsIndex() {
   const luxe = editById["luxe"];
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Labels" }]} eyebrow="A–Z" title={<>Labels, <em>with their stories.</em></>} intro="Independent studios, ateliers and our own House of Nykaa labels — filter by what they stand for." size="lg" />
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Labels" }]} eyebrow="A–Z" title={<>Labels, <em>with their stories.</em></>} intro="Independent studios, ateliers and our own House of Nykaa labels — filter by what they stand for." />
 
-      <Section y="sm" aria-labelledby="gems">
+      <Section aria-labelledby="gems">
         <Carousel>
-          <SectionHeading eyebrow={gems.kicker} title={<span id="gems">{gems.title}</span>} intro={gems.blurb} href="/edits/hidden-gems" hrefLabel="The edit">
+          <SectionHeading size="lg" eyebrow={gems.kicker} title={<span id="gems">{gems.title}</span>} intro={gems.blurb} href="/edits/hidden-gems" hrefLabel="The edit">
             <CarouselArrows />
           </SectionHeading>
-          <div className="mt-10">
-            <CarouselTrack label="Hidden Gems labels" density="tile" itemClassName="min-w-0">
+          <div className="mt-12">
+            <CarouselTrack label="Hidden Gems labels" density="tile" itemClassName="min-w-0" cursor="Drag">
               {hiddenGemLabels.map((l, i) => (
                 <LabelTile key={l.id} label={l} load={i < 4 ? "eager" : undefined} />
               ))}
@@ -39,8 +39,8 @@ export default function BrandsIndex() {
       </Section>
 
       <Section tone="luxe" y="md" aria-labelledby="luxe">
-        <SectionHeading onDark eyebrow={luxe.kicker} title={<span id="luxe">{luxe.title}</span>} intro={luxe.blurb} href="/edits/luxe" hrefLabel="The edit" />
-        <Grid as="ul" className="mt-10 gap-y-10 sm:mt-14">
+        <SectionHeading onDark size="lg" eyebrow={luxe.kicker} title={<span id="luxe">{luxe.title}</span>} intro={luxe.blurb} href="/edits/luxe" hrefLabel="The edit" />
+        <Grid as="ul" className="mt-12 gap-y-12 sm:mt-16">
           {luxeLabels.map((l) => (
             <Col as="li" key={l.id} span={{ base: 2, sm: 6, lg: 3 }}>
               <LabelTile label={l} onDark sizes={SIZES.cardWide} />

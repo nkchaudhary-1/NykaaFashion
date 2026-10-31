@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
 import { OpenPrototypeButton } from "@/components/layout/OpenPrototypeButton";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { ListingHeader } from "@/components/plp/ListingHeader";
 import { Section } from "@/components/layout/Section";
 import { Badge } from "@/components/ui/Badge";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -71,7 +71,7 @@ const SIM: Array<{ tag: string; tone: "amber" | "neutral"; title: string; body: 
 export default function PrototypePage() {
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Prototype notes" }]} eyebrow="Read me first" title={<>What’s real, <em>what’s simulated.</em></>} intro="An improved Nykaa Fashion — the live identity, reorganised on a stricter grid — built from the product brief and 15 screenshots of the live site. It is a front-end prototype: every control does something real against mock data — and anything that would need a backend is clearly labelled." />
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Prototype notes" }]} eyebrow="Read me first" title={<>What’s real, <em>what’s simulated.</em></>} intro="An improved Nykaa Fashion — the live identity, reorganised on a stricter grid — built from the product brief and 15 screenshots of the live site. It is a front-end prototype: every control does something real against mock data — and anything that would need a backend is clearly labelled." />
 
       {/* The controls band: a flat ink panel — what to do (cols 7–12) and the button that does it (cols 1–5) */}
       <Section tone="ink" aria-labelledby="review" y="sm">

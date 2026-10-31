@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Col } from "@/components/layout/Grid";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { ListingHeader } from "@/components/plp/ListingHeader";
 import { Section } from "@/components/layout/Section";
 import { categories, topCategories } from "@/data/categories";
 import { INFO_PAGES } from "@/data/content";
@@ -46,18 +46,18 @@ const GROUPS: Group[] = [
 export default function SitemapPage() {
   return (
     <>
-      <PageHeader crumbs={[{ name: "Home", href: "/" }, { name: "Sitemap" }]} title="Sitemap" intro="Every department, edit, brand and help page in this prototype, in one place." size="md" />
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Sitemap" }]} title="Sitemap" intro="Every department, edit, brand and help page in this prototype, in one place." />
       <Section y="none" className="pb-[var(--section-y)]">
         <div className="grid-main gap-y-12 border-t border-line pt-10">
           {GROUPS.map((g) => (
             <Col key={g.title} span={{ base: 4, sm: 6, lg: 3 }} as="section" aria-labelledby={`sm-${g.title.replace(/\W+/g, "-")}`}>
-              <h2 id={`sm-${g.title.replace(/\W+/g, "-")}`} className="text-[13px] font-semibold uppercase tracking-[0.04em]">
+              <h2 id={`sm-${g.title.replace(/\W+/g, "-")}`} className="eyebrow text-ink">
                 {g.title}
               </h2>
               <ul className="mt-3">
                 {g.links.map((l) => (
                   <li key={l.href + l.label}>
-                    <Link href={l.href} className="inline-block py-1.5 text-[14px] text-ink-2 transition-colors hover:text-pink [@media(pointer:coarse)]:py-3">
+                    <Link href={l.href} className="inline-block py-1.5 text-[14px] text-ink-2 transition-colors duration-300 hover:text-ink [@media(pointer:coarse)]:py-3">
                       {l.label}
                     </Link>
                   </li>

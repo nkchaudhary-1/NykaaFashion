@@ -26,7 +26,7 @@ export function LookStrip({ imgKey, title = "In this image", label, variant = "r
   const span = items.length === 2 ? 6 : 4;
   const list = items.map((p) => <LookItem key={p.id} product={p} stack={stack} />);
   // `stack` is one column beside an 8-column image on desktop; below that the pieces sit across the page like the row variant
-  const across = items.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3";
+  const across = items.length === 2 ? "sm:grid-cols-2" : "md:grid-cols-3"; // three across needs ~230px each: from 768px, one per row on the narrowest tablets
   return (
     <section aria-label={label ?? title} className={cn(!stack && "mt-4", className)}>
       <p className="eyebrow mb-3 text-ink-3">{title}</p>

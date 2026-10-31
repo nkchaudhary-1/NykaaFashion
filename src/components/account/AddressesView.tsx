@@ -33,7 +33,7 @@ export function AddressesView() {
   return (
     <section aria-labelledby="ad-h">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h2 id="ad-h" className="text-[24px] font-semibold tracking-[-0.015em]">Saved addresses</h2>
+        <h2 id="ad-h" className="display-md">Saved addresses</h2>
         <Button icon={<Plus size={16} aria-hidden />} onClick={() => setEditing("new")}>Add address</Button>
       </div>
       {addresses.length === 0 ? (
@@ -41,7 +41,7 @@ export function AddressesView() {
       ) : (
         <ul ref={list} className="mt-8 grid grid-cols-1 gap-[var(--gap)] sm:grid-cols-2 lg:grid-cols-3">
           {addresses.map((a) => (
-            <li key={a.id} className={cn("flex flex-col justify-between gap-6 rounded-[var(--radius-sm)] border bg-white p-5 sm:p-6", a.isDefault ? "border-ink" : "border-line-strong")}>
+            <li key={a.id} className={cn("flex flex-col justify-between gap-6 border bg-paper p-5 sm:p-6", a.isDefault ? "border-ink" : "border-line-strong")}>
               <div>
                 <div className="mb-4 flex items-center gap-2"><Badge tone="neutral" className="capitalize">{a.type}</Badge>{a.isDefault && <Badge tone="ink">Default</Badge>}</div>
                 <AddressBlock a={a} />
@@ -62,7 +62,7 @@ export function AddressesView() {
             </li>
           ))}
           <li>
-            <button type="button" onClick={() => setEditing("new")} className="flex h-full min-h-[200px] w-full flex-col items-center justify-center gap-3 rounded-[var(--radius-sm)] border border-dashed border-line-strong p-6 text-[15px] font-semibold text-ink transition-colors hover:border-ink hover:bg-paper">
+            <button type="button" onClick={() => setEditing("new")} className="flex h-full min-h-[200px] w-full flex-col items-center justify-center gap-3 border border-dashed border-line-strong p-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:border-ink hover:bg-paper">
               <Plus size={22} strokeWidth={1.4} aria-hidden /> Add a new address
             </button>
           </li>

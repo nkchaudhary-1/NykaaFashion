@@ -6,7 +6,7 @@ import { interleave, relatedEditTiles, type Feature } from "@/components/plp/fea
 import { ListingHeader } from "@/components/plp/ListingHeader";
 import { ProductListing } from "@/components/plp/ProductListing";
 import { GridSkeleton } from "@/components/ui/Skeleton";
-import { ListingPageSkeleton } from "@/components/ui/PageSkeletons";
+import { ListingSkeleton } from "@/components/plp/PageSkeletons";
 import { categories, categoryById, childrenOf } from "@/data/categories";
 import { productsInCategory, categoryTrail } from "@/data/queries";
 
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/c/[...slug]">): P
 
 export default function CategoryPage(props: PageProps<"/c/[...slug]">) {
   return (
-    <Suspense fallback={<ListingPageSkeleton />}>
+    <Suspense fallback={<ListingSkeleton />}>
       <CategoryContent params={props.params} />
     </Suspense>
   );

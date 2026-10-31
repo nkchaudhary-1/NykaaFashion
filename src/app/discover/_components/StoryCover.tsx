@@ -1,12 +1,13 @@
 import { PinLayer } from "@/components/editorial/ShoppableImage";
 import { StoryActions } from "@/components/editorial/StoryActions";
 import { Col, Grid } from "@/components/layout/Grid";
+import { RevealText, Rise } from "@/components/motion/reveal";
 import { Img } from "@/components/ui/Img";
 import type { Story } from "@/data/types";
 import { cn } from "@/lib/cn";
-import { imgPins } from "@/lib/img";
+import { imgEdge, imgPins } from "@/lib/img";
 
-/** "The Block-Print Revival" → ["The Block-Print", "Revival"]; "Diwali, Dressed Slowly" → ["Diwali,", "Dressed Slowly"] — the first part is set heavy, the rest light. */
+/** "The Block-Print Revival" → ["The Block-Print", "Revival"]; "Diwali, Dressed Slowly" → ["Diwali,", "Dressed Slowly"] — the last part takes the raspberry accent. */
 function splitTitle(title: string): [string, string] {
   const m = title.match(/^(.*?[:,])\s+(.+)$/);
   if (m) return [m[1], m[2]];
@@ -15,23 +16,11 @@ function splitTitle(title: string): [string, string] {
 }
 
 // Art direction without a <picture>: only the visible cover ever downloads (a display:none copy of a lazy image stays unfetched).
-// phones: the 4:5 cover, edge to edge · tablets: the 16:9 cover, edge to edge · desktop: the 4:5 cover cropped into the 6-column panel,
-// and from 1536px the 16:9 one with its subject (the right half of the scene) kept in view. Pins use the same crop, so they stay on the garments.
-/** The cover panel is a flat token surface (not the story's edit colours): pink tint for most, soft grey for the quieter edits, the navy ink for Luxe. */
-const PANEL: Record<Story["theme"], { cls: string; dark: boolean }> = {
-  gem: { cls: "bg-pink-tint text-ink", dark: false },
-  festive: { cls: "bg-pink-tint text-ink", dark: false },
-  hon: { cls: "bg-pink-tint text-ink", dark: false },
-  resp: { cls: "bg-sand text-ink", dark: false },
-  sand: { cls: "bg-sand text-ink", dark: false },
-  luxe: { cls: "bg-ink text-bone", dark: true },
-  ink: { cls: "bg-ink text-bone", dark: true },
-};
+// phones: the 4:5 cover, edge to edge · tablets and up: the 16:9 cover, edge to edge (about 21:9 on desktop). Pins use the same crop, so they stay on the garments.
+const TALL = "block sm:hidden";
+const WIDE = "hidden sm:block";
 
-const TALL = "block sm:hidden lg:block 2xl:hidden";
-const WIDE = "hidden sm:block lg:hidden 2xl:block";
-
-/** Where a cropped cover is anchored: the middle of its pins, so the garments (and the pins on them) stay in the panel at any panel shape. */
+/** Where a cropped cover is anchored: the middle of its pins, so the garments (and the pins on them) stay in the frame at any crop. */
 function focus(imgKey: string): string {
   const pins = imgPins(imgKey);
   if (!pins.length) return "50% 50%";
@@ -40,48 +29,52 @@ function focus(imgKey: string): string {
 }
 
 /**
- * Story cover, built like the festive banner on the home page: a flat theme-colour panel with the headline in columns 1–6 and the
- * image bleeding off the right edge from column 7. Phones and tablets: the image edge to edge, the copy panel under it.
+ * Story cover, poster-scale: the headline across the page in display type on the page's own colour, the dek and the byline beneath it on the 12 columns, and then
+ * the cover — a full-bleed, shoppable picture (21:9 on desktop, 16:9 on tablets, 4:5 on phones). No text is laid over the picture, so the pins and the garments
+ * keep it to themselves. The cover is the first picture on the page and is never hidden for a reveal.
  */
 export function StoryCover({ story }: { story: Story }) {
-  const { cls, dark } = PANEL[story.theme];
   const [lead, rest] = splitTitle(story.title);
   const tallAt = focus(story.cover.tall);
   const wideAt = focus(story.cover.wide);
+  const wall = imgEdge(story.cover.wide)?.wall[0];
   return (
-    <header className={cn(cls, dark && "on-dark")}>
-      <div className="container-x">
-        <Grid>
-          <Col span={{ base: 4, sm: 12, lg: 6 }} className="order-2 flex flex-col justify-center py-10 sm:py-12 lg:order-1 lg:py-20 lg:pr-[var(--gap)]">
-            <p className={cn("eyebrow flex items-center gap-3", dark ? "text-pink-soft" : "text-pink-ink")}>
-              <span aria-hidden className="h-px w-8 bg-current" />
-              {story.kicker}
-            </p>
-            <h1 className={cn("mt-6", story.title.length > 28 ? "display-md" : "display-lg", dark && "[&_em]:text-pink-soft")}>
-              {lead}
-              {rest && (
-                <>
-                  {" "}
-                  <em>{rest}</em>
-                </>
-              )}
-            </h1>
-            <p className="mt-6 max-w-[44ch] text-[16px] leading-relaxed sm:text-[17px]">{story.dek}</p>
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-current/25 pt-5">
+    <header>
+      <div className="container-x pb-10 pt-4 sm:pb-14 lg:pb-16">
+        <Rise as="p" y={14} className="eyebrow flex items-center gap-3 text-pink-ink">
+          <span aria-hidden className="h-px w-8 bg-current" />
+          {story.kicker}
+        </Rise>
+        <RevealText as="h1" className={cn("mt-6 min-w-0", story.title.length > 28 ? "display-lg" : "display-xl")}>
+          {lead}
+          {rest && (
+            <>
+              {" "}
+              <em>{rest}</em>
+            </>
+          )}
+        </RevealText>
+        <Grid className="mt-10 items-end gap-y-8 border-t border-line pt-6 sm:mt-14">
+          <Col span={{ base: 4, sm: 12, lg: 6 }}>
+            <Rise as="p" delay={120} className="lede">
+              {story.dek}
+            </Rise>
+          </Col>
+          <Col span={{ base: 4, sm: 12, lg: 5 }} start={{ lg: 8 }} rowStart={{ lg: 1 }}>
+            <Rise delay={200} className="flex flex-col gap-4 lg:items-end">
               <p className="text-[13px]">
                 By <span className="font-medium">{story.author}</span> · {story.readMins} min read
               </p>
-              <StoryActions storyId={story.id} title={story.title} onDark={dark} />
-            </div>
-          </Col>
-          {/* starts on the centre axis (column 7) and bleeds off the right edge; below 1024px it runs edge to edge and sits above the copy */}
-          <Col span={{ base: 4, sm: 12, lg: 6 }} className="relative order-1 -mx-[var(--gutter)] aspect-[4/5] sm:aspect-video lg:order-2 lg:mx-0 lg:-mr-[var(--edge)] lg:aspect-auto lg:min-h-[520px]">
-            <Img imgKey={story.cover.tall} alt={`${story.title} — cover`} sizes="(min-width:1024px) 52vw, 100vw" ratio="fill" load="high" position={tallAt} className={cn("absolute inset-0 h-full", TALL)} />
-            <Img imgKey={story.cover.wide} alt={`${story.title} — cover`} sizes="(min-width:1536px) 52vw, 100vw" ratio="fill" load="high" position={wideAt} className={cn("absolute inset-0 h-full", WIDE)} />
-            <PinLayer imgKey={story.cover.tall} position={tallAt} className={TALL} />
-            <PinLayer imgKey={story.cover.wide} position={wideAt} className={WIDE} />
+              <StoryActions storyId={story.id} title={story.title} />
+            </Rise>
           </Col>
         </Grid>
+      </div>
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-sand sm:aspect-[16/9] lg:aspect-[21/9] lg:max-h-[86svh]" style={wall ? { backgroundColor: wall } : undefined}>
+        <Img imgKey={story.cover.tall} alt={`${story.title} — cover`} sizes="100vw" ratio="fill" load="high" position={tallAt} className={cn("absolute inset-0 h-full", TALL)} />
+        <Img imgKey={story.cover.wide} alt={`${story.title} — cover`} sizes="100vw" ratio="fill" load="high" position={wideAt} className={cn("absolute inset-0 h-full", WIDE)} />
+        <PinLayer imgKey={story.cover.tall} position={tallAt} className={TALL} />
+        <PinLayer imgKey={story.cover.wide} position={wideAt} className={WIDE} />
       </div>
     </header>
   );

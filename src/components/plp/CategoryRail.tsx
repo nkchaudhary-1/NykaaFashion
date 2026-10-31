@@ -24,7 +24,7 @@ const BY_COUNT: Array<{ max: number; density: CarouselDensity; ratio: string }> 
 /** One category: a silent picture (it scales slowly inside its clipped frame) with the name and a quiet count under it — no caption strip over the picture. */
 function CategoryTile({ item: s, ratio, load }: { item: RailItem; ratio: string; load?: LoadHint }) {
   return (
-    <Link href={`/c/${s.id}`} className="group block">
+    <Link href={`/c/${s.id}`} className="group relative block">
       <div className="overflow-hidden bg-sand">
         <div data-nogrid className="transition-transform duration-[1200ms] ease-expo group-hover:scale-[1.04] group-focus-visible:scale-[1.04]">
           <Img imgKey={s.imgKey} alt="" sizes={SIZES.tile} ratio={ratio} load={load} />

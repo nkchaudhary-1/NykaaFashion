@@ -39,10 +39,10 @@ export function DeliveryCheck({ price }: { price: number }) {
 
   return (
     <section aria-labelledby="deliv">
-      <h2 id="deliv" className="text-[18px] font-semibold">
+      <h2 id="deliv" className="text-[19px] font-medium leading-tight tracking-[-0.02em]">
         Select Delivery Location
       </h2>
-      <p className="mt-2 text-[13.5px] leading-snug text-ink-2">Enter the pincode of your area to check product availability and delivery options</p>
+      <p className="mt-2.5 text-[13.5px] leading-snug text-ink-2">Enter the pincode of your area to check product availability and delivery options</p>
       <form onSubmit={submit} noValidate className="relative mt-4">
         <input
           inputMode="numeric"
@@ -54,9 +54,9 @@ export function DeliveryCheck({ price }: { price: number }) {
           placeholder="Enter Pincode"
           value={value}
           onChange={(e) => (setDraft(e.target.value.replace(/\D/g, "")), setTouched(false))}
-          className="h-12 w-full border border-transparent bg-sand pl-4 pr-20 text-[14.5px] tabular-nums placeholder:text-ink-3 hover:border-line-strong focus:border-ink"
+          className="h-12 w-full border border-line-strong bg-transparent pl-4 pr-20 text-[14.5px] tabular-nums placeholder:text-ink-3 transition-colors duration-300 hover:border-ink focus:border-ink"
         />
-        <button type="submit" className="tap absolute inset-y-0 right-0 px-4 text-[14px] font-semibold text-pink transition-colors hover:text-pink-ink">
+        <button type="submit" className="tap absolute inset-y-0 right-0 px-4 text-[13px] font-medium text-pink transition-colors hover:text-pink-ink">
           Apply
         </button>
       </form>

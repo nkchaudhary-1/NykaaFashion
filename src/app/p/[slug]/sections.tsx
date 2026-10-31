@@ -21,7 +21,7 @@ import { fromSameLabel, similarTo } from "@/lib/recs";
 function RailHeading({ id, title, children }: { id: string; title: string; children?: ReactNode }) {
   return (
     <div className="grid-main items-end gap-y-4">
-      <h2 id={id} className="display-sm col-span-4 min-w-0 sm:col-span-12 lg:col-span-6 lg:row-start-1">
+      <h2 id={id} className="display-md col-span-4 min-w-0 sm:col-span-12 lg:col-span-6 lg:row-start-1">
         {title}
       </h2>
       {children && <div className="col-span-4 flex items-center justify-end gap-6 sm:col-span-12 lg:col-span-6 lg:col-start-7 lg:row-start-1">{children}</div>}
@@ -36,7 +36,7 @@ function Rail({ id, title, list, source, density = "product" }: { id: string; ti
       <RailHeading id={id} title={title}>
         <CarouselArrows />
       </RailHeading>
-      <div className="mt-6 sm:mt-8">
+      <div className="mt-8 sm:mt-10">
         <CarouselTrack label={title} density={density}>
           {list.map((p) => (
             <div key={p.id} className="flex h-full flex-col">
@@ -58,7 +58,7 @@ export function SimilarProducts({ product }: { product: Product }) {
   const list = similarOf(product);
   if (list.length < 2) return null;
   return (
-    <Section y="sm" tone="bone" aria-labelledby="similar" className="border-t border-line">
+    <Section tone="bone" aria-labelledby="similar" className="border-t border-line">
       <Rail id="similar" title="Similar Products" list={list} source="pdp-similar" />
     </Section>
   );
@@ -77,15 +77,15 @@ export function CustomersAlsoViewed({ product }: { product: Product }) {
     .slice(0, 4);
   if (groups.length < 2) return null;
   return (
-    <Section y="sm" tone="sand" aria-labelledby="also-viewed">
+    <Section tone="sand" aria-labelledby="also-viewed">
       <Carousel>
         <RailHeading id="also-viewed" title="Customers Also Viewed" />
-        <div className="mt-6 sm:mt-8">
+        <div className="mt-8 sm:mt-10">
           <CarouselTrack label="Customers also viewed" density="product">
             {groups.map(({ c, items }) => {
               const names = [...new Set(items.map((p) => labelById[p.labelId].name))].slice(0, 3);
               return (
-                <Link key={c.id} href={`/c/${c.id}`} className="group flex h-full flex-col bg-white p-3 transition-colors hover:bg-paper sm:p-4">
+                <Link key={c.id} href={`/c/${c.id}`} className="group flex h-full flex-col bg-bone p-3 transition-colors duration-500 hover:bg-paper sm:p-4">
                   {/* one big picture and two small ones, the way the live cards collage a category */}
                   <div className="grid grid-cols-3 grid-rows-2 gap-2">
                     <div className="relative col-span-2 row-span-2 aspect-[4/5] overflow-hidden">
@@ -97,7 +97,7 @@ export function CustomersAlsoViewed({ product }: { product: Product }) {
                       </div>
                     ))}
                   </div>
-                  <p className="mt-3 text-[14px] font-bold leading-tight text-ink group-hover:text-pink">{categoryById[c.id]?.name ?? c.name}</p>
+                  <p className="mt-4 text-[16px] font-medium leading-tight tracking-[-0.015em] text-ink transition-colors duration-300 group-hover:text-pink">{categoryById[c.id]?.name ?? c.name}</p>
                   <p className="mt-1 line-clamp-1 text-[12.5px] text-ink-3">{joinNames(names)}</p>
                 </Link>
               );
@@ -115,7 +115,7 @@ export function MoreFromLabel({ product }: { product: Product }) {
   const list = fromSameLabel(product, 8);
   if (list.length < 2) return null;
   return (
-    <Section y="sm" tone="bone" aria-labelledby="more-label">
+    <Section tone="bone" aria-labelledby="more-label">
       <Rail id="more-label" title={`More From ${label.name}`} list={list} source="pdp-label" />
     </Section>
   );
@@ -128,7 +128,7 @@ export function MoreFromCategory({ product }: { product: Product }) {
   const list = products.filter((p) => !p.soldOut && sameCategory(p) === cat && !shown.has(p.id)).sort((a, b) => a.rank - b.rank).slice(0, 12);
   if (list.length < 3) return null;
   return (
-    <Section y="sm" tone="paper" aria-labelledby="more-category" className="border-y border-line">
+    <Section tone="paper" aria-labelledby="more-category" className="border-y border-line">
       <Rail id="more-category" title={`More From ${categoryById[cat]?.name ?? "this category"}`} list={list} source="pdp-category" density="tile" />
     </Section>
   );

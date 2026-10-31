@@ -18,8 +18,10 @@ import type { Selection } from "./useSelection";
 export function ColourChooser({ product, value, onChange, compact }: { product: Product; value: number; onChange: (i: number) => void; compact?: boolean }) {
   return (
     <fieldset>
-      <legend className={cn("mb-2 font-semibold text-ink", compact ? "text-[15px]" : "text-[18px]")}>
-        Colour<span className="text-[14px] font-normal text-ink-2">: {product.variants[value].colorName}</span>
+      <legend className="eyebrow mb-3 text-ink-3">
+        Colour
+        <span className="sr-only">: </span>
+        <span className="ml-3 text-[13px] font-normal normal-case tracking-normal text-ink">{product.variants[value].colorName}</span>
       </legend>
       <div className="flex flex-wrap gap-x-1 gap-y-0">
         {product.variants.map((c, i) => (
@@ -89,11 +91,17 @@ export function SizeSelector({ product, sel, groupRef, compact }: { product: Pro
   return (
     <div ref={wrap}>
       <div className="mb-3.5 flex items-center justify-between gap-3">
-        <p id={`size-label-${scope}`} className={cn("font-semibold text-ink", compact ? "text-[15px]" : "text-[18px]")}>
-          Select Size{sel.size && <span className="text-[14px] font-normal text-ink-2">: {sel.size}</span>}
+        <p id={`size-label-${scope}`} className="eyebrow text-ink-3">
+          Select Size
+          {sel.size && (
+            <>
+              <span className="sr-only">: </span>
+              <span className="ml-3 text-[13px] font-normal normal-case tracking-normal text-ink">{sel.size}</span>
+            </>
+          )}
         </p>
         {guide && (
-          <button type="button" onClick={openGuide} className="link-u tap py-1 text-[14px] font-semibold text-pink hover:text-pink-ink">
+          <button type="button" onClick={openGuide} className="link-u tap py-1 text-[13px] font-medium text-pink hover:text-pink-ink">
             Size Guide
           </button>
         )}
@@ -115,7 +123,7 @@ export function SizeSelector({ product, sel, groupRef, compact }: { product: Pro
               <span
                 className={cn(
                   "relative flex h-10 min-w-16 items-center justify-center overflow-hidden whitespace-nowrap rounded-full border px-4 text-[13.5px] transition-colors duration-200 [@media(pointer:coarse)]:h-11 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink",
-                  selected ? "border-ink font-semibold text-ink" : out ? "border-line text-ink-3 hover:border-ink-3" : "border-line-strong text-ink-2 hover:border-ink",
+                  selected ? "border-ink bg-ink text-bone" : out ? "border-line text-ink-3 hover:border-ink-3" : "border-line-strong text-ink-2 hover:border-ink hover:text-ink",
                 )}
               >
                 {s}
@@ -145,7 +153,7 @@ export function SizeSelector({ product, sel, groupRef, compact }: { product: Pro
       {!compact && sel.size && (measures.length > 0 || product.modelNote) && (
         <div className="mt-4 space-y-3">
           {measures.length > 0 && (
-            <p aria-label={`Size ${sel.size} measures`} className="flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-[var(--radius-md)] bg-sand px-3.5 py-2 text-[12.5px] text-ink-2">
+            <p aria-label={`Size ${sel.size} measures`} className="flex flex-wrap items-center gap-x-2.5 gap-y-1 bg-sand px-4 py-2.5 text-[12.5px] text-ink-2">
               {measures.map((m, i) => (
                 <Fragment key={m.label}>
                   {i > 0 && <span aria-hidden>•</span>}
@@ -162,7 +170,7 @@ export function SizeSelector({ product, sel, groupRef, compact }: { product: Pro
                 <Img imgKey={v.images[0]} alt="" sizes="48px" ratio="4/5" />
               </div>
               <div className="min-w-0">
-                <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-ink">Model details</p>
+                <p className="eyebrow text-ink">Model details</p>
                 <p className="mt-0.5 text-[13px] leading-snug text-ink-2">{product.modelNote}</p>
               </div>
             </div>

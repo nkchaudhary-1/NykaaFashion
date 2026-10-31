@@ -14,7 +14,7 @@ export default function GlobalError({ error, retry }: { error: unknown; retry: (
       copy={
         <div role="alert">
           <p className="eyebrow text-ink-3">Something slipped</p>
-          <h1 className="display-lg mt-4 max-w-[14ch] text-balance">
+          <h1 className="display-lg mt-5 max-w-[14ch] text-balance">
             That didn’t <em>load.</em>
           </h1>
           <p className="lede mt-6">An unexpected error interrupted this page. Your bag and wishlist are safe — they live in this browser.</p>

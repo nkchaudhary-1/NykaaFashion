@@ -59,10 +59,10 @@ function QuickViewBody({ product, initialVariant }: { product: Product; initialV
         </div>
         <div className="flex flex-col gap-5 p-5 sm:p-8">
           <div className="pr-10 sm:pr-8">
-            <Link href={`/brands/${label.id}`} onClick={close} className="tap text-[17px] font-semibold leading-tight text-ink transition-colors hover:text-pink-ink">
+            <Link href={`/brands/${label.id}`} onClick={close} className="eyebrow tap block text-ink transition-colors duration-300 hover:text-pink-ink">
               {label.name}
             </Link>
-            <h2 className="mt-1.5 text-[16px] font-normal leading-snug text-ink-2">{product.name}</h2>
+            <h2 className="display-sm mt-3">{product.name}</h2>
             <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1.5">
               <Price price={product.price} mrp={product.mrp} size="lg" />
               <RatingLine rating={product.rating} count={product.ratingCount} />

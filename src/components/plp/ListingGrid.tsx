@@ -71,7 +71,7 @@ function FeatureBody({ feature, product, source }: { feature: Feature; product?:
     // a big silent picture (it fills the 6 × 2 box the grid gives it) with its caption on the page below, not over the picture
     return (
       <Link href={feature.href} onClick={open} className="group flex h-full flex-col">
-        <div className="relative aspect-[5/4] overflow-hidden bg-sand sm:aspect-auto sm:min-h-0 sm:flex-1">
+        <div data-cursor="View" className="relative aspect-[5/4] overflow-hidden bg-sand sm:aspect-auto sm:min-h-0 sm:flex-1">
           <div data-nogrid className="absolute inset-0 transition-transform duration-[1200ms] ease-expo group-hover:scale-[1.04] group-focus-visible:scale-[1.04]">
             <Img imgKey={feature.imgKey} alt="" sizes={SIZES.half} ratio="fill" position={feature.position ?? "50% 35%"} className="absolute inset-0 h-full" />
           </div>

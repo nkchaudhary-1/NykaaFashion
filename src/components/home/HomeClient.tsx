@@ -1,41 +1,28 @@
 "use client";
 import { AnimatePresence, LayoutGroup } from "framer-motion";
-import { CreditCard, RotateCcw, ShieldCheck } from "lucide-react";
 import { useMemo } from "react";
-import { Col, Grid } from "@/components/layout/Grid";
-import { Section } from "@/components/layout/Section";
-import { SERVICE_PROMISES } from "@/data/home-content";
 import { stories } from "@/data/stories";
 import { labelById } from "@/data/labels";
 import { composeHome, type HomeModuleId } from "@/lib/home";
 import { topKey, useIntent } from "@/stores/intent";
 import { usePrefs } from "@/stores/ui";
+import { IconicBrands } from "./Brands";
+import { CategoryTiles } from "./Categories";
+import { CelebrationTiles } from "./Celebration";
+import { DiwaliWardrobe } from "./Diwali";
+import { FeaturedEdits } from "./Edits";
+import { SaleHero } from "./Hero";
+import { ShopTheLook } from "./Look";
 import { ModuleShell } from "./ModuleShell";
-import { BrandSpotlight, FeaturedEdits, NewInByTaste, OfferModule, PersonalizedRail, ShopTheLook, StoryStrip, TrendingGrid } from "./Modules";
-import { CategoryTiles, CelebrationTiles, CouponStrip, DiwaliWardrobe, IconicBrands, PriceStrip, SaleHero, SeoBlocks } from "./NykaaModules";
+import { OfferModule } from "./Offers";
+import { NewInByTaste, PersonalizedRail } from "./Rails";
+import { SeoBlocks, Values } from "./Seo";
+import { BrandSpotlight } from "./Spotlight";
+import { StoryStrip } from "./Stories";
+import { CouponStrip, PriceStrip } from "./Strips";
+import { TrendingGrid } from "./Trending";
 
-function Values() {
-  const icons = [ShieldCheck, RotateCcw, CreditCard];
-  return (
-    <Section y="none" className="pt-10 sm:pt-14">
-      <Grid as="ul" className="gap-y-10 border-t border-line-strong pt-10">
-        {SERVICE_PROMISES.map(({ title, body }, i) => {
-          const Icon = icons[i];
-          return (
-            <Col as="li" key={title} span={{ base: 4, sm: 4, lg: 4 }} className="flex gap-4">
-              <Icon size={24} strokeWidth={1.5} aria-hidden className="mt-0.5 shrink-0 text-pink" />
-              <div>
-                <h2 className="display-xs">{title}</h2>
-                <p className="mt-2 max-w-[34ch] text-[14px] leading-relaxed text-ink-2">{body}</p>
-              </div>
-            </Col>
-          );
-        })}
-      </Grid>
-    </Section>
-  );
-}
-
+/** The home page: the adaptive module stack (src/lib/home.ts decides the order), each module in a ModuleShell that logs its first view. */
 export function HomeClient() {
   const { intent, mode } = useIntent();
   const { failModule } = usePrefs();

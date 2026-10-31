@@ -55,13 +55,13 @@ export function RatingReviews({ product }: { product: Product }) {
   return (
     <section id="reviews" aria-labelledby="reviews-h" className="scroll-mt-28">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 id="reviews-h" className="text-[18px] font-semibold">
+        <h2 id="reviews-h" className="text-[19px] font-medium leading-tight tracking-[-0.02em]">
           Rating &amp; Reviews
         </h2>
         <SimulatedTag>Sample content</SimulatedTag>
       </div>
 
-      <ul aria-label="Rating summary" className="mt-4 grid grid-cols-[1.5fr_1fr_1fr] items-center rounded-[var(--radius-sm)] bg-sand py-3.5">
+      <ul aria-label="Rating summary" className="mt-4 grid grid-cols-[1.5fr_1fr_1fr] items-center bg-sand py-4">
         <li className="flex items-center gap-2 px-4 text-[30px] font-semibold leading-none tabular-nums">
           {product.rating.toFixed(1)} <Star size={22} aria-hidden className="fill-ink text-ink" />
           <span className="sr-only">out of 5 average rating</span>

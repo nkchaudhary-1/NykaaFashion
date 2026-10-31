@@ -5,7 +5,7 @@ import { Col, Grid } from "@/components/layout/Grid";
 import { NewsletterForm } from "@/components/layout/NewsletterForm";
 import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
-import { Chip } from "@/components/ui/Chip";
+import { FilterChip } from "@/components/plp/FilterChip";
 import { Reveal } from "@/components/ui/Reveal";
 import { EmptyState } from "@/components/ui/States";
 import { stories } from "@/data/stories";
@@ -24,28 +24,26 @@ const FILTERS = [{ id: "all", label: "All" }, ...TOPICS.map(({ id, label }) => (
 
 /**
  * Editorial rows. Each row has its own rhythm and no two neighbours repeat it:
- *   lead      8 + 4 — the lead story (spans two rows) beside a stack of two
+ *   banner    one story across all 12 columns, full bleed — the first row is always one (the page opens on a big picture)
  *   fiveSeven 5 + 7 (mirrored: sevenFive) — a portrait beside a landscape, covers and captions aligned on a subgrid
- *   banner    one story across all 12 columns
  *   half      6 + 6
  *   thirds    4 + 4 + 4
  */
-type Kind = "lead" | "fiveSeven" | "sevenFive" | "banner" | "half" | "thirds";
+type Kind = "banner" | "fiveSeven" | "sevenFive" | "half" | "thirds";
 interface Row {
   kind: Kind;
   stories: Story[];
 }
-const NEED: Record<Kind, number> = { lead: 3, fiveSeven: 2, sevenFive: 2, banner: 1, half: 2, thirds: 3 };
-const CYCLE: Kind[] = ["fiveSeven", "banner", "half", "thirds", "sevenFive"];
+const NEED: Record<Kind, number> = { banner: 1, fiveSeven: 2, sevenFive: 2, half: 2, thirds: 3 };
+const CYCLE: Kind[] = ["fiveSeven", "thirds", "banner", "half", "sevenFive"];
 
 function plan(list: Story[]): Row[] {
   const rows: Row[] = [];
   let i = 0;
   const left = () => list.length - i;
   const push = (kind: Kind) => rows.push({ kind, stories: list.slice(i, (i += NEED[kind])) });
-  if (left() === 1) push("banner");
-  else if (left() === 2) push("half");
-  else if (left() > 0) push("lead");
+  if (left() === 2) push("half");
+  else if (left() > 0) push("banner");
   for (let c = 0; left() > 0; c++) {
     let kind = CYCLE[c % CYCLE.length];
     if (NEED[kind] > left()) {
@@ -61,24 +59,6 @@ function RowView({ row, first }: { row: Row; first: boolean }) {
   const [a, b, c] = row.stories;
   const source = "discover";
   switch (row.kind) {
-    case "lead":
-      return (
-        <Grid className="gap-y-[var(--gap)]">
-          {/* the lead spans both rows of the stack beside it and fills them (its tile is absolutely sized from lg up) */}
-          <Col span={{ base: 4, sm: 12, lg: 8 }} rows={{ lg: 2 }} className="relative">
-            <Reveal>
-              <StoryCard story={a} variant="lead" as="h2" load={first ? "preload" : undefined} source={source} />
-            </Reveal>
-          </Col>
-          {[b, c].map((s, i) => (
-            <Col key={s.id} span={{ base: 2, sm: 6, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: (i + 1) as 1 | 2 }}>
-              <Reveal delay={(i + 1) * 90}>
-                <StoryCard story={s} variant="stack" as="h2" source={source} />
-              </Reveal>
-            </Col>
-          ))}
-        </Grid>
-      );
     case "fiveSeven":
     case "sevenFive": {
       const mirrored = row.kind === "sevenFive";
@@ -97,11 +77,8 @@ function RowView({ row, first }: { row: Row; first: boolean }) {
       );
     }
     case "banner":
-      return (
-        <Reveal>
-          <StoryCard story={a} variant="banner" as="h2" source={source} />
-        </Reveal>
-      );
+      // the opening banner is the page's first picture: it is never hidden for a reveal
+      return first ? <StoryCard story={a} variant="banner" as="h2" load="preload" source={source} /> : <Reveal y={36}><StoryCard story={a} variant="banner" as="h2" source={source} /></Reveal>;
     case "half":
       return (
         <Grid className="gap-y-12">
@@ -137,25 +114,25 @@ export function DiscoverIndex() {
   return (
     <>
       <div className="container-x">
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-y border-ink py-3">
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-y border-line py-2.5">
           <div role="group" aria-label="Filter stories" className="scrollbar-none bleed-r -mr-[var(--gutter)] flex min-w-0 items-center gap-2 overflow-x-auto pr-[var(--gutter)] lg:mr-0 lg:overflow-visible lg:pr-0">
             <span aria-hidden className="eyebrow mr-2 shrink-0 text-ink-3">
               Topic
             </span>
             {FILTERS.map((f) => (
-              <Chip key={f.id} selected={topic === f.id} onClick={() => setTopic(f.id)}>
+              <FilterChip key={f.id} selected={topic === f.id} onClick={() => setTopic(f.id)}>
                 {f.label}
-                <span className="text-[12px] tabular-nums opacity-70">{count(f.id)}</span>
-              </Chip>
+                <span className="text-[11px] tabular-nums opacity-70">{count(f.id)}</span>
+              </FilterChip>
             ))}
           </div>
-          <p role="status" className="text-[13px] tabular-nums text-ink-3">
+          <p role="status" className="eyebrow tabular-nums text-ink-3">
             {list.length} {list.length === 1 ? "story" : "stories"}
           </p>
         </div>
       </div>
 
-      <div className="pt-10 sm:pt-14">
+      <div className="pt-10 sm:pt-14 lg:pt-16">
         {rows.length === 0 ? (
           <div className="container-x">
             <EmptyState title="No stories here yet" text="We publish a new issue each season." actions={<Button onClick={() => setTopic("all")}>See all stories</Button>} />
@@ -163,7 +140,7 @@ export function DiscoverIndex() {
         ) : (
           rows.map((row, i) => (
             // a banner runs edge to edge; every other row sits in the container
-            <div key={`${topic}-${i}`} className={cn(i > 0 && "mt-16 sm:mt-20 lg:mt-24", row.kind !== "banner" && "container-x")}>
+            <div key={`${topic}-${i}`} className={cn(i > 0 && "mt-20 sm:mt-24 lg:mt-32", row.kind !== "banner" && "container-x")}>
               <RowView row={row} first={i === 0} />
             </div>
           ))
@@ -175,7 +152,7 @@ export function DiscoverIndex() {
         <Grid className="items-end gap-y-4">
           <Col span={{ base: 4, sm: 12, lg: 6 }}>
             <p className="eyebrow text-pink-ink">Style Files · Issue 07</p>
-            <h2 className="display-md mt-4">
+            <h2 className="display-lg mt-5">
               One story, <em>every Sunday.</em>
             </h2>
             <p className="mt-5 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">One long read, three pieces worth owning and no discount codes. This is a prototype: the sign-up is simulated, nothing is sent and your email stays on this device.</p>
