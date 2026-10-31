@@ -21,6 +21,18 @@ The first page compiles for 10–30 s (Turbopack builds the catalogue and every 
 
 If something does not start, run **`npm run doctor`** — it checks the Node version, installed dependencies, which version of the prototype you have, the font files and port 3000, and says how to fix each.
 
+## Host it on Vercel, behind a password
+
+The app has its own password gate (`src/proxy.ts`), so any host works and it does not depend on a paid Vercel plan.
+
+1. **Import** `nkchaudhary-1/NykaaFashion` at vercel.com → *Add New → Project* (Next.js is detected; no build settings needed). One-click version: [Deploy](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnkchaudhary-1%2FNykaaFashion&env=SITE_PASSWORD&envDescription=The%20password%20visitors%20must%20enter&project-name=nykaa-fashion-prototype).
+2. **Password:** *Settings → Environment Variables* → add `SITE_PASSWORD` (the password you will share) for **Production and Preview**. Optional: `GATE_SECRET` (any long random string) signs the session cookie; without it the password itself does, so changing the password signs everyone out.
+3. **Which design is live:** *Settings → Git → Production Branch*. The repo's default branch is the earlier design — pick `claude/nykaa-fashion-grid-redesign` for the current one. Every other branch (for example the awwwards-style one) gets its own preview URL automatically, with the same password.
+4. **Sharing outside your Vercel team:** Vercel protects *preview* deployments with Vercel Authentication by default (team members only). If the people who need to see it are not on your team, turn that off under *Settings → Deployment Protection*; the password page then does the protecting.
+5. **Deploy.** Visitors see a "Private preview" sign-in page; a correct password sets a signed, HttpOnly cookie for a week.
+
+What the gate does: every page, API route and picture needs the cookie; only the sign-in page's own font, the logo and `robots.txt` (Disallow all) are public, and every response carries `X-Robots-Tag: noindex`. A wrong password waits 0.7 s before answering. If `SITE_PASSWORD` is **not** set on Vercel, the deployment answers `503 Locked` instead of going public (set `SITE_GATE=off` to publish openly on purpose). On Vercel the pictures are served straight from `/img` (behind the cookie) rather than through the image optimiser, because the optimiser fetches its source without the visitor's credentials. Locally nothing changes unless you set the variable; to try it: `SITE_PASSWORD=secret npm run build && SITE_PASSWORD=secret npm start`.
+
 ## Stack
 
 Next.js 16 (App Router, Cache Components, Turbopack) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion · Lucide. No other runtime dependencies. Mock JSON-style data modules and `localStorage` persistence, structured so real APIs can slot in.
