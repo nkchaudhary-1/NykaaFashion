@@ -84,12 +84,10 @@ export function CategoryTiles() {
         {/* the last tile: the whole list */}
         <Rise as="li" delay={(SHOWN % 6) * 60} className={tileClass}>
           <button type="button" onClick={openAll} aria-haspopup="dialog" className="group block w-full text-left">
-            <span className="flex aspect-[4/5] flex-col justify-between overflow-hidden bg-ink p-5 text-bone">
+            <span className="flex aspect-[4/5] flex-col justify-end overflow-hidden bg-ink p-5 text-bone">
               <span className="eyebrow">Everything</span>
-              <span>
-                <span className="display-xl block leading-[0.85] tabular-nums">{total}</span>
-                <span className="mt-2 block text-[15px]">categories, {topCategories.length} departments</span>
-              </span>
+              <span className="display-xl mt-3 block leading-[0.85] tabular-nums">{total}</span>
+              <span className="mt-2 block text-[15px]">categories, {topCategories.length} departments</span>
             </span>
             <span className="mt-4 block">
               <span className="eyebrow block text-ink-3">Browse</span>
