@@ -13,6 +13,7 @@ run node scripts/contrast.mjs
 run node scripts/qa/nav.cjs "$BASE"
 run node scripts/qa/home.cjs "$BASE"
 run node scripts/qa/home.cjs "$BASE" --mobile
+run node scripts/qa/categories.cjs "$BASE"   # Shop by category on the second fold: tiles, columns, the all-categories dialog
 run node scripts/qa/links.cjs "$BASE"
 run node scripts/qa/flat.cjs "$BASE"
 run node scripts/qa/grid.cjs "$BASE"

@@ -1,7 +1,7 @@
 import type { IntentMode } from "@/stores/intent";
 
 // Adaptive home composition — PRD §5.1 / §6.1: "System reorders home modules from intent signal
-// (cold → curation; returning → rail; deal-intent → discount promoted). The sale banner is first in every mode.
+// (cold → curation; returning → rail; deal-intent → discount promoted). The sale banner is first and the category tiles second in every mode.
 export type HomeModuleId = "hero" | "pricestrip" | "coupons" | "categories" | "celebration" | "brands" | "diwali" | "newin" | "edits" | "trending" | "look" | "rail" | "stories" | "brand" | "offers" | "seo";
 
 // Modules follow the live Nykaa Fashion homepage stack (sale banner → category tiles → Celebration-ready Categories → Iconic Brands →
@@ -33,19 +33,20 @@ export interface HomeSlot {
 
 export function composeHome(mode: IntentMode): HomeSlot[] {
   const ids = (list: HomeModuleId[]): HomeSlot[] => list.map((id) => ({ id }));
+  // The banner leads every mode and "Shop by category" is always the second fold: whatever the visitor's intent, the way into the catalogue is right under the banner.
   switch (mode) {
     case "returning":
-      return ids(["hero", "rail", "categories", "pricestrip", "coupons", "celebration", "brands", "newin", "diwali", "edits", "trending", "look", "brand", "stories", "seo"]);
+      return ids(["hero", "categories", "rail", "pricestrip", "coupons", "celebration", "brands", "newin", "diwali", "edits", "trending", "look", "brand", "stories", "seo"]);
     case "deal":
-      // The banner always leads the page — it is the home page's signature and already a discount surface. Deal intent promotes the offer band to the slot right under it.
-      return [{ id: "hero" }, { id: "offers", promoted: true }, ...ids(["rail", "categories", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"])];
+      // Deal intent promotes the offer band to the slot right under the categories (still poster-scale, still with the best-discounted pieces).
+      return [{ id: "hero" }, { id: "categories" }, { id: "offers", promoted: true }, ...ids(["rail", "pricestrip", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"])];
     default:
-      return ids(["hero", "pricestrip", "categories", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"]);
+      return ids(["hero", "categories", "pricestrip", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"]);
   }
 }
 
 export const MODE_COPY: Record<IntentMode, { name: string; blurb: string }> = {
-  cold: { name: "Cold start", blurb: "No history yet — the sale banner, price shortcuts and category tiles lead." },
-  returning: { name: "Returning", blurb: "Signals found — a “picked for you” rail rises to second place." },
-  deal: { name: "Deal intent", blurb: "Offer interaction detected — the offer band rises to second place, right under the banner, for this session." },
+  cold: { name: "Cold start", blurb: "No history yet — the sale banner, the category tiles and price shortcuts lead." },
+  returning: { name: "Returning", blurb: "Signals found — a “picked for you” rail rises to third place, right under the category tiles." },
+  deal: { name: "Deal intent", blurb: "Offer interaction detected — the offer band rises to third place, right under the category tiles, for this session." },
 };

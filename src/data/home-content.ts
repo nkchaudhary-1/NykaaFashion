@@ -3,16 +3,23 @@
 // Titles are the live ones; everything behind them (counts, "up to X% off" stamps, images) is computed from the sample catalogue,
 // so a banner never promises more than the listing behind it delivers. Swap this file's copy when the live content is imported.
 
-/** Category tiles (the live homepage's ten, minus lingerie and activewear — the sample catalogue has no products in them). */
-export const CATEGORY_TILES: Array<{ id: string; name: string; href: string; cat: string[] }> = [
-  { id: "westernwear", name: "Westernwear", href: "/c/women?cat=women%2Fdresses%2Cwomen%2Ftops%2Cwomen%2Fbottoms%2Cwomen%2Fknitwear%2Cwomen%2Fjackets", cat: ["women/dresses", "women/tops", "women/bottoms", "women/knitwear", "women/jackets"] },
-  { id: "indianwear", name: "Indianwear", href: "/c/women/indianwear", cat: ["women/indianwear"] },
-  { id: "men", name: "Men", href: "/c/men", cat: ["men"] },
-  { id: "kids", name: "Kids", href: "/c/kids", cat: ["kids"] },
-  { id: "home", name: "Home", href: "/c/home", cat: ["home"] },
-  { id: "footwear", name: "Footwear", href: "/c/women/footwear", cat: ["women/footwear"] },
-  { id: "bags", name: "Bags", href: "/c/women/bags", cat: ["women/bags"] },
-  { id: "jewellery", name: "Jewellery", href: "/c/women/jewellery", cat: ["women/jewellery"] },
+/**
+ * "Shop by category" on the second fold: the categories shown as picture tiles, in order (a mix of departments — the dialog behind "View all categories" lists every one).
+ * Each is a real category of the sample catalogue (src/data/categories.ts), so its picture, its style count and its "Up to X% off" are computed from what is behind it,
+ * and a tile never promises more than its listing delivers. Reorder or swap ids freely; keep the count at 11 so the grid ends on the "all categories" tile.
+ */
+export const SHOP_BY_CATEGORY: string[] = [
+  "women/indianwear",
+  "women/dresses",
+  "women/tops",
+  "women/bottoms",
+  "women/jewellery",
+  "women/bags",
+  "women/footwear",
+  "men/ethnic",
+  "men/shirts",
+  "kids/girls",
+  "home/decor",
 ];
 
 /** Price-point shortcuts under the hero. */

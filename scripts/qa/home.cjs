@@ -40,7 +40,7 @@ const must = (c, m) => { if (!c) throw new Error(m); };
   });
 
   await step("category tiles navigate (Indianwear)", async () => {
-    await page.getByRole("link", { name: /^Indianwear/ }).filter({ hasText: /styles/ }).first().click();
+    await page.locator("[data-category-grid]").getByRole("link", { name: /Indianwear/ }).first().click();
     await page.waitForURL(/\/c\/women\/indianwear/);
     await home();
   });
