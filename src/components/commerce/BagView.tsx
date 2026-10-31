@@ -178,7 +178,7 @@ function EmptyBag({ saved }: { saved: Product[] }) {
     <>
       <div className="container-x pb-[var(--section-y)]">
         <Grid className="gap-y-14 border-t border-ink pt-10 sm:pt-14">
-          <Col span={{ base: 4, sm: 12, lg: 6 }} className="flex flex-col justify-between gap-12">
+          <Col span={{ base: 4, sm: 12, lg: 6 }} className="flex flex-col gap-10 lg:sticky lg:top-[calc(var(--header-offset)+24px)] lg:self-start">
             <div>
               <p className="eyebrow text-ink-3">Nothing here yet</p>
               <h2 className="display-lg mt-6">Your bag is empty</h2>

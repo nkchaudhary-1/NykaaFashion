@@ -80,15 +80,18 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
 
       {look && (
         <Section tone="paper" y="sm" className="border-y border-line" aria-labelledby="look-h">
-          {/* 8 + 4: the shoppable scene beside a heading and the pieces in it */}
-          <Grid className="items-stretch gap-y-8">
-            <Col span={{ base: 4, sm: 12, lg: 8 }}>
+          {/* 8 + 4: the shoppable scene (with its caption underneath) beside a heading and the pieces in it. The side column is a plain stack that follows the scroll —
+              it is not stretched to the picture's height, so its heading and its list never drift apart. */}
+          <Grid className="items-start gap-y-4 lg:gap-y-0">
+            <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 1 }}>
               <RevealMedia>
                 <ShoppableImage imgKey={look.scene} alt={look.caption} sizes="(min-width:1024px) 66vw, 100vw" ratio="3/2" />
               </RevealMedia>
-              <p className="mt-4 text-[14px] text-ink-3">{look.caption}</p>
             </Col>
-            <Col span={{ base: 4, sm: 12, lg: 4 }} className="flex flex-col justify-between gap-10">
+            <Col span={{ base: 4, sm: 12, lg: 8 }} start={{ lg: 1 }} rowStart={{ lg: 2 }}>
+              <p className="text-[14px] text-ink-3 lg:mt-4">{look.caption}</p>
+            </Col>
+            <Col span={{ base: 4, sm: 12, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }} rows={{ lg: 2 }} className="mt-4 flex flex-col gap-8 lg:sticky lg:top-[calc(var(--header-offset)+24px)] lg:mt-0 lg:self-start">
               <div>
                 <p className="eyebrow text-ink-3">{look.story.kicker}</p>
                 <h2 id="look-h" className="display-md mt-5">
