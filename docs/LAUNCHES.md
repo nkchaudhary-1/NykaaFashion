@@ -15,6 +15,7 @@ A pre-launch, launch-day and post-launch experience for every brand Nykaa Fashio
 3. **The range.** Each piece in `previews` uses the same compact format as `src/data/catalog-defs.ts` (name, price, MRP, fabric, colours …) and its pictures are `products/<id>/v1-front|alt|detail` — measured the same way (`npm run launch:measure -- products/<id>`). The pieces are real products: they get a product page, quick view, wishlist heart and bag line, but they are kept out of listings and search (see "How it plugs in").
 4. **Check.** `npm run data:check` verifies dates, pictures, offers, labels, slugs and that nothing a launch page needs is missing.
 5. **Ship.** Commit and deploy. On `launchAt` the page changes by itself — no redeploy.
+6. **Optional — a pop-up.** To announce the launch around the site, add a campaign with `launchId: "<brand-id>"` and a picture (or a muted video) to `src/data/promos.ts` — six lines, no copy: before launch it says "<Brand> arrives <date>" with the countdown, from launch day "Now live → Shop now", and it stops a week later. See [`PROMOS.md`](PROMOS.md).
 
 ### Template
 
