@@ -31,6 +31,17 @@ enum DSColor {
     /// toggles, tab selection) pick up the same tint.
     static let accent = Color.accentColor
 
+    /// The Nykaa wordmark's ink. The supplied logo is a single-colour mark
+    /// (white fill) rendered as a template, so this decides its colour. Light mode
+    /// uses charcoal #222222 (the ink of the earlier logo file the design sent);
+    /// dark mode uses white so the mark stays visible. PLACEHOLDER values until
+    /// the design decides the header's colours.
+    static let logo = Color(UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? .white
+            : UIColor(red: 34.0 / 255, green: 34.0 / 255, blue: 34.0 / 255, alpha: 1)
+    })
+
     // MARK: Lines
     static let separator = Color(.separator)
     static let separatorStrong = Color(.opaqueSeparator)

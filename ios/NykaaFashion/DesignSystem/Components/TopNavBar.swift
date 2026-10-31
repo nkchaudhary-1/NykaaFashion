@@ -13,7 +13,7 @@ import SwiftUI
 //     effect do the same for the scroll view
 //   - the right-hand control is a native glass circle button that owns its own
 //     metrics: no frame, no padding, `controlSize(.large)` is the only lever
-//   - scrolling collapses the logo (44 → 32pt), `.easeInOut(0.2)`, off under
+//   - scrolling collapses the logo (28 → 20pt), `.easeInOut(0.2)`, off under
 //     Reduce Motion
 //   - the system navigation bar is hidden on the root screen only, so pushed
 //     screens keep their own bar and back button

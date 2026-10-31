@@ -19,10 +19,15 @@ enum DSTopNav {
     static let bottomPadding = DSSpacing.md
 
     // MARK: Logo size
-    // One Moment: `logoHeadingHeight` / `logoHeadingCollapsedHeight`.
+    // One Moment uses 44 → 32pt (`logoHeadingHeight` / `logoHeadingCollapsedHeight`),
+    // but that is for its tall stacked mark (~145pt wide). The Nykaa Fashion
+    // wordmark is 6.7 : 1, so 44pt tall would be ~295pt wide — nearly the whole
+    // bar on a 393pt phone. Sized by width instead: 28pt (~187 wide) at rest,
+    // 20pt (~134 wide) collapsed. The 8pt shrink matches One Moment's
+    // `headingShrink`. A design call: tune these two numbers.
 
-    static let restingLogoHeight: CGFloat = 44
-    static let collapsedLogoHeight: CGFloat = 32
+    static let restingLogoHeight: CGFloat = 28
+    static let collapsedLogoHeight: CGFloat = 20
 
     static func logoHeight(collapsed: Bool) -> CGFloat {
         collapsed ? collapsedLogoHeight : restingLogoHeight

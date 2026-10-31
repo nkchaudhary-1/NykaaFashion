@@ -66,15 +66,13 @@ header) — same structure, metrics and behaviour — so the two apps feel ident
 | Soft blur + background-colour gradient behind the bar, fading in only once scrolled | `ComponentsTopEdgeBlur.swift`, `.scrollEdgeEffectStyle(.soft, for: .top)` | `TopEdgeBlur`, same modifier |
 | Row, glass circle button (`.glass` / `.circle` / `.large`, no frame or padding) | `headerRow`, `profileButton` | `TopNavBar` |
 | Collapse on scroll via a Bool `PreferenceKey` | `ComponentsScrollCollapse.swift` | `ScrollCollapse.swift` |
-| Numbers: padding 24/8/12, logo 44 → 32pt, threshold 12pt, blur reach 230pt, 0.2s bar / 0.25s blur ease-in-out, off under Reduce Motion | `AppMetrics` | `DSTopNav` (pinned by tests) |
+| Numbers: padding 24/8/12, logo 28 → 20pt (see below), threshold 12pt, blur reach 230pt, 0.2s bar / 0.25s blur ease-in-out, off under Reduce Motion | `AppMetrics` | `DSTopNav` (pinned by tests) |
 
 To use it on a screen: wrap the root in `TopNavScaffold(onSearch:)` and put
 `.collapsesTopNav()` on its `ScrollView`. Search pushes `Route.search` through the tab's router.
 
 Adaptations from One Moment:
-- **Logo is a placeholder.** There's no official logo file in the repo. Add it to
-  Assets.xcassets as an image set named `NykaaFashionLogo` (vector, rendering "Original")
-  and `NykaaFashionLogo` uses it automatically.
+- **Logo is your supplied `Logo.svg`** ("NYKAA FASHION"), as the `NykaaFashionLogo` image set. Only the root `width`/`viewBox` was trimmed (~0.9% right padding); all 8 paths are byte-identical. The file is white-filled, so it is a template tinted with `DSColor.logo` (charcoal `#222222` in light mode, white in dark) — as-is it would vanish on a light screen. **Size is not One Moment's 44 → 32pt**: that is for its tall stacked mark; this wordmark is 6.7 : 1, so 44pt tall would be ~295pt wide, nearly the whole bar. It is 28 → 20pt (~187 → ~134pt wide) with the same 8pt shrink; tune in `DSTopNav`.
 - **One glass button, not two.** One Moment's Today bar has camera + profile sharing a
   `GlassEffectContainer`; Nykaa has only search, so no container.
 - **Search icon is an SF Symbol.** One Moment's icons are custom Iconsax SVGs; export

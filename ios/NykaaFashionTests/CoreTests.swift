@@ -57,9 +57,18 @@ final class TopNavTests: XCTestCase {
         XCTAssertEqual(DSTopNav.bottomPadding, 12)     // spacingS
     }
 
-    func testLogoGoesFrom44To32PointsOnScroll() {
-        XCTAssertEqual(DSTopNav.logoHeight(collapsed: false), 44)
-        XCTAssertEqual(DSTopNav.logoHeight(collapsed: true), 32)
+    func testLogoShrinksByEightPointsOnScroll() {
+        XCTAssertEqual(DSTopNav.logoHeight(collapsed: false), 28)
+        XCTAssertEqual(DSTopNav.logoHeight(collapsed: true), 20)
+        // The 8pt shrink is One Moment's `headingShrink`.
+        XCTAssertEqual(DSTopNav.restingLogoHeight - DSTopNav.collapsedLogoHeight, 8)
+    }
+
+    func testWordmarkStaysClearOfTheSearchButtonOnASmallPhone() {
+        // Artwork aspect ratio 107.1 : 16. On a 375pt phone the bar has
+        // 375 - 2*24 padding = 327pt; the glass button needs well under 80pt.
+        let aspect: CGFloat = 107.1 / 16
+        XCTAssertLessThan(DSTopNav.restingLogoHeight * aspect, 327 - 80)
     }
 
     func testEdgeBlurReach() {

@@ -4,7 +4,7 @@ import SwiftUI
 /// so the screen scrolls and the bar's behaviour can be seen:
 ///   - the cards scroll UNDER the bar and dissolve into the background through
 ///     the soft gradient behind it (no hard edge)
-///   - scroll down past 12pt → the logo shrinks 44 → 32pt and the gradient fades in
+///   - scroll down past 12pt → the logo shrinks 28 → 20pt and the gradient fades in
 ///   - scroll back to the top → the logo returns and the gradient fades out
 ///   - scrolling the "New in" row sideways does NOT affect the bar
 ///   - tap a product → pushed screen with its own native bar and back button

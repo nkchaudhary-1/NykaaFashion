@@ -1,45 +1,34 @@
 import SwiftUI
-import UIKit
 
-/// The Nykaa Fashion logo, drawn at a given height.
+/// The Nykaa wordmark, drawn at a given height.
 ///
-/// TO USE THE REAL LOGO: add the official file to Assets.xcassets as an image
-/// set named `NykaaFashionLogo` (a vector PDF or SVG with "Preserve Vector
-/// Data" ticked, rendering "Original" so brand colours survive). This view
-/// picks it up automatically — no code change.
+/// Source: the supplied `Logo.svg` (the "NYKAA FASHION" wordmark), stored as the
+/// `NykaaFashionLogo` image set. Only the root element's width/viewBox was
+/// trimmed (108 → 107.1, removing ~0.9 units of right-hand padding so the mark
+/// sits flush on the bar's 24pt margin); all eight paths are byte-identical.
 ///
-/// Until then it draws a PLACEHOLDER text wordmark. It is not the brand logo.
+/// The file is white-filled. It is rendered as a template and tinted with
+/// `DSColor.logo`, so it reads on both light and dark backgrounds — a white mark
+/// used as-is would vanish on a light screen. Same technique as One Moment's
+/// wordmark.
 ///
-/// The logo deliberately does not scale with Dynamic Type: a logo is a fixed
-/// brand mark, not reading text, and it already has an accessibility label.
+/// The logo deliberately does not scale with Dynamic Type: it is a fixed brand
+/// mark, not reading text, and it carries an accessibility label.
 struct NykaaFashionLogo: View {
-    static let assetName = "NykaaFashionLogo"
-
-    /// Rendered height in points. The top bar shrinks this on scroll.
+    /// Rendered height in points. The top bar shrinks this on scroll; the width
+    /// follows from the artwork's 6.7 : 1 aspect ratio.
     var height: CGFloat
 
     var body: some View {
-        mark
+        Image("NykaaFashionLogo")
+            .renderingMode(.template)
+            .resizable()
+            .scaledToFit()
+            .foregroundStyle(DSColor.logo)
             .frame(height: height)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Nykaa Fashion")
             .accessibilityAddTraits(.isHeader)
-    }
-
-    @ViewBuilder
-    private var mark: some View {
-        if UIImage(named: Self.assetName) != nil {
-            Image(Self.assetName)
-                .resizable()
-                .scaledToFit()
-        } else {
-            // PLACEHOLDER — sized from the height so it collapses like the real mark would.
-            Text(verbatim: "Nykaa Fashion")
-                .font(.system(size: height * 0.75, weight: .regular, design: .serif))
-                .foregroundStyle(DSColor.textPrimary)
-                .lineLimit(1)
-                .fixedSize()
-        }
     }
 }
 
