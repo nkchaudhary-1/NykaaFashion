@@ -11,9 +11,11 @@
 import { join } from "node:path";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { GROUPS } from "./groups.mjs";
-import { CACHE, api, apiCalls, cdn, exists, fetchBuffer, hash, isFree, readJson, writeJson } from "./lib.mjs";
+import { CACHE, api, apiCalls, cdn, exists, fetchBuffer, hash, isFree, readJson, reexecWithProxy, writeJson } from "./lib.mjs";
 import { loadManifest } from "./manifest.mjs";
 import { contactSheet } from "./sheet.mjs";
+
+reexecWithProxy(); // reaches Unsplash through the environment's proxy when there is one (see lib.mjs)
 
 const arg = (name) => {
   const i = process.argv.indexOf(name);

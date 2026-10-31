@@ -5,6 +5,7 @@
 // cached on disk (.cache/unsplash, ignored by git), and when the hour's budget is spent the tools wait for the next hour instead of failing — so every script can simply be run again.
 //
 // Test-only switches (scripts/qa/unsplash-unit.mjs): UNSPLASH_API (base URL), UNSPLASH_CACHE (cache folder), UNSPLASH_ALLOW_HOST (an extra image host to accept).
+import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
@@ -31,6 +32,21 @@ export const writeJson = (path, data) => {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, JSON.stringify(data, null, 1) + "\n");
 };
+
+/**
+ * Some environments (this cloud sandbox among them) reach the internet only through HTTPS_PROXY, and resolve host names there: Node's built-in fetch ignores the proxy unless
+ * NODE_USE_ENV_PROXY=1 was set when the process started (Node 22.21+), and otherwise fails with ENOTFOUND. A script that talks to Unsplash calls this first: when a proxy is
+ * configured and the switch is missing, it starts itself again with the switch and exits with the same status. Localhost (the tests' stand-in) is in NO_PROXY and stays direct.
+ */
+export function reexecWithProxy() {
+  const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
+  if (!proxy || process.env.NODE_USE_ENV_PROXY || Number(process.versions.node.split(".")[0]) < 22) return;
+  const r = spawnSync(process.execPath, [...process.execArgv, ...process.argv.slice(1)], {
+    stdio: "inherit",
+    env: { ...process.env, NODE_USE_ENV_PROXY: "1", NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ""} --disable-warning=UNDICI-EHPA`.trim() },
+  });
+  process.exit(r.status ?? 1);
+}
 
 let calls = 0;
 let remaining = Infinity;

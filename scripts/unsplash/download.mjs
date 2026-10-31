@@ -6,8 +6,10 @@
 //   node scripts/unsplash/download.mjs [--group id,id] [--no-track] [--size 2400]
 import { join } from "node:path";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { CACHE, api, apiCalls, cdn, exists, fetchBuffer, originalPath } from "./lib.mjs";
+import { CACHE, api, apiCalls, cdn, exists, fetchBuffer, originalPath, reexecWithProxy } from "./lib.mjs";
 import { loadManifest, pickedPhotos, saveManifest } from "./manifest.mjs";
+
+reexecWithProxy(); // reaches Unsplash through the environment's proxy when there is one (see lib.mjs)
 
 const arg = (name) => {
   const i = process.argv.indexOf(name);
@@ -30,7 +32,7 @@ if (!photos.length) {
 let fetched = 0;
 for (const p of photos) {
   if (exists(originalPath(p.id))) continue;
-  writeFileSync(originalPath(p.id), await fetchBuffer(cdn(p, { w: SIZE, q: 85, fm: "jpg", fit: "max" })));
+  writeFileSync(originalPath(p.id), await fetchBuffer(cdn(p, { w: SIZE, q: 85, fm: "jpg", fit: "max", cs: "srgb" })));
   fetched++;
 }
 console.log(`${photos.length} photos · ${fetched} original(s) downloaded, ${photos.length - fetched} already cached`);

@@ -15,7 +15,7 @@ const count = (dir) => {
   }
 };
 const picked = pickedPhotos(m);
-console.log(`key        ${key ? `set (…${key.slice(-4)})` : "MISSING — add UNSPLASH_ACCESS_KEY to the environment and start a new session"}`);
+console.log(`key        ${key ? "set" : "MISSING — add UNSPLASH_ACCESS_KEY to the environment and start a new session"}`);
 console.log(`cache      ${CACHE.replace(process.cwd() + "/", "")}: ${count("search")} searches · ${count("thumbs")} thumbnails · ${count("sheets")} sheets · ${count("originals")} originals`);
 console.log(`manifest   ${Object.keys(m.photos).length} photos · ${picked.filter((p) => p.tracked).length} reported to Unsplash · ${picked.filter((p) => p.focus).length} with a focus point · ${picked.filter((p) => p.anchors?.length).length} with pin anchors\n`);
 console.log(`${"group".padEnd(14)}${"phase".padEnd(7)}${"cand".padEnd(6)}${"picked".padEnd(9)}${"tracked".padEnd(9)}originals`);

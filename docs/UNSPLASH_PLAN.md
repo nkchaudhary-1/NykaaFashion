@@ -21,6 +21,7 @@ Do not ask the owner to paste the key into chat — it comes in as the environme
 
 - **Official API only.** unsplash.com's website sits behind an anti-bot wall (Anubis): never try to get around it, and never scrape. `api.unsplash.com` with the owner's key, and the image CDN `images.unsplash.com` that the API's own URLs point to.
 - **Free-licence photos only.** Never Unsplash+ (`plus.unsplash.com`, `premium`/`plus` flags), never sponsored photos. `lib.mjs → isFree()` enforces the host and flags.
+- **Network:** in this kind of sandbox Node's `fetch` only works through the environment's proxy; `search.mjs` and `download.mjs` restart themselves with `NODE_USE_ENV_PROXY=1` when `HTTPS_PROXY` is set (`lib.mjs → reexecWithProxy`). A raw `node -e 'fetch(...)'` of your own will say ENOTFOUND — use `curl`, or set that variable.
 - **Count the API.** A demo key is 50 requests an hour; every call is counted, searches are cached in `.cache/unsplash`, and the scripts wait for the next hour instead of failing, so every command can simply be run again. CDN downloads (thumbnails, originals) are not API calls.
 - **Tell Unsplash about every photo we use.** Each picked photo gets its `links.download_location` called once (`download.mjs`) — Unsplash's API guideline for any photo chosen for use.
 - **Credit every photo.** `/credits` lists photographer, a link to the photo and to the photographer (both with `utm_source=nykaa_fashion_prototype&utm_medium=referral`), generated from what the build actually placed (`src/data/generated/photo-credits.json`).
@@ -56,7 +57,7 @@ npm run unsplash:review -- scenes/edit           # contact sheets of the BUILT i
 ```
 
 1. **Search** (`search.mjs`): per group, queries in order until enough usable candidates; filters free/size/orientation/brands/sponsored, ≤ 3 per photographer; thumbnails from the CDN; numbered contact sheets. Candidates: `.cache/unsplash/candidates/<group>.json`.
-2. **Look and pick** — this is the step that matches the Indian audience, and it is done by eye: open each sheet (Read tool), choose from the briefs in `groups.mjs`, and give each pick a focus point when the subject is not centred (`review --photo` shows a grid to read it from). For story scenes read `src/data/scenes.ts` first: every picture of a story carries shoppable pins, so each photo must show what its pins stand for — and set its `--anchors`. Picks go to `scripts/unsplash/manifest.json` (committed): id, size, dominant colour, photographer, links, groups (ordered — the **first** pick of a group is its primary), `focus`, optional `anchors` for shoppable pins.
+2. **Look and pick** (right after viewing: a search re-run with other options renumbers the sheets) — this is the step that matches the Indian audience, and it is done by eye: open each sheet (Read tool), choose from the briefs in `groups.mjs`, and give each pick a focus point when the subject is not centred (`review --photo` shows a grid to read it from). For story scenes read `src/data/scenes.ts` first: every picture of a story carries shoppable pins, so each photo must show what its pins stand for — and set its `--anchors`. Picks go to `scripts/unsplash/manifest.json` (committed): id, size, dominant colour, photographer, links, groups (ordered — the **first** pick of a group is its primary), `focus`, optional `anchors` for shoppable pins.
 3. **Download** (`download.mjs`): tracking call (counted), original into `.cache/unsplash/originals/<id>.jpg`. Resumable.
 4. **Build** (`build.mjs`): the mapping rules are in `slots.mjs` (scenes, launches, pop-ups: explicit) and in `build.mjs` (products: by the product's kind, colour-aware, three windows per photo). Writes only keys that have a photo.
 5. **Review** (`review.mjs`): sheets of built images, one shape per sheet (wide · 3:2 · tall). Fix focus / anchors / picks and rebuild — never accept a build unseen. The build also prints warnings: a subject too far left for the copy of a wide banner, a heading that would not keep 3:1 contrast, pins on fallback positions, a portrait photo in a wide slot, a picture over its size budget.
@@ -83,7 +84,15 @@ Colour variants: a product's variant picks the photo from its pool whose central
 - Pins sit on a garment, bag, piece of jewellery or object — never on a face, wall or the floor.
 - No lettering or logo legible at 1000 px; no Unsplash+; nobody identifiable who should not be.
 - Weight: product webp ≤ ~110 KB, scenes ≤ ~220 KB; the whole `public/img` stays under ~90 MB. Commit rebuilt images at milestones only (every rebuild adds to the git history).
-- Alt text still describes what is in the picture (editorial `alt` strings that named the two supplied photographs — "in a printed kurta set, seated in the studio" — are updated for the new photos).
+- Alt text still describes what is in the picture. The strings written for the two supplied photographs are in `src/data/launches.ts` (`images.gallery[].alt`, 12 lines: "…on a bouclé chair", "photographed in the studio") and `src/data/promos.ts` (`media.alt`, 4 lines): rewrite them after looking at the built pictures; `data:check` insists they are not empty. Product and edit pictures use the product / edit names and need no change.
+- After a build: `node scripts/qa/image-audit.mjs` (flat, near-black, blown-out, tiny files; meta and pins agree) and `npm run data:check`.
+
+## Working it efficiently
+
+- Run `search` in the background (`run_in_background`) — with a demo key it will pause for the next hour mid-way — and read the contact sheets as they appear (each group's sheets are written as soon as that group is done). Search phase A first (it is what you pick from first), then phase B.
+- Order of picking: launches and wide banners first (they have the strictest needs: calm left side, subject right), then categories, edits, stories (with `--anchors`), then the product pools. Product pools are tolerant — good candidates for sub-agents: one per 3–4 pools, each reading its sheets and running `pick`, told the brief, the rejections above and to report what it could not fill.
+- `download` is the slow part on a demo key (one counted call per photo): start it as soon as phase A is picked and let it run in the background while you review the build from the originals already cached (originals come first, tracking after).
+- Deploying needs Vercel access in the new session (see Owner actions); everything else works offline from the cache.
 
 ## Phases
 
