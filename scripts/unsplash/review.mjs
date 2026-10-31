@@ -4,7 +4,7 @@
 //   node scripts/unsplash/review.mjs pool:<group>          every product picture the build made from a group's photos:  pool:p-dress
 //   node scripts/unsplash/review.mjs --photo <id> [<id>…]  a large preview of a picked photo with a 10 % grid, its focus (+) and anchors (numbered), to read coordinates from
 //   options: --all (also the pictures still cut from the two supplied photographs) · --cols N
-// Sheets go to .cache/unsplash/review/. A label is the key (after its prefix); the caption is the photo behind it ( ⇄ = mirrored, ⤢ = backdrop extended ).
+// Sheets go to .cache/unsplash/review/. Shoppable pins are drawn as yellow dots with the product they name. A label is the key (after its prefix); the caption is the photo behind it ( ⇄ = mirrored, ⤢ = backdrop extended ).
 import { join } from "node:path";
 import { mkdirSync, writeFileSync } from "node:fs";
 import sharp from "sharp";
@@ -90,6 +90,7 @@ for (const shape of ["wide", "land", "tall"]) {
       label: k.replace(strip, "").slice(0, 30),
       sub: assigned[k] ? `${plan[k]?.photo ?? assigned[k]}${plan[k]?.flip ? " ⇄" : ""}${plan[k]?.extended ? " ⤢" : ""} · ${plan[k]?.group ?? ""}` : "supplied photograph (fallback)",
       mark: !!assigned[k],
+      dots: (meta[k].pins ?? []).map((p) => ({ x: p.x, y: p.y, label: p.id })),
     }));
     const file = join(OUT, `${slug}-${shape}-${s + 1}.jpg`);
     writeFileSync(file, await contactSheet(cells, { cols, cellW, cellH, fit: "cover", labelSize: 13 }));

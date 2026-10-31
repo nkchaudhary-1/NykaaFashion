@@ -22,7 +22,7 @@ import { extendCanvas, rng } from "../placeholders/lib.mjs";
 import { ASSIGNMENTS_JSON, CACHE, CREDITS_JSON, UTM, exists, originalPath, readJson, root, writeJson } from "./lib.mjs";
 import { loadManifest } from "./manifest.mjs";
 import { H01, clamp, contrastRatio, cropAround, deltaE, hexToRgb, jitter, pinsFor, relLum } from "./crop.mjs";
-import { BUDGET_KB, COPY_AREA, FRAMING, LAUNCH_GROUP, PROMO_PHOTOS, SCENE_PHOTOS, WIDE_SUBJECT_AT, poolsOf, styleOf, usedFor } from "./slots.mjs";
+import { BUDGET_KB, COPY_AREA, FRAMING, LAUNCH_GROUP, PLACEHOLDER_PHOTOS, PROMO_PHOTOS, SCENE_PHOTOS, WIDE_SUBJECT_AT, poolsOf, styleOf, usedFor } from "./slots.mjs";
 
 const IMG = process.env.UNSPLASH_OUT ?? join(root, "public/img");
 const META = process.env.UNSPLASH_META ?? join(root, "src/data/generated/image-meta.json");
@@ -38,6 +38,7 @@ const arg = (name) => {
 const ONLY = (arg("--only") ?? "").split(",").filter(Boolean);
 const PLAN_ONLY = argv.includes("--plan");
 const warnings = [];
+const notes = [];
 const warn = (key, msg) => warnings.push(`${key}: ${msg}`);
 
 // ── the library ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -85,7 +86,7 @@ const isLandscape = (p) => p.pw / p.ph >= 1.25;
 
 // ── the plan: for every key, which photo and which window ──────────────────────────────────────────────────────
 const meta = JSON.parse(readFileSync(META, "utf8"));
-const keys = Object.keys(meta).filter((k) => !k.startsWith("placeholders/") && k !== "promo/vrisa-teaser");
+const keys = Object.keys(meta).filter((k) => k !== "promo/vrisa-teaser");
 const plans = new Map();
 
 // products: each colour variant takes the photo of its pool whose centre colour is nearest, spreading photos over neighbouring cards
@@ -169,6 +170,17 @@ function planPromo(key, W, H) {
   return windowPlan(list[rule[1] % list.length], rule[0], "promo", W, H, 1.1);
 }
 
+/** The home banners (placeholders/<subject>-<ratio>): the copy-left ratio puts the subject right of the copy, 16:9 and 3:2 are whole frames, the rest are portrait or square windows. */
+function planPlaceholder(key, W, H) {
+  const m = /^placeholders\/([a-z-]+?)-(3x4|4x5|1x1|16x9-copy-left|16x9|9x16|3x2)$/.exec(key);
+  const rule = m && PLACEHOLDER_PHOTOS[m[1]];
+  const list = rule ? photosIn(rule[0]) : [];
+  if (!list.length) return null;
+  const photo = list[rule[1] % list.length];
+  if (m[2] === "16x9-copy-left") return windowPlan(photo, rule[0], "wide", W, H, 1);
+  return windowPlan(photo, rule[0], m[2] === "16x9" || m[2] === "3x2" ? "land" : "tall", W, H, 1);
+}
+
 /** A window for scenes, launches and pop-ups: wide banners place the subject right of centre, everything else centres it. */
 function windowPlan(photo, group, role, W, H, zoom) {
   const f = focusOf(photo);
@@ -184,7 +196,7 @@ function windowPlan(photo, group, role, W, H, zoom) {
 
 for (const key of keys) {
   const { w: W, h: H } = meta[key];
-  const plan = (key.startsWith("products/") ? planProduct : key.startsWith("scenes/") ? planScene : key.startsWith("launches/") ? planLaunch : key.startsWith("promo/") ? planPromo : () => null)(key, W, H);
+  const plan = (key.startsWith("products/") ? planProduct : key.startsWith("scenes/") ? planScene : key.startsWith("launches/") ? planLaunch : key.startsWith("promo/") ? planPromo : key.startsWith("placeholders/") ? planPlaceholder : () => null)(key, W, H);
   if (plan) plans.set(key, plan);
 }
 
@@ -219,7 +231,7 @@ async function decode(photo) {
   const small = await sharp(data, rawOpts(info.width, info.height)).resize(sw, sh, { kernel: "lanczos3" }).raw().toBuffer();
   const pad = Math.round(Math.max(sw, sh) * 0.5);
   const ext = extendCanvas(Float32Array.from(small), sw, sh, 0.5, rng(Math.floor(H01(photo.id) * 1e9)), pad);
-  return { raw: Buffer.from(Uint8ClampedArray.from(ext.data).buffer), pw: ext.w, ph: ext.h, ow: sw, oh: sh, map: ([x, y]) => [(x * sw + pad) / ext.w, (y * sh + pad) / ext.h], extended: true };
+  return { raw: Buffer.from(Uint8ClampedArray.from(ext.data).buffer), pw: ext.w, ph: ext.h, ow: sw, oh: sh, pad, map: ([x, y]) => [(x * sw + pad) / ext.w, (y * sh + pad) / ext.h], extended: true };
 }
 
 async function regionStats(out, W, H, area) {
@@ -234,7 +246,29 @@ async function regionStats(out, W, H, area) {
   }
   lum.sort((a, b) => a - b);
   const n = lum.length;
-  return { rgb: sum.map((v) => v / n), p05: lum[Math.floor(n * 0.05)], p95: lum[Math.min(n - 1, Math.floor(n * 0.95))] };
+  return { rgb: sum.map((v) => v / n), p10: lum[Math.floor(n * 0.1)], p90: lum[Math.min(n - 1, Math.floor(n * 0.9))] };
+}
+
+/**
+ * A wide banner's heading sits on the top-left of the picture in white or ink, whichever the wall's colour calls for (the site's rule, home/kit.tsx). If neither would keep 3:1
+ * against the lightest (white type) or darkest (ink) tenth of that area, the whole picture is given a small uniform exposure change — the least that works, between ×0.7 and ×1.35 —
+ * so the text stays readable. A uniform change, not an overlay: nothing is painted on the picture.
+ */
+async function fitCopy(out, W, H) {
+  const judge = (w) => {
+    const dark = relLum(w.rgb) < 0.28;
+    return { dark, worst: dark ? contrastRatio(1, w.p90) : contrastRatio(w.p10, 0.012) };
+  };
+  const wall = await regionStats(out, W, H, COPY_AREA);
+  const j = judge(wall);
+  if (j.worst >= 3) return { out, wall, factor: 1, ...j };
+  for (const f of [0.94, 1.06, 0.88, 1.12, 0.82, 1.2, 0.76, 1.3, 0.7, 1.35]) {
+    const adj = await sharp(out, rawOpts(W, H)).modulate({ brightness: f }).raw().toBuffer();
+    const w2 = await regionStats(adj, W, H, COPY_AREA);
+    const j2 = judge(w2);
+    if (j2.worst >= 3) return { out: adj, wall: w2, factor: f, ...j2 };
+  }
+  return { out, wall, factor: 1, ...j };
 }
 
 async function encode(out, W, H, kind) {
@@ -267,10 +301,12 @@ for (const [key, plan] of jobs) {
   if (src.extended) {
     // on an extended canvas a window is sized as it would be on the photograph itself (so the subject keeps its scale); a wide banner takes 35 % more, which is the room made for the copy
     const baseCanvas = Math.min(src.pw, src.ph * plan.ratio);
-    const wanted = plan.wide ? 1.35 * src.ow : Math.min(src.ow, src.oh * plan.ratio) / plan.zoom;
+    // sideways only: the photograph's own top and bottom are never stretched (a figure cut by the bottom edge would smear), so a window is never taller than the photograph
+    const wanted = plan.wide ? Math.min(1.35 * src.ow, plan.ratio * src.oh) : Math.min(src.ow, src.oh * plan.ratio) / plan.zoom;
     zoom = Math.max(1, baseCanvas / Math.min(wanted, baseCanvas));
   }
   const box = cropAround(src.pw, src.ph, plan.ratio, { fx, fy, atX: plan.atX, atY: plan.atY, zoom, minWidth: W / MAX_SCALE });
+  if (src.extended && box.height <= src.oh) box.top = clamp(box.top, src.pad, src.pad + src.oh - box.height); // …and it stays inside the photograph's own rows
   if (plan.wide && !src.extended && plan.photo.pw / plan.photo.ph < 1.25) warn(key, `a portrait photo (${plan.photo.id}) in a wide slot: the subject cannot move right of the copy — flag it with  pick.mjs --extend ${plan.photo.id}  if its backdrop is plain, or choose a landscape photo`);
   if (plan.wide) {
     const at = (fx * src.pw - box.left) / box.width;
@@ -281,7 +317,14 @@ for (const [key, plan] of jobs) {
   let img = sharp(src.raw, rawOpts(src.pw, src.ph)).extract(area).resize(W, H, { kernel: "lanczos3" });
   if (plan.flip) img = img.flop();
   if (box.width / W > 1.4) img = img.sharpen({ sigma: 0.6, m1: 0.4, m2: 0.6 }); // a large photo shrunk to a thumbnail needs a touch of sharpening
-  const out = await img.raw().toBuffer();
+  let out = await img.raw().toBuffer();
+  let fit = null;
+  if (old.edge && W / H > 1.7 && /(-wide|-copy-left|\/hero-wide)$/.test(key)) {
+    fit = await fitCopy(out, W, H); // banners that carry a heading (not the plain 16:9 frame)
+    out = fit.out;
+    if (fit.factor !== 1) notes.push(`${key}: exposure ×${fit.factor} so the ${fit.dark ? "white" : "dark"} heading keeps ${fit.worst.toFixed(1)}:1 over the picture`);
+    else if (fit.worst < 3) warn(key, `the copy area is too busy for ${fit.dark ? "white" : "dark"} type: ${fit.worst.toFixed(1)}:1 at its ${fit.dark ? "brightest" : "darkest"} tenth even after an exposure change — choose a calmer photo or move its focus`);
+  }
   const kind = kindOfKey(key, W, H);
   const file = join(IMG, `${key}.webp`);
   mkdirSync(dirname(file), { recursive: true });
@@ -297,19 +340,13 @@ for (const [key, plan] of jobs) {
     m.pins = pins.map((p) => ({ id: p.id ?? spare.shift() ?? old.pins[0].id, x: +p.x.toFixed(4), y: +p.y.toFixed(4) }));
   }
   if (old.edge) {
-    const copy = W / H > 1.7;
-    const wall = copy ? await regionStats(out, W, H, COPY_AREA) : null;
+    const wall = fit?.wall ?? null; // the heading's area, after any exposure change
     const strip = async (x0, x1, y0, y1) => toHex((await regionStats(out, W, H, { x0, x1, y0, y1 })).rgb);
     m.edge = {
       wall: [wall ? toHex(wall.rgb) : await strip(0, 0.04, 0.3, 0.5), await strip(0.96, 1, 0.3, 0.5)],
       floor: [await strip(0, 0.04, 0.9, 0.98), await strip(0.96, 1, 0.9, 0.98)],
       floorY: old.edge.floorY ?? 0.82,
     };
-    if (wall) {
-      const dark = relLum(wall.rgb) < 0.28; // the site's own rule for white or ink type (home/kit.tsx)
-      const worst = dark ? contrastRatio(1, wall.p95) : contrastRatio(wall.p05, 0.012);
-      if (worst < 3) warn(key, `the copy area is too busy for ${dark ? "white" : "dark"} type: ${worst.toFixed(1)}:1 at its ${dark ? "brightest" : "darkest"} (wall ${m.edge.wall[0]}) — choose a calmer photo or move its focus`);
-    }
   }
   if (old.blur) m.blur = `data:image/webp;base64,${(await sharp(out, rawOpts(W, H)).resize(16, Math.max(2, Math.round((16 * H) / W))).webp({ quality: 25 }).toBuffer()).toString("base64")}`;
   meta[key] = m;
@@ -347,4 +384,5 @@ writeJson(CREDITS_JSON, credits);
 console.log(`${cut} picture(s) cut from ${new Set(jobs.map(([, p]) => p.photo.id)).size} photo(s)${ONLY.length ? ` (only ${ONLY.join(", ")})` : ""}; the site now draws ${Object.keys(assignments).length} picture(s) from Unsplash`);
 report();
 console.log(`credits: ${credits.length} photo(s) by ${new Set(credits.map((c) => c.name)).size} photographer(s)`);
+if (notes.length) console.log(`\n${notes.length} banner(s) given a uniform exposure change for heading contrast:\n${notes.map((w) => `  · ${w}`).join("\n")}`);
 if (warnings.length) console.log(`\n${warnings.length} warning(s):\n${warnings.map((w) => `  ! ${w}`).join("\n")}`);

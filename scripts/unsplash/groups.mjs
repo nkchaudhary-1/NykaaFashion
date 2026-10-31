@@ -64,6 +64,15 @@ export const GROUPS = [
     queries: ["woman shopping clothes", "shopping bags fashion", "boutique clothing store"],
     brief: "Shopping energy without brand logos: paper bags, a rail, a smiling shopper. Plain bags only." },
 
+  // ── Phase A · the home page's own banners: the first slide of the hero and the Diwali band (placeholders/kurta-set-*), the "co-ord edit" slide (placeholders/boucle-suit-*) ──
+  // These keys are the old "two supplied photographs" ratio set; the home page still draws its hero from them. Photos come from the other groups (pick.mjs --also).
+  { id: "h-indian", phase: "A", title: "Home hero (sale slide) and the Diwali band — Indian wear (placeholders/kurta-set-*)", orientation: "landscape", want: 1,
+    queries: ["indian woman kurta", "kurti", "indian suit dupatta"],
+    brief: "The first thing a visitor sees: a woman in Indian wear on a calm light backdrop, subject right of centre, the left half empty for the headline (dark type). A plain backdrop may be flagged `extend`." },
+  { id: "h-western", phase: "A", title: "Home hero (co-ord slide) — western co-ord (placeholders/boucle-suit-*)", orientation: "landscape", want: 1,
+    queries: ["woman beige outfit", "woman linen co-ord", "woman neutral outfit"],
+    brief: "A tailored or relaxed co-ord in neutral tones on a calm wall, subject right of centre, the left half empty for the headline." },
+
   // ── Phase A · New & Next launches (src/data/launches.ts) ─────────────────────────────────────────────────────────
   { id: "l-vrisa", phase: "A", title: "Launch — Vrisa (Indian womenswear; also the first-order and teaser pop-ups)", orientation: "landscape", want: 5,
     queries: ["indian woman kurta", "kurti", "indian suit dupatta", "woman anarkali"],

@@ -8,7 +8,7 @@ const badge = (w, h, label, { fill = "#000", opacity = 0.82, size = 22, text = "
   );
 
 /**
- * @param cells  [{ input: Buffer | path, label: string|number, sub?: string, mark?: boolean }]   label = the number to quote; sub = a short caption (size, photographer…); mark = already picked
+ * @param cells  [{ input: Buffer | path, label: string|number, sub?: string, mark?: boolean, dots?: [{x, y, label}] }]   label = the number to quote; sub = a short caption (size, photographer…); mark = already picked
  * @param opts   { cols, cellW, cellH, gap, bg, fit, labelSize }     fit "inside" shows the whole picture; "cover" fills the cell
  * @returns      JPEG Buffer
  */
@@ -31,6 +31,11 @@ export async function contactSheet(cells, { cols = 5, cellW = 300, cellH = 380, 
     const bw = Math.min(cellW, Math.max(46, Math.round(16 + label.length * labelSize * 0.62)));
     layers.push({ input: badge(bw, Math.round(labelSize * 1.55), label, { fill: c.mark ? "#0b6b3a" : "#000", size: labelSize }), left, top });
     if (c.sub) layers.push({ input: badge(cellW, 22, c.sub, { size: 13, opacity: 0.7 }), left, top: top + cellH - 22 });
+    if (c.dots?.length) {
+      // shoppable pins: a dot where each sits and the product it names
+      const svg = c.dots.map((d) => `<circle cx="${d.x * cellW}" cy="${d.y * cellH}" r="7" fill="#ffd400" stroke="#000" stroke-width="2"/><text x="${d.x * cellW + 10}" y="${d.y * cellH + 4}" font-family="Inter, DejaVu Sans, sans-serif" font-size="12" font-weight="700" fill="#fff" stroke="#000" stroke-width="3" paint-order="stroke">${esc(d.label ?? "")}</text>`).join("");
+      layers.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${cellW}" height="${cellH}">${svg}</svg>`), left, top });
+    }
   }
   return sharp({ create: { width: W, height: H, channels: 3, background: bg } }).composite(layers).jpeg({ quality: 84 }).toBuffer();
 }

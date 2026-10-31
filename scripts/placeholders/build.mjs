@@ -40,6 +40,14 @@ const FORMATS = {
 };
 
 const meta = JSON.parse(readFileSync(META, "utf8"));
+// ratio versions cut from Unsplash photographs (scripts/unsplash/build.mjs) are not this script's to overwrite
+const OWNED = (() => {
+  try {
+    return new Set(Object.keys(JSON.parse(readFileSync(join(root, "src/data/generated/photo-assignments.json"), "utf8"))));
+  } catch {
+    return new Set();
+  }
+})();
 mkdirSync(OUT, { recursive: true });
 if (JPG_DIR) mkdirSync(JPG_DIR, { recursive: true });
 let total = 0;
@@ -58,6 +66,7 @@ for (const [name, subj] of Object.entries(SUBJECTS)) {
 
   for (const [ratio, f] of Object.entries(jobs)) {
     const key = `placeholders/${name}-${ratio}`;
+    if (OWNED.has(key)) continue;
     const ww = Math.round(f.W / f.s), hh = Math.round(f.H / f.s);
     const x0 = f.original ? 0 : f.x0 ?? Math.round(subj.cx - ww / 2);
     const y0 = f.original ? 0 : Math.round(subj.cy - f.bias * hh);

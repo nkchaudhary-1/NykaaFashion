@@ -27,6 +27,9 @@ export const SCENE_PHOTOS = {
   "story-wear-less": ["s-wear-less", 0, 1, 2],
 };
 
+/** The home page's banners (placeholders/<subject>-<ratio>, the old two-photograph ratio set the hero and the Diwali band still draw) → [group, photo index]. */
+export const PLACEHOLDER_PHOTOS = { "kurta-set": ["h-indian", 0], "boucle-suit": ["h-western", 0] };
+
 /** New & Next brands (launches/<id>/<role>) → their group. Roles: hero-wide, hero-tall, g1…g4. */
 export const LAUNCH_GROUP = { vrisa: "l-vrisa", halden: "l-halden", "kiln-and-linen": "l-kiln", hm: "l-hm", cider: "l-cider", "hearth-and-hue": "l-hearth" };
 
@@ -84,7 +87,7 @@ export const FRAMING = {
 };
 
 /** Largest file size (KB) per kind of picture; the build lowers the webp quality until it fits (never below 62). */
-export const BUDGET_KB = { product: 110, tall: 200, wide: 260, land: 220, promo: 70 };
+export const BUDGET_KB = { product: 130, tall: 200, wide: 260, land: 220, promo: 70 };
 
 /** Where the text of a wide banner sits (fractions of the picture): top left. This area must be calm and its colour is what the heading's colour is chosen from. */
 export const COPY_AREA = { x0: 0.03, x1: 0.5, y0: 0.06, y1: 0.62 };
@@ -98,6 +101,7 @@ export function usedFor(key, def) {
   if (top === "products" && def) return `Product pictures · ${def.path.split("/").map((s) => cap(s)).join(" › ")}`;
   if (top === "launches") return `New & Next · ${a.split("-").map(cap).join(" ")}`;
   if (top === "promo") return "Pop-ups";
+  if (top === "placeholders") return "Home page banners";
   if (top === "scenes") return /^(cat-|auth-)/.test(a) ? "Category pictures" : a.startsWith("edit-") ? "Edits" : a.startsWith("story-") ? "Style Files stories" : "Editorial";
   return "Site pictures";
 }
