@@ -1,21 +1,35 @@
 import SwiftUI
 
+/// Profile. A `List` rather than a `ScrollView`, which also proves the top bar's
+/// scroll interaction works on lists (`.collapsesTopNav()` accepts either).
+/// The placeholder rows are only there to make the list long enough to scroll.
 struct ProfileView: View {
     var body: some View {
-        List {
-            Section {
-                Text("Waiting for the design to be implemented.")
-                    .foregroundStyle(DSColor.textSecondary)
-            }
+        TabScreen(title: .heading("Profile")) {
+            List {
+                Section {
+                    Text("Waiting for the design to be implemented.")
+                        .foregroundStyle(DSColor.textSecondary)
+                }
 
-            #if DEBUG
-            Section("Developer") {
-                NavigationLink("Component gallery") { ComponentGallery() }
-                DebugBagStepper()
+                #if DEBUG
+                Section("Developer") {
+                    NavigationLink("Component gallery") { ComponentGallery() }
+                    DebugBagStepper()
+                }
+                #endif
+
+                Section("Placeholder rows") {
+                    ForEach(1...20, id: \.self) { index in
+                        Text(verbatim: "Row \(index)")
+                    }
+                }
             }
-            #endif
+            // Hide the list's own background so the screen's background shows
+            // through — otherwise the gradient behind the top bar would not match it.
+            .scrollContentBackground(.hidden)
+            .collapsesTopNav()
         }
-        .navigationTitle("Profile")
     }
 }
 

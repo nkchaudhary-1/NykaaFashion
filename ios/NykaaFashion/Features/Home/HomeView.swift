@@ -1,26 +1,26 @@
 import SwiftUI
 
-/// Home. The top bar is real; everything below it is PLACEHOLDER content, there
-/// so the screen scrolls and the bar's behaviour can be seen:
+/// Home. The top bar (logo + search) is real; everything below it is
+/// PLACEHOLDER content, there so the screen scrolls and the bar's behaviour can
+/// be seen:
 ///   - the cards scroll UNDER the bar and dissolve into the background through
 ///     the soft gradient behind it (no hard edge)
 ///   - scroll down past 12pt → the logo shrinks 28 → 20pt and the gradient fades in
 ///   - scroll back to the top → the logo returns and the gradient fades out
 ///   - scrolling the "New in" row sideways does NOT affect the bar
+///   - the bottom tab bar shrinks while scrolling down and returns scrolling up
 ///   - tap a product → pushed screen with its own native bar and back button
 ///
-/// Replace the content with the designed home; keep the `TopNavScaffold` and the
+/// Replace the content with the designed home; keep the `TabScreen` and the
 /// `.collapsesTopNav()` on whichever scroll view the screen uses.
 struct HomeView: View {
-    @Environment(Router.self) private var router
-
     private let columns = [
         GridItem(.flexible(), spacing: DSSpacing.md),
         GridItem(.flexible()),
     ]
 
     var body: some View {
-        TopNavScaffold(onSearch: { router.push(.search(query: "")) }) {
+        TabScreen(title: .logo) {
             ScrollView {
                 VStack(alignment: .leading, spacing: DSSpacing.xxl) {
                     bigCards
@@ -74,40 +74,6 @@ struct HomeView: View {
             ProductCard(product: product)
         }
         .buttonStyle(.plain)
-    }
-}
-
-/// A big tinted card. PLACEHOLDER ONLY: the tints are plain system colours so
-/// consecutive cards are easy to tell apart while scrolling — they are not
-/// design tokens and go away with this file's placeholder content.
-private struct PlaceholderCard: View {
-    let index: Int
-
-    private let tones: [Color] = [.indigo, .teal, .orange, .pink, .mint, .purple]
-    private let height: CGFloat = 240
-
-    var body: some View {
-        RoundedRectangle(cornerRadius: DSRadius.lg, style: .continuous)
-            .fill(tones[index % tones.count].opacity(0.28))
-            .frame(height: height)
-            .overlay(alignment: .topLeading) {
-                VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                    Text(verbatim: "\(index + 1)")
-                        .font(DSFont.display)
-                        .foregroundStyle(DSColor.textPrimary)
-                    Text(verbatim: caption)
-                        .font(DSFont.callout)
-                        .foregroundStyle(DSColor.textSecondary)
-                }
-                .padding(DSSpacing.lg)
-            }
-            .accessibilityElement(children: .combine)
-    }
-
-    private var caption: String {
-        index == 0
-            ? "Scroll down: this fades out under the bar and the logo shrinks. Scroll back up: it returns."
-            : "Placeholder card"
     }
 }
 

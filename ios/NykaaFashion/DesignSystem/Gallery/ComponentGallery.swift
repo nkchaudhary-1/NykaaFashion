@@ -126,10 +126,17 @@ struct ComponentGallery: View {
                         .redacted(reason: .placeholder)
                 }
 
-                section("Top nav bar — at rest, then collapsed") {
+                section("Top nav bar — logo, at rest then collapsed") {
                     VStack(spacing: DSSpacing.md) {
                         TopNavBar(isCollapsed: false, onSearch: {})
                         TopNavBar(isCollapsed: true, onSearch: {})
+                    }
+                }
+
+                section("Top nav bar — page name, at rest then collapsed") {
+                    VStack(spacing: DSSpacing.md) {
+                        TopNavBar(title: .heading("Wishlist"), isCollapsed: false, onSearch: {})
+                        TopNavBar(title: .heading("Wishlist"), isCollapsed: true, onSearch: {})
                     }
                 }
 

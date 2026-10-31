@@ -1,8 +1,12 @@
 import SwiftUI
 
+/// PLACEHOLDER content under the real top bar — see `PlaceholderCards.swift`.
 struct CategoriesView: View {
     var body: some View {
-        FeaturePlaceholder(title: "Categories")
+        TabScreen(title: .heading("Categories")) {
+            ScrollView { PlaceholderFeed() }
+                .collapsesTopNav()
+        }
     }
 }
 

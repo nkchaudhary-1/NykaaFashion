@@ -40,23 +40,26 @@ Tokens are the only thing components read for colour, type, spacing and motion.
 
 ## Bottom navigation
 
-The bottom bar is the native `TabView` (`App/RootView.swift`). Tabs are defined in
+The bottom bar is the native `TabView` (`App/RootView.swift`), declared with the
+`Tab(value:content:label:)` API exactly as One Moment does. Tabs are defined in
 `App/AppTab.swift` — title, SF Symbol, order — and are placeholders until the design
-sets them. Native hooks add: a count badge on Bag (`AppState.bagCount`), a selection
-haptic, filled icons for the selected tab (automatic), one `NavigationStack` per tab so
-each keeps its history, and tapping the active tab again pops it to its root. In a Debug
-build, Profile → Developer → "Bag items" lets you see the badge.
+sets them. Native hooks add: `.tabBarMinimizeBehavior(.onScrollDown)` (the bar shrinks as a
+page scrolls down and returns scrolling up — each page's scroll view drives it), a count badge
+on Bag (`AppState.bagCount`), a selection haptic, filled icons for the selected tab (automatic),
+one `NavigationStack` per tab so each keeps its history, and tapping the active tab again pops
+it to its root. In a Debug build, Profile → Developer → "Bag items" lets you see the badge.
 
 Why native rather than a hand-drawn bar: accessibility, safe areas, keyboard handling and
 the iOS 26 Liquid Glass look come free, and a custom bar re-implements all of it. The
 trade-off is limited styling: tint, labels and icons are easy; a floating pill, an
 elevated centre button or a fully custom shape would need a custom bar (hide the system
-one and draw ours), which I'd only do if the design requires it.
+one and draw ours), which I'd only do if the design requires it. (One Moment's tabs are
+icon-only; these show labels — a one-line change, `.labelStyle(.iconOnly)`.)
 
-## Top navigation (Home)
+## Top navigation (every page)
 
-Logo on the left, search on the right, and a soft gradient behind them that blends
-scrolled content into the background. Nothing else. It is a port of One Moment's top bar
+Logo (Home) or page name (every other tab) on the left, search on the right, and a soft
+gradient behind them that blends scrolled content into the background. Nothing else. It is a port of One Moment's top bar
 from its **`rdl-redesign` branch** (not `main`, which still has the older block-above-content
 header) — same structure, metrics and behaviour — so the two apps feel identical:
 
@@ -68,8 +71,22 @@ header) — same structure, metrics and behaviour — so the two apps feel ident
 | Collapse on scroll via a Bool `PreferenceKey` | `ComponentsScrollCollapse.swift` | `ScrollCollapse.swift` |
 | Numbers: padding 24/8/12, logo 28 → 20pt (see below), threshold 12pt, blur reach 230pt, 0.2s bar / 0.25s blur ease-in-out, off under Reduce Motion | `AppMetrics` | `DSTopNav` (pinned by tests) |
 
-To use it on a screen: wrap the root in `TopNavScaffold(onSearch:)` and put
-`.collapsesTopNav()` on its `ScrollView`. Search pushes `Route.search` through the tab's router.
+Every tab root uses the same wrapper, so the interaction is identical on all pages:
+
+```swift
+TabScreen(title: .logo) {                       // Home
+TabScreen(title: .heading("Wishlist")) {        // any other tab
+    ScrollView { … }.collapsesTopNav()          // or a List — whichever drives the bar
+}
+```
+
+`TabScreen` (Features/Shared) is the only place that joins the bar to the app: search
+pushes `Route.search` onto the current tab's stack. The page-name heading is 28 → 20pt at
+the default text size (text styles, so it scales with Dynamic Type) — the same 8pt shrink as
+the logo, so every page's bar is the same size. Search appears on every page, which is an
+assumption: One Moment shows its profile button on every tab the same way.
+Categories, Wishlist, Bag and Profile currently hold placeholder cards/rows
+(`Features/Shared/PlaceholderCards.swift`) so each page is long enough to scroll.
 
 Adaptations from One Moment:
 - **Logo is your supplied `Logo.svg`** ("NYKAA FASHION"), as the `NykaaFashionLogo` image set. Only the root `width`/`viewBox` was trimmed (~0.9% right padding); all 8 paths are byte-identical. The file is white-filled, so it is a template tinted with `DSColor.logo` (charcoal `#222222` in light mode, white in dark) — as-is it would vanish on a light screen. **Size is not One Moment's 44 → 32pt**: that is for its tall stacked mark; this wordmark is 6.7 : 1, so 44pt tall would be ~295pt wide, nearly the whole bar. It is 28 → 20pt (~187 → ~134pt wide) with the same 8pt shrink; tune in `DSTopNav`.

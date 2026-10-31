@@ -1,8 +1,9 @@
 import SwiftUI
 
-// The home top navigation: Nykaa Fashion logo on the left, search on the right,
-// and a soft gradient behind them that blends scrolled content into the
-// background. Nothing else.
+// The top navigation, on every tab's root screen: the Nykaa Fashion logo (Home)
+// or the page name (other tabs) on the left, search on the right, and a soft
+// gradient behind them that blends scrolled content into the background.
+// Nothing else.
 //
 // Ported from One Moment's `rdl-redesign` branch (`MainTabView.TabRoot`),
 // keeping its structure and behaviour:
@@ -13,13 +14,21 @@ import SwiftUI
 //     effect do the same for the scroll view
 //   - the right-hand control is a native glass circle button that owns its own
 //     metrics: no frame, no padding, `controlSize(.large)` is the only lever
-//   - scrolling collapses the logo (28 → 20pt), `.easeInOut(0.2)`, off under
-//     Reduce Motion
+//   - scrolling collapses the logo (28 → 20pt) or the page name (28 → 20pt at the
+//     default text size), `.easeInOut(0.2)`, off under Reduce Motion
 //   - the system navigation bar is hidden on the root screen only, so pushed
 //     screens keep their own bar and back button
 
+/// What the bar says on its left. Mirrors One Moment, where Today carries the
+/// logo and every other tab carries its own name.
+enum TopNavTitle {
+    case logo
+    case heading(LocalizedStringKey)
+}
+
 /// The row itself. Stateless: whoever owns the scroll state passes `isCollapsed`.
 struct TopNavBar: View {
+    var title: TopNavTitle = .logo
     var isCollapsed: Bool
     var onSearch: () -> Void
 
@@ -27,13 +36,27 @@ struct TopNavBar: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            NykaaFashionLogo(height: DSTopNav.logoHeight(collapsed: isCollapsed))
+            titleView
 
             Spacer()
 
             searchButton
         }
         .animation(reduceMotion ? nil : DSMotion.collapse, value: isCollapsed)
+    }
+
+    @ViewBuilder
+    private var titleView: some View {
+        switch title {
+        case .logo:
+            NykaaFashionLogo(height: DSTopNav.logoHeight(collapsed: isCollapsed))
+        case .heading(let text):
+            Text(text)
+                .font(isCollapsed ? DSFont.headingCollapsed : DSFont.heading)
+                .foregroundStyle(DSColor.textPrimary)
+                .lineLimit(1)
+                .accessibilityAddTraits(.isHeader)
+        }
     }
 
     private var searchButton: some View {
@@ -58,6 +81,7 @@ struct TopNavBar: View {
 /// anywhere shared would collapse every tab at once. Wrap a tab's ROOT screen in
 /// this; apply `.collapsesTopNav()` to that screen's `ScrollView`.
 struct TopNavScaffold<Content: View>: View {
+    var title: TopNavTitle
     var onSearch: () -> Void
     private let content: Content
 
@@ -67,7 +91,8 @@ struct TopNavScaffold<Content: View>: View {
     /// no scroll view never publishes, so this stays false: full-size logo, no blur.
     @State private var isCollapsed = false
 
-    init(onSearch: @escaping () -> Void, @ViewBuilder content: () -> Content) {
+    init(title: TopNavTitle = .logo, onSearch: @escaping () -> Void, @ViewBuilder content: () -> Content) {
+        self.title = title
         self.onSearch = onSearch
         self.content = content()
     }
@@ -84,7 +109,7 @@ struct TopNavScaffold<Content: View>: View {
                     .animation(reduceMotion ? nil : DSMotion.edgeBlur, value: isCollapsed)
             }
             .safeAreaBar(edge: .top, spacing: 0) {
-                TopNavBar(isCollapsed: isCollapsed, onSearch: onSearch)
+                TopNavBar(title: title, isCollapsed: isCollapsed, onSearch: onSearch)
                     .padding(.horizontal, DSTopNav.horizontalPadding)
                     .padding(.top, DSTopNav.topPadding)
                     .padding(.bottom, DSTopNav.bottomPadding)

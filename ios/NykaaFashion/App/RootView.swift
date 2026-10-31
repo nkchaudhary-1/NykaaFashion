@@ -7,7 +7,10 @@ import SwiftUI
 /// the OS's current look (Liquid Glass — this app targets iOS 26.2, same as One
 /// Moment) — with no custom drawing. A hand-drawn bar loses all of that.
 ///
-/// What we add on top, using only native hooks:
+/// Declared with the `Tab(value:content:label:)` API, exactly as One Moment's
+/// `MainTabView`, and what we add on top uses only native hooks:
+///   - `.tabBarMinimizeBehavior(.onScrollDown)`: the bar shrinks while a page
+///     scrolls down and returns scrolling up (each page's scroll view drives it)
 ///   - SF Symbols fill automatically for the selected tab (system behaviour)
 ///   - a count badge on Bag (`.badge`, hidden at 0)
 ///   - a selection haptic (`.sensoryFeedback`)
@@ -26,13 +29,16 @@ struct RootView: View {
 
     var body: some View {
         TabView(selection: selectionBinding) {
-            ForEach(AppTab.allCases) { tab in
-                TabRoot(router: routers[tab]!) { screen(for: tab) } // safe: see `routers`
-                    .tabItem { Label(tab.title, systemImage: tab.systemImage) }
-                    .tag(tab)
-                    .badge(badgeCount(for: tab))
+            ForEach(AppTab.allCases, id: \.self) { tab in
+                Tab(value: tab) {
+                    TabRoot(router: routers[tab]!) { screen(for: tab) } // safe: see `routers`
+                } label: {
+                    Label(tab.title, systemImage: tab.systemImage)
+                }
+                .badge(badgeCount(for: tab))
             }
         }
+        .tabBarMinimizeBehavior(.onScrollDown)
         .sensoryFeedback(.selection, trigger: selection)
         .environment(appState)
     }

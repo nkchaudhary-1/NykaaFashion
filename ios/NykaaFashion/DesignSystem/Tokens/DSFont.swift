@@ -19,6 +19,12 @@ enum DSFont {
     static let caption = Font.system(.caption)
     /// Small uppercase labels. Pair with `.textCase(.uppercase)` and `.tracking(_:)`.
     static let eyebrow = Font.system(.caption2, weight: .semibold)
+    /// Page title in the top bar, at rest and once the screen has scrolled.
+    /// Text styles, so they scale with Dynamic Type; at the default size they are
+    /// 28pt → 20pt — the same 8pt shrink as One Moment's heading, and the same
+    /// heights as the logo on Home, so every page's bar looks the same size.
+    static let heading = Font.system(.title, design: .serif)
+    static let headingCollapsed = Font.system(.title3, design: .serif)
     /// Prices use tabular figures so columns of prices line up.
     static let price = Font.system(.callout, weight: .semibold).monospacedDigit()
 }
