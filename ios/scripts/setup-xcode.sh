@@ -27,8 +27,12 @@ if ! xcode_out=$(xcodebuild -version 2>&1); then
   die "Xcode isn't installed. Get it from the Mac App Store (needs your Apple ID): https://apps.apple.com/app/xcode/id497799835 — open it once so it finishes installing, then re-run this script."
 fi
 printf '%s\n' "$xcode_out"
-xcode_major=$(sed -n 's/^Xcode \([0-9][0-9]*\).*/\1/p' <<<"$xcode_out" | head -n 1)
-[[ -n "$xcode_major" && "$xcode_major" -ge 26 ]] || die "Xcode 26 or newer is required: the top bar uses iOS 26 Liquid Glass APIs (guarded at runtime, so the app still runs on iOS 17+, but it only compiles against the iOS 26 SDK)."
+xcode_version=$(sed -n 's/^Xcode \([0-9][0-9.]*\).*/\1/p' <<<"$xcode_out" | head -n 1)
+xcode_major=${xcode_version%%.*}
+xcode_minor=${xcode_version#*.}; [[ "$xcode_minor" == "$xcode_version" ]] && xcode_minor=0; xcode_minor=${xcode_minor%%.*}
+if [[ -z "$xcode_major" ]] || ! (( xcode_major > 26 || (xcode_major == 26 && xcode_minor >= 2) )); then
+  die "Xcode 26.2 or newer is required: this project targets iOS 26.2 (the same as One Moment) and uses Liquid Glass APIs. You have Xcode ${xcode_version:-unknown}."
+fi
 
 say "Checking XcodeGen"
 if ! command -v xcodegen >/dev/null 2>&1; then

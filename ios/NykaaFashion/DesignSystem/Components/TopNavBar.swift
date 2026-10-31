@@ -39,28 +39,12 @@ struct TopNavBar: View {
             Image(systemName: "magnifyingglass")
                 .imageScale(.large)
         }
-        .circularChromeStyle()
+        // Native Liquid Glass, exactly as One Moment's profile button. Don't add
+        // a background, stroke, shadow, clip or frame: glass draws its own.
+        .buttonStyle(.glass)
+        .buttonBorderShape(.circle)
+        .controlSize(.large)
         .accessibilityLabel("Search")
-    }
-}
-
-private extension View {
-    /// Liquid Glass on iOS 26 (what One Moment uses). Older systems get the
-    /// closest NATIVE equivalent — a bordered circular button — never a
-    /// hand-built imitation of glass.
-    @ViewBuilder
-    func circularChromeStyle() -> some View {
-        if #available(iOS 26, *) {
-            self
-                .buttonStyle(.glass)
-                .buttonBorderShape(.circle)
-                .controlSize(.large)
-        } else {
-            self
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.circle)
-                .controlSize(.large)
-        }
     }
 }
 

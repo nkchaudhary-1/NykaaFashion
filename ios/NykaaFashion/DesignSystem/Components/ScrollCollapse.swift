@@ -27,22 +27,16 @@ private struct ScrollCollapseReporter: ViewModifier {
     @State private var isScrolled = false
 
     func body(content: Content) -> some View {
-        if #available(iOS 18, *) {
-            content
-                .onScrollGeometryChange(for: Bool.self) { geometry in
-                    DSTopNav.isCollapsed(
-                        contentOffset: geometry.contentOffset.y,
-                        topInset: geometry.contentInsets.top
-                    )
-                } action: { _, scrolled in
-                    isScrolled = scrolled
-                }
-                .preference(key: ScrollCollapseKey.self, value: isScrolled)
-        } else {
-            // iOS 17 has no scroll-geometry hook, so the bar stays full size.
-            // (Raising the deployment target to iOS 18+ removes this branch.)
-            content
-        }
+        content
+            .onScrollGeometryChange(for: Bool.self) { geometry in
+                DSTopNav.isCollapsed(
+                    contentOffset: geometry.contentOffset.y,
+                    topInset: geometry.contentInsets.top
+                )
+            } action: { _, scrolled in
+                isScrolled = scrolled
+            }
+            .preference(key: ScrollCollapseKey.self, value: isScrolled)
     }
 }
 

@@ -5,7 +5,7 @@ core utilities exist; every screen is a placeholder until the design is provided
 This folder is self-contained and independent of the web prototype in the repo root
 (no shared tokens, data or images) — it can be moved to its own repo unchanged.
 
-## Run it (on a Mac with Xcode 26+)
+## Run it (on a Mac with Xcode 26.2+)
 
 ```bash
 ./ios/scripts/setup-xcode.sh   # checks Xcode, installs XcodeGen, generates the project, opens it
@@ -74,10 +74,6 @@ Adaptations from One Moment:
   and `NykaaFashionLogo` uses it automatically.
 - **Search icon is an SF Symbol.** One Moment's icons are custom Iconsax SVGs; export
   `search-normal` from the icon library as `ic-search` and swap the one `Image(systemName:)`.
-- **OS gating.** One Moment targets iOS 26.2 only. This app supports iOS 17+, so glass
-  (iOS 26) and scroll tracking (iOS 18) are `#available`-gated: older systems get a native
-  bordered circular button and a bar that doesn't collapse. Raising the deployment target to
-  26 deletes both gates. Building needs Xcode 26+ for the glass API.
 - **Appearance.** One Moment is dark-only; this app follows the system until the design decides.
 
 ## Native vs custom
@@ -111,7 +107,7 @@ Don't fake glass or blur in custom components.
 ## Decisions and trade-offs
 
 - **SwiftUI-first, UIKit only via `Platform/`.** Faster to build and preview, native by default. Cost: a few things (zoomable image gallery, some scroll-perf cases) will need UIKit wrappers later.
-- **iOS 17 minimum.** Gives `@Observable`, `NavigationStack`, `ContentUnavailableView`, `.sensoryFeedback`, SwiftData, symbol effects. Keeps older iPhones covered. Raising to 18/26 later is a one-line change in `project.yml`.
+- **iOS 26.2 minimum — the same as One Moment.** Native Liquid Glass (`.glass`), `onScrollGeometryChange` and the current `Tab`/tab-bar APIs are used directly, with no availability fallbacks. Cost: iPhones that can't run iOS 26 are not supported. It is a one-line change in `project.yml` (`deploymentTarget`), but lowering it means re-adding gates.
 - **XcodeGen instead of a committed `.xcodeproj`.** The spec is readable and diffs cleanly; a hand-edited `.pbxproj` is neither. Cost: one extra tool. To commit the project instead, generate once and drop `*.xcodeproj` from `.gitignore`.
 - **Swift 5 language mode.** Swift 6 strict concurrency is a deliberate later migration, not something to fight on day one.
 - **iPhone only, portrait only** for v1. iPad is a later phase.

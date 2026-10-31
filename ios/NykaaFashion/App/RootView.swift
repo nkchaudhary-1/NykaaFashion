@@ -4,8 +4,8 @@ import SwiftUI
 ///
 /// Native on purpose. The system tab bar gives us accessibility (VoiceOver,
 /// Dynamic Type, Voice Control), correct safe-area and keyboard behaviour, and
-/// the OS's current look — Liquid Glass on iOS 26 when built with the iOS 26
-/// SDK — with no custom drawing. A hand-drawn bar loses all of that.
+/// the OS's current look (Liquid Glass — this app targets iOS 26.2, same as One
+/// Moment) — with no custom drawing. A hand-drawn bar loses all of that.
 ///
 /// What we add on top, using only native hooks:
 ///   - SF Symbols fill automatically for the selected tab (system behaviour)
