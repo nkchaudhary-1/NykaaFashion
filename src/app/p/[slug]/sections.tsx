@@ -121,7 +121,7 @@ export function MoreFromLabel({ product }: { product: Product }) {
   );
 }
 
-// ── More From {category}: a denser 6-up rail, skipping what the rails above already show ──
+// ── More From {category}: a denser 6-up rail (4-up when there are fewer than six, so a short rail does not leave half the row empty), skipping what the rails above already show ──
 export function MoreFromCategory({ product }: { product: Product }) {
   const cat = sameCategory(product);
   const shown = new Set([product.id, ...similarOf(product).map((p) => p.id), ...fromSameLabel(product, 8).map((p) => p.id)]);
@@ -129,7 +129,7 @@ export function MoreFromCategory({ product }: { product: Product }) {
   if (list.length < 3) return null;
   return (
     <Section tone="paper" aria-labelledby="more-category" className="border-y border-line">
-      <Rail id="more-category" title={`More From ${categoryById[cat]?.name ?? "this category"}`} list={list} source="pdp-category" density="tile" />
+      <Rail id="more-category" title={`More From ${categoryById[cat]?.name ?? "this category"}`} list={list} source="pdp-category" density={list.length >= 6 ? "tile" : "product"} />
     </Section>
   );
 }
