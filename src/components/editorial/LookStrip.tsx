@@ -1,5 +1,5 @@
 "use client";
-import { Eye } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Img } from "@/components/ui/Img";
@@ -60,11 +60,12 @@ function LookItem({ product: p, stack }: { product: Product; stack: boolean }) {
       </div>
       <div className="flex shrink-0 flex-col items-end justify-between">
         <SaveButton product={p} source="look" tone="plain" size={18} className="-mr-1.5 -mt-1.5 size-9" />
-        <button type="button" onClick={() => setUI({ quickView: { productId: p.id } })} aria-label={`Quick add ${p.name}`} className="inline-flex h-9 items-center gap-1.5 px-1 text-[11px] font-medium uppercase tracking-[0.1em] text-ink hover:underline [@media(pointer:coarse)]:h-11">
-          <Eye size={13} aria-hidden /> Quick add
+        <button type="button" onClick={() => setUI({ quickView: { productId: p.id } })} aria-label={`Quick add ${p.name}`} className="inline-flex h-9 min-w-9 items-center justify-end gap-1.5 px-1 text-[11px] font-medium uppercase tracking-[0.1em] text-ink hover:underline [@media(pointer:coarse)]:h-11 [@media(pointer:coarse)]:min-w-11">
+          <ShoppingBag size={14} aria-hidden /> <span className="hidden @min-[19rem]:inline">Quick add</span>
         </button>
       </div>
     </div>
   );
-  return stack ? <li>{content}</li> : content;
+  // @container: the "Quick add" label only shows when the card is wide enough for it (three across on a tablet leaves each card ~240px — the name and price need that room)
+  return stack ? <li className="@container h-full">{content}</li> : <div className="@container h-full">{content}</div>;
 }

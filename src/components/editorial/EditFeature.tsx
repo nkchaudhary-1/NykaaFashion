@@ -10,12 +10,13 @@ import { countOf, openEdit, productsLabel } from "./EditTile";
 /**
  * The big editorial version used on the Edits index: a picture — its scene, scaling slowly inside the clipped frame — and, on the page under it,
  * a numeral, the kicker, the title in display type, one line of copy and the count. The picture keeps `ratio`; with `fill` it takes the height its
- * row gives it from 1024px up (the parent is a grid cell stretched to the row), so two neighbours end on the same line.
+ * row gives it from 1024px up (the parent is a grid cell stretched to the row), so two neighbours end on the same line. `ratioLg` sets a different ratio from 1024px up
+ * (a tile that is wide on tablets but one of three equal columns on desktop must match its neighbours there).
  */
-export function EditFeature({ edit, index, source = "edits-index", sizes = SIZES.half, load, position = "50% 20%", imgKey, ratio = "4/5", fill, size = "lg", className }: { edit: Edit; index: number; source?: string; sizes?: string; load?: LoadHint; position?: string; imgKey?: string; ratio?: string; fill?: boolean; size?: "md" | "lg"; className?: string }) {
+export function EditFeature({ edit, index, source = "edits-index", sizes = SIZES.half, load, position = "50% 20%", imgKey, ratio = "4/5", ratioLg, fill, size = "lg", className }: { edit: Edit; index: number; source?: string; sizes?: string; load?: LoadHint; position?: string; imgKey?: string; ratio?: string; ratioLg?: string; fill?: boolean; size?: "md" | "lg"; className?: string }) {
   return (
     <Link href={`/edits/${edit.id}`} onClick={openEdit(edit, source)} className={cn("group flex flex-col", fill && "lg:h-full", className)}>
-      <div data-cursor="View" className={cn("relative aspect-[var(--r)] overflow-hidden bg-sand", fill && "lg:aspect-auto lg:min-h-0 lg:flex-1")} style={{ "--r": ratio } as CSSProperties}>
+      <div data-cursor="View" className={cn("relative aspect-[var(--r)] overflow-hidden bg-sand", ratioLg && !fill && "lg:aspect-[var(--r-lg)]", fill && "lg:aspect-auto lg:min-h-0 lg:flex-1")} style={{ "--r": ratio, "--r-lg": ratioLg ?? ratio } as CSSProperties}>
         <div data-nogrid className="absolute inset-0 transition-transform duration-[1200ms] ease-expo group-hover:scale-[1.04] group-focus-visible:scale-[1.04]">
           <Img imgKey={imgKey ?? `scenes/edit-${edit.id}-tall`} alt="" sizes={sizes} ratio="fill" load={load} position={position} className="absolute inset-0 h-full" />
         </div>

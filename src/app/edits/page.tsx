@@ -35,7 +35,7 @@ export default function EditsIndex() {
           {rest.map((e, i) => (
             <Col key={e.id} span={{ base: 4, sm: i < 2 ? 6 : 12, lg: 4 }}>
               <Rise y={36} delay={(i % 3) * 90}>
-                <EditFeature edit={e} index={i + 2} size="md" ratio={i < 2 ? "4/5" : "16/10"} sizes="(min-width:1024px) 33vw, (min-width:600px) 50vw, 100vw" />
+                <EditFeature edit={e} index={i + 2} size="md" ratio={i < 2 ? "4/5" : "16/10"} ratioLg="4/5" sizes="(min-width:1024px) 33vw, (min-width:600px) 50vw, 100vw" />
               </Rise>
             </Col>
           ))}

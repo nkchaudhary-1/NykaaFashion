@@ -26,7 +26,7 @@ export function LoginFlow() {
           </div>
         </Col>
 
-        <Col span={{ base: 4, sm: 6, lg: 5 }} start={{ sm: 7, lg: 8 }} rowStart={{ sm: 1, lg: 1 }} className="flex flex-col justify-center sm:pb-6 sm:pl-6 sm:pt-6 lg:pl-0 lg:pt-0">
+        <Col span={{ base: 4, sm: 6, lg: 5 }} start={{ sm: 7, lg: 8 }} rowStart={{ sm: 1, lg: 1 }} className="flex flex-col sm:pl-6 lg:pl-0">
           <div className="overflow-hidden rounded-[var(--radius-lg)] border border-line bg-white">
             <div className="flex h-32 items-center justify-center bg-maroon">
               <Logo onDark size="lg" />

@@ -68,7 +68,7 @@ async function EditContent({ params }: Pick<PageProps<"/edits/[slug]">, "params"
               <CarouselArrows />
             </SectionHeading>
             <div className="mt-12">
-              <CarouselTrack label="Labels in this edit" density="tile" cursor="Drag">
+              <CarouselTrack label="Labels in this edit" density={labels.length <= 3 ? "wide" : labels.length === 4 ? "product" : "tile"} cursor="Drag">
                 {labels.map(([id, n]) => (
                   <LabelTile key={id} label={labelById[id]} meta={`${n} in this edit`} sizes={SIZES.tile} />
                 ))}

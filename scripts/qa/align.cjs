@@ -113,6 +113,20 @@ const probe = () => {
     const itemW = items[0].getBoundingClientRect().width;
     if (box.right - last.right > itemW * 1.4) out.push({ kind: "rail-underfilled", a: `${rail.getAttribute("aria-label")}`, items: items.length, empty: Math.round(box.right - last.right) + "px" });
   });
+  // 8. near-miss alignment: neighbours in one grid row whose top edges are almost — but not quite — on the same line
+  document.querySelectorAll(".grid-main").forEach((g) => {
+    const kids = [...g.children].filter(shown).map((k) => ({ k, r: k.getBoundingClientRect() })).filter((x) => x.r.height > 120 && x.r.width > 120);
+    for (let i = 0; i < kids.length; i++) {
+      for (let j = i + 1; j < kids.length; j++) {
+        const a = kids[i].r, b = kids[j].r;
+        if (Math.min(a.right, b.right) - Math.max(a.left, b.left) > 4) continue; // stacked, not side by side
+        const overlap = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+        if (overlap < 0.4 * Math.min(a.height, b.height)) continue;
+        const dt = Math.abs(a.top - b.top);
+        if (dt >= 3 && dt <= 40) out.push({ kind: "near-miss-top", a: name(kids[i].k), b: name(kids[j].k), off: Math.round(dt) + "px" });
+      }
+    }
+  });
   return out;
 };
 

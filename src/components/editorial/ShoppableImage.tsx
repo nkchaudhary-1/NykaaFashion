@@ -1,5 +1,5 @@
 "use client";
-import { Eye, Plus } from "lucide-react";
+import { ShoppingBag, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState, type CSSProperties } from "react";
 import { SaveButton } from "@/components/product/SaveButton";
@@ -137,7 +137,7 @@ function LookItem({ id }: { id: string }) {
         <div className="-ml-2.5 mt-0.5 flex items-center gap-1">
           <SaveButton product={p} source="look" tone="plain" size={18} className="size-9" />
           <button type="button" onClick={() => setUI({ quickView: { productId: id } })} aria-label={`Quick add ${p.name}`} className="inline-flex h-9 items-center gap-1.5 px-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-ink hover:bg-sand [@media(pointer:coarse)]:h-11">
-            <Eye size={13} aria-hidden /> Quick add
+            <ShoppingBag size={13} aria-hidden /> Quick add
           </button>
         </div>
       </div>
