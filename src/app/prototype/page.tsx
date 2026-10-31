@@ -126,7 +126,7 @@ export default function PrototypePage() {
           </Col>
           <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ lg: 5 }} rowStart={{ lg: 1 }}>
             <p className="max-w-[44ch] text-[15.5px] leading-[1.7] text-ink-2">
-              Nykaa Fashion’s strengths are its breadth and its brands; the browsing experience around them is dense and uneven. This redesign <strong className="font-medium text-ink">keeps the identity</strong> — the navigation, colours, module titles and brand names — and changes the structure: one 12-column grid, a different composition per section, clearer hierarchy and spacing. Luxe, Hidden Gems, the Responsible edit and House of Nykaa stay one click away under More, and a discount is shown only where a price has genuinely moved.
+              Nykaa Fashion’s strengths are its breadth and its brands; the browsing experience around them is dense and uneven. This redesign <strong className="font-medium text-ink">keeps the identity</strong> — the navigation, colours, module titles and brand names — and changes the structure: one 12-column grid, a different composition per section, clearer hierarchy and spacing. Luxe, Hidden Gems, the Responsible edit and House of Nykaa stay one click away under More, and a discount is shown only where a price has genuinely moved. This branch adds an editorial finish: warm paper surfaces, poster-scale type and a motion layer (smooth scroll, reveals, a follower cursor) that switches itself off for reduced motion and on touch screens.
             </p>
           </Col>
           <Col span={{ base: 4, sm: 6, lg: 4 }} start={{ lg: 9 }} rowStart={{ lg: 1 }}>

@@ -73,7 +73,8 @@ The **Prototype** panel (footer → “Prototype controls”, or the menu drawer
 - [ ] **Real photography.** Swap files in `public/img` and re-measure pin positions; the app needs no code change.
 - [ ] **Manual assistive-tech pass** (VoiceOver / NVDA) and a real-device touch pass — automated checks are not a conformance audit.
 - [ ] **Engine polish:** footwear and jewellery are stylised, boots/loafers/block heels have crude toe boxes, every sneaker style shares one outline, kids/men are proportion changes rather than separate construction, bag side faces and backpack straps are crude, tank/bodysuit/peplum hems are generic.
-- [ ] Optional: hero parallax, further `Reveal` stagger tuning.
+- [ ] **First-screen reveals wait for hydration (awards branch).** Headline words and intro paragraphs are hidden until the observer runs, so on a slow phone the first words can appear ~1 s after the picture. If it matters: render the first screen unhidden and reveal only what is below it, or drive the entrance from a CSS scroll-timeline where supported.
+- [ ] Optional: swipe on the home hero (arrows and progress segments only today), real photography so the repeated crops stop reading as repeats.
 
 ## Blocked / limitations
 
@@ -81,6 +82,10 @@ The **Prototype** panel (footer → “Prototype controls”, or the menu drawer
 - iOS app is a later phase (PRD §3.6); this is responsive web.
 
 ## QA log
+
+**Awards branch (`claude/nykaa-fashion-awards`), production build:** `npm run qa` → **ALL QA CHECKS PASSED** — contrast (every pair ≥ 4.5:1, bone pairs included), nav, home desktop + mobile, links (142 resolve, 46 listings non-empty), flat (no shadow / gradient / filter / blend), grid, overflow, keyboard, journey desktop + mobile (21 steps each, no console errors), **motion** (new: reveals settle, Lenis smooth scroll, nested scrollers stay native, cursor labels, mouse-drag rails that swallow the click that ends a drag, page fade, reduced motion, touch, no-JS and failed-hydration fallbacks) and axe (0 violations on all pages). Grid, flat, overflow and axe run in the settled state (reduced motion); journey, nav, links, keyboard and motion run with motion on. Vitals (unthrottled lab): LCP 180–530 ms with CLS 0 on home, listing, PDP and story, desktop and phone (PDP desktop CLS 0.032); the one outlier is `/brands` on a phone (LCP 1.6 s), where the intro paragraph is the largest text and rises in after hydration. The password gate was re-tested on this build (no cookie → 401 for pages and pictures, fonts and robots public, wrong password → error, right password → cookie and the page). Dev-mode hydration warnings: none on any page family, with motion on or reduced (a reduced-motion mismatch in the parallax frame was found and fixed).
+
+**Grid branch:** the log below is from `claude/nykaa-fashion-grid-redesign`.
 
 Everything below runs with one command against a production server: `scripts/qa/prod.sh 3100 && npm run qa` (Playwright; `scripts/qa/all.sh`).
 
