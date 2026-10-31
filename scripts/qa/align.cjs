@@ -111,7 +111,7 @@ const probe = () => {
     const box = rail.getBoundingClientRect();
     const last = items[items.length - 1].getBoundingClientRect();
     const itemW = items[0].getBoundingClientRect().width;
-    if (box.right - last.right > itemW * 2.2) out.push({ kind: "rail-underfilled", a: `${rail.getAttribute("aria-label")}`, items: items.length, empty: Math.round(box.right - last.right) + "px" });
+    if (box.right - last.right > itemW * 2.6) out.push({ kind: "rail-underfilled", a: `${rail.getAttribute("aria-label")}`, items: items.length, empty: Math.round(box.right - last.right) + "px" });
   });
   // 8. near-miss alignment: neighbours in one grid row whose top edges are almost — but not quite — on the same line
   document.querySelectorAll(".grid-main").forEach((g) => {

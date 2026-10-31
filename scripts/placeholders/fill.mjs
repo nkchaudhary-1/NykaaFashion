@@ -10,8 +10,8 @@
 //  • Windows are plain crops (and mirrors) of the photograph; where a portrait window reaches past the photo's edge, the seamless studio
 //    backdrop is extended (lib.mjs) — the figure is never altered, nothing is recoloured, nothing is added.
 //  • Shoppable pins sit on the garment, jewellery or footwear that is actually visible in each scene's window.
-import { readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import sharp from "sharp";
 import { productById } from "../../src/data/catalog.ts";
 import { PAD, SUBJECTS, extendCanvas, hex, regionHex, rng, root } from "./lib.mjs";
@@ -128,6 +128,26 @@ function sceneSpec(key, W, H_) {
   return { subject, win: k ? K.full : B.full, flip: mirror, jitter: 0.02 };
 }
 
+// ── Launch campaign pictures (src/data/launches.ts): the hero pair and the gallery of each brand, cut from the same two photographs ──
+// Which photograph a brand's campaign uses, and — for home brands — whether it frames objects (the chair, the vases) rather than the model.
+const LAUNCH_SUBJECT = { vrisa: "kurta-set", halden: "boucle-suit", "kiln-and-linen": "boucle-suit", hm: "boucle-suit", cider: "kurta-set", "hearth-and-hue": "kurta-set" };
+const LAUNCH_HOME = new Set(["kiln-and-linen", "hearth-and-hue"]);
+function launchSpec(key) {
+  const m = /^launches\/([^/]+)\/([\w-]+)$/.exec(key);
+  const subject = m && LAUNCH_SUBJECT[m[1]];
+  if (!subject) return null;
+  const [, id, role] = m;
+  const k = subject === "kurta-set";
+  const home = LAUNCH_HOME.has(id);
+  const flip = H(key) < 0.5;
+  // copy goes on the calm wall to the left of the figure, so the banner never mirrors; the framing varies a little per brand so two brands on one photograph do not share a picture
+  if (role === "hero-wide") { const t = H(key + "w"); return { subject, win: { cx: (k ? 688 : 650) + Math.round((t - 0.5) * 50), cy: 536 + Math.round((t - 0.5) * 30), sw: 1330 + Math.round(t * 160) }, flip: false, jitter: 0 }; }
+  if (role === "g4") return { subject, win: { cx: 768, cy: 512, sw: 1536 }, flip, jitter: 0 }; // the whole photograph, 3:2
+  const vases = { cx: 415, cy: 650, sw: 450 }; // the vases and the dried flowers, without the model
+  const frames = home ? (k ? { "hero-tall": vases, g1: { cx: 430, cy: 700, sw: 420 }, g2: K.drape, g3: { cx: 410, cy: 610, sw: 400 } } : { "hero-tall": B.chair, g1: B.chair, g2: B.chairTex, g3: B.chair }) : k ? { "hero-tall": K.full, g1: K.torso, g2: K.face, g3: { cx: 975, cy: 735, sw: 520 } } : { "hero-tall": B.full, g1: B.blazer, g2: B.face, g3: B.trousers };
+  return { subject, win: frames[role] ?? (k ? K.full : B.full), flip: role === "g2" ? !flip : flip, jitter: role === "hero-tall" ? 0.03 : 0.05 };
+}
+
 // ── Canvas per photograph (decoded once) ──────────────────────────────────────────────────────────────────────
 const CANVAS = {};
 for (const [name, subj] of Object.entries(SUBJECTS)) {
@@ -184,13 +204,14 @@ for (const key of Object.keys(meta)) {
   if (ONLY && !key.startsWith(ONLY)) continue;
   const old = meta[key];
   const W = old.w, H_ = old.h;
-  const spec = productSpec(key) ?? sceneSpec(key, W, H_);
+  const spec = productSpec(key) ?? sceneSpec(key, W, H_) ?? launchSpec(key);
   if (!spec) {
     skipped.push(key);
     continue;
   }
   const view = await cut(spec, key, W, H_);
   const quality = key.startsWith("products/") ? 78 : 86;
+  mkdirSync(dirname(join(IMG, `${key}.webp`)), { recursive: true }); // a brand-new key (a launch, a new product) has no folder yet
   writeFileSync(join(IMG, `${key}.webp`), await sharp(view.png).webp({ quality, effort: 5 }).toBuffer());
   const st = await sharp(view.png).stats();
   const m = { w: W, h: H_, avg: hex(st.channels[0].mean, st.channels[1].mean, st.channels[2].mean) };
