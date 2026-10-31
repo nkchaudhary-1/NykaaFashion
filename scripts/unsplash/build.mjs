@@ -276,7 +276,9 @@ for (const [key, plan] of jobs) {
     const at = (fx * src.pw - box.left) / box.width;
     if (at < 0.55) warn(key, `the subject sits at ${Math.round(at * 100)} % of the banner's width — the copy on the left would run over it. Choose a photo with the subject on the right, or flag a plain-backdrop photo with  pick.mjs --extend ${plan.photo.id}`);
   }
-  let img = sharp(src.raw, rawOpts(src.pw, src.ph)).extract({ left: Math.round(box.left), top: Math.round(box.top), width: Math.round(box.width), height: Math.round(box.height) }).resize(W, H, { kernel: "lanczos3" });
+  const L = clamp(Math.round(box.left), 0, src.pw - 1), T = clamp(Math.round(box.top), 0, src.ph - 1); // rounded separately, a window could overshoot the photograph by a pixel
+  const area = { left: L, top: T, width: Math.max(1, Math.min(Math.round(box.width), src.pw - L)), height: Math.max(1, Math.min(Math.round(box.height), src.ph - T)) };
+  let img = sharp(src.raw, rawOpts(src.pw, src.ph)).extract(area).resize(W, H, { kernel: "lanczos3" });
   if (plan.flip) img = img.flop();
   if (box.width / W > 1.4) img = img.sharpen({ sigma: 0.6, m1: 0.4, m2: 0.6 }); // a large photo shrunk to a thumbnail needs a touch of sharpening
   const out = await img.raw().toBuffer();

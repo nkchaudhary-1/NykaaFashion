@@ -87,7 +87,7 @@ export const FRAMING = {
 export const BUDGET_KB = { product: 110, tall: 200, wide: 260, land: 220, promo: 70 };
 
 /** Where the text of a wide banner sits (fractions of the picture): top left. This area must be calm and its colour is what the heading's colour is chosen from. */
-export const COPY_AREA = { x0: 0.03, x1: 0.5, y0: 0.06, y1: 0.5 };
+export const COPY_AREA = { x0: 0.03, x1: 0.5, y0: 0.06, y1: 0.62 };
 /** Where the subject sits in a wide banner (fraction of its width): right of centre, clear of the copy. */
 export const WIDE_SUBJECT_AT = 0.68;
 
