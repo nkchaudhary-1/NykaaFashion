@@ -230,6 +230,9 @@ const settle = async (page) => {
   await step("Deal intent via sale link promotes the Offer Edit on Home", async () => {
     await page.goto(BASE + "/?ref=sale", { waitUntil: "networkidle" });
     await page.getByText("You’re looking for offers").waitFor({ timeout: 8000 });
+    // …but never above the banner: the hero leads the page in every mode, the promoted offer band is the slot right under it
+    const order = await page.locator("[data-module]").evaluateAll((els) => els.map((e) => e.getAttribute("data-module")));
+    eq(order.slice(0, 2).join(","), "hero,offers", `home order in deal intent: ${order.slice(0, 4).join(", ")}`);
   });
 
   await step("404 page is editorial and navigable", async () => {

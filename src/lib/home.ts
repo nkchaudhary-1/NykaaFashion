@@ -1,7 +1,7 @@
 import type { IntentMode } from "@/stores/intent";
 
 // Adaptive home composition — PRD §5.1 / §6.1: "System reorders home modules from intent signal
-// (cold → curation; returning → rail; deal-intent → discount promoted)".
+// (cold → curation; returning → rail; deal-intent → discount promoted). The sale banner is first in every mode.
 export type HomeModuleId = "hero" | "pricestrip" | "coupons" | "categories" | "celebration" | "brands" | "diwali" | "newin" | "edits" | "trending" | "look" | "rail" | "stories" | "brand" | "offers" | "seo";
 
 // Modules follow the live Nykaa Fashion homepage stack (sale banner → category tiles → Celebration-ready Categories → Iconic Brands →
@@ -37,7 +37,8 @@ export function composeHome(mode: IntentMode): HomeSlot[] {
     case "returning":
       return ids(["hero", "rail", "categories", "pricestrip", "coupons", "celebration", "brands", "newin", "diwali", "edits", "trending", "look", "brand", "stories", "seo"]);
     case "deal":
-      return [{ id: "offers", promoted: true }, ...ids(["hero", "rail", "categories", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"])];
+      // The banner always leads the page — it is the home page's signature and already a discount surface. Deal intent promotes the offer band to the slot right under it.
+      return [{ id: "hero" }, { id: "offers", promoted: true }, ...ids(["rail", "categories", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"])];
     default:
       return ids(["hero", "pricestrip", "categories", "coupons", "celebration", "brands", "diwali", "newin", "edits", "trending", "look", "stories", "brand", "seo"]);
   }
@@ -46,5 +47,5 @@ export function composeHome(mode: IntentMode): HomeSlot[] {
 export const MODE_COPY: Record<IntentMode, { name: string; blurb: string }> = {
   cold: { name: "Cold start", blurb: "No history yet — the sale banner, price shortcuts and category tiles lead." },
   returning: { name: "Returning", blurb: "Signals found — a “picked for you” rail rises to second place." },
-  deal: { name: "Deal intent", blurb: "Offer interaction detected — the offer band rises to the top for this session." },
+  deal: { name: "Deal intent", blurb: "Offer interaction detected — the offer band rises to second place, right under the banner, for this session." },
 };

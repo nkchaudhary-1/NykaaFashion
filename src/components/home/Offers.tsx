@@ -17,8 +17,8 @@ import { signal } from "@/stores/intent";
 import { pieces } from "./kit";
 
 /*
- * The offer band, on ink. Demoted (the default): a headline and four hairline rows, each a shortcut with its figure at display size. Promoted (deal intent, first
- * on the page): the headline at poster scale and the best-discounted pieces under the rows.
+ * The offer band, on ink. Demoted (the default): a headline and four hairline rows, each a shortcut with its figure at display size. Promoted (deal intent, second
+ * on the page, right under the banner): the headline at poster scale and the best-discounted pieces under the rows.
  */
 export function OfferModule({ promoted }: { promoted: boolean }) {
   const onSale = useMemo(() => editProducts(editById["the-offer-edit"]).filter((p) => !p.soldOut), []);
