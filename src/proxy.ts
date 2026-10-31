@@ -9,15 +9,16 @@ import { LOGO_PATHS, LOGO_VIEWBOX } from "./components/layout/logo-paths";
  *  • On Vercel (VERCEL is set) a missing SITE_PASSWORD fails CLOSED: the deployment shows "locked" instead of going public.
  *    SITE_GATE=off opts a deployment out on purpose. GATE_SECRET (optional) signs the cookie; it defaults to the password,
  *    so changing the password signs everyone out.
- *  • Only the sign-in page's own assets are public (/_next/static, /fonts, /brand, /icon.svg, /robots.txt). Pictures, the image
- *    optimiser and every page need the cookie.
+ *  • Only the sign-in page's own assets are public (its font, the share-card image, /icon.svg, /robots.txt). Pages, pictures, the image
+ *    optimiser and the compiled JS/CSS all need the cookie.
+ *  • SITE_EXPIRES (optional, an ISO date such as 2026-11-15 or 2026-11-15T18:00:00+05:30) locks the whole site after that moment, cookie or not.
  *
  * Proxy runs on the Node.js runtime in this version of Next.js; Web Crypto is used so the file also works on the edge.
  */
 const COOKIE = "nf_gate";
 const MAX_AGE = 60 * 60 * 24 * 7; // a week
-const PUBLIC_PREFIXES = ["/_next/static/", "/fonts/", "/brand/"];
-const PUBLIC_FILES = new Set(["/icon.svg", "/robots.txt", "/favicon.ico"]);
+// Exactly what the sign-in page and its link-preview card need — nothing else is served without the cookie, including the compiled app (/_next/static).
+const PUBLIC_FILES = new Set(["/fonts/inter-latin.woff2", "/brand/og.jpg", "/icon.svg", "/robots.txt", "/favicon.ico"]);
 const SIGN_IN_PATH = "/__gate";
 
 const enc = new TextEncoder();
@@ -51,7 +52,7 @@ const safeNext = (raw: string) => (/^\/(?![/\\])/.test(raw) ? raw : "/");
 const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-const HEADERS = { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" };
+const HEADERS = { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex, nofollow", "x-frame-options": "DENY", "x-content-type-options": "nosniff", "referrer-policy": "no-referrer" };
 
 const logo = `<svg viewBox="${LOGO_VIEWBOX}" height="26" role="img" aria-label="Nykaa Fashion">${LOGO_PATHS.map((p) => `<path d="${p.d}" fill="${p.tone === "brand" ? "#fc2779" : "#15120f"}"/>`).join("")}</svg>`;
 
@@ -87,10 +88,18 @@ const signInPage = (next: string, error: boolean, origin: string, pathname: stri
     PREVIEW_TITLE,
     `<h1>Private preview</h1><p>This prototype is password-protected. Enter the password you were given.</p>
 <form method="post" action="${SIGN_IN_PATH}"><input type="hidden" name="next" value="${escapeHtml(next)}"><label for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="current-password" required autofocus${error ? ' aria-describedby="err" aria-invalid="true"' : ""}><button type="submit">Enter</button>${error ? '<p class="err" id="err" role="alert">That password isn’t right. Try again.</p>' : ""}</form>
-<p class="fine">A design prototype of an improved Nykaa Fashion — not the real site. Nothing here is sold; checkout, payments and orders are simulated.</p>`,
+<p class="fine">A design prototype of an improved Nykaa Fashion — not the real site. Nothing here is sold; checkout, payments and orders are simulated.</p>
+<p class="fine">Confidential — shared for review only. Please don’t copy, save or pass on the design, code or pictures.</p>`,
     error ? 401 : 200, // 200 for the plain sign-in page: link-preview crawlers ignore a card served with an error status
     previewTags(origin, pathname),
   );
+
+const endedPage = () =>
+  page("Preview ended", `<h1>Preview ended</h1><p>This private preview has been closed. Ask the owner if you need access again.</p>`, 410);
+const expired = () => {
+  const at = Date.parse(process.env.SITE_EXPIRES ?? "");
+  return Number.isFinite(at) && Date.now() > at;
+};
 
 const lockedPage = () =>
   page(
@@ -104,6 +113,9 @@ export async function proxy(req: NextRequest) {
   if (!password()) return process.env.VERCEL ? lockedPage() : NextResponse.next(); // fail closed when hosted
 
   const { pathname, search } = req.nextUrl;
+
+  // a time-boxed review: after SITE_EXPIRES nothing is served, not even to a valid cookie
+  if (expired()) return req.headers.get("accept")?.includes("text/html") ? endedPage() : new NextResponse("Gone", { status: 410, headers: { "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" } });
 
   // sign-in form
   if (pathname === SIGN_IN_PATH) {
@@ -122,7 +134,7 @@ export async function proxy(req: NextRequest) {
   }
 
   // the sign-in page's own assets
-  if (PUBLIC_FILES.has(pathname) || PUBLIC_PREFIXES.some((p) => pathname.startsWith(p))) return NextResponse.next();
+  if (PUBLIC_FILES.has(pathname)) return NextResponse.next();
 
   // next/image's optimiser fetches the source picture itself — without the visitor's cookie and without a Host header (self-hosted servers only).
   // Allowed for picture files and nothing else; when the gate is on at build time the app serves /img directly instead (next.config.ts), behind the cookie.

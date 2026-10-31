@@ -2,6 +2,7 @@
   "name": "nykaa-fashion",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "engines": {
     "node": ">=20.9.0"
   },
