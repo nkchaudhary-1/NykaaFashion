@@ -18,6 +18,7 @@
     "doctor": "node scripts/doctor.mjs",
     "photo:ratios": "node scripts/placeholders/build.mjs",
     "photo:fill": "node scripts/placeholders/fill.mjs",
+    "launch:measure": "node scripts/measure-images.mjs",
     "photos": "node scripts/placeholders/build.mjs && node scripts/placeholders/fill.mjs"
   },
   "dependencies": {

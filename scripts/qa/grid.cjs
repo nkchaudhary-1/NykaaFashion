@@ -9,6 +9,7 @@ const WIDTHS = flag("--widths", "390,820,1280,1728").split(",").map(Number);
 const DEFAULT_ROUTES = [
   "/", "/discover", "/discover/the-block-print-revival", "/edits", "/edits/hidden-gems", "/c/women", "/c/women/dresses", "/p/poppy-smocked-midi-dress",
   "/search?q=kurta", "/brands", "/brands/ajrakh-and-ash", "/offers", "/wishlist", "/bag", "/login", "/help",
+  "/new-and-next", "/new-and-next/vrisa", "/new-and-next/halden", "/new-and-next/hm",
 ];
 const ROUTES = flag("--routes", DEFAULT_ROUTES.join(",")).split(",");
 const TOL = 1.6;

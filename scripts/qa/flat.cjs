@@ -9,7 +9,7 @@ const WIDTHS = flag("--widths", "390,1280").split(",").map(Number);
 const DEFAULT_ROUTES = [
   "/", "/discover", "/discover/the-block-print-revival", "/edits", "/edits/hidden-gems", "/edits/the-offer-edit", "/c/women", "/c/women/dresses", "/c/home/cushions",
   "/p/poppy-smocked-midi-dress", "/p/satin-corset-top", "/search?q=kurta", "/search?q=zzzz", "/brands", "/brands/ajrakh-and-ash", "/offers", "/wishlist", "/bag", "/checkout",
-  "/login", "/help", "/prototype", "/info/shipping", "/404-not-a-page",
+  "/login", "/help", "/prototype", "/info/shipping", "/new-and-next", "/new-and-next/vrisa", "/new-and-next/hm", "/404-not-a-page",
 ];
 const ROUTES = flag("--routes", DEFAULT_ROUTES.join(",")).split(",");
 const OVERLAYS = process.argv.includes("--overlays");

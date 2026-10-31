@@ -7,7 +7,7 @@ const mobile = process.argv.includes("--mobile");
 const onlyArg = process.argv.indexOf("--only");
 const PAGES = onlyArg > -1 ? process.argv[onlyArg + 1].split(",") : [
   "/", "/discover", "/discover/the-block-print-revival", "/edits", "/edits/hidden-gems", "/c/women/dresses", "/p/poppy-smocked-midi-dress",
-  "/p/satin-corset-top", "/search?q=kurta", "/brands", "/brands/ajrakh-and-ash", "/offers", "/wishlist", "/bag", "/login", "/help", "/prototype", "/info/shipping",
+  "/p/satin-corset-top", "/search?q=kurta", "/brands", "/brands/ajrakh-and-ash", "/offers", "/wishlist", "/bag", "/login", "/help", "/prototype", "/info/shipping", "/new-and-next", "/new-and-next/vrisa", "/new-and-next/hm",
 ];
 const AUTHED = ["/checkout", "/account", "/account/orders", "/account/orders/nf-26100377", "/account/addresses"];
 

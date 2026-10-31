@@ -7,7 +7,7 @@ const WIDTHS = wi > -1 ? process.argv[wi + 1].split(",").map(Number) : [360, 390
 const PAGES = [
   "/", "/discover", "/discover/the-block-print-revival", "/edits", "/edits/hidden-gems", "/edits/the-offer-edit", "/c/women", "/c/women/dresses", "/c/home/cushions",
   "/p/poppy-smocked-midi-dress", "/p/satin-corset-top", "/p/sequin-slip-mini", "/search?q=kurta", "/search?q=zzzz", "/brands", "/brands/ajrakh-and-ash", "/offers", "/wishlist", "/bag",
-  "/login", "/help", "/prototype", "/info/shipping",
+  "/login", "/help", "/prototype", "/info/shipping", "/new-and-next", "/new-and-next/vrisa", "/new-and-next/halden", "/new-and-next/kiln-and-linen", "/new-and-next/hm",
 ];
 const AUTHED = ["/account", "/account/orders", "/account/orders/nf-26100377", "/account/addresses"];
 
