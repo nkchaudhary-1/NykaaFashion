@@ -38,6 +38,21 @@ NykaaFashionTests/
 Dependencies point one way: `Features → DesignSystem → Core`, `App → everything`.
 Tokens are the only thing components read for colour, type, spacing and motion.
 
+## Bottom navigation
+
+The bottom bar is the native `TabView` (`App/RootView.swift`). Tabs are defined in
+`App/AppTab.swift` — title, SF Symbol, order — and are placeholders until the design
+sets them. Native hooks add: a count badge on Bag (`AppState.bagCount`), a selection
+haptic, filled icons for the selected tab (automatic), one `NavigationStack` per tab so
+each keeps its history, and tapping the active tab again pops it to its root. In a Debug
+build, Profile → Developer → "Bag items" lets you see the badge.
+
+Why native rather than a hand-drawn bar: accessibility, safe areas, keyboard handling and
+the iOS 26 Liquid Glass look come free, and a custom bar re-implements all of it. The
+trade-off is limited styling: tint, labels and icons are easy; a floating pill, an
+elevated centre button or a fully custom shape would need a custom bar (hide the system
+one and draw ours), which I'd only do if the design requires it.
+
 ## Native vs custom
 
 | Native (don't rebuild) | Custom (design-owned) |

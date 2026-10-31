@@ -7,5 +7,5 @@ struct WishlistView: View {
 }
 
 #Preview {
-    TabRoot { WishlistView() }
+    TabRoot(router: Router()) { WishlistView() }
 }

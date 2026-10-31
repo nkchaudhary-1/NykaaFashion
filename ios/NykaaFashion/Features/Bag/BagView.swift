@@ -7,5 +7,5 @@ struct BagView: View {
 }
 
 #Preview {
-    TabRoot { BagView() }
+    TabRoot(router: Router()) { BagView() }
 }

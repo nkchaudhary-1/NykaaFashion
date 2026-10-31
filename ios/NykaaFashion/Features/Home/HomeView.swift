@@ -7,5 +7,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    TabRoot { HomeView() }
+    TabRoot(router: Router()) { HomeView() }
 }

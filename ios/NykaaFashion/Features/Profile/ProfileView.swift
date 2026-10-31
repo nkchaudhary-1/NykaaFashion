@@ -11,6 +11,7 @@ struct ProfileView: View {
             #if DEBUG
             Section("Developer") {
                 NavigationLink("Component gallery") { ComponentGallery() }
+                DebugBagStepper()
             }
             #endif
         }
@@ -18,6 +19,19 @@ struct ProfileView: View {
     }
 }
 
+#if DEBUG
+/// Lets you see the Bag tab badge before a real bag exists.
+private struct DebugBagStepper: View {
+    @Environment(AppState.self) private var appState
+
+    var body: some View {
+        @Bindable var appState = appState
+        Stepper("Bag items: \(appState.bagCount)", value: $appState.bagCount, in: 0...99)
+    }
+}
+#endif
+
 #Preview {
-    TabRoot { ProfileView() }
+    TabRoot(router: Router()) { ProfileView() }
+        .environment(AppState())
 }

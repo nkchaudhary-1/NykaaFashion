@@ -41,12 +41,16 @@ struct RouteView: View {
     }
 }
 
-/// Wraps a tab's root screen in its own `NavigationStack` and router.
+/// Wraps a tab's root screen in its own `NavigationStack`.
+///
+/// The router is owned by the caller (`RootView`) rather than by this view, so
+/// the tab bar can reset a tab's stack when its active tab is tapped again.
 struct TabRoot<Content: View>: View {
-    @State private var router = Router()
+    let router: Router
     private let content: Content
 
-    init(@ViewBuilder content: () -> Content) {
+    init(router: Router, @ViewBuilder content: () -> Content) {
+        self.router = router
         self.content = content()
     }
 

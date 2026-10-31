@@ -7,5 +7,5 @@ struct CategoriesView: View {
 }
 
 #Preview {
-    TabRoot { CategoriesView() }
+    TabRoot(router: Router()) { CategoriesView() }
 }
