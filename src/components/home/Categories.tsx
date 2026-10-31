@@ -54,7 +54,7 @@ export function CategoryTiles() {
   };
 
   return (
-    <Section tone="paper">
+    <Section tone="paper" id="shop-by-category" className="scroll-mt-[var(--header-offset)]">
       <SectionHeading eyebrow="Women · Men · Kids · Home" title={<>Shop by <em>category</em></>} size="lg">
         <button type="button" onClick={openAll} aria-haspopup="dialog" className="link-u tap group inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.09em] text-ink">
           View all {total} categories

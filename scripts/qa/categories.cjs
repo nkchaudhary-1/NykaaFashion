@@ -47,6 +47,19 @@ const must = (c, m) => { if (!c) throw new Error(m); };
     must(r.catsTop < r.vh * 1.25, `the section starts ${r.catsTop} px down (viewport ${r.vh} px) — more than a screen and a quarter`);
   });
 
+  await step("the address …/#shop-by-category jumps straight to the section (its heading is on screen on arrival)", async () => {
+    const p2 = await ctx.newPage();
+    await p2.goto(BASE + "/#shop-by-category", { waitUntil: "networkidle" });
+    await p2.waitForTimeout(1600);
+    const r = await p2.evaluate(() => {
+      const h = [...document.querySelectorAll("h2")].find((e) => /Shop by/.test(e.textContent || ""));
+      const b = h?.getBoundingClientRect();
+      return b ? { top: Math.round(b.top), bottom: Math.round(b.bottom), vh: innerHeight } : null;
+    });
+    await p2.close();
+    must(r && r.top >= 0 && r.bottom <= r.vh, `heading at ${JSON.stringify(r)}`);
+  });
+
   await step("a heading, 12 tiles (11 categories + the all-categories tile), six across", async () => {
     must((await page.getByRole("heading", { name: /Shop by category/ }).count()) === 1, "no “Shop by category” heading");
     const c = await columns(page);
