@@ -55,8 +55,8 @@ const HEADERS = { "content-type": "text/html; charset=utf-8", "cache-control": "
 
 const logo = `<svg viewBox="${LOGO_VIEWBOX}" height="26" role="img" aria-label="Nykaa Fashion">${LOGO_PATHS.map((p) => `<path d="${p.d}" fill="${p.tone === "brand" ? "#fc2779" : "#15120f"}"/>`).join("")}</svg>`;
 
-function page(title: string, body: string, status: number) {
-  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f4efe8"><title>${title}</title>
+function page(title: string, body: string, status: number, head = "") {
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f4efe8"><title>${title}</title>${head}
 <style>
 @font-face{font-family:"Inter Display";font-weight:100 900;font-display:swap;src:url(/fonts/inter-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+2215}
 *{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px;background:#f4efe8;color:#15120f;font:400 16px/1.55 "Inter Display",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-variation-settings:"opsz" 32;-webkit-font-smoothing:antialiased}
@@ -68,13 +68,28 @@ button{width:100%;height:52px;margin-top:14px;border:0;border-radius:4px;backgro
   return new NextResponse(html, { status, headers: HEADERS });
 }
 
-const signInPage = (next: string, error: boolean) =>
+/** What a link-preview crawler (WhatsApp, Slack, iMessage, LinkedIn, X …) reads from a protected link: it never has the cookie, so the sign-in page carries the card. */
+const PREVIEW_TITLE = "Nykaa Fashion — redesign prototype";
+const PREVIEW_TEXT = "An improved Nykaa Fashion: editorial layouts, a strict grid and motion that stays out of the way. A private design prototype with sample data — nothing is sold.";
+const previewTags = (origin: string, pathname: string) => {
+  const image = `${origin}/brand/og.jpg`;
+  const meta = (k: string, v: string) => `<meta ${k.startsWith("og:") ? "property" : "name"}="${k}" content="${escapeHtml(v)}">`;
+  return [
+    meta("description", PREVIEW_TEXT),
+    meta("og:type", "website"), meta("og:site_name", PREVIEW_TITLE), meta("og:title", PREVIEW_TITLE), meta("og:description", PREVIEW_TEXT), meta("og:url", origin + pathname),
+    meta("og:image", image), meta("og:image:width", "1200"), meta("og:image:height", "630"), meta("og:image:alt", "The Nykaa Fashion wordmark beside a model in a printed kurta set"),
+    meta("twitter:card", "summary_large_image"), meta("twitter:title", PREVIEW_TITLE), meta("twitter:description", PREVIEW_TEXT), meta("twitter:image", image),
+  ].join("");
+};
+
+const signInPage = (next: string, error: boolean, origin: string, pathname: string) =>
   page(
-    "Nykaa Fashion — private prototype",
+    PREVIEW_TITLE,
     `<h1>Private preview</h1><p>This prototype is password-protected. Enter the password you were given.</p>
 <form method="post" action="${SIGN_IN_PATH}"><input type="hidden" name="next" value="${escapeHtml(next)}"><label for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="current-password" required autofocus${error ? ' aria-describedby="err" aria-invalid="true"' : ""}><button type="submit">Enter</button>${error ? '<p class="err" id="err" role="alert">That password isn’t right. Try again.</p>' : ""}</form>
 <p class="fine">A design prototype of an improved Nykaa Fashion — not the real site. Nothing here is sold; checkout, payments and orders are simulated.</p>`,
-    401,
+    error ? 401 : 200, // 200 for the plain sign-in page: link-preview crawlers ignore a card served with an error status
+    previewTags(origin, pathname),
   );
 
 const lockedPage = () =>
@@ -99,7 +114,7 @@ export async function proxy(req: NextRequest) {
     const ok = safeEqual(await hmac(secret(), `pw:${given}`), await hmac(secret(), `pw:${password()}`));
     if (!ok) {
       await wait(700); // a small tax on guessing; Vercel adds its own rate limits
-      return signInPage(next, true);
+      return signInPage(next, true, req.nextUrl.origin, "/");
     }
     const res = NextResponse.redirect(new URL(next, req.url), 303);
     res.cookies.set({ name: COOKIE, value: await issueToken(), httpOnly: true, secure: req.nextUrl.protocol === "https:", sameSite: "lax", path: "/", maxAge: MAX_AGE });
@@ -119,7 +134,9 @@ export async function proxy(req: NextRequest) {
     return res;
   }
 
-  // browsers get the sign-in page; everything else (images, data, scripts) just gets a 401
-  const wantsPage = req.headers.get("accept")?.includes("text/html");
-  return wantsPage ? signInPage(safeNext(pathname + search), false) : new NextResponse("Unauthorized", { status: 401, headers: { "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" } });
+  // Page requests get the sign-in page: browsers (Accept: text/html) and link-preview crawlers (which send Accept: */* and no Sec-Fetch headers, for a path without a file extension).
+  // Everything else — pictures, scripts, data, RSC fetches — just gets a 401.
+  const dest = req.headers.get("sec-fetch-dest");
+  const wantsPage = req.headers.get("accept")?.includes("text/html") || (!/\.[a-z0-9]{2,5}$/i.test(pathname) && (!dest || dest === "document"));
+  return wantsPage ? signInPage(safeNext(pathname + search), false, req.nextUrl.origin, pathname) : new NextResponse("Unauthorized", { status: 401, headers: { "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" } });
 }

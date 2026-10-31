@@ -1,2 +1,14 @@
+# Private prototype: search engines stay out. Link-preview crawlers may fetch the sign-in page, which carries the share card (title, text, public/brand/og.jpg).
+User-agent: Twitterbot
+User-agent: Slackbot
+User-agent: Slack-ImgProxy
+User-agent: facebookexternalhit
+User-agent: Facebot
+User-agent: LinkedInBot
+User-agent: WhatsApp
+User-agent: Discordbot
+User-agent: TelegramBot
+Allow: /
+
 User-agent: *
 Disallow: /
