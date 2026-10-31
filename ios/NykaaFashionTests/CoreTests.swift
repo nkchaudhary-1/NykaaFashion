@@ -92,6 +92,20 @@ final class TopNavTests: XCTestCase {
     }
 }
 
+final class FontFaceTests: XCTestCase {
+    func testFileNameFollowsThePostScriptName() {
+        for face in DSFontFace.allCases {
+            XCTAssertEqual(face.fileName, face.postScriptName + ".ttf")
+        }
+    }
+
+    func testFacesAreUniqueInterDisplayFonts() {
+        let names = DSFontFace.allCases.map(\.postScriptName)
+        XCTAssertEqual(Set(names).count, names.count)
+        XCTAssertTrue(names.allSatisfy { $0.hasPrefix("InterDisplay-") })
+    }
+}
+
 final class ProductTests: XCTestCase {
     func testCodableRoundTrip() throws {
         let original = Product.samples[2]

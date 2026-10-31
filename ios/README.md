@@ -98,6 +98,33 @@ Adaptations from One Moment:
   blends in light and dark. One Moment is dark-only; this app follows the system until the
   design decides.
 
+## Typography
+
+**Inter Display is the primary typeface** (the optical-size cut of Inter 4.0, SIL Open Font
+License 1.1). Four weights are bundled — Light, Regular, Medium, SemiBold (~1.6 MB) — as
+byte-identical copies of the official release (`extras/ttf` in `Inter-4.0.zip`). They contain
+the ₹ glyph and tabular figures, which the price label uses.
+
+- Roles live in `DSFont` (display, heading, title, headline, body, callout, caption, eyebrow, price).
+  Each is `Font.custom(_:size:relativeTo:)`, so it keeps Inter Display **and** scales with Dynamic
+  Type; base sizes equal the system defaults, so layout didn't move. Weights are placeholders until
+  the design specifies them.
+- Registration: `Config/Info.plist` is a *partial* plist holding only `UIAppFonts`; Xcode merges it with
+  the generated keys (`GENERATE_INFOPLIST_FILE`). `TabRoot` sets `DSFont.body` as the default for any
+  unstyled text (list rows, steppers).
+- **A wrong name never fails — it silently falls back to the system font.** So `FontTests` (⌘U) checks each
+  face is registered, is in the app bundle, and has ₹. If the text looks like SF, run it first.
+- Native chrome — tab bar labels, pushed screens' back button and title — stays in the system font on
+  purpose, like the rest of the native bar. Re-skinning it is possible (`UITabBarItem` appearance) but
+  I'd only do it if the design requires it.
+- **Adding a weight** takes four agreeing steps: the `.ttf` in `Resources/Fonts/`, its filename in
+  `Config/Info.plist`, a case in `DSFontFace`, and a use in `DSFont`.
+- **Licence:** the OFL requires its text to travel with the font; it's bundled as
+  `Resources/Fonts/Inter-OFL.txt`. Add an acknowledgements entry before release.
+- Not applied yet: One Moment's moodboard uses −0.25 tracking on Inter Display; add it per role once the
+  design confirms it. Whether a secondary face (an accent/serif) is planned is an open question — today
+  every role is Inter Display.
+
 ## Native vs custom
 
 | Native (don't rebuild) | Custom (design-owned) |
@@ -133,7 +160,7 @@ Don't fake glass or blur in custom components.
 - **XcodeGen instead of a committed `.xcodeproj`.** The spec is readable and diffs cleanly; a hand-edited `.pbxproj` is neither. Cost: one extra tool. To commit the project instead, generate once and drop `*.xcodeproj` from `.gitignore`.
 - **Swift 5 language mode.** Swift 6 strict concurrency is a deliberate later migration, not something to fight on day one.
 - **iPhone only, portrait only** for v1. iPad is a later phase.
-- **Placeholder tokens use system colours and SF Pro/New York.** The app looks like plain iOS (and gets Dark Mode) until the design says otherwise. All values live in `DesignSystem/Tokens`; every placeholder is labelled.
+- **Placeholder colours; real typeface.** Colours are system colours (so the app gets Dark Mode for free) until the design supplies a palette; the typeface is Inter Display. All values live in `DesignSystem/Tokens`; placeholders are labelled.
 - **Prices are formatted by us, not by `.currency(code:)`.** Digits use fixed `en_IN` grouping (₹1,00,000); the ₹ is attached in `PriceFormatter`. The currency pattern comes from CLDR data that varies by OS version — Linux ICU produced `₹ 1,299` — and the gap after ₹ is a typographic decision for the design.
 - **`AsyncImage` for now.** It only uses the shared `URLCache` (no memory cache or prefetching). Fine for a foundation; swap the internals of `DSRemoteImage` once real images and scroll performance can be measured.
 

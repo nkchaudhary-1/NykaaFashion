@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- PARTIAL Info.plist: only keys Xcode cannot generate from build settings.
+	     Everything else (display name, launch screen, scene manifest, orientations)
+	     still comes from INFOPLIST_KEY_* in project.yml and is merged in
+	     (GENERATE_INFOPLIST_FILE = YES). Keep this list in step with DSFontFace. -->
+	<key>UIAppFonts</key>
+	<array>
+		<string>InterDisplay-Light.ttf</string>
+		<string>InterDisplay-Regular.ttf</string>
+		<string>InterDisplay-Medium.ttf</string>
+		<string>InterDisplay-SemiBold.ttf</string>
+	</array>
+</dict>
+</plist>

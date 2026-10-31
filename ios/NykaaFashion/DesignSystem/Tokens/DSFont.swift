@@ -1,30 +1,39 @@
 import SwiftUI
 
-/// Type roles. Every role is built on a system text style, so Dynamic Type
-/// scales it automatically — keep it that way when swapping in custom fonts.
+/// Type roles. Inter Display is the primary typeface.
 ///
-/// PLACEHOLDER VALUES — SF Pro, with a serif (New York) for display so the
-/// hierarchy has some personality. When the design names its typefaces:
-///   1. Bundle the font files and list them under `UIAppFonts`
-///      (INFOPLIST_KEY / project.yml).
-///   2. Replace the bodies below with
-///      `Font.custom("FamilyName", size: 34, relativeTo: .largeTitle)`
-///      so the custom font still scales with Dynamic Type.
+/// Every role is `Font.custom(_:size:relativeTo:)`, which keeps the custom face
+/// but still scales with Dynamic Type like the system text style it is tied to.
+/// The base sizes equal that style's default size, so layout is unchanged from
+/// the system defaults. Keep it that way: never use a fixed-size font here.
+///
+/// Weights are placeholders until the design specifies them. All faces are
+/// listed in `DSFontFace` — if a face isn't registered the font silently falls
+/// back to the system font, which `FontTests` is there to catch.
+///
+/// Native chrome (tab bar labels, pushed screens' back button and title) stays in
+/// the system font on purpose: like the rest of the native bar, it isn't re-skinned.
 enum DSFont {
-    static let display = Font.system(.largeTitle, design: .serif, weight: .regular)
-    static let title = Font.system(.title2, weight: .semibold)
-    static let headline = Font.system(.headline)
-    static let body = Font.system(.body)
-    static let callout = Font.system(.callout)
-    static let caption = Font.system(.caption)
+    private static func inter(_ face: DSFontFace, size: CGFloat, relativeTo style: Font.TextStyle) -> Font {
+        .custom(face.postScriptName, size: size, relativeTo: style)
+    }
+
+    static let display = inter(.light, size: 34, relativeTo: .largeTitle)
+    static let title = inter(.semibold, size: 22, relativeTo: .title2)
+    static let headline = inter(.semibold, size: 17, relativeTo: .headline)
+    static let body = inter(.regular, size: 17, relativeTo: .body)
+    static let callout = inter(.regular, size: 16, relativeTo: .callout)
+    static let caption = inter(.regular, size: 12, relativeTo: .caption)
     /// Small uppercase labels. Pair with `.textCase(.uppercase)` and `.tracking(_:)`.
-    static let eyebrow = Font.system(.caption2, weight: .semibold)
+    static let eyebrow = inter(.semibold, size: 11, relativeTo: .caption2)
+
     /// Page title in the top bar, at rest and once the screen has scrolled.
-    /// Text styles, so they scale with Dynamic Type; at the default size they are
-    /// 28pt → 20pt — the same 8pt shrink as One Moment's heading, and the same
-    /// heights as the logo on Home, so every page's bar looks the same size.
-    static let heading = Font.system(.title, design: .serif)
-    static let headingCollapsed = Font.system(.title3, design: .serif)
-    /// Prices use tabular figures so columns of prices line up.
-    static let price = Font.system(.callout, weight: .semibold).monospacedDigit()
+    /// 28pt → 20pt at the default text size — the same 8pt shrink as One Moment's
+    /// heading, and the same heights as the logo on Home, so every page's bar is
+    /// the same size.
+    static let heading = inter(.medium, size: 28, relativeTo: .title)
+    static let headingCollapsed = inter(.medium, size: 20, relativeTo: .title3)
+
+    /// Prices use tabular figures (Inter has `tnum`) so columns of prices line up.
+    static let price = inter(.semibold, size: 16, relativeTo: .callout).monospacedDigit()
 }

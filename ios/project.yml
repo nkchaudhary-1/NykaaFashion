@@ -32,6 +32,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.nykaafashion   # TODO: replace with the real bundle ID
         TARGETED_DEVICE_FAMILY: "1"                            # iPhone only for v1; iPad is a later phase
         GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Config/Info.plist                     # partial plist: UIAppFonts (Inter Display). Merged with the generated keys.
         INFOPLIST_KEY_CFBundleDisplayName: Nykaa Fashion
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
