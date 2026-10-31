@@ -82,9 +82,9 @@ copyFileSync(join(root, "src/data/generated/image-meta.json"), join(work, "meta.
 const meta0 = JSON.parse(readFileSync(join(work, "meta.json"), "utf8"));
 
 const env = { ...process.env, UNSPLASH_OUT: dirs.img, UNSPLASH_META: join(work, "meta.json"), UNSPLASH_ASSIGNMENTS: join(work, "assign.json"), UNSPLASH_CREDITS: join(work, "credits.json"), UNSPLASH_MANIFEST: manifest, UNSPLASH_CACHE: dirs.cache };
-const run = (args = []) =>
+const run = (args = [], script = "scripts/unsplash/build.mjs", extra = {}) =>
   new Promise((res) => {
-    const child = spawn(process.execPath, [join(root, "scripts/unsplash/build.mjs"), ...args], { cwd: root, env });
+    const child = spawn(process.execPath, [join(root, script), ...args], { cwd: root, env: { ...env, ...extra } });
     let out = "", err = "";
     child.stdout.on("data", (d) => (out += d));
     child.stderr.on("data", (d) => (err += d));
@@ -170,6 +170,19 @@ try {
   const again = JSON.stringify(json("meta.json")["scenes/cat-women"]);
   r = await run(["--only", "scenes/cat-women"]);
   check("building twice gives the same result (deterministic)", JSON.stringify(json("meta.json")["scenes/cat-women"]) === again);
+
+  // the pop-up clip, cut from a library photograph instead of the supplied one
+  console.log("\nUnsplash build: the pop-up clip from a library photograph");
+  const clip = { PROMO_OUT_VIDEO: join(work, "video"), PROMO_OUT_IMG: join(work, "promoimg") };
+  r = await run(["--photo-id", "vr1"], "scripts/placeholders/promo-video.mjs", clip);
+  check("the clip is made (mp4, webm and a 640 × 480 poster)", r.code === 0 && existsSync(join(clip.PROMO_OUT_VIDEO, "vrisa-teaser.mp4")) && existsSync(join(clip.PROMO_OUT_VIDEO, "vrisa-teaser.webm")) && statSync(join(clip.PROMO_OUT_VIDEO, "vrisa-teaser.mp4")).size > 5000, r.err || r.out.slice(-300));
+  const poster = existsSync(join(clip.PROMO_OUT_IMG, "vrisa-teaser.webp")) ? await sharp(join(clip.PROMO_OUT_IMG, "vrisa-teaser.webp")).metadata() : {};
+  check("…its poster is the first frame at the size the pop-up expects", poster.width === 640 && poster.height === 480, `${poster.width}×${poster.height}`);
+  check("…the photo is recorded for the credits page and the picture metadata is updated", json("assign.json")["promo/vrisa-teaser"] === "vr1" && /^#[0-9a-f]{6}$/.test(json("meta.json")["promo/vrisa-teaser"].avg));
+  r = await run(["--photo-id", "nope"], "scripts/placeholders/promo-video.mjs", clip);
+  check("an unknown photo id is refused", r.code !== 0 && /not in scripts\/unsplash\/manifest\.json/.test(r.err), r.err.slice(0, 200));
+  r = await run(["--only", "promo/"]);
+  check("a build after it keeps the clip's photo in the credits", json("credits.json").some((c) => c.id === "vr1" && c.uses.includes("Pop-ups")), JSON.stringify(json("credits.json").find((c) => c.id === "vr1")));
 } finally {
   if (process.env.KEEP_WORKDIR) console.log(`\n(kept) ${work}`);
   else rmSync(work, { recursive: true, force: true });

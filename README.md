@@ -166,6 +166,8 @@ The look, structure and copy of the header, footer, product page, bag drawer, wi
 
 ## Imagery
 
+> **Changing:** the owner asked for Unsplash photography that matches an Indian audience (31 Oct 2026). The tooling is built and tested (next section); until a key is added and the photographs are picked, the pictures below are still the ones cut from the two supplied photographs, and any picture without an Unsplash photo behind it keeps its current image.
+
 **Every image on the site is cut from the two photographs that were supplied** (`scripts/placeholders/source/`: a kurta set and a cream co-ord on a bouclé chair) — nothing is generated, recoloured or added. `npm run photos` rebuilds all 571 files in `public/img/<key>.webp`:
 
 - `build.mjs` makes the named ratio versions (3:4 · 4:5 · 1:1 · 16:9 · 16:9 with copy space · 9:16 · 3:2) in `public/img/placeholders/`; where a portrait window reaches past the photograph, the seamless studio backdrop is extended — never the figure.
@@ -173,3 +175,16 @@ The look, structure and copy of the header, footer, product page, bag drawer, wi
 - `src/data/generated/image-meta.json` holds each image's size, average colour, blur preview, wall/floor edge colours and pin positions; `node scripts/qa/image-audit.mjs` checks files and metadata agree.
 
 To use real photography later, replace a file with a photograph of the same name (and re-measure its `pins` in `image-meta.json` if it has any); nothing else changes.
+
+### Unsplash photography (the pipeline, in short)
+
+Free-licence photographs from [Unsplash](https://unsplash.com), chosen by eye for an Indian audience and credited on `/credits` (footer → Photo credits). It runs on the official API only — unsplash.com's website blocks automated access, and nothing here tries to get around that. Everything is in `scripts/unsplash`; the full plan, rules and hand-off are in **`docs/UNSPLASH_PLAN.md`**.
+
+1. Get an *Access Key* (unsplash.com/oauth/applications → New Application) and put it in the environment as `UNSPLASH_ACCESS_KEY` (never in the repo). A demo key allows 50 API requests an hour; the scripts count them, cache searches and wait for the next hour instead of failing.
+2. `npm run unsplash:search -- --phase A` — search each group (`groups.mjs`: scenes and launches first, then products), keep usable results, write numbered contact sheets to `.cache/unsplash/sheets`.
+3. Look at the sheets and `npm run unsplash:pick -- <group> <numbers>` (with `@x,y` for where the subject sits); `npm run unsplash:review -- --photo <id>` shows a photo with a 10 % grid to read focus points and pin anchors from.
+4. `npm run unsplash:download` — tells Unsplash about each chosen photo (their API guideline), keeps a 2400 px original in the ignored cache.
+5. `npm run unsplash:build` — cuts every picture at its own key and size (products by kind and colour, scenes, launches, pop-ups), recomputes the metadata (average colour, blur, wall colours, pins), keeps each picture inside a size budget, writes `photo-assignments.json` and `photo-credits.json`, and warns about weak spots (a subject too far left for the headline, low heading contrast, pins on fallback positions). `npm run unsplash:review -- scenes/edit` shows what was built.
+6. `npm run data:check` insists that every photograph on the site was reported to Unsplash and is credited; `scripts/qa/unsplash-unit.mjs` and `scripts/qa/unsplash-build-unit.mjs` test the tools with no key and no network.
+
+`scripts/placeholders/promo-video.mjs --photo-id <id>` re-cuts the pop-up clip from a picked photograph. Picks, focus points and photographer details live in `scripts/unsplash/manifest.json` (committed); originals are re-fetched from Unsplash's CDN when needed, so the repository holds only the built pictures.
