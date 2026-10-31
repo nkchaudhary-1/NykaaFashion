@@ -80,6 +80,12 @@ A pre-launch, launch-day and post-launch experience, built once as a **template*
 
 **Try it without waiting for 14 November:** the *Prototype · Launch clock* control on the hub moves the whole site's clock (an hour before launch, at launch, a week after). It is a cookie, so the server agrees: before launch day `/p/<piece>` redirects to the launch page and the bag refuses the piece; after, both work. *Notify me*, the codes and the wishlist are simulated and stored in the browser. `node scripts/qa/launch.cjs` tests all of it end to end.
 
+## Pop-ups (PiP) — floating promotional windows
+
+A small window in the corner — a picture or a **muted, looping video** — that points at a new brand launch, an upcoming collection, an offer or an announcement, wherever people are browsing. Clicking it opens the campaign; ✕ closes it and keeps it (and, for a day, everything else) away. It never takes focus, waits while a drawer or dialog is open, sits above the phone's bottom bar, and stays out of bag, checkout, login and account. Phones get a docked mini window; tablets and desktops a small 4:3 window in the bottom-right corner. Video does not autoplay for visitors who prefer reduced motion or have data saver on.
+
+**A campaign is one object** in `src/data/promos.ts` plus its picture (and optional video); a campaign tied to a brand launch (`launchId`) writes its own copy — countdown before launch, *Now live → Shop now* after. Rules, template and limits: [`docs/PROMOS.md`](docs/PROMOS.md). To see them: *Prototype controls → Pop-ups* (show any campaign now, bring dismissed ones back), or add `?promo=<campaign id>` to any URL. `node scripts/qa/promo-unit.mjs` and `node scripts/qa/promo.cjs` test the rules and the behaviour end to end.
+
 ## Sharing it safely (read before you send the link)
 
 A website cannot be made copy-proof — whatever a browser can show, it can save — so protection here means: nothing is reachable without the password, and the source is not lying around.
@@ -118,6 +124,8 @@ node scripts/qa/flat.cjs     http://localhost:3100              # no shadows / g
 node scripts/qa/grid.cjs     http://localhost:3100              # every block sits on the 12/4-column grid at 4 widths
 node scripts/qa/overflow.cjs http://localhost:3100              # horizontal-overflow scan, every route x 4 widths + overlays
 node scripts/qa/align.cjs    http://localhost:3100              # layout sanity: text over text, clipped or off-page text, voids in stretched columns, near-miss alignment, underfilled rails, stretched pictures (every route x 390/820/1024/1440)
+node scripts/qa/promo.cjs    http://localhost:3100              # pop-ups (PiP): timing, muted video, dismissal rules, quiet pages, phone / tablet / desktop, prototype controls, axe
+node scripts/qa/promo-unit.mjs                                 # the pop-up rules in Node (routes, dates, launch states, cool-down, visit cap)
 node scripts/qa/launch.cjs   http://localhost:3100              # New & Next: countdown, Notify me, previews + wishlist, pre-launch guards, automatic switch to Shop now, template pages
 node scripts/qa/roles.cjs                                      # accounts and roles end to end (starts its own server)
 node scripts/qa/keyboard.cjs http://localhost:3100              # keyboard-only checks (skip link, combobox, focus traps, dropdowns…)
@@ -132,14 +140,14 @@ node scripts/qa/sweep.cjs <outDir> http://localhost:3100 / /c/women   # scrollin
 
 ```
 src/app/            routes (App Router)
-src/components/     ui/ (kit) · layout/ · motion/ (reveals, smooth scroll, cursor, ticker, parallax) · product/ · plp/ · home/ · editorial/ · commerce/ · account/ · team/ (session chip, admin dashboard) · launch/ (New & Next)
-src/data/           types · labels · categories · catalog-defs → catalog · edits · stories · scenes · commerce · content · launches (brand launches)
+src/components/     ui/ (kit) · layout/ · motion/ (reveals, smooth scroll, cursor, ticker, parallax) · product/ · plp/ · home/ · editorial/ · commerce/ · account/ · team/ (session chip, admin dashboard) · launch/ (New & Next) · promo/ (pop-ups)
+src/data/           types · labels · categories · catalog-defs → catalog · edits · stories · scenes · commerce · content · launches (brand launches) · promos (pop-ups)
 src/lib/            store · filters · search · recs · pricing · intent helpers · flip · mockApi · a11y
 src/stores/         wishlist/bag · account/orders · intent · checkout · ui/toasts/prefs
 scripts/placeholders/ the two supplied photographs and the tool that cuts every image from them
 scripts/qa/         Playwright journey · nav · home · links · flat · grid · overflow · keyboard · a11y · vitals · screenshot tools
 public/brand/       the supplied wordmark (inlined by components/layout/Logo.tsx)
-docs/               PRD · grid system · awards direction · LAUNCHES (onboarding a brand)
+docs/               PRD · grid system · awards direction · LAUNCHES (onboarding a brand) · PROMOS (pop-up campaigns)
 ```
 
 ## Live content

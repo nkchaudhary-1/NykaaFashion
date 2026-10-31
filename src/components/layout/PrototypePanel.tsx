@@ -9,18 +9,21 @@ import { SimulatedTag } from "@/components/ui/Simulated";
 import { categoryById } from "@/data/categories";
 import { editById } from "@/data/edits";
 import { labelById } from "@/data/labels";
+import { promos } from "@/data/promos";
 import { HOME_MODULES, MODE_COPY, composeHome } from "@/lib/home";
+import { KIND_LABEL } from "@/lib/promo";
 import { fmtDateTime } from "@/lib/format";
 import { resetAllStores, useStore } from "@/lib/store";
 import { eventsStore } from "@/lib/track";
 import { accountStore } from "@/stores/account";
+import { promoStore, resetPromos, showPromoNow } from "@/stores/promo";
 import { INTENT_INITIAL, dealStore, intentStore, setIntentOverride, topKey, useIntent, type IntentOverride } from "@/stores/intent";
 import { setPrefs, setUI, toast, usePrefs, useUI } from "@/stores/ui";
 import { cn } from "@/lib/cn";
 
 /**
- * The review controls as a flat drawer on the right: four numbered groups separated by ink rules — session intent, simulated
- * failure states, the analytics log, local data. Opens from the footer, the phone menu or the /prototype page (there is no floating button).
+ * The review controls as a flat drawer on the right: five numbered groups separated by ink rules — session intent, simulated
+ * failure states, pop-ups, the analytics log, local data. Opens from the footer, the phone menu or the /prototype page (there is no floating button).
  */
 export function PrototypePanel() {
   const { protoOpen } = useUI();
@@ -30,6 +33,7 @@ export function PrototypePanel() {
       <OverlayBody flush>
         <IntentSection />
         <SimulateSection />
+        <PromoSection />
         <EventLog />
         <DataSection />
       </OverlayBody>
@@ -139,11 +143,40 @@ function SimulateSection() {
   );
 }
 
+function PromoSection() {
+  const memory = useStore(promoStore);
+  const [id, setId] = useState(promos[0].id);
+  const dismissed = Object.keys(memory.dismissed).length;
+  return (
+    <Group n={3} id="p-promo" title="Pop-ups" aside={<SimulatedTag note="Sample campaigns. What was dismissed or opened is remembered in this browser only." />} className="space-y-4">
+      <p className="text-[12.5px] leading-relaxed text-ink-3">
+        Small floating promotions — a picture or a muted video — appear a few seconds into browsing pages, never on bag, checkout, login or account. Closing one keeps it away for 7 days and quiets the rest for a day.
+      </p>
+      <Select label="Show a campaign now" value={id} onChange={(e) => setId(e.target.value)}>
+        {promos.map((c) => (
+          <option key={c.id} value={c.id}>
+            {c.id} · {KIND_LABEL[c.kind].toLowerCase()} · {c.media.type}
+          </option>
+        ))}
+      </Select>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button variant="secondary" size="sm" onClick={() => (showPromoNow(id), setUI({ protoOpen: false }))}>
+          Show now
+        </Button>
+        <Button variant="ghost" size="sm" icon={<RotateCcw size={13} />} onClick={() => (resetPromos(), toast({ title: "Pop-ups reset", description: "Dismissals cleared; they can appear again." }))}>
+          Bring them all back
+        </Button>
+        <span className="text-[12.5px] tabular-nums text-ink-3">{dismissed ? `${dismissed} dismissed here` : "None dismissed yet"}</span>
+      </div>
+    </Group>
+  );
+}
+
 function EventLog() {
   const events = useStore(eventsStore);
   const recent = [...events].reverse().slice(0, 8);
   return (
-    <Group n={3} id="p-ev" title={<span>Event log <span className="font-normal text-ink-3">· PRD §8.1</span></span>}>
+    <Group n={4} id="p-ev" title={<span>Event log <span className="font-normal text-ink-3">· PRD §8.1</span></span>}>
       <p className="mb-3 text-[12.5px] text-ink-3">Analytics events are logged locally — nothing is sent anywhere.</p>
       {recent.length === 0 ? (
         <p className="text-[13px] text-ink-3">No events yet. Browse, save or add something.</p>
@@ -172,7 +205,7 @@ function EventLog() {
 function DataSection() {
   const [confirm, setConfirm] = useState(false);
   return (
-    <Group n={4} id="p-data" title="Data" className="space-y-3">
+    <Group n={5} id="p-data" title="Data" className="space-y-3">
       <Button variant="secondary" size="sm" onClick={() => (accountStore.set((s) => ({ ...s, sessionUserId: "u-demo" })), toast({ title: "Signed in as the demo account", description: "Aarohi Mehta · seeded addresses and orders" }))}>
         Sign in as demo account
       </Button>

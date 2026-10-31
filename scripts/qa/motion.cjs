@@ -25,7 +25,7 @@ const pending = () => {
 };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
 
   console.log(`Motion — desktop, motion on — ${BASE}`);
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });

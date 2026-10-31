@@ -10,7 +10,7 @@ const must = (c, m) => { if (!c) throw new Error(m); };
 const settle = (p, ms = 450) => p.waitForTimeout(ms);
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
 
   // ── Desktop ──────────────────────────────────────────────
   console.log("Desktop 1440×900");

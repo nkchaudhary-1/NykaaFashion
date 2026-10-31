@@ -19,7 +19,7 @@ mkdirSync(out, { recursive: true });
 const slug = (r) => (r === "/" ? "home" : r.replace(/^\//, "").replace(/[^a-z0-9]+/gi, "-").replace(/-$/, ""));
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   for (const w of WIDTHS) {
     const mobile = w < 700;
     const ctx = await browser.newContext({ viewport: { width: w, height: mobile ? 844 : HEIGHT }, isMobile: mobile, hasTouch: mobile, deviceScaleFactor: 1 });

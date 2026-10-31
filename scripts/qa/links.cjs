@@ -5,7 +5,7 @@
 const { chromium } = require("playwright");
 const BASE = process.argv.find((a) => a.startsWith("http")) ?? "http://localhost:3100";
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   const hrefs = new Map(); // href (with query) -> where seen
   const grab = async (page, where) => {
     const list = await page.evaluate(() => Array.from(document.querySelectorAll("a[href]")).map((a) => a.getAttribute("href")));

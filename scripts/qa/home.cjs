@@ -10,7 +10,7 @@ async function step(name, fn) {
 const must = (c, m) => { if (!c) throw new Error(m); };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   const ctx = await browser.newContext(mobile ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } : { viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
   const errors = [];

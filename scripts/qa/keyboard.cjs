@@ -9,7 +9,7 @@ async function step(name, fn) {
 const must = (cond, msg) => { if (!cond) throw new Error(msg); };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
   page.setDefaultTimeout(8000);
   const active = () => page.evaluate(() => { const a = document.activeElement; return a ? `${a.tagName.toLowerCase()}${a.id ? "#" + a.id : ""}|${(a.getAttribute("aria-label") || a.textContent || "").trim().slice(0, 40)}` : "none"; });

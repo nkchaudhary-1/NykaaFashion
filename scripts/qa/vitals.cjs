@@ -16,7 +16,7 @@ const observe = () => {
 };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   for (const [label, vw, vh, mobile] of [["mobile", 390, 844, true], ["desktop", 1440, 900, false]]) {
     for (const route of ROUTES) {
       const ctx = await browser.newContext({ viewport: { width: vw, height: vh }, isMobile: mobile, hasTouch: mobile });

@@ -54,7 +54,7 @@ const probe = (tol) => {
 };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   let findings = 0;
   for (const w of WIDTHS) {
     const mobile = w < 700;

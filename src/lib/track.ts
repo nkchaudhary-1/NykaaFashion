@@ -16,7 +16,10 @@ export type EventName =
   | "personalized_rail_click"
   | "checkout_step"
   | "order_placed"
-  | "notify_me";
+  | "notify_me"
+  | "promo_view"
+  | "promo_click"
+  | "promo_dismiss";
 
 export interface TrackedEvent {
   id: number;

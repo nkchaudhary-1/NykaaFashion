@@ -9,7 +9,7 @@ const must = (c, m) => { if (!c) throw new Error(m); };
 const PIECE = { name: "Zardozi Anarkali Set", slug: "zardozi-anarkali-set" };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
   const errors = [];

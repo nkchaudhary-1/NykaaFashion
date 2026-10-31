@@ -31,7 +31,7 @@ const settle = async (page) => {
 };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   const ctx = await browser.newContext({
     viewport: mobile ? { width: 390, height: 844 } : { width: 1440, height: 900 },
     isMobile: mobile, hasTouch: mobile,

@@ -131,7 +131,7 @@ const probe = () => {
 };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   let total = 0;
   const tally = {};
   for (const w of WIDTHS) {

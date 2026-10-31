@@ -8,7 +8,7 @@ const opt = (k, d) => { const i = args.indexOf(`--${k}`); return i >= 0 ? args[i
 const flag = (k) => args.includes(`--${k}`);
 (async () => {
   const mobile = flag("mobile");
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   const ctx = await browser.newContext({
     viewport: { width: +opt("w", mobile ? 390 : 1440), height: +opt("h", mobile ? 844 : 900) },
     deviceScaleFactor: +opt("dpr", 1),

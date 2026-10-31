@@ -12,7 +12,7 @@ const PAGES = onlyArg > -1 ? process.argv[onlyArg + 1].split(",") : [
 const AUTHED = ["/checkout", "/account", "/account/orders", "/account/orders/nf-26100377", "/account/addresses"];
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   const ctx = await browser.newContext({ viewport: mobile ? { width: 390, height: 844 } : { width: 1440, height: 900 }, isMobile: mobile, hasTouch: mobile, reducedMotion: "reduce" }); // mid-reveal opacity would skew colour-contrast results
   const page = await ctx.newPage();
   let total = 0;

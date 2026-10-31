@@ -15,6 +15,7 @@ import { PrototypePanel } from "@/components/layout/PrototypePanel";
 import { SearchOverlay } from "@/components/layout/SearchOverlay";
 import { LoginRecorder } from "@/components/team/LoginRecorder";
 import { Cursor } from "@/components/motion/Cursor";
+import { PromoPip } from "@/components/promo/PromoPip";
 import { RevealObserver } from "@/components/motion/RevealObserver";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { NotifyMeHost } from "@/components/product/NotifyMeDialog";
@@ -92,6 +93,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <NotifyMeHost />
           <PrototypePanel />
           <ToastRegion />
+          {/* usePathname suspends on routes with unknown params, like the header and bottom nav above */}
+          <Suspense>
+            <PromoPip />
+          </Suspense>
           <RevealObserver />
           <LoginRecorder />
           <Suspense>

@@ -37,7 +37,7 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     for (let i = 0; i < 60 && !up; i++) { await new Promise((r) => setTimeout(r, 1000)); up = await fetch(BASE + "/", { headers: { accept: "text/html" } }).then((r) => r.ok, () => false); }
     if (!up) { console.log("could not start the test server (is there a production build?)"); try { process.kill(-server.pid); } catch {} process.exit(1); }
   }
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
   const errors = [];

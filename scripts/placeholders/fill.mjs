@@ -148,6 +148,13 @@ function launchSpec(key) {
   return { subject, win: frames[role] ?? (k ? K.full : B.full), flip: role === "g2" ? !flip : flip, jitter: role === "hero-tall" ? 0.03 : 0.05 };
 }
 
+// ── Pop-up (PiP) pictures (src/data/promos.ts): 4:3 windows onto the same two photographs. The video poster promo/vrisa-teaser is made with its clip (promo-video.mjs). ──
+const PROMO = { "first-order": ["kurta-set", { cx: 800, cy: 540, sw: 1000 }, false], "halden-preview": ["boucle-suit", { cx: 762, cy: 540, sw: 1060 }, false], "delivery-notice": ["boucle-suit", { cx: 770, cy: 560, sw: 1200 }, true] };
+function promoSpec(key) {
+  const e = /^promo\/([\w-]+)$/.exec(key) && PROMO[/^promo\/([\w-]+)$/.exec(key)[1]];
+  return e ? { subject: e[0], win: e[1], flip: e[2], jitter: 0.02 } : null;
+}
+
 // ── Canvas per photograph (decoded once) ──────────────────────────────────────────────────────────────────────
 const CANVAS = {};
 for (const [name, subj] of Object.entries(SUBJECTS)) {
@@ -201,10 +208,11 @@ let done = 0;
 const skipped = [];
 for (const key of Object.keys(meta)) {
   if (key.startsWith("placeholders/")) continue; // the ratio variants are build.mjs's
+  if (key === "promo/vrisa-teaser") continue; // the first frame of the clip — promo-video.mjs makes it
   if (ONLY && !key.startsWith(ONLY)) continue;
   const old = meta[key];
   const W = old.w, H_ = old.h;
-  const spec = productSpec(key) ?? sceneSpec(key, W, H_) ?? launchSpec(key);
+  const spec = productSpec(key) ?? sceneSpec(key, W, H_) ?? launchSpec(key) ?? promoSpec(key);
   if (!spec) {
     skipped.push(key);
     continue;

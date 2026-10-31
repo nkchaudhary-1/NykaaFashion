@@ -62,7 +62,7 @@ const probe = () => {
 const fmt = (list) => list.slice(0, 6).map((x) => `      ${x.k} ×${x.n}  ${x.extra}`).join("\n");
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = require("./quiet.cjs")(await chromium.launch());
   let hard = 0, warn = 0;
   for (const w of WIDTHS) {
     const mobile = w < 700;

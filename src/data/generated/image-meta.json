@@ -3327,6 +3327,26 @@
   "h": 1250,
   "avg": "#cbb7a5"
  },
+ "promo/delivery-notice": {
+  "w": 640,
+  "h": 480,
+  "avg": "#cfbdae"
+ },
+ "promo/first-order": {
+  "w": 640,
+  "h": 480,
+  "avg": "#c4a993"
+ },
+ "promo/halden-preview": {
+  "w": 640,
+  "h": 480,
+  "avg": "#cebcac"
+ },
+ "promo/vrisa-teaser": {
+  "w": 640,
+  "h": 480,
+  "avg": "#c6ae99"
+ },
  "scenes/auth-side": {
   "w": 1000,
   "h": 1250,
