@@ -145,3 +145,68 @@ export function useLoginRecords(ids: string[]): LoginRecord[] {
   // eslint-disable-next-line react-hooks/exhaustive-deps -- `v` is the storage version: reading again is the point
   return useMemo(() => (typeof window === "undefined" ? ids.map(blank) : ids.map(readRecord)), [key, v]);
 }
+
+// ── sign-ins this admin has issued (a list kept in this browser, for display only) ───────────────────────────────
+/*
+ * "Add user" asks the server for a Login ID + password that works on any device (src/lib/auth.ts). The server stores nothing, so this list —
+ * who was added, and when their access ends — lives only in the browser it was added from. Losing it loses the list, not the access: the
+ * sign-in keeps working until it expires, and "Show password" can recompute it from the Login ID and the expiry kept here.
+ */
+export interface IssuedUser {
+  id: string;
+  name: string;
+  /** ISO — when the user was added */
+  createdAt: string;
+  /** ISO — when their access ends (on the hour) */
+  expiresAt: string;
+}
+const ISSUED_KEY = "nf.team.issued.v1";
+const ISSUED_CAP = 60;
+const NO_ISSUED: IssuedUser[] = [];
+const isIssued = (v: unknown): v is IssuedUser => !!v && typeof v === "object" && ["id", "name", "createdAt", "expiresAt"].every((k) => typeof (v as Record<string, unknown>)[k] === "string");
+
+let issuedRaw: string | null = null;
+let issuedList: IssuedUser[] = NO_ISSUED;
+const issuedSubs = new Set<() => void>();
+const bumpIssued = () => issuedSubs.forEach((f) => f());
+if (typeof window !== "undefined") window.addEventListener("storage", (e) => (e.key === null || e.key === ISSUED_KEY) && bumpIssued());
+
+/** Referentially stable until the stored text changes (what useSyncExternalStore needs). */
+function issuedSnapshot(): IssuedUser[] {
+  let raw: string | null = null;
+  try {
+    raw = window.localStorage.getItem(ISSUED_KEY);
+  } catch {
+    /* storage unavailable: an empty list */
+  }
+  if (raw !== issuedRaw) {
+    issuedRaw = raw;
+    try {
+      const v: unknown = raw ? JSON.parse(raw) : [];
+      issuedList = Array.isArray(v) ? v.filter(isIssued) : NO_ISSUED;
+    } catch {
+      issuedList = NO_ISSUED;
+    }
+  }
+  return issuedList;
+}
+const writeIssued = (list: IssuedUser[]) => {
+  try {
+    window.localStorage.setItem(ISSUED_KEY, JSON.stringify(list.slice(0, ISSUED_CAP)));
+  } catch {
+    /* storage unavailable: the user was still added on the server, this list just cannot remember it */
+  }
+  bumpIssued();
+};
+/** Adds (or updates) a user in the list, newest first. */
+export const saveIssued = (u: IssuedUser) => writeIssued([u, ...issuedSnapshot().filter((x) => x.id !== u.id)]);
+/** Forgets a user in the list. This does NOT end their access. */
+export const forgetIssued = (id: string) => writeIssued(issuedSnapshot().filter((x) => x.id !== id));
+
+export function useIssuedUsers(): IssuedUser[] {
+  return useSyncExternalStore(
+    (cb) => (issuedSubs.add(cb), () => void issuedSubs.delete(cb)),
+    issuedSnapshot,
+    () => NO_ISSUED,
+  );
+}

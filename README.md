@@ -50,7 +50,7 @@ The website is opened with **named accounts** instead of one shared password. Th
 
 | Account | Role | Can |
 |---|---|---|
-| Nilesh | Admin | use the site, open **Admin dashboard** (`/admin`): total logins per user, each user's login history with date and time, last login, a 14-day chart, export to CSV, clear history |
+| Nilesh | Admin | use the site, open **Admin dashboard** (`/admin`): total logins per user, each user's login history with date and time, last login, a 14-day chart, export to CSV, clear history, **add users** |
 | Kiran (Director) | Regular user | use the site normally; cannot open `/admin`, see login statistics or change accounts |
 
 How it works — and where it is honest about its limits:
@@ -59,8 +59,9 @@ How it works — and where it is honest about its limits:
 * **Log in / out:** *Log out* (top bar on desktop, menu on phones) posts to the server, which ends the session. Failed attempts are refused after a short delay and are never counted.
 * **Login records are kept in the browser** (localStorage, one key per account: `nf.logins.v1.<id>`). A login is counted once, only after the server confirmed it — a one-time cookie set at sign-in is turned into a record, then deleted — so refreshing, opening more tabs or signing out never changes the count, and the history survives all of them.
 * **What that means:** the dashboard shows the sign-ins made **in the browser you are viewing it in**. If Kiran signs in on his own laptop, Nilesh's dashboard will not see it; and anyone who can open a browser's developer tools can read, edit or delete that browser's records. This is a temporary, no-database build. Records that cannot be edited and that cover every device need a server-side store.
+* **Add a user** (`/admin` → *Add a user*, or *Users and access*): enter a name and a Login ID, choose how long access lasts (1–30 days), and the dashboard shows the new person's **Login ID, a generated password and the end date**, with *Copy message* ready to paste into WhatsApp or email. They sign in on the same page, from any device, as a **regular user** (added users are never admins; they cannot open the dashboard or call its endpoints — the server refuses both). There is no database, so nothing is stored about them: the password is a signature over the Login ID and the end date (`src/lib/auth.ts`), which is why it works anywhere and stops by itself. The price: **access can't be switched off from the dashboard before its date** — add the Login ID to `SITE_REVOKED` in the hosting settings and redeploy (about a minute), or change `GATE_SECRET` to end every added sign-in. Set `GATE_SECRET` once (any long random string) so editing `SITE_USERS` doesn't end added sign-ins by accident. The list of who you added lives in the browser you added them from (like the login records); losing it loses the list, not their access. Needs a store (KV / Postgres) if you want instant revoke, chosen passwords, or one list for every admin device.
 * **Run it locally with accounts:** copy `.env.example` to `.env.local`, set `SITE_USERS`, then `npm run dev`. Without it the site is open and no account features show. On Vercel: `vercel env add SITE_USERS production --sensitive` (and `preview`), then redeploy.
-* `node scripts/qa/roles.cjs` tests all of the above end to end (it starts its own throwaway server with made-up accounts).
+* `node scripts/qa/roles.cjs` tests all of the above end to end (it starts its own throwaway server with made-up accounts), and `node scripts/qa/auth-unit.mjs` unit-tests the issued sign-ins (tamper, expiry, revoke, secret change).
 
 ## New & Next — brand launches
 

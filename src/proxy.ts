@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { LOGO_PATHS, LOGO_VIEWBOX } from "./components/layout/logo-paths";
 import { CLOCK_COOKIE, clockOffset, isLaunched, launchById, launchOfSlug } from "./data/launches";
-import { accountsConfig, hmac, issueSession, LOGIN_EVENT_COOKIE, randomId, readSession, safeEqual, SESSION_COOKIE, SESSION_MAX_AGE, verifyLogin } from "./lib/auth";
+import { accountsConfig, hmac, issueSession, LOGIN_EVENT_COOKIE, randomId, readSession, safeEqual, SESSION_COOKIE, sessionAge, verifyLogin } from "./lib/auth";
 
 /**
  * Access gate for hosted copies of the prototype (Vercel or anywhere else) — no database.
@@ -9,7 +9,8 @@ import { accountsConfig, hmac, issueSession, LOGIN_EVENT_COOKIE, randomId, readS
  *  • Named accounts (SITE_USERS, see lib/auth.ts): the sign-in page asks for a Login ID and password, the server checks them and sets a signed
  *    HttpOnly session cookie that names the account; the role (admin / user) is looked up from the configuration on every request. /admin is
  *    served to admins only (403 for everyone else); POST /__logout ends the session. A one-time `nf_login_event` cookie tells the app that a
- *    sign-in just succeeded, so it can write the login record in the browser. With SITE_USERS set, SITE_PASSWORD is ignored.
+ *    sign-in just succeeded, so it can write the login record in the browser. With SITE_USERS set, SITE_PASSWORD is ignored. Admins can also issue
+ *    expiring sign-ins from the dashboard (lib/auth.ts "sign-ins issued"); /api/admin/* is admin-only like /admin.
  *  • Without accounts, the single shared password below:
  *
  *  • Set SITE_PASSWORD and every request needs the signed `nf_gate` cookie, issued by the sign-in page this file serves itself.
@@ -155,7 +156,7 @@ async function gate(req: NextRequest) {
       }
       // Authentication succeeded: the signed session says who this is; the one-time event cookie lets the app write exactly one login record.
       const res = NextResponse.redirect(new URL(next, req.url), 303);
-      res.cookies.set({ name: SESSION_COOKIE, value: await issueSession(account.id), httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: SESSION_MAX_AGE });
+      res.cookies.set({ name: SESSION_COOKIE, value: await issueSession(account.id, account.until), httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: sessionAge(account.until) }); // an issued sign-in ends with its access
       res.cookies.set({ name: LOGIN_EVENT_COOKIE, value: randomId(), httpOnly: false, secure, sameSite: "lax", path: "/", maxAge: 120 });
       return res;
     }
@@ -185,8 +186,8 @@ async function gate(req: NextRequest) {
 
   const session = named ? await readSession(req.cookies.get(SESSION_COOKIE)?.value) : null;
   if (named ? session : await validToken(req.cookies.get(COOKIE)?.value)) {
-    // the admin dashboard and anything under it: administrators only — enforced here, on the server, before any page or data is served
-    if (named && (pathname === "/admin" || pathname.startsWith("/admin/")) && session?.role !== "admin") {
+    // the admin dashboard, its endpoints and anything under them: administrators only — enforced here, on the server, before any page or data is served
+    if (named && (pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/api/admin/")) && session?.role !== "admin") {
       return req.headers.get("accept")?.includes("text/html") ? forbiddenPage() : new NextResponse("Forbidden", { status: 403, headers: { "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" } });
     }
     const res = NextResponse.next();

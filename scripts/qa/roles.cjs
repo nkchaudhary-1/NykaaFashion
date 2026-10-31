@@ -132,6 +132,88 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     must(!r[USER.id.toLowerCase()] && r[ADMIN.id.toLowerCase()].count === 2, JSON.stringify(Object.keys(r)));
   });
 
+  // ── Add user (sign-ins issued from the dashboard) ─────────────────────────────────────────────────────────────
+  const NEW = { id: "test.reviewer", pw: "" };
+  await step("the admin adds a user from the dashboard: Login ID suggested from the name, a password and an end date are shown", async () => {
+    await page.goto(BASE + "/admin", { waitUntil: "networkidle" });
+    must((await page.getByRole("link", { name: "Add a user" }).count()) === 1, "no Add a user link at the top of the dashboard");
+    const form = page.getByRole("form", { name: "Add a user" });
+    await form.getByLabel("Full name").fill("Test Reviewer");
+    must((await form.getByLabel("Login ID").inputValue()) === "test.reviewer", `suggested ID: ${await form.getByLabel("Login ID").inputValue()}`);
+    await form.getByLabel("Access lasts").selectOption("3");
+    await form.getByRole("button", { name: "Add user" }).click();
+    const result = page.getByRole("status", { name: "New sign-in" });
+    await result.waitFor();
+    const text = await result.innerText();
+    const pw = /\b([0-9A-Z]{4}(?:-[0-9A-Z]{4}){3})\b/.exec(text)?.[1];
+    must(pw, `no password in: ${text}`);
+    must(/test\.reviewer/.test(text) && /access ends/i.test(text), `details missing: ${text}`);
+    NEW.pw = pw;
+    const row = page.getByRole("row", { name: /test\.reviewer/ });
+    must((await row.count()) === 1 && /Active/.test(await row.innerText()) && /Regular user/.test(await row.innerText()), "no Active row for the new user in Accounts");
+  });
+
+  await step("the new user signs in on another device as a regular user: no admin link, /admin refused, own record", async () => {
+    const d = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const dp = await d.newPage();
+    await signIn(dp, NEW);
+    const chip = dp.getByRole("group", { name: "Your session" });
+    await chip.waitFor();
+    const t = await chip.innerText();
+    must(/Test Reviewer/.test(t) && /Guest/.test(t), `top bar says: ${t}`);
+    must((await dp.getByRole("link", { name: /Admin dashboard/ }).count()) === 0, "admin link shown to an added user");
+    const s = await (await dp.request.get(BASE + "/api/session")).json();
+    must(s.user.role === "user" && s.accounts === undefined, `session: ${JSON.stringify(s)}`);
+    must((await dp.goto(BASE + "/admin")).status() === 403, "/admin not refused");
+    const add = await dp.request.post(BASE + "/api/admin/users", { data: { id: "sneaky.user", days: 7 }, failOnStatusCode: false });
+    must(add.status() === 403, `an added user could call the add-user API (${add.status()})`);
+    must((await dp.request.post(BASE + "/api/admin/users/password", { data: { id: "sneaky.user", expiresAt: new Date(Date.now() + 36e5).toISOString() }, failOnStatusCode: false })).status() === 403, "an added user could call the reveal API");
+    must((await records(dp))[NEW.id]?.count === 1, `record: ${JSON.stringify(await records(dp))}`);
+    await dp.goto(BASE + "/", { waitUntil: "networkidle" }); // the 403 page has no site chrome, so go back before signing out
+    await logOut(dp);
+    // typed the way people type it: lower case, no dashes
+    await signIn(dp, NEW, NEW.pw.toLowerCase().replaceAll("-", ""));
+    must((await records(dp))[NEW.id]?.count === 2, "second sign-in not recorded");
+    await d.close();
+  });
+
+  await step("a wrong password for the new Login ID, and the regular user calling the add-user API, are refused", async () => {
+    const d = await browser.newContext();
+    const dp = await d.newPage();
+    await dp.goto(BASE + "/", { waitUntil: "networkidle" });
+    await dp.fill("#uid", NEW.id); await dp.fill("#pw", NEW.pw.slice(0, -1) + (NEW.pw.endsWith("0") ? "1" : "0")); await dp.click("button[type=submit]");
+    await dp.locator("#err").waitFor();
+    must(Object.keys(await records(dp)).length === 0, "a failed sign-in left a record");
+    await d.close();
+    const k = await browser.newContext();
+    const kp = await k.newPage();
+    await signIn(kp, USER);
+    must((await kp.request.post(BASE + "/api/admin/users", { data: { id: "sneaky.user", days: 7 }, failOnStatusCode: false })).status() === 403, "the regular user could add a user");
+    await k.close();
+    must((await (await browser.newContext()).request.post(BASE + "/api/admin/users", { data: { id: "x.y.z", days: 7 }, failOnStatusCode: false })).status() === 401, "a stranger reached the add-user API");
+  });
+
+  await step("the form refuses bad Login IDs; the list can show the password again and tidy itself without ending access", async () => {
+    await page.goto(BASE + "/admin", { waitUntil: "networkidle" });
+    const form = page.getByRole("form", { name: "Add a user" });
+    await form.getByLabel("Login ID").fill("ab");
+    await form.getByLabel("Login ID").blur();
+    must(/3–24/.test(await form.innerText()) && (await form.getByRole("button", { name: "Add user" }).isDisabled()), "a two-letter ID was allowed");
+    await form.getByLabel("Login ID").fill(USER.id);
+    await form.getByRole("button", { name: "Add user" }).click();
+    await form.getByRole("alert").filter({ hasText: /built-in/ }).waitFor();
+    // show password again: recomputed, identical
+    await page.getByRole("button", { name: "Show password" }).first().click();
+    await page.getByText(NEW.pw).first().waitFor();
+    await page.getByRole("button", { name: "Remove from list" }).first().click();
+    await page.getByRole("row", { name: /test\.reviewer/ }).waitFor({ state: "detached" });
+    const d = await browser.newContext();
+    const dp = await d.newPage();
+    await signIn(dp, NEW); // still works: removing a row from the list does not end access
+    must((await records(dp))[NEW.id]?.count === 1, "the removed user could not sign in");
+    await d.close();
+  });
+
   await step("a forged or edited session cookie does not open the site or the admin page", async () => {
     await logOut(page);
     const forged = `9999999999.${Buffer.from(ADMIN.id).toString("base64url")}.${"0".repeat(64)}`;
@@ -150,6 +232,27 @@ const cell = (page, rowName, col) => page.getByRole("row", { name: new RegExp(ro
     await block.waitFor();
     must((await block.innerText()).includes(USER.id), "no signed-in block in the menu");
     must((await block.getByRole("link", { name: /Admin dashboard/ }).count()) === 0 && (await block.getByRole("button", { name: "Log out" }).count()) === 1, "menu block wrong");
+    await m.close();
+  });
+
+  await step("phone: the admin dashboard and the Add user form fit a 390px screen", async () => {
+    const m = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const mp = await m.newPage();
+    await signIn(mp, ADMIN);
+    await mp.goto(BASE + "/admin", { waitUntil: "networkidle" });
+    const form = mp.getByRole("form", { name: "Add a user" });
+    await form.getByLabel("Full name").fill("Phone Tester");
+    await form.getByRole("button", { name: "Add user" }).click();
+    await mp.getByRole("status", { name: "New sign-in" }).waitFor();
+    await mp.getByRole("button", { name: "Show password" }).first().click();
+    await mp.waitForTimeout(400);
+    const m1 = await mp.evaluate(() => ({
+      sw: document.documentElement.scrollWidth,
+      iw: innerWidth,
+      out: [...document.querySelectorAll("#access input, #access select, #access button, #access [role=status]")].filter((e) => e.getBoundingClientRect().right > innerWidth + 0.5 && !e.closest("[role=region]")).map((e) => e.tagName + ":" + (e.getAttribute("aria-label") || e.textContent || "").trim().slice(0, 24)),
+    }));
+    must(m1.sw <= m1.iw + 1, `the page is ${m1.sw}px wide on a ${m1.iw}px screen`);
+    must(m1.out.length === 0, `controls stick out of the screen: ${m1.out.join(", ")}`);
     await m.close();
   });
 

@@ -1,8 +1,10 @@
 "use client";
 import { useState, type ReactNode } from "react";
+import { UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { UsersAndAccess } from "@/components/team/UsersAndAccess";
 import { cn } from "@/lib/cn";
-import { clearRecords, roleLabel, storageAvailable, useLoginRecords, useTeamSession, type LoginRecord, type TeamUser } from "@/stores/team";
+import { clearRecords, roleLabel, storageAvailable, useIssuedUsers, useLoginRecords, useTeamSession, type LoginRecord, type TeamUser } from "@/stores/team";
 
 const dateFmt = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 const timeFmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZoneName: "short" });
@@ -41,6 +43,9 @@ export function AdminDashboard() {
 
 function Dashboard({ accounts }: { accounts: TeamUser[] }) {
   const records = useLoginRecords(accounts.map((a) => a.id));
+  const builtIn = new Set(accounts.map((a) => a.id.toLowerCase()));
+  const added = useIssuedUsers().filter((u) => !builtIn.has(u.id.toLowerCase()));
+  const addedRecords = useLoginRecords(added.map((u) => u.id)); // users added from this dashboard: their sign-ins made in this browser
   const [confirm, setConfirm] = useState<string | null>(null); // "all" or an account id awaiting a second click
   const [note, setNote] = useState("");
   const [showAll, setShowAll] = useState<Record<string, boolean>>({});
@@ -75,14 +80,22 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
 
   return (
     <div className={cn(shell, "space-y-16 sm:space-y-24")}>
-      {/* what these numbers are */}
-      <aside aria-label="About these records" className="max-w-[78ch] border border-line-strong bg-paper p-5 text-[14px] leading-relaxed text-ink-2 sm:p-6">
-        <p>
-          <strong className="font-medium text-ink">Recorded in this browser only.</strong> This temporary dashboard reads sign-ins saved in this browser&rsquo;s storage. Sign-ins made on other devices or in other browsers are not included, and anyone who can open this
-          browser&rsquo;s developer tools can read, change or delete the records. For records that cannot be edited, a server-side store is needed.
-        </p>
-        {!available && <p className="mt-2 font-medium text-danger">Browser storage is unavailable here (private mode or blocked), so nothing can be recorded or shown.</p>}
-      </aside>
+      {/* what these numbers are — and the one other thing an admin comes here to do */}
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-x-[var(--gap)] gap-y-8 lg:grid-cols-12">
+        <aside aria-label="About these records" className="order-2 border border-line-strong bg-paper p-5 text-[14px] leading-relaxed text-ink-2 sm:p-6 lg:order-1 lg:col-span-7">
+          <p>
+            <strong className="font-medium text-ink">Recorded in this browser only.</strong> This temporary dashboard reads sign-ins saved in this browser&rsquo;s storage. Sign-ins made on other devices or in other browsers are not included, and anyone who can open this
+            browser&rsquo;s developer tools can read, change or delete the records. For records that cannot be edited, a server-side store is needed.
+          </p>
+          {!available && <p className="mt-2 font-medium text-danger">Browser storage is unavailable here (private mode or blocked), so nothing can be recorded or shown.</p>}
+        </aside>
+        <div className="order-1 lg:order-2 lg:col-span-5 lg:justify-self-end">
+          <a href="#access" className="inline-flex h-11 items-center gap-2 rounded-[var(--radius-sm)] bg-navy px-6 text-[15px] font-semibold text-bone transition-colors duration-500 hover:bg-pink hover:text-white">
+            <UserPlus size={16} aria-hidden /> Add a user
+          </a>
+          <p className="mt-3 max-w-[34ch] text-[14px] leading-relaxed text-ink-3">Give someone a Login ID and password for the prototype.</p>
+        </div>
+      </div>
 
       {/* totals */}
       <section aria-labelledby="totals-h">
@@ -121,6 +134,14 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
                   <td className="py-4 pr-4 text-ink-2">{roleLabel(a)}</td>
                   <td className="py-4 pr-4 text-right tabular-nums text-ink">{records[i].count}</td>
                   <td className="py-4 tabular-nums text-ink-2">{records[i].last ? `${fmtDate(records[i].last!)}, ${fmtTime(records[i].last!)}` : "Never (in this browser)"}</td>
+                </tr>
+              ))}
+              {added.map((u, i) => (
+                <tr key={u.id} className="border-b border-line">
+                  <th scope="row" className="py-4 pr-4 font-medium text-ink">{u.name}</th>
+                  <td className="py-4 pr-4 text-ink-2">Regular user · added</td>
+                  <td className="py-4 pr-4 text-right tabular-nums text-ink">{addedRecords[i].count}</td>
+                  <td className="py-4 tabular-nums text-ink-2">{addedRecords[i].last ? `${fmtDate(addedRecords[i].last!)}, ${fmtTime(addedRecords[i].last!)}` : "Never (in this browser)"}</td>
                 </tr>
               ))}
             </tbody>
@@ -183,32 +204,10 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
           <ClearButton label="Clear all history" armed={confirm === "all"} onArm={() => setConfirm("all")} onCancel={() => setConfirm(null)} onConfirm={() => doClear("all")} />
         </div>
         <p role="status" className="mt-4 min-h-6 text-[14px] text-ink-2">{note}</p>
-        <div className="mt-10 max-w-[78ch]">
-          <h3 className="display-xs">Accounts</h3>
-          <div className="mt-4 overflow-x-auto" data-lenis-prevent tabIndex={0} role="region" aria-label="Accounts">
-            <table className="w-full min-w-[480px] border-collapse text-left text-[14px]">
-              <caption className="sr-only">Accounts that can sign in</caption>
-              <thead>
-                <tr className="border-y border-ink text-[11px] uppercase tracking-[0.14em] text-ink-3">
-                  <th scope="col" className="py-3 pr-4 font-medium">Login ID</th>
-                  <th scope="col" className="py-3 pr-4 font-medium">Name</th>
-                  <th scope="col" className="py-3 font-medium">Role</th>
-                </tr>
-              </thead>
-              <tbody>
-                {accounts.map((a) => (
-                  <tr key={a.id} className="border-b border-line">
-                    <th scope="row" className="py-3 pr-4 font-medium text-ink">{a.id}</th>
-                    <td className="py-3 pr-4 text-ink-2">{a.name}</td>
-                    <td className="py-3 text-ink-2">{a.role === "admin" ? "Admin" : `Regular user${a.title ? ` · ${a.title}` : ""}`}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-3 text-[13px] leading-relaxed text-ink-3">These two accounts are fixed for this temporary build (they live in the site&rsquo;s SITE_USERS setting, with their passwords, outside the code). There is no screen to add, change or remove accounts, and a regular user cannot reach this page.</p>
-        </div>
       </section>
+
+      {/* add a user, and who has access */}
+      <UsersAndAccess accounts={accounts} />
     </div>
   );
 }
