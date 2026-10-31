@@ -66,6 +66,7 @@ const videoState = (page) => page.locator("[data-promo] video").evaluate((v) => 
   });
 
   await step("desktop placement: bottom-right corner, 264px wide, under 40% of the screen height, clear of the header", async () => {
+    await sleep(800); // the entrance slides up 20px over half a second: measure it at rest
     const b = await box(win(v1.page, "vrisa-teaser"));
     must(Math.abs(b.w - 264) < 2 && Math.abs(900 - b.b - 24) < 2 && Math.abs(1440 - b.r - 24) < 2, `box ${JSON.stringify(b)}`);
     must(b.h <= 360 && b.t > 160, `height ${Math.round(b.h)}, top ${Math.round(b.t)}`);

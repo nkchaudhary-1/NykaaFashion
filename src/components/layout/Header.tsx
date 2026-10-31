@@ -116,6 +116,13 @@ export function Header() {
   const searchBtn = (width: string) =>
     cn("flex h-11 items-center gap-3 rounded-t-[var(--radius-sm)] border-b-2 bg-sand px-4 text-left text-[15px] text-ink-3 transition-colors hover:bg-paper", width, searchOpen ? "border-pink" : "border-line-strong");
   const searchLabel = <span className="truncate">{SEARCH_PLACEHOLDER}</span>;
+  // On the desktop row the search field is what gives way when the row is crowded (1024–1440 px): it shrinks, and says just "Search" until there is room for the whole line.
+  const searchLabelDesktop = (
+    <>
+      <span className="truncate min-[1440px]:hidden">Search</span>
+      <span className="hidden truncate min-[1440px]:inline">{SEARCH_PLACEHOLDER}</span>
+    </>
+  );
 
   return (
     <header ref={headerRef} className={cn("sticky top-0 z-40 bg-bone transition-transform duration-500 ease-expo", hidden && !open && "-translate-y-full")} onMouseLeave={() => schedule(() => patch({ open: null, preview: null }), 180)}>
@@ -143,7 +150,7 @@ export function Header() {
         <div className="relative">
           <div className="container-x flex h-16 items-center">
             <Logo className="shrink-0" />
-            <nav aria-label="Primary" className="ml-10 self-stretch">
+            <nav aria-label="Primary" className="ml-6 shrink-0 self-stretch xl:ml-10">
               <ul className="-ml-3 flex h-full items-center">
                 {DEPTS.map((d) => {
                   const lit = cur.preview ? cur.preview === d.id : onDeptRoute && activeDept === d.id;
@@ -209,10 +216,10 @@ export function Header() {
               </ul>
             </nav>
 
-            <div className="ml-auto flex items-center gap-4" onMouseEnter={() => schedule(() => patch({ open: null }), 0)}>
-              <button type="button" onClick={() => setUI({ searchOpen: true })} className={searchBtn("w-[clamp(220px,22vw,400px)]")}>
+            <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-3 pl-3 xl:gap-4" onMouseEnter={() => schedule(() => patch({ open: null }), 0)}>
+              <button type="button" onClick={() => setUI({ searchOpen: true })} className={searchBtn("min-w-[104px] shrink basis-[clamp(220px,22vw,400px)]")}>
                 <Search size={20} aria-hidden className="shrink-0" />
-                {searchLabel}
+                {searchLabelDesktop}
               </button>
               <StoreToggle luxe={pathname.startsWith("/edits/luxe")} />
               <div className="flex items-center">
