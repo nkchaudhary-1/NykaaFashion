@@ -1,8 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { LOGO_PATHS, LOGO_VIEWBOX } from "./components/layout/logo-paths";
 import { CLOCK_COOKIE, clockOffset, isLaunched, launchById, launchOfSlug } from "./data/launches";
-import { describeDevice } from "./lib/device";
-import { recordLogin } from "./lib/login-store";
 import { accountsConfig, hmac, issueSession, LOGIN_EVENT_COOKIE, randomId, readSession, safeEqual, SESSION_COOKIE, sessionAge, verifyLogin } from "./lib/auth";
 
 /**
@@ -155,13 +153,7 @@ async function gate(req: NextRequest) {
         await wait(700); // a small tax on guessing; Vercel adds its own rate limits
         return signInPage(next, true, req.nextUrl.origin, "/", true);
       }
-      // Authentication succeeded. Record it on the server (every browser and device, for the admin dashboard) — best effort: a store that is down never stops a sign-in.
-      try {
-        await recordLogin({ id: account.id, at: new Date().toISOString(), device: describeDevice(req.headers.get("user-agent") ?? ""), country: req.headers.get("x-vercel-ip-country")?.slice(0, 2).toUpperCase() || undefined });
-      } catch {
-        /* not recorded; the sign-in goes ahead */
-      }
-      // The signed session says who this is; the one-time event cookie lets the app also write this browser's own login record (the dashboard's fallback when no store is configured).
+      // Authentication succeeded: the signed session says who this is; the one-time event cookie lets the app write exactly one login record.
       const res = NextResponse.redirect(new URL(next, req.url), 303);
       res.cookies.set({ name: SESSION_COOKIE, value: await issueSession(account.id, account.until), httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: sessionAge(account.until) }); // an issued sign-in ends with its access
       res.cookies.set({ name: LOGIN_EVENT_COOKIE, value: randomId(), httpOnly: false, secure, sameSite: "lax", path: "/", maxAge: 120 });

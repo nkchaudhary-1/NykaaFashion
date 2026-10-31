@@ -4,7 +4,7 @@ import { UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { UsersAndAccess } from "@/components/team/UsersAndAccess";
 import { cn } from "@/lib/cn";
-import { blankRecord, clearRecords, clearServerLogins, nameFromId, roleLabel, storageAvailable, useIssuedUsers, useLoginRecords, useServerLogins, useTeamSession, type LoginRecord, type TeamUser } from "@/stores/team";
+import { clearRecords, roleLabel, storageAvailable, useIssuedUsers, useLoginRecords, useTeamSession, type LoginRecord, type TeamUser } from "@/stores/team";
 
 const dateFmt = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 const timeFmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZoneName: "short" });
@@ -12,15 +12,6 @@ const fmtDate = (iso: string) => dateFmt.format(new Date(iso));
 const fmtTime = (iso: string) => timeFmt.format(new Date(iso));
 const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 const SERIES = ["bg-ink", "bg-pink", "bg-ink-3", "bg-emerald"]; // one flat colour per account in the chart
-const countryName = (code?: string) => {
-  if (!code) return "";
-  try {
-    return new Intl.DisplayNames(["en"], { type: "region" }).of(code.toUpperCase()) ?? code;
-  } catch {
-    return code;
-  }
-};
-const where = (h: { device?: string; country?: string }) => [h.device, countryName(h.country)].filter(Boolean).join(" · ");
 
 const shell = "container-x pb-[var(--section-y)]";
 
@@ -51,45 +42,29 @@ export function AdminDashboard() {
 }
 
 function Dashboard({ accounts }: { accounts: TeamUser[] }) {
-  // Where the numbers come from: the server's record of every sign-in (any browser, any device) when the site has a login store; otherwise this browser's own records.
-  const server = useServerLogins();
-  const serverOn = server.status === "on";
-  const browserRecords = useLoginRecords(accounts.map((a) => a.id));
+  const records = useLoginRecords(accounts.map((a) => a.id));
   const builtIn = new Set(accounts.map((a) => a.id.toLowerCase()));
-  const issuedHere = useIssuedUsers().filter((u) => !builtIn.has(u.id.toLowerCase()));
-  const issuedRecords = useLoginRecords(issuedHere.map((u) => u.id)); // without a store: the sign-ins of users added from this dashboard, made in this browser
-  const serverBy = new Map(server.users.map((u) => [u.id.toLowerCase(), u]));
-  const records = accounts.map((a, i) => (serverOn ? (serverBy.get(a.id.toLowerCase()) ?? blankRecord(a.id)) : browserRecords[i]));
-  const serverAdded = serverOn ? server.users.filter((u) => !builtIn.has(u.id.toLowerCase())) : [];
-  const added = serverOn ? serverAdded.map((u) => ({ id: u.id, name: nameFromId(u.id) })) : issuedHere.map((u) => ({ id: u.id, name: u.name }));
-  const addedRecords = serverOn ? serverAdded : issuedRecords;
-  const people: Array<{ account: TeamUser; record: LoginRecord; added: boolean }> = [
-    ...accounts.map((a, i) => ({ account: a, record: records[i], added: false })),
-    ...added.map((u, i) => ({ account: { id: u.id, name: u.name, role: "user" as const, title: undefined }, record: addedRecords[i], added: true })),
-  ];
+  const added = useIssuedUsers().filter((u) => !builtIn.has(u.id.toLowerCase()));
+  const addedRecords = useLoginRecords(added.map((u) => u.id)); // users added from this dashboard: their sign-ins made in this browser
   const [confirm, setConfirm] = useState<string | null>(null); // "all" or an account id awaiting a second click
   const [note, setNote] = useState("");
   const [showAll, setShowAll] = useState<Record<string, boolean>>({});
   const available = storageAvailable();
 
-  const total = people.reduce((n, p) => n + p.record.count, 0);
-  const lastAll = people.map((p) => p.record.last).filter((x): x is string => !!x).sort().at(-1) ?? null;
-  const addedCount = addedRecords.reduce((n, r) => n + r.count, 0);
+  const total = records.reduce((n, r) => n + r.count, 0);
+  const lastAll = records.map((r) => r.last).filter((x): x is string => !!x).sort().at(-1) ?? null;
+  const byId = new Map(accounts.map((a, i) => [a.id.toLowerCase(), { account: a, record: records[i], color: SERIES[i % SERIES.length] }]));
 
-  // logins per day for the last 14 days: one series per built-in account, and one for everyone added
-  const series = [
-    ...accounts.map((a, i) => ({ key: a.id, label: a.name, history: records[i].history })),
-    ...(addedRecords.length ? [{ key: "__added", label: "Added users", history: addedRecords.flatMap((r) => r.history) }] : []),
-  ];
+  // logins per day for the last 14 days, per account
   const today = new Date();
   const days = Array.from({ length: 14 }, (_, i) => new Date(today.getFullYear(), today.getMonth(), today.getDate() - (13 - i)));
-  const perDay = days.map((d) => ({ d, counts: series.map((x) => x.history.filter((h) => dayKey(new Date(h.at)) === dayKey(d)).length) }));
+  const perDay = days.map((d) => ({ d, counts: records.map((r) => r.history.filter((h) => dayKey(new Date(h.at)) === dayKey(d)).length) }));
   const peak = Math.max(1, ...perDay.map((x) => x.counts.reduce((a, b) => a + b, 0)));
 
   const exportCsv = () => {
-    const rows = people.flatMap((p) => p.record.history.map((h) => ({ at: h.at, user: p.account.id, role: p.account.role, where: h })));
+    const rows = records.flatMap((r) => r.history.map((h) => ({ at: h.at, user: r.id, role: byId.get(r.id.toLowerCase())?.account.role ?? "" })));
     rows.sort((a, b) => b.at.localeCompare(a.at));
-    const csv = ["user,role,login_at_iso,date,time,device,country", ...rows.map((x) => [x.user, x.role, x.at, fmtDate(x.at), fmtTime(x.at), x.where.device ?? "", x.where.country ?? ""].map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))].join("\n");
+    const csv = ["user,role,login_at_iso,date,time", ...rows.map((x) => [x.user, x.role, x.at, fmtDate(x.at), fmtTime(x.at)].map((c) => `"${c.replace(/"/g, '""')}"`).join(","))].join("\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
     a.download = "nykaa-fashion-login-history.csv";
@@ -97,12 +72,10 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
     URL.revokeObjectURL(a.href);
     setNote(`Exported ${rows.length} login${rows.length === 1 ? "" : "s"}.`);
   };
-  const doClear = async (what: string) => {
-    const ok = serverOn ? await clearServerLogins(what === "all" ? undefined : what) : true;
-    clearRecords(what === "all" ? undefined : what); // this browser's own records too
+  const doClear = (what: string) => {
+    clearRecords(what === "all" ? undefined : what);
     setConfirm(null);
-    const who = what === "all" ? "All login history" : `${accounts.find((a) => a.id.toLowerCase() === what.toLowerCase())?.name ?? what}’s login history`;
-    setNote(ok ? `${who} cleared${serverOn ? " on the server and in this browser" : " in this browser"}.` : `${who} cleared in this browser, but the server could not be reached.`);
+    setNote(what === "all" ? "All login history cleared in this browser." : `${byId.get(what.toLowerCase())?.account.name ?? what}'s login history cleared.`);
   };
 
   return (
@@ -110,21 +83,11 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
       {/* what these numbers are — and the one other thing an admin comes here to do */}
       <div className="grid grid-cols-[minmax(0,1fr)] gap-x-[var(--gap)] gap-y-8 lg:grid-cols-12">
         <aside aria-label="About these records" className="order-2 border border-line-strong bg-paper p-5 text-[14px] leading-relaxed text-ink-2 sm:p-6 lg:order-1 lg:col-span-7">
-          {server.status === "loading" ? (
-            <p role="status">Reading the sign-in records…</p>
-          ) : serverOn ? (
-            <p>
-              <strong className="font-medium text-ink">Recorded on the server.</strong> Every successful sign-in — from any browser or device, at any time — is saved with its date, time, device and country, and shown here. Sign-ins made before this was switched on were
-              not recorded on the server and are not included. A failed attempt is never counted.
-            </p>
-          ) : (
-            <p>
-              <strong className="font-medium text-ink">Recorded in this browser only.</strong> This site has no login store, so this dashboard reads sign-ins saved in this browser&rsquo;s storage. Sign-ins made on other devices or in other browsers are not included, and anyone
-              who can open this browser&rsquo;s developer tools can read, change or delete the records. To record every sign-in from every device, add a login store (README → Login records).
-              {server.status === "error" ? " The login store could not be reached just now, so this is the fallback." : ""}
-            </p>
-          )}
-          {!serverOn && !available && server.status !== "loading" && <p className="mt-2 font-medium text-danger">Browser storage is unavailable here (private mode or blocked), so nothing can be recorded or shown.</p>}
+          <p>
+            <strong className="font-medium text-ink">Recorded in this browser only.</strong> This temporary dashboard reads sign-ins saved in this browser&rsquo;s storage. Sign-ins made on other devices or in other browsers are not included, and anyone who can open this
+            browser&rsquo;s developer tools can read, change or delete the records. For records that cannot be edited, a server-side store is needed.
+          </p>
+          {!available && <p className="mt-2 font-medium text-danger">Browser storage is unavailable here (private mode or blocked), so nothing can be recorded or shown.</p>}
         </aside>
         <div className="order-1 lg:order-2 lg:col-span-5 lg:justify-self-end">
           <a href="#access" className="inline-flex h-11 items-center gap-2 rounded-[var(--radius-sm)] bg-navy px-6 text-[15px] font-semibold text-bone transition-colors duration-500 hover:bg-pink hover:text-white">
@@ -144,7 +107,6 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
           {accounts.map((a, i) => (
             <Stat key={a.id} label={`${a.name} · ${roleLabel(a)}`} value={String(records[i].count)} dot={SERIES[i % SERIES.length]} />
           ))}
-          {added.length > 0 && <Stat label="Added users" value={String(addedCount)} sub={`${added.length} user${added.length === 1 ? "" : "s"}`} dot={SERIES[accounts.length % SERIES.length]} />}
           <Stat label="Last login (anyone)" value={lastAll ? fmtDate(lastAll) : "—"} sub={lastAll ? fmtTime(lastAll) : "No logins yet"} small />
         </dl>
       </section>
@@ -166,12 +128,20 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
               </tr>
             </thead>
             <tbody>
-              {people.map((p) => (
-                <tr key={p.account.id} className="border-b border-line">
-                  <th scope="row" className="py-4 pr-4 font-medium text-ink">{p.account.name}</th>
-                  <td className="py-4 pr-4 text-ink-2">{p.added ? "Regular user · added" : roleLabel(p.account)}</td>
-                  <td className="py-4 pr-4 text-right tabular-nums text-ink">{p.record.count}</td>
-                  <td className="py-4 tabular-nums text-ink-2">{p.record.last ? `${fmtDate(p.record.last)}, ${fmtTime(p.record.last)}` : serverOn ? "Never" : "Never (in this browser)"}</td>
+              {accounts.map((a, i) => (
+                <tr key={a.id} className="border-b border-line">
+                  <th scope="row" className="py-4 pr-4 font-medium text-ink">{a.name}</th>
+                  <td className="py-4 pr-4 text-ink-2">{roleLabel(a)}</td>
+                  <td className="py-4 pr-4 text-right tabular-nums text-ink">{records[i].count}</td>
+                  <td className="py-4 tabular-nums text-ink-2">{records[i].last ? `${fmtDate(records[i].last!)}, ${fmtTime(records[i].last!)}` : "Never (in this browser)"}</td>
+                </tr>
+              ))}
+              {added.map((u, i) => (
+                <tr key={u.id} className="border-b border-line">
+                  <th scope="row" className="py-4 pr-4 font-medium text-ink">{u.name}</th>
+                  <td className="py-4 pr-4 text-ink-2">Regular user · added</td>
+                  <td className="py-4 pr-4 text-right tabular-nums text-ink">{addedRecords[i].count}</td>
+                  <td className="py-4 tabular-nums text-ink-2">{addedRecords[i].last ? `${fmtDate(addedRecords[i].last!)}, ${fmtTime(addedRecords[i].last!)}` : "Never (in this browser)"}</td>
                 </tr>
               ))}
             </tbody>
@@ -185,8 +155,8 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
           Login history
         </h2>
         <div className="mt-6 grid grid-cols-1 gap-x-[var(--gap)] gap-y-12 lg:grid-cols-2">
-          {people.map((p) => (
-            <History key={p.account.id} account={p.account} record={p.record} all={!!showAll[p.account.id]} serverOn={serverOn} onToggle={() => setShowAll((s) => ({ ...s, [p.account.id]: !s[p.account.id] }))} />
+          {accounts.map((a, i) => (
+            <History key={a.id} account={a} record={records[i]} all={!!showAll[a.id]} onToggle={() => setShowAll((s) => ({ ...s, [a.id]: !s[a.id] }))} />
           ))}
         </div>
       </section>
@@ -196,11 +166,11 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
         <h2 id="chart-h" className="eyebrow text-ink-3">
           Logins per day · last 14 days
         </h2>
-        <div role="img" aria-label={`Logins per day for the last 14 days. ${series.map((x, i) => `${x.label}: ${perDay.reduce((n, d) => n + d.counts[i], 0)}`).join(". ")}.`} className="mt-6">
+        <div role="img" aria-label={`Logins per day for the last 14 days. ${accounts.map((a, i) => `${a.name}: ${perDay.reduce((n, x) => n + x.counts[i], 0)}`).join(". ")}.`} className="mt-6">
           <div className="flex h-40 items-end gap-1.5 border-b border-ink sm:gap-2" aria-hidden>
             {perDay.map(({ d, counts }) => (
               <div key={d.toISOString()} className="flex h-full min-w-0 flex-1 flex-col justify-end" title={`${fmtDate(d.toISOString())}: ${counts.reduce((a, b) => a + b, 0)}`}>
-                {counts.map((c, i) => (c ? <div key={series[i].key} className={SERIES[i % SERIES.length]} style={{ height: `${(c / peak) * 100}%` }} /> : null))}
+                {counts.map((c, i) => (c ? <div key={accounts[i].id} className={SERIES[i % SERIES.length]} style={{ height: `${(c / peak) * 100}%` }} /> : null))}
               </div>
             ))}
           </div>
@@ -210,9 +180,9 @@ function Dashboard({ accounts }: { accounts: TeamUser[] }) {
             ))}
           </div>
           <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-ink-2">
-            {series.map((x, i) => (
-              <li key={x.key} className="inline-flex items-center gap-2">
-                <span aria-hidden className={cn("size-3", SERIES[i % SERIES.length])} /> {x.label}
+            {accounts.map((a, i) => (
+              <li key={a.id} className="inline-flex items-center gap-2">
+                <span aria-hidden className={cn("size-3", SERIES[i % SERIES.length])} /> {a.name}
               </li>
             ))}
           </ul>
@@ -257,7 +227,7 @@ function Stat({ label, value, sub, dot, small }: { label: string; value: string;
   );
 }
 
-function History({ account, record, all, serverOn, onToggle }: { account: TeamUser; record: LoginRecord; all: boolean; serverOn: boolean; onToggle: () => void }) {
+function History({ account, record, all, onToggle }: { account: TeamUser; record: LoginRecord; all: boolean; onToggle: () => void }) {
   const shown = all ? record.history : record.history.slice(0, 10);
   return (
     <div>
@@ -265,16 +235,15 @@ function History({ account, record, all, serverOn, onToggle }: { account: TeamUs
         {account.name} <span className="font-normal text-ink-3">· {record.count} login{record.count === 1 ? "" : "s"}</span>
       </h3>
       {record.history.length === 0 ? (
-        <p className="mt-4 border-t border-line pt-4 text-[14px] text-ink-3">{serverOn ? "No sign-ins recorded yet." : "No logins recorded in this browser yet."}</p>
+        <p className="mt-4 border-t border-line pt-4 text-[14px] text-ink-3">No logins recorded in this browser yet.</p>
       ) : (
         <>
           <ol className="mt-4 border-t border-ink">
             {shown.map((h, i) => (
-              <li key={`${h.event}-${i}`} className="grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-baseline gap-x-3 border-b border-line py-2.5 text-[14px]">
+              <li key={`${h.event}-${h.at}`} className="grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-baseline gap-x-3 border-b border-line py-2.5 text-[14px]">
                 <span className="text-[12px] tabular-nums text-ink-3">#{record.count - i}</span>
                 <span className="tabular-nums text-ink">{fmtDate(h.at)}</span>
                 <span className="tabular-nums text-ink-2">{fmtTime(h.at)}</span>
-                {where(h) && <span className="col-span-2 col-start-2 mt-0.5 text-[12.5px] text-ink-3">{where(h)}</span>}
               </li>
             ))}
           </ol>
