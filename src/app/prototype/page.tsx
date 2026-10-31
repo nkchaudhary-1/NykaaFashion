@@ -54,7 +54,7 @@ const SIM: Array<{ tag: string; tone: "amber" | "neutral"; title: string; body: 
     title: "Checkout, payment, OTP sign-in, orders & tracking",
     body: "All mock. No payment is taken; no order exists; the OTP is always 123456. Test cards and UPI IDs are shown at checkout, including ones that fail on purpose.",
   },
-  { tag: "Mock", tone: "neutral", title: "Reviews, delivery estimates, coupons, back-in-stock alerts", body: "Deterministic mock content and rules." },
+  { tag: "Mock", tone: "neutral", title: "Reviews, delivery estimates, coupons, back-in-stock and launch alerts, pop-up campaigns", body: "Deterministic mock content and rules. Brand launches, Notify me, the launch clock and the pop-up campaigns are sample content; what you save or dismiss stays in this browser." },
   {
     tag: "Generated",
     tone: "neutral",
