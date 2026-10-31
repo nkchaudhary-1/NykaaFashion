@@ -16,7 +16,7 @@ struct DSChip: View {
                 }
                 Text(title)
             }
-            .font(DSFont.callout)
+            .dsText(.subtitleMed2)
             .padding(.horizontal, DSSpacing.md)
             .frame(minHeight: DSSize.minTap)
             .foregroundStyle(isSelected ? DSColor.onAccent : DSColor.textPrimary)
@@ -40,8 +40,7 @@ struct DSBadge: View {
 
     var body: some View {
         Text(text)
-            .font(DSFont.eyebrow)
-            .tracking(0.6)
+            .dsText(.labelSmall)
             .textCase(.uppercase)
             .padding(.horizontal, DSSpacing.sm)
             .padding(.vertical, DSSpacing.xs)

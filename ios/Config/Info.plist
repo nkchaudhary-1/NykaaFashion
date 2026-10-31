@@ -8,7 +8,6 @@
 	     (GENERATE_INFOPLIST_FILE = YES). Keep this list in step with DSFontFace. -->
 	<key>UIAppFonts</key>
 	<array>
-		<string>InterDisplay-Light.ttf</string>
 		<string>InterDisplay-Regular.ttf</string>
 		<string>InterDisplay-Medium.ttf</string>
 		<string>InterDisplay-SemiBold.ttf</string>

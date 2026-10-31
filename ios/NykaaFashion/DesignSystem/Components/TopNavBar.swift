@@ -14,8 +14,7 @@ import SwiftUI
 //     effect do the same for the scroll view
 //   - the right-hand control is a native glass circle button that owns its own
 //     metrics: no frame, no padding, `controlSize(.large)` is the only lever
-//   - scrolling collapses the logo (28 → 20pt) or the page name (28 → 20pt at the
-//     default text size), `.easeInOut(0.2)`, off under Reduce Motion
+//   - scrolling collapses the logo (28 → 20pt) or the page name (H1 → H2, 32 → 24pt), `.easeInOut(0.2)`, off under Reduce Motion
 //   - the system navigation bar is hidden on the root screen only, so pushed
 //     screens keep their own bar and back button
 
@@ -52,7 +51,7 @@ struct TopNavBar: View {
             NykaaFashionLogo(height: DSTopNav.logoHeight(collapsed: isCollapsed))
         case .heading(let text):
             Text(text)
-                .font(isCollapsed ? DSFont.headingCollapsed : DSFont.heading)
+                .dsText(DSTopNav.titleStyle(collapsed: isCollapsed))
                 .foregroundStyle(DSColor.textPrimary)
                 .lineLimit(1)
                 .accessibilityAddTraits(.isHeader)

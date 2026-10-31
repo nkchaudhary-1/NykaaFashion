@@ -33,6 +33,14 @@ enum DSTopNav {
         collapsed ? collapsedLogoHeight : restingLogoHeight
     }
 
+    // MARK: Page title
+    // On pages other than Home the bar carries the page name. At rest it is H1
+    // (32pt) and collapses to H2 (24pt) — exactly One Moment's 32 → 24 heading.
+
+    static func titleStyle(collapsed: Bool) -> DSTextStyle {
+        collapsed ? .h2 : .h1
+    }
+
     // MARK: Collapse
 
     /// How far a screen must scroll before the bar collapses

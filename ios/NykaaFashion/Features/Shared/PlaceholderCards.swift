@@ -19,10 +19,10 @@ struct PlaceholderCard: View {
             .overlay(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: DSSpacing.xs) {
                     Text(verbatim: "\(index + 1)")
-                        .font(DSFont.display)
+                        .dsText(.h1)
                         .foregroundStyle(DSColor.textPrimary)
                     Text(verbatim: caption)
-                        .font(DSFont.callout)
+                        .dsText(.bodyLarge2)
                         .foregroundStyle(DSColor.textSecondary)
                 }
                 .padding(DSSpacing.lg)

@@ -25,7 +25,7 @@ project.yml                  XcodeGen spec (the .xcodeproj is generated + git-ig
 NykaaFashion/
   App/                       entry point, native TabView shell, typed routes + per-tab router
   DesignSystem/
-    Tokens/                  DSColor · DSFont · DSSpacing/Radius/Size/Motion   ← design lands here
+    Tokens/                  DSColor · DSTextStyle (17 Figma styles) · DSFontFace · DSSpacing/Radius/Size/Motion   ← design lands here
     Components/              DS* base components, PriceLabel, ProductCard
     Gallery/                 debug-only catalogue of every token + component
   Features/                  one folder per tab/flow (placeholders today)
@@ -100,30 +100,63 @@ Adaptations from One Moment:
 
 ## Typography
 
-**Inter Display is the primary typeface** (the optical-size cut of Inter 4.0, SIL Open Font
-License 1.1). Four weights are bundled — Light, Regular, Medium, SemiBold (~1.6 MB) — as
-byte-identical copies of the official release (`extras/ttf` in `Inter-4.0.zip`). They contain
-the ₹ glyph and tabular figures, which the price label uses.
+The type scale is the **17 text styles from the Figma Typography page**
+([Nykaa Fashion New Look 2027, node 6:2](https://www.figma.com/design/Mj8oos8GHlgEeY4fKgrJpY/Nykaa-Fashion-New-Look-2027?node-id=6-2)),
+named as in Figma, in `DSTextStyle`. Sizes, line heights and letter spacing are the **exact values of the file's
+51 typography variables** — the page's own labels round them (they say "40px" for a real 39.68).
 
-- Roles live in `DSFont` (display, heading, title, headline, body, callout, caption, eyebrow, price).
-  Each is `Font.custom(_:size:relativeTo:)`, so it keeps Inter Display **and** scales with Dynamic
-  Type; base sizes equal the system defaults, so layout didn't move. Weights are placeholders until
-  the design specifies them.
-- Registration: `Config/Info.plist` is a *partial* plist holding only `UIAppFonts`; Xcode merges it with
-  the generated keys (`GENERATE_INFOPLIST_FILE`). `TabRoot` sets `DSFont.body` as the default for any
-  unstyled text (list rows, steppers).
-- **A wrong name never fails — it silently falls back to the system font.** So `FontTests` (⌘U) checks each
-  face is registered, is in the app bundle, and has ₹. If the text looks like SF, run it first.
-- Native chrome — tab bar labels, pushed screens' back button and title — stays in the system font on
-  purpose, like the rest of the native bar. Re-skinning it is possible (`UITabBarItem` appearance) but
-  I'd only do it if the design requires it.
-- **Adding a weight** takes four agreeing steps: the `.ttf` in `Resources/Fonts/`, its filename in
-  `Config/Info.plist`, a case in `DSFontFace`, and a use in `DSFont`.
-- **Licence:** the OFL requires its text to travel with the font; it's bundled as
-  `Resources/Fonts/Inter-OFL.txt`. Add an acknowledgements entry before release.
-- Not applied yet: One Moment's moodboard uses −0.25 tracking on Inter Display; add it per role once the
-  design confirms it. Whether a secondary face (an accent/serif) is planned is an open question — today
-  every role is Inter Display.
+```swift
+Text("Add to bag").dsText(.subtitleSB1)          // face + size + tracking + exact line height
+Text("₹1,299").dsText(DSTextStyle.subtitleSB1.tabular())
+```
+
+| Style | Weight | Size / line height | Tracking | Style | Weight | Size / line height | Tracking |
+|---|---|---|---|---|---|---|---|
+| H1 · hero | SemiBold | 32 / 39.68 | −0.25 | Subtitle SB 1 | SemiBold | 16 / 19.2 | −0.25 |
+| H2 · section | SemiBold | 24 / 29.76 | −0.25 | Subtitle SB 2 | SemiBold | 14 / 16.8 | −0.25 |
+| H3 · card | SemiBold | 20 / 24 | −0.25 | Subtitle SB 3 | SemiBold | 12 / 13.92 | −0.25 |
+| H4 · widget | SemiBold | 16 / 19.2 | −0.2 | Body Large 1 | Regular | 16 / 22.4 | −0.25 |
+| H5 · label | SemiBold | 14 / 15.68 | −0.2 | Body Large 2 | Regular | 14 / 19.6 | −0.25 |
+| Subtitle MED 1 | Medium | 16 / 19.2 | −0.25 | Body Small 1 | Regular | 12 / 15.6 | 0 |
+| Subtitle MED 2 | Medium | 14 / 16.8 | −0.25 | Body Small 2 | Regular | 10 / 13 | 0 |
+| Subtitle MED 3 | Medium | 12 / 13.92 | −0.25 | Label Large / Small | SemiBold | 12 / 15.6 · 10 / 13 | 0 |
+
+(The component gallery renders all 17 with their specs, for side-by-side review. Pairing guide from the file:
+H1 hero · H2 section · H3 card/dashboard · H4 widget/compact · H5 label/micro.)
+
+### Open: the Figma file disagrees with itself on typeface and weights
+
+| | The page's labels say | The actual text layers are |
+|---|---|---|
+| Typeface (all 17) | "Inter …" | **Manrope** |
+| H1–H5 | Semi Bold | **Bold** |
+| Label Large / Small | Semi Bold | **Medium** |
+
+Sizes, line heights and tracking agree either way. `DSTextStyle` follows the **labels** — Inter Display, which is what
+the app's primary typeface was specified as — so if the layers are the truth, only each style's `face` and the bundled
+font files change. Needs a decision from the design owner.
+
+### How it's built
+- **Inter Display** (the optical-size cut of Inter 4.0, SIL OFL 1.1): Regular, Medium and SemiBold are bundled as
+  byte-identical copies of the official release (`extras/ttf` in `Inter-4.0.zip`). They contain ₹ and tabular figures.
+  Only weights the scale uses are bundled.
+- **Dynamic Type:** `Font.custom(_:size:relativeTo:)` keeps the custom face and scales it; base sizes are Figma's, so layout
+  matches the design at the default text size.
+- **Line height:** SwiftUI can't set an exact one, so the style adds the difference between Figma's and the font's natural
+  line height (1.21 × size, identical in every metrics table of the font) as `lineSpacing`, scaled with Dynamic Type.
+  This governs **multi-line** text; a single line keeps the font's natural height, within ~1–2pt of Figma's box.
+- **Letter spacing** is `.tracking`, in points as Figma's px. At ≤16pt Inter Display plus −0.25 tracking is tight —
+  Inter's *text* cut is the one drawn for small sizes; worth a look on device.
+- **Registration:** `Config/Info.plist` is a *partial* plist holding only `UIAppFonts`; Xcode merges it with the generated
+  keys (`GENERATE_INFOPLIST_FILE`). `TabRoot` applies Body Large 1 as the default for unstyled text.
+- **A wrong name never fails — it silently falls back to the system font.** `FontTests` (⌘U) checks each face is
+  registered, is in the app bundle, has ₹, and that the 1.21 line-height constant matches the real font.
+  `TextStyleTests` pin all 17 styles to the Figma numbers.
+- Native chrome — tab bar labels, pushed screens' back button and title — stays in the system font on purpose, like
+  the rest of the native bar.
+- **Adding a weight:** the `.ttf` in `Resources/Fonts/`, its name in `Config/Info.plist`, a case in `DSFontFace`, a use in a style.
+- **Licence:** the OFL requires its text to travel with the font; it's bundled as `Resources/Fonts/Inter-OFL.txt`. Add an
+  acknowledgements entry before release.
 
 ## Native vs custom
 

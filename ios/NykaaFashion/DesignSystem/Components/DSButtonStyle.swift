@@ -20,7 +20,7 @@ struct DSButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         let shape = RoundedRectangle(cornerRadius: DSRadius.md, style: .continuous)
         configuration.label
-            .font(DSFont.headline)
+            .dsText(.subtitleSB1)
             .padding(.horizontal, DSSpacing.xl)
             .frame(minHeight: DSSize.minTap)
             .frame(maxWidth: fullWidth ? .infinity : nil)

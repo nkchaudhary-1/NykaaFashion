@@ -64,6 +64,6 @@ struct TabRoot<Content: View>: View {
         // The primary typeface for any text that doesn't set its own font (list
         // rows, steppers, links). Native chrome — tab bar labels, pushed nav bars —
         // keeps the system font by design.
-        .font(DSFont.body)
+        .dsText(.bodyLarge1)
     }
 }

@@ -106,6 +106,79 @@ final class FontFaceTests: XCTestCase {
     }
 }
 
+/// The 17 styles are copied from the Figma "Typography" page (node 10:105): the
+/// real values of its `font-size/…`, `line-height/…` and `letter-spacing/…`
+/// variables, not the rounded numbers in its labels. Pinned so a casual edit
+/// can't silently drift from the design.
+final class TextStyleTests: XCTestCase {
+    private let figma: [(name: String, weight: String, size: CGFloat, lineHeight: CGFloat, tracking: CGFloat)] = [
+        ("Heading H1 : 32", "SemiBold", 32, 39.68, -0.25),
+        ("Heading H2 : 24", "SemiBold", 24, 29.76, -0.25),
+        ("Heading H3 : 20", "SemiBold", 20, 24, -0.25),
+        ("Heading H4 : 16", "SemiBold", 16, 19.2, -0.2),
+        ("Heading H5 : 14", "SemiBold", 14, 15.68, -0.2),
+        ("Subtitle MED 1 : 16", "Medium", 16, 19.2, -0.25),
+        ("Subtitle MED 2 : 14", "Medium", 14, 16.8, -0.25),
+        ("Subtitle MED 3 : 12", "Medium", 12, 13.92, -0.25),
+        ("Subtitle SB 1 : 16", "SemiBold", 16, 19.2, -0.25),
+        ("Subtitle SB 2 : 14", "SemiBold", 14, 16.8, -0.25),
+        ("Subtitle SB 3 : 12", "SemiBold", 12, 13.92, -0.25),
+        ("Body Large 1 : 16", "Regular", 16, 22.4, -0.25),
+        ("Body Large 2 : 14", "Regular", 14, 19.6, -0.25),
+        ("Body Small 1 : 12", "Regular", 12, 15.6, 0),
+        ("Body Small 2 : 10", "Regular", 10, 13, 0),
+        ("Label Large", "SemiBold", 12, 15.6, 0),
+        ("Label Small", "SemiBold", 10, 13, 0),
+    ]
+
+    func testThereAreSeventeenStylesWithUniqueNames() {
+        XCTAssertEqual(DSTextStyle.all.count, 17)
+        XCTAssertEqual(Set(DSTextStyle.all.map(\.name)).count, 17)
+    }
+
+    func testEveryStyleMatchesTheFigmaValues() throws {
+        for row in figma {
+            let style = try XCTUnwrap(DSTextStyle.all.first { $0.name == row.name }, "\(row.name) is missing")
+            XCTAssertEqual(style.face.weightName, row.weight, row.name)
+            XCTAssertEqual(style.size, row.size, accuracy: 0.001, row.name)
+            XCTAssertEqual(style.lineHeight, row.lineHeight, accuracy: 0.001, row.name)
+            XCTAssertEqual(style.tracking, row.tracking, accuracy: 0.001, row.name)
+        }
+    }
+
+    func testLineSpacingTurnsTheNaturalLineHeightIntoFigmasExactOne() {
+        // Natural line height is 1.21 em: H1 = 32 * 1.21 = 38.72, Figma wants 39.68.
+        XCTAssertEqual(DSTextStyle.h1.lineSpacingAdjustment, 0.96, accuracy: 0.001)
+        XCTAssertEqual(DSTextStyle.bodyLarge1.lineSpacingAdjustment, 3.04, accuracy: 0.001)
+        // A tight style asks for slightly LESS than natural.
+        XCTAssertLessThan(DSTextStyle.h4.lineSpacingAdjustment, 0)
+    }
+
+    func testSpecificationReadsLikeTheFigmaLabel() {
+        XCTAssertEqual(DSTextStyle.h1.specification, "SemiBold · 32 / 39.68 · ls -0.25")
+        XCTAssertEqual(DSTextStyle.bodySmall1.specification, "Regular · 12 / 15.6 · ls 0")
+    }
+
+    func testTabularCopyChangesOnlyTheFlag() {
+        let plain = DSTextStyle.subtitleSB1
+        var expected = plain
+        expected.tabularFigures = true
+        XCTAssertEqual(plain.tabular(), expected)
+        XCTAssertFalse(plain.tabularFigures)
+    }
+
+    func testPageTitleGoesH1ToH2LikeOneMomentsHeading() {
+        XCTAssertEqual(DSTopNav.titleStyle(collapsed: false).size, 32)
+        XCTAssertEqual(DSTopNav.titleStyle(collapsed: true).size, 24)
+    }
+
+    func testEveryStyleUsesABundledFace() {
+        for style in DSTextStyle.all {
+            XCTAssertTrue(DSFontFace.allCases.contains(style.face), style.name)
+        }
+    }
+}
+
 final class ProductTests: XCTestCase {
     func testCodableRoundTrip() throws {
         let original = Product.samples[2]

@@ -11,7 +11,7 @@ struct DSSectionHeader: View {
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Text(title)
-                .font(DSFont.title)
+                .dsText(.h2)
                 .foregroundStyle(DSColor.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Spacer(minLength: DSSpacing.md)
@@ -19,7 +19,7 @@ struct DSSectionHeader: View {
                 // Native text button: stays flush with the screen gutter and
                 // takes the system tint. (`.ds(.tertiary)` adds button padding.)
                 Button(actionTitle, action: action)
-                    .font(DSFont.callout)
+                    .dsText(.subtitleMed2)
                     .frame(minHeight: DSSize.minTap)
             }
         }

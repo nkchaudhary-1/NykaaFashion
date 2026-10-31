@@ -15,11 +15,11 @@ struct PriceLabel: View {
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: DSSpacing.sm) {
             Text(verbatim: PriceFormatter.string(price))
-                .font(DSFont.price)
+                .dsText(DSTextStyle.subtitleSB1.tabular())
                 .foregroundStyle(DSColor.textPrimary)
             if let original = originalIfHigher {
                 Text(verbatim: PriceFormatter.string(original))
-                    .font(DSFont.caption)
+                    .dsText(.bodySmall1)
                     .strikethrough()
                     .foregroundStyle(DSColor.textSecondary)
             }

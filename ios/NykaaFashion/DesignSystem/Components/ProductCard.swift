@@ -25,11 +25,11 @@ struct ProductCard: View {
             // One VoiceOver stop for the text block; the wishlist button stays separate.
             VStack(alignment: .leading, spacing: DSSpacing.xxs) {
                 Text(product.brand)
-                    .font(DSFont.caption)
+                    .dsText(.bodySmall1)
                     .foregroundStyle(DSColor.textSecondary)
                     .lineLimit(1)
                 Text(product.title)
-                    .font(DSFont.callout)
+                    .dsText(.bodyLarge2)
                     .foregroundStyle(DSColor.textPrimary)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)

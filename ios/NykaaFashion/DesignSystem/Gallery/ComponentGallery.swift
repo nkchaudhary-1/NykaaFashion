@@ -44,22 +44,25 @@ struct ComponentGallery: View {
                                         RoundedRectangle(cornerRadius: DSRadius.sm, style: .continuous)
                                             .strokeBorder(DSColor.separator)
                                     )
-                                Text(item.name).font(DSFont.caption).lineLimit(1)
+                                Text(item.name).dsText(.bodySmall1).lineLimit(1)
                             }
                         }
                     }
                 }
 
-                section("Type") {
-                    VStack(alignment: .leading, spacing: DSSpacing.sm) {
-                        Text("Display").font(DSFont.display)
-                        Text("Title").font(DSFont.title)
-                        Text("Headline").font(DSFont.headline)
-                        Text("Body — the quick brown fox jumps over the lazy dog").font(DSFont.body)
-                        Text("Callout").font(DSFont.callout)
-                        Text("Caption").font(DSFont.caption)
-                        Text("Eyebrow").font(DSFont.eyebrow).tracking(0.6).textCase(.uppercase)
-                        Text(verbatim: "₹1,299  ₹12,34,567").font(DSFont.price)
+                section("Type — the 17 styles from the Figma Typography page") {
+                    VStack(alignment: .leading, spacing: DSSpacing.lg) {
+                        ForEach(DSTextStyle.all, id: \.name) { style in
+                            VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                                Text(verbatim: "\(style.name) — \(style.specification)")
+                                    .dsText(.bodySmall1)
+                                    .foregroundStyle(DSColor.textSecondary)
+                                Text(verbatim: "The quick brown fox jumps over the lazy dog")
+                                    .dsText(style)
+                            }
+                        }
+                        Text(verbatim: "₹1,299  ₹12,34,567 — prices use tabular figures")
+                            .dsText(DSTextStyle.subtitleSB1.tabular())
                     }
                 }
 
@@ -122,7 +125,7 @@ struct ComponentGallery: View {
                         DSSkeleton().aspectRatio(3.0 / 4.0, contentMode: .fit)
                     }
                     Text("Text and layouts: use .redacted(reason: .placeholder)")
-                        .font(DSFont.callout)
+                        .dsText(.bodyLarge2)
                         .redacted(reason: .placeholder)
                 }
 
@@ -164,8 +167,7 @@ struct ComponentGallery: View {
     private func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: DSSpacing.md) {
             Text(verbatim: title)
-                .font(DSFont.eyebrow)
-                .tracking(0.6)
+                .dsText(.labelLarge)
                 .textCase(.uppercase)
                 .foregroundStyle(DSColor.textSecondary)
                 .accessibilityAddTraits(.isHeader)

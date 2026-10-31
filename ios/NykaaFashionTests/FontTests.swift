@@ -28,6 +28,15 @@ final class FontTests: XCTestCase {
         }
     }
 
+    func testNaturalLineHeightMatchesTheConstantBehindTheLineSpacing() throws {
+        // DSTextStyle derives its extra line spacing from this ratio; if it were
+        // wrong every multi-line style would drift from Figma's line height.
+        for face in DSFontFace.allCases {
+            let font = try XCTUnwrap(UIFont(name: face.postScriptName, size: 100))
+            XCTAssertEqual(font.lineHeight, 100 * DSFontFace.naturalLineHeightRatio, accuracy: 1.0, face.postScriptName)
+        }
+    }
+
     func testRupeeSignIsInThePrimaryFace() throws {
         // Prices are rendered in this face; a font without ₹ would show a fallback glyph.
         let font = try XCTUnwrap(UIFont(name: DSFontFace.semibold.postScriptName, size: 17))
