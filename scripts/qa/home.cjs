@@ -33,6 +33,12 @@ const must = (c, m) => { if (!c) throw new Error(m); };
     }
   });
 
+  await step("hero art direction: the wide picture from 600px, the tall one on phones (holds for optimised and direct /img delivery)", async () => {
+    await page.waitForFunction(() => document.querySelector("main picture img")?.currentSrc, null, { timeout: 8000 });
+    const src = decodeURIComponent(await page.locator("main picture img").first().evaluate((i) => i.currentSrc));
+    must(mobile ? /4x5|tall/.test(src) : /16x9|wide/.test(src), `hero is showing ${src.slice(0, 120)}`);
+  });
+
   await step("category tiles navigate (Indianwear)", async () => {
     await page.getByRole("link", { name: /^Indianwear/ }).filter({ hasText: /styles/ }).first().click();
     await page.waitForURL(/\/c\/women\/indianwear/);

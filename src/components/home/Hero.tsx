@@ -93,7 +93,8 @@ function SlidePicture({ s, first }: { s: Slide; first: boolean }) {
   const alt = `${s.title} — ${s.kicker}`;
   const wide = getImageProps({ src: imgSrc(s.wide), alt, fill: true, sizes: "100vw", loading: first ? "eager" : "lazy" });
   const tall = getImageProps({ src: imgSrc(s.tall), alt, fill: true, sizes: "100vw", loading: first ? "eager" : "lazy", fetchPriority: first ? "high" : undefined });
-  const { srcSet: wideSet } = wide.props;
+  // With images.unoptimized (a password-protected Vercel deployment serves /img directly, next.config.ts) getImageProps returns no srcSet — fall back to the plain URL so the 16:9 source still wins from 600px.
+  const wideSet = wide.props.srcSet ?? wide.props.src;
   const { srcSet: tallSet, ...imgProps } = tall.props;
   return (
     <picture>
