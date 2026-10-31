@@ -78,10 +78,10 @@ export function PinLayer({ imgKey, className, onPinOpen, position }: { imgKey: s
               <span aria-hidden className={cn("relative inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-ink transition-colors duration-200 group-hover/pin:bg-ink group-hover/pin:text-white", shown ? "bg-ink text-white" : "bg-white text-ink")}>
                 <Plus size={14} strokeWidth={2} className={cn("transition-transform duration-300", shown && "rotate-45")} />
               </span>
-              {/* Flat preview card — fine pointers only (on touch a tap goes straight to quick view). */}
+              {/* Flat preview card — fine pointers on windows at least 600px wide (on touch a tap goes straight to quick view; in a narrower window it would reach past the edge). */}
               <span
                 role="presentation"
-                className={cn("pointer-events-none absolute top-1/2 hidden w-max max-w-[220px] -translate-y-1/2 border border-ink bg-white px-3 py-2.5 text-left transition-opacity duration-200 [@media(hover:hover)]:block", right ? "right-[calc(100%-4px)] mr-2" : "left-[calc(100%-4px)] ml-2", shown ? "opacity-100" : "opacity-0")}
+                className={cn("pointer-events-none absolute top-1/2 hidden w-max max-w-[220px] -translate-y-1/2 border border-ink bg-white px-3 py-2.5 text-left transition-opacity duration-200 [@media(hover:hover)_and_(min-width:37.5rem)]:block", right ? "right-[calc(100%-4px)] mr-2" : "left-[calc(100%-4px)] ml-2", shown ? "opacity-100" : "opacity-0")}
               >
                 <span className="eyebrow block text-ink-3">{labelById[p.labelId].name}</span>
                 <span className="mt-1.5 block whitespace-normal text-[13px] font-medium leading-snug text-ink">{p.name}</span>

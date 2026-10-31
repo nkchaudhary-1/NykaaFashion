@@ -46,13 +46,7 @@ export function StoryCover({ story }: { story: Story }) {
           {story.kicker}
         </Rise>
         <RevealText as="h1" className={cn("mt-6 min-w-0", story.title.length > 28 ? "display-lg" : "display-xl")}>
-          {lead}
-          {rest && (
-            <>
-              {" "}
-              <em>{rest}</em>
-            </>
-          )}
+          {rest ? [lead, " ", <em key="rest">{rest}</em>] : lead}
         </RevealText>
         <Grid className="mt-10 items-end gap-y-8 border-t border-line pt-6 sm:mt-14">
           <Col span={{ base: 4, sm: 12, lg: 6 }}>

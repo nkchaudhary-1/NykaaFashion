@@ -1,16 +1,19 @@
-import type { ReactNode } from "react";
+import { Children, Fragment, isValidElement, type ReactElement, type ReactNode } from "react";
 import { RevealText, Rise } from "@/components/motion/reveal";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { cn } from "@/lib/cn";
 
 const SIZE = { xl: "display-xl", lg: "display-lg", md: "display-md" } as const;
 
+/** `<>Stories, <em>made shoppable.</em></>` → its children: the reveal splits strings, arrays and host elements into words, but not a fragment. */
+const unwrap = (node: ReactNode): ReactNode => (isValidElement(node) && node.type === Fragment ? Children.toArray((node as ReactElement<{ children?: ReactNode }>).props.children) : node);
+
 /**
  * Heading for product listings (category, search): the breadcrumb, then the title at poster scale across all twelve columns — its words rise out of a mask — and
  * under it one quiet row: the result count as a tabular numeral on the left, one line of context starting on the page's centre axis. Products come right after,
  * so the row stays short. Same grid, same single h1.
  */
-export function ListingHeader({ crumbs, eyebrow, title, count, noun = "products", intro, size = "xl", children }: { crumbs: Array<{ name: string; href?: string }>; eyebrow?: string; title: ReactNode; count?: number; noun?: string; intro?: ReactNode; size?: keyof typeof SIZE; children?: ReactNode }) {
+export function ListingHeader({ crumbs, eyebrow, title, count, noun = "products", intro, size = "xl", titleClassName, children }: { crumbs: Array<{ name: string; href?: string }>; eyebrow?: string; title: ReactNode; count?: number; noun?: string; intro?: ReactNode; size?: keyof typeof SIZE; /** extra classes for the h1 */ titleClassName?: string; children?: ReactNode }) {
   const hasRow = count !== undefined || !!intro;
   return (
     <header className="container-x pb-10 pt-5 sm:pb-14 sm:pt-6">
@@ -20,8 +23,8 @@ export function ListingHeader({ crumbs, eyebrow, title, count, noun = "products"
           {eyebrow}
         </Rise>
       )}
-      <RevealText as="h1" className={cn(SIZE[size], "min-w-0")}>
-        {title}
+      <RevealText as="h1" className={cn(SIZE[size], "min-w-0", titleClassName)}>
+        {unwrap(title)}
       </RevealText>
       {hasRow && (
         <div className="mt-8 grid-main items-end gap-y-5 border-t border-line pt-5 sm:mt-10">

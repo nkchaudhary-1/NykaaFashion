@@ -20,9 +20,10 @@ const SIZE = { md: "display-md", lg: "display-lg", xl: "display-xl" } as const;
 export function SectionHeading({ eyebrow, title, intro, href, hrefLabel, className, level = 2, size = "md", onDark, splitAt = 6, children }: { eyebrow?: string; title: ReactNode; intro?: ReactNode; href?: string; hrefLabel?: string; className?: string; level?: 1 | 2 | 3; size?: keyof typeof SIZE; onDark?: boolean; splitAt?: 6 | 7; children?: ReactNode }) {
   const H = `h${level}` as "h1" | "h2" | "h3";
   const hasRight = !!(intro || href || children);
+  const poster = size === "xl"; // poster titles take the whole row; the intro and links sit under them, from the centre axis
   return (
-    <div className={cn("grid-main items-end gap-y-6", className)}>
-      <div className={cn("col-span-4 min-w-0 sm:col-span-12", hasRight && SPLIT[splitAt].left)}>
+    <div className={cn("grid-main gap-y-6", poster ? "items-start" : "items-end", className)}>
+      <div className={cn("col-span-4 min-w-0 sm:col-span-12", hasRight && !poster && SPLIT[splitAt].left)}>
         {eyebrow && (
           <Rise as="p" y={14} className={cn("eyebrow mb-5", onDark ? "text-bone" : "text-ink-3")}>
             {eyebrow}
@@ -33,7 +34,7 @@ export function SectionHeading({ eyebrow, title, intro, href, hrefLabel, classNa
         </RevealText>
       </div>
       {hasRight && (
-        <div className={cn("col-span-4 flex min-w-0 flex-col gap-5 sm:col-span-12", SPLIT[splitAt].right, !intro && "lg:items-end")}>
+        <div className={cn("col-span-4 flex min-w-0 flex-col gap-5 sm:col-span-12", SPLIT[splitAt].right, !intro && !poster && "lg:items-end", poster && "lg:mt-4")}>
           {intro && (
             <Rise delay={120} className={cn("max-w-[46ch] text-[15px] leading-relaxed", onDark ? "text-bone" : "text-ink-2")}>
               {intro}

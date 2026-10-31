@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { ArrowUpRight, Check, CreditCard, MessageCircle, Minus, PackageSearch, Plus, Ruler, Truck, Undo2, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, Check, Minus, Plus } from "lucide-react";
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { Col, Grid } from "@/components/layout/Grid";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Form";
+import { Reveal } from "@/components/ui/Reveal";
 import { FAQS } from "@/data/content";
 import { cn } from "@/lib/cn";
 import { nowMs } from "@/lib/clock";
@@ -13,13 +14,13 @@ import { prefsStore, toast } from "@/stores/ui";
 const faq = (re: RegExp) => FAQS.findIndex((f) => re.test(f.q));
 
 /** Help topics: a tile either opens a page or jumps to (and opens) the matching question below. */
-const TOPICS: Array<{ Icon: LucideIcon; title: string; text: string; href: string }> = [
-  { Icon: Truck, title: "Shipping & delivery", text: "Delivery options, timings and cash on delivery.", href: "/info/shipping" },
-  { Icon: Undo2, title: "Returns & refunds", text: "How returns and refunds work, step by step.", href: "/info/returns" },
-  { Icon: PackageSearch, title: "Track an order", text: "Follow an order through the simulated tracker.", href: "/account/orders" },
-  { Icon: CreditCard, title: "Payments & checkout", text: "What is simulated, and the test values to use.", href: `#faq-${Math.max(0, faq(/payments/i))}` },
-  { Icon: Ruler, title: "Sizing & fit", text: "Size guides and fit notes on every product.", href: `#faq-${Math.max(0, faq(/size/i))}` },
-  { Icon: MessageCircle, title: "Contact us", text: "Send us a message — it stays on this device.", href: "#msg" },
+const TOPICS: Array<{ title: string; text: string; href: string }> = [
+  { title: "Shipping & delivery", text: "Delivery options, timings and cash on delivery.", href: "/info/shipping" },
+  { title: "Returns & refunds", text: "How returns and refunds work, step by step.", href: "/info/returns" },
+  { title: "Track an order", text: "Follow an order through the simulated tracker.", href: "/account/orders" },
+  { title: "Payments & checkout", text: "What is simulated, and the test values to use.", href: `#faq-${Math.max(0, faq(/payments/i))}` },
+  { title: "Sizing & fit", text: "Size guides and fit notes on every product.", href: `#faq-${Math.max(0, faq(/size/i))}` },
+  { title: "Contact us", text: "Send us a message — it stays on this device.", href: "#msg" },
 ];
 
 const QUICK = [
@@ -28,18 +29,18 @@ const QUICK = [
   ["/account/orders", "Track an order"],
 ];
 
-function Tile({ Icon, title, text, href }: (typeof TOPICS)[number]) {
-  const cls = "group flex h-full min-h-[132px] flex-col justify-between gap-6 border border-ink p-4 transition-colors hover:bg-ink hover:text-bone sm:min-h-[168px] sm:p-5";
+function Tile({ title, text, href, n }: (typeof TOPICS)[number] & { n: number }) {
+  const cls = "group flex h-full flex-col gap-3 border-t border-ink py-6 sm:py-8";
   const body = (
     <>
-      <span className="flex items-start justify-between">
-        <Icon size={24} strokeWidth={1.4} aria-hidden className="text-pink-ink transition-colors group-hover:text-white" />
-        <ArrowUpRight size={18} aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+      <span className="flex items-baseline justify-between gap-4">
+        <span className="flex items-baseline gap-4">
+          <span className="text-[11px] tabular-nums text-ink-3">{String(n).padStart(2, "0")}</span>
+          <span className="display-sm transition-colors duration-300 group-hover:text-pink">{title}</span>
+        </span>
+        <ArrowUpRight size={20} aria-hidden className="shrink-0 transition-transform duration-500 ease-expo group-hover:-translate-y-1 group-hover:translate-x-1" />
       </span>
-      <span>
-        <span className="block text-[16px] font-medium leading-tight tracking-[-0.015em] sm:text-[19px]">{title}</span>
-        <span className="mt-2 hidden max-w-[34ch] text-[13.5px] leading-snug text-ink-3 transition-colors group-hover:text-bone sm:block">{text}</span>
-      </span>
+      <span className="max-w-[38ch] pl-[calc(11px+1rem+0.3em)] text-[14px] leading-snug text-ink-3">{text}</span>
     </>
   );
   // In-page anchors are plain links so the browser scrolls and fires hashchange (the questions listen for it).
@@ -99,12 +100,14 @@ export function HelpCentre() {
 
   return (
     <>
-      {/* Topics: six tiles — three across on desktop, two across below */}
+      {/* Topics: a hairline index — three across on desktop, two on tablets, one on phones */}
       <section aria-label="Help topics" className="container-x pb-14 sm:pb-20">
-        <Grid as="ul" className="gap-y-[var(--gap)]">
-          {TOPICS.map((t) => (
-            <Col as="li" key={t.title} span={{ base: 2, sm: 6, lg: 4 }}>
-              <Tile {...t} />
+        <Grid as="ul" className="gap-y-0">
+          {TOPICS.map((t, i) => (
+            <Col as="li" key={t.title} span={{ base: 4, sm: 6, lg: 4 }}>
+              <Reveal delay={(i % 3) * 90}>
+                <Tile {...t} n={i + 1} />
+              </Reveal>
             </Col>
           ))}
         </Grid>

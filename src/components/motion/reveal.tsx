@@ -39,7 +39,7 @@ function split(node: ReactNode, counter: { i: number }): ReactNode {
 /** A heading / paragraph whose words rise out of a mask on entry. `delay` in ms. */
 export function RevealText({ children, as: Tag = "span", className, delay, style, ...rest }: { children: ReactNode; as?: ElementType; className?: string; delay?: number; style?: CSSProperties } & Record<string, unknown>) {
   return (
-    <Tag className={className} data-reveal="text" style={{ ...style, ...delayStyle(delay) }} {...rest}>
+    <Tag className={className} data-reveal="text" style={{ ...style, ...delayStyle(delay) }} suppressHydrationWarning {...rest}>
       {split(children, { i: 0 })}
     </Tag>
   );
@@ -48,7 +48,7 @@ export function RevealText({ children, as: Tag = "span", className, delay, style
 /** A block that fades up on entry (`y` = how far it travels, px). */
 export function Rise({ children, as: Tag = "div", className, delay, y, style, ...rest }: { children: ReactNode; as?: ElementType; className?: string; delay?: number; y?: number; style?: CSSProperties } & Record<string, unknown>) {
   return (
-    <Tag className={className} data-reveal="rise" style={{ ...style, ...delayStyle(delay, y) }} {...rest}>
+    <Tag className={className} data-reveal="rise" style={{ ...style, ...delayStyle(delay, y) }} suppressHydrationWarning {...rest}>
       {children}
     </Tag>
   );
@@ -57,7 +57,7 @@ export function Rise({ children, as: Tag = "div", className, delay, y, style, ..
 /** A block that only fades in (for large imagery, where movement would fight the picture). */
 export function Fade({ children, as: Tag = "div", className, delay, style, ...rest }: { children: ReactNode; as?: ElementType; className?: string; delay?: number; style?: CSSProperties } & Record<string, unknown>) {
   return (
-    <Tag className={className} data-reveal="fade" style={{ ...style, ...delayStyle(delay) }} {...rest}>
+    <Tag className={className} data-reveal="fade" style={{ ...style, ...delayStyle(delay) }} suppressHydrationWarning {...rest}>
       {children}
     </Tag>
   );
@@ -69,7 +69,7 @@ export function Fade({ children, as: Tag = "div", className, delay, style, ...re
  */
 export function RevealMedia({ children, as: Tag = "div", className, delay, style, ...rest }: { children: ReactNode; as?: ElementType; className?: string; delay?: number; style?: CSSProperties } & Record<string, unknown>) {
   return (
-    <Tag className={cn(className)} data-reveal="media" style={{ ...style, ...delayStyle(delay) }} {...rest}>
+    <Tag className={cn(className)} data-reveal="media" style={{ ...style, ...delayStyle(delay) }} suppressHydrationWarning {...rest}>
       {children}
     </Tag>
   );
@@ -80,6 +80,6 @@ export function Stagger({ children, step = 80, from = 0, y }: { children: ReactN
   return Children.map(children, (child, i) => {
     if (!isValidElement(child) || typeof child.type !== "string") return child;
     const el = child as ReactElement<{ style?: CSSProperties }>;
-    return cloneElement(el, { "data-reveal": "rise", style: { ...el.props.style, ...delayStyle(from + i * step, y) } } as Record<string, unknown>);
+    return cloneElement(el, { "data-reveal": "rise", suppressHydrationWarning: true, style: { ...el.props.style, ...delayStyle(from + i * step, y) } } as Record<string, unknown>);
   });
 }

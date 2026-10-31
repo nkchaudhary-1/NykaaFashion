@@ -67,9 +67,9 @@ export function SearchResults() {
   const noResults = res.results.length === 0;
   return (
     <>
-      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} eyebrow="Search" size="lg" count={noResults ? undefined : res.results.length} noun="results" title={<>{noResults ? "No results for" : "Results for"} <span className="text-pink-ink">“{q}”</span></>}>
+      <ListingHeader crumbs={[{ name: "Home", href: "/" }, { name: "Search" }]} eyebrow="Search" size="lg" titleClassName="[&_.rt-w]:whitespace-normal! [&_.rt-w]:[overflow-wrap:anywhere]" count={noResults ? undefined : res.results.length} noun="results" title={<>{noResults ? "No results for" : "Results for"} <span className="text-pink-ink">{`“${q}”`}</span></>}>
         <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2" aria-live="polite">
-          {res.corrected && <p className="text-[14px] text-ink-2">Showing results for <strong className="font-medium text-ink">{res.corrected}</strong>.</p>}
+          {res.corrected && <p className="min-w-0 text-[14px] text-ink-2 [overflow-wrap:anywhere]">Showing results for <strong className="font-medium text-ink">{res.corrected}</strong>.</p>}
           {res.relaxed && <p className="text-[14px] text-ink-2">No product matches every word — showing the closest matches.</p>}
           {res.parsed.understood.length > 0 && (
             <>
@@ -81,7 +81,7 @@ export function SearchResults() {
               ))}
             </>
           )}
-          {res.parsed.ignored.length > 0 && <p className="text-[12.5px] text-ink-3">Ignored: {res.parsed.ignored.join(", ")}</p>}
+          {res.parsed.ignored.length > 0 && <p className="min-w-0 text-[12.5px] text-ink-3 [overflow-wrap:anywhere]">Ignored: {res.parsed.ignored.join(", ")}</p>}
         </div>
       </ListingHeader>
       {noResults ? <NoResults /> : <ProductListing pool={res.results} scopeKey={`search:${q}`} source="search" noun="results" features={features} />}
