@@ -3,6 +3,8 @@
 //
 //   photos[id] = { w, h, color, alt, raw, page, dl, by: { name, username, page }, focus?: [x, y], anchors?: [[x, y], …], extend?: true, tracked?: "YYYY-MM-DD" }
 //   groups[groupId] = [id, …]            ordered — the first photo of a group is its primary one
+//   slots?   = { placeholders: { "<subject>": [group, index] }, promo: { "<id>": [group, index] } }   replaces PLACEHOLDER_PHOTOS / PROMO_PHOTOS of slots.mjs for this library
+//   (a photo may also carry `closeup: true`: already a close-up, so a New & Next gallery slot uses it whole instead of zooming into it again)
 //
 // focus   = the middle of the subject as fractions of the photo (0–1); every window is placed around it. Default: the middle, a little above centre.
 // anchors = things a visitor can point at (a garment, a bag, a piece of jewellery) as photo fractions; shoppable pins are placed on the ones inside each window.
@@ -14,13 +16,13 @@ export const MANIFEST = process.env.UNSPLASH_MANIFEST ?? join(root, "scripts/uns
 
 export const loadManifest = () => {
   const m = readJson(MANIFEST, null) ?? {};
-  return { photos: m.photos ?? {}, groups: m.groups ?? {} };
+  return { photos: m.photos ?? {}, groups: m.groups ?? {}, slots: m.slots ?? {} };
 };
 
 export const saveManifest = (m) => {
   const photos = Object.fromEntries(Object.entries(m.photos).sort(([a], [b]) => (a < b ? -1 : 1)));
   const groups = Object.fromEntries(Object.entries(m.groups).filter(([, ids]) => ids.length).sort(([a], [b]) => (a < b ? -1 : 1)));
-  writeJson(MANIFEST, { photos, groups });
+  writeJson(MANIFEST, { photos, groups, ...(m.slots && Object.keys(m.slots).length ? { slots: m.slots } : {}) });
 };
 
 /** Photos of a group, in order, each with its id. */

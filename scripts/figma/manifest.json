@@ -1,0 +1,1273 @@
+{
+ "photos": {
+  "cat-home": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A terracotta vase of dried grasses on a bench with block-printed cushions",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:11",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "cat-kids": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A flat lay of a child's marigold festive kurta set, waistcoat, juttis and sneakers",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:12",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "cat-men": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A man in an off-white kurta under a navy Nehru jacket",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:15",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "cat-women": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A woman in a mustard kurta set with a white dupatta",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:14",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "cat-women-sidepanel": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A woman in a raspberry kurta and printed dupatta, seated on a wooden stool",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:10",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "cider-tall": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A young woman in a lilac cable-knit cardigan, a mini skirt and ankle boots",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:62",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "cider-wide": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A young woman in a red knit sweater and a printed pleated skirt, mid-step in a pink room",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:63",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.66,
+    0.5
+   ]
+  },
+  "edit-festive": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in a maroon chanderi saree with a gold zari border, marigold petals on the floor",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:25",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.68,
+    0.52
+   ]
+  },
+  "edit-hidden-gems": {
+   "w": 1376,
+   "h": 768,
+   "alt": "An artisan's hands pressing a carved wooden block onto indigo ajrakh cloth",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:22",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.72,
+    0.55
+   ]
+  },
+  "edit-house-of-nykaa": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in a pale yellow cotton dress walking down a sunlit lane",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:18",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.68,
+    0.55
+   ]
+  },
+  "edit-luxe": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in an ivory silk kurta set with gold embroidery, holding a tan leather bag",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:17",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.66,
+    0.55
+   ]
+  },
+  "edit-new-in": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A man in a sage-green linen shirt leaning on a terrace railing",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:23",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.69,
+    0.5
+   ]
+  },
+  "edit-offer": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman holding paper shopping bags beside a rail of neutral clothes",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:24",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.73,
+    0.5
+   ]
+  },
+  "edit-responsible": {
+   "w": 1376,
+   "h": 768,
+   "alt": "Yarn dyed with madder, indigo and turmeric hanging on a pole in a sunlit courtyard",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:21",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.76,
+    0.45
+   ]
+  },
+  "edit-under-1500": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A couple in everyday cotton clothes laughing as they walk down a lane",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:19",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.74,
+    0.5
+   ]
+  },
+  "edit-under-3000": {
+   "w": 1376,
+   "h": 768,
+   "alt": "Three friends laughing together in linen, a printed kurta and a denim shirt dress",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:20",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.68,
+    0.5
+   ]
+  },
+  "halden-d1": {
+   "w": 928,
+   "h": 1152,
+   "alt": "The soft shoulder and lapel of a sand linen blazer with a tan leather tote",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:45",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "halden-d2": {
+   "w": 928,
+   "h": 1152,
+   "alt": "Pleated wide-leg trousers and leather penny loafers",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:50",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "halden-d3": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A tan leather tote on a desk beside a white shirt cuff and a notebook",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:47",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "halden-tall": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A woman in a camel wool-blend coat over a charcoal knit",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:49",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "halden-wide": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in a sand linen blazer and pleated trousers walking through a bright office",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:48",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.72,
+    0.5
+   ]
+  },
+  "hearth-tall": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A lit candle in a glass jar beside a folded wool throw",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:66",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "hearth-wide": {
+   "w": 1376,
+   "h": 768,
+   "alt": "Lit candles on a coffee table and a chunky wool throw on a sofa",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:65",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.72,
+    0.55
+   ]
+  },
+  "hm-tall": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A young woman in a white tee, jeans and a denim jacket tied at the waist",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:54",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "hm-wide": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A young woman in a denim jacket, white tee and jeans walking down a sunlit street",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:60",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.64,
+    0.5
+   ]
+  },
+  "home-band-diwali": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in a marigold and maroon kurta holding a lit brass diya, with fairy lights behind her",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:13",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.79,
+    0.5
+   ]
+  },
+  "home-hero-coord": {
+   "w": 1312,
+   "h": 738,
+   "alt": "A woman in an oatmeal textured co-ord, jacket and straight trousers, with white sneakers",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:8",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.6476,
+    0.4797
+   ],
+   "note": "cropped 64 px off the left and 30 px off the top: a dark window-frame line sat behind the start of the hero headline"
+  },
+  "home-hero-festive": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in an emerald silk kurta with a pale gold dupatta and jhumkas",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:16",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.657,
+    0.5
+   ]
+  },
+  "home-hero-sale": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in an ivory and rose block-print kurta set with a dupatta, standing in a bright, plain room",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:9",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.68,
+    0.5
+   ]
+  },
+  "kiln-d1": {
+   "w": 928,
+   "h": 1152,
+   "alt": "The texture of an oatmeal boucle cushion",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:55",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "kiln-d2": {
+   "w": 928,
+   "h": 1152,
+   "alt": "Three beeswax pillar candles on a ceramic dish",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:59",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "kiln-d3": {
+   "w": 928,
+   "h": 1152,
+   "alt": "Stacked terracotta plates and bowls on a linen cloth",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:58",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "kiln-tall": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A stoneware vase of dried grass on a linen-draped table",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:57",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "kiln-wide": {
+   "w": 1376,
+   "h": 768,
+   "alt": "Glazed stoneware and a folded linen cloth on a wooden table",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:56",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.77,
+    0.6
+   ]
+  },
+  "popup-delivery": {
+   "w": 1200,
+   "h": 896,
+   "alt": "A hand holding out a kraft-paper parcel at a terracotta door",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:67",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "popup-first-order": {
+   "w": 1200,
+   "h": 896,
+   "alt": "A woman opening a parcel with a folded printed kurta inside",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:61",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "popup-halden": {
+   "w": 1200,
+   "h": 896,
+   "alt": "A sand linen blazer on a wooden hanger against a pale wall",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:64",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "story-block-print-0": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in an ajrakh-print top and ivory wrap skirt in a courtyard with printed cloth drying",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:29",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.735,
+    0.5
+   ],
+   "anchors": [
+    [
+     0.735,
+     0.47,
+     "aja-01"
+    ],
+    [
+     0.76,
+     0.82,
+     "aja-03"
+    ]
+   ]
+  },
+  "story-block-print-1": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A kurta, a wrap skirt and a camp-collar shirt in indigo and madder ajrakh print on a wooden rail, with printing blocks below",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:30",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.38,
+     0.4,
+     "aja-01"
+    ],
+    [
+     0.54,
+     0.52,
+     "aja-03"
+    ],
+    [
+     0.71,
+     0.36,
+     "aja-04"
+    ]
+   ]
+  },
+  "story-block-print-2": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A sofa corner with Sanganer-print cushions, a shibori cover and a quilted throw",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:27",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.37,
+     0.48,
+     "ran-01"
+    ],
+    [
+     0.555,
+     0.46,
+     "ind-04"
+    ],
+    [
+     0.55,
+     0.7,
+     "ran-04"
+    ]
+   ]
+  },
+  "story-diwali-0": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in a blush chanderi kurta set lighting a brass lamp, marigold garlands behind her",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:31",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.7,
+    0.55
+   ],
+   "anchors": [
+    [
+     0.72,
+     0.62,
+     "lik-01"
+    ],
+    [
+     0.69,
+     0.25,
+     "gaj-01"
+    ],
+    [
+     0.8,
+     0.62,
+     "til-01"
+    ]
+   ]
+  },
+  "story-diwali-1": {
+   "w": 839,
+   "h": 559,
+   "alt": "A woman in a blush angrakha-style kurta with kundan jhumkas, lighting a diya",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:33",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.4369,
+     0.7885,
+     "lik-01"
+    ],
+    [
+     0.5424,
+     0.5458,
+     "lik-03"
+    ],
+    [
+     0.5107,
+     0.212,
+     "gaj-01"
+    ]
+   ],
+   "note": "the original has a blank band on its right third; cropped to the picture part (regenerate for full resolution)"
+  },
+  "story-diwali-2": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A brocade potli, meenakari bangles, a temple choker and two lit diyas on raw silk",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:28",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.265,
+     0.457,
+     "til-03"
+    ],
+    [
+     0.471,
+     0.613,
+     "gaj-02"
+    ],
+    [
+     0.684,
+     0.481,
+     "gaj-03"
+    ]
+   ]
+  },
+  "story-one-dress-0": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in a sage-green shirt dress and white sneakers, laughing in a courtyard",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:43",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.67,
+    0.55
+   ],
+   "anchors": [
+    [
+     0.67,
+     0.5,
+     "twd-02"
+    ],
+    [
+     0.665,
+     0.78,
+     "twd-02"
+    ]
+   ]
+  },
+  "story-one-dress-1": {
+   "w": 1264,
+   "h": 848,
+   "alt": "Two women in the same sage-green shirt dress, one with a black tote",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:39",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.6,
+     0.4,
+     "twd-02"
+    ],
+    [
+     0.76,
+     0.45,
+     "twd-02"
+    ],
+    [
+     0.515,
+     0.5,
+     "pip-03"
+    ]
+   ]
+  },
+  "story-one-dress-2": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A sage shirt dress, trousers, suede mules and a long gold chain laid flat on linen",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:37",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.6,
+     0.38,
+     "twd-02"
+    ],
+    [
+     0.58,
+     0.74,
+     "ves-04"
+    ],
+    [
+     0.38,
+     0.3,
+     "pip-02"
+    ]
+   ]
+  },
+  "story-quiet-luxe-0": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in an ivory bias-cut silk slip dress and a camel cardigan",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:32",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.705,
+    0.48
+   ],
+   "anchors": [
+    [
+     0.705,
+     0.6,
+     "mau-01"
+    ],
+    [
+     0.675,
+     0.45,
+     "loo-04"
+    ]
+   ]
+  },
+  "story-quiet-luxe-1": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A bias-cut silk slip, a pleated midi skirt and a sculpted mule, all in neutral tones",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:34",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.413,
+     0.546,
+     "mau-01"
+    ],
+    [
+     0.582,
+     0.44,
+     "mau-03"
+    ],
+    [
+     0.703,
+     0.81,
+     "ves-04"
+    ]
+   ]
+  },
+  "story-quiet-luxe-2": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A man in an oatmeal linen jacket, a stone silk shirt and tan loafers, seated on a bench",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:26",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.33,
+     0.45,
+     "ora-01"
+    ],
+    [
+     0.43,
+     0.34,
+     "ora-02"
+    ],
+    [
+     0.745,
+     0.86,
+     "ves-05"
+    ]
+   ]
+  },
+  "story-slow-home-0": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A bedroom corner in morning light with linen bedding and a mug on a stool",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:40",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.74,
+    0.5
+   ],
+   "anchors": [
+    [
+     0.515,
+     0.54,
+     "mit-04"
+    ],
+    [
+     0.82,
+     0.55,
+     "kil-06"
+    ]
+   ]
+  },
+  "story-slow-home-1": {
+   "w": 1264,
+   "h": 848,
+   "alt": "Block-printed cushions on a sofa, blue-and-white stoneware and an amber candle",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:41",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.19,
+     0.5,
+     "ran-01"
+    ],
+    [
+     0.776,
+     0.774,
+     "mit-01"
+    ],
+    [
+     0.824,
+     0.625,
+     "hea-01"
+    ]
+   ]
+  },
+  "story-slow-home-2": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A wool throw on an armchair, two glazed mugs and a piped linen cushion",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:36",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.316,
+     0.457,
+     "hea-03"
+    ],
+    [
+     0.292,
+     0.66,
+     "mit-04"
+    ],
+    [
+     0.606,
+     0.36,
+     "hea-04"
+    ]
+   ]
+  },
+  "story-wear-less-0": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in a white tee and beige trousers buttoning a grey cardigan, a clothes rail behind her",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:38",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.65,
+    0.5
+   ],
+   "anchors": [
+    [
+     0.65,
+     0.47,
+     "loo-04"
+    ],
+    [
+     0.65,
+     0.84,
+     "jun-05"
+    ],
+    [
+     0.65,
+     0.35,
+     "loo-01"
+    ]
+   ]
+  },
+  "story-wear-less-1": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A white tee, stone trousers and an oatmeal cardigan on a wooden valet stand",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:42",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.49,
+     0.28,
+     "loo-01"
+    ],
+    [
+     0.5,
+     0.5,
+     "jun-05"
+    ],
+    [
+     0.5,
+     0.75,
+     "loo-04"
+    ]
+   ]
+  },
+  "story-wear-less-2": {
+   "w": 1264,
+   "h": 848,
+   "alt": "A charcoal turtleneck, a pleated midi skirt and white canvas slip-ons",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:35",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "anchors": [
+    [
+     0.635,
+     0.145,
+     "mir-03"
+    ],
+    [
+     0.66,
+     0.52,
+     "jun-03"
+    ],
+    [
+     0.44,
+     0.87,
+     "str-04"
+    ]
+   ]
+  },
+  "vrisa-d1": {
+   "w": 928,
+   "h": 1152,
+   "alt": "Pearl and kundan chandbali earrings with a zardozi neckline",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:52",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "vrisa-d2": {
+   "w": 928,
+   "h": 1152,
+   "alt": "Banarasi brocade and a bandhani silk dupatta in soft folds",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:53",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "vrisa-d3": {
+   "w": 928,
+   "h": 1152,
+   "alt": "The hem of an anarkali and velvet embroidered juttis on a stone floor",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:46",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "closeup": true
+  },
+  "vrisa-tall": {
+   "w": 928,
+   "h": 1152,
+   "alt": "A woman in a powder-blue gota-patti short kurta and wide sharara",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:44",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   }
+  },
+  "vrisa-wide": {
+   "w": 1376,
+   "h": 768,
+   "alt": "A woman in a ruby zardozi anarkali with a gold-trimmed dupatta in a Jaipur courtyard",
+   "raw": "figma:Mj8oos8GHlgEeY4fKgrJpY:20:51",
+   "page": "",
+   "by": {
+    "name": "AI-generated",
+    "username": "",
+    "page": ""
+   },
+   "focus": [
+    0.66,
+    0.55
+   ]
+  }
+ },
+ "groups": {
+  "s-cat-women": [
+   "cat-women",
+   "cat-women-sidepanel"
+  ],
+  "s-cat-men": [
+   "cat-men"
+  ],
+  "s-cat-kids": [
+   "cat-kids"
+  ],
+  "s-cat-home": [
+   "cat-home"
+  ],
+  "s-festive": [
+   "edit-festive"
+  ],
+  "s-craft": [
+   "edit-hidden-gems",
+   "edit-responsible"
+  ],
+  "s-luxe": [
+   "edit-luxe"
+  ],
+  "s-everyday": [
+   "edit-house-of-nykaa",
+   "edit-new-in",
+   "edit-under-1500",
+   "edit-under-3000"
+  ],
+  "s-offers": [
+   "edit-offer"
+  ],
+  "s-block-print": [
+   "story-block-print-0",
+   "story-block-print-1",
+   "story-block-print-2"
+  ],
+  "s-diwali": [
+   "story-diwali-0",
+   "story-diwali-1",
+   "story-diwali-2"
+  ],
+  "s-quiet-luxe": [
+   "story-quiet-luxe-0",
+   "story-quiet-luxe-1",
+   "story-quiet-luxe-2"
+  ],
+  "s-one-dress": [
+   "story-one-dress-0",
+   "story-one-dress-1",
+   "story-one-dress-2"
+  ],
+  "s-wear-less": [
+   "story-wear-less-0",
+   "story-wear-less-1",
+   "story-wear-less-2"
+  ],
+  "s-slow-home": [
+   "story-slow-home-0",
+   "story-slow-home-1",
+   "story-slow-home-2"
+  ],
+  "h-indian": [
+   "home-hero-sale"
+  ],
+  "h-western": [
+   "home-hero-coord"
+  ],
+  "h-festive": [
+   "home-hero-festive"
+  ],
+  "h-diwali": [
+   "home-band-diwali"
+  ],
+  "l-vrisa": [
+   "vrisa-wide",
+   "vrisa-tall",
+   "vrisa-d1",
+   "vrisa-d2",
+   "vrisa-d3"
+  ],
+  "l-halden": [
+   "halden-wide",
+   "halden-tall",
+   "halden-d1",
+   "halden-d2",
+   "halden-d3"
+  ],
+  "l-kiln": [
+   "kiln-wide",
+   "kiln-tall",
+   "kiln-d1",
+   "kiln-d2",
+   "kiln-d3"
+  ],
+  "l-hm": [
+   "hm-wide",
+   "hm-tall"
+  ],
+  "l-cider": [
+   "cider-wide",
+   "cider-tall"
+  ],
+  "l-hearth": [
+   "hearth-wide",
+   "hearth-tall"
+  ],
+  "pop-first-order": [
+   "popup-first-order"
+  ],
+  "pop-halden": [
+   "popup-halden"
+  ],
+  "pop-delivery": [
+   "popup-delivery"
+  ]
+ },
+ "slots": {
+  "placeholders": {
+   "kurta-set": [
+    "h-indian",
+    0
+   ],
+   "boucle-suit": [
+    "h-western",
+    0
+   ],
+   "festive-set": [
+    "h-festive",
+    0
+   ],
+   "diwali-band": [
+    "h-diwali",
+    0
+   ]
+  },
+  "promo": {
+   "first-order": [
+    "pop-first-order",
+    0
+   ],
+   "halden-preview": [
+    "pop-halden",
+    0
+   ],
+   "delivery-notice": [
+    "pop-delivery",
+    0
+   ]
+  }
+ }
+}

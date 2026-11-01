@@ -13,14 +13,15 @@ import { photo } from "@/data/placeholders";
 import { searchProducts } from "@/lib/search";
 import { track } from "@/lib/track";
 import { signal } from "@/stores/intent";
-import { heroImg, maxOff, pad2, styles, useMedia, wallOf, WIDE_SCREEN } from "./kit";
+import { cn } from "@/lib/cn";
+import { heroImg, lum, maxOff, pad2, styles, useMedia, wallOf, WIDE_SCREEN } from "./kit";
 
 /*
  * Build Diwali wardrobe: a full-bleed feature (a full screen high on desktop) whose picture drifts against the scroll, the title at poster scale on the calm wall,
- * then a rail of the curated searches, three to a view. The photograph is mirrored so its wall is on the right and the figure on the left — a different composition
- * from the first screen's, from the same supplied picture.
+ * then a rail of the curated searches, three to a view. The picture is mirrored so its dark, warm blur is on the right (under the copy, in white type) and the figure with the lamp
+ * on the left. Its own picture: a woman lighting a diya, from the owner's set (scripts/figma).
  */
-const BAND = photo("kurta-set", "16x9-copy-left");
+const BAND = photo("diwali-band", "16x9-copy-left");
 
 export function DiwaliWardrobe() {
   const wide = useMedia(WIDE_SCREEN); // the drift stays inside the overscan of the frame, which is shorter below 1024px
@@ -29,26 +30,27 @@ export function DiwaliWardrobe() {
     return { ...t, img: heroImg(r[0]), n: r.length, off: maxOff(r), href: `/search?q=${encodeURIComponent(t.q)}` };
   }).filter((t) => t.n > 0);
   const wall = wallOf(BAND);
+  const onDark = lum(wall) < 0.28; // the copy sits on the picture from 1024 px (white type when it is dark); below that, on a paper panel
   return (
     <>
       <div className="bg-sand lg:grid lg:min-h-[100svh]" style={{ backgroundColor: wall }}>
         <Parallax className="aspect-[4/5] sm:aspect-[16/10] lg:col-start-1 lg:row-start-1 lg:aspect-auto" amount={wide ? 52 : 26} scale={1.16}>
-          <Img imgKey={BAND} alt="Festive look — a printed kurta set with dupatta" sizes="100vw" ratio="fill" position="50% 40%" className="h-full w-full -scale-x-100" />
+          <Img imgKey={BAND} alt="A woman in a marigold and maroon kurta holding a lit brass diya" sizes="100vw" ratio="fill" position="100% 40%" className="h-full w-full -scale-x-100" />
         </Parallax>
         <div className="relative z-10 bg-paper lg:pointer-events-none lg:col-start-1 lg:row-start-1 lg:bg-transparent">
           <div className="container-x py-12 [--fs:clamp(3rem,13vw,5rem)] sm:py-16 lg:grid-main lg:h-full lg:items-center lg:py-24 lg:[--fs:clamp(3.25rem,7.2vw,7.75rem)]">
-            <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }} className="lg:pointer-events-auto">
+            <Col span={{ base: 4, sm: 12, lg: 6 }} start={{ lg: 7 }} rowStart={{ lg: 1 }} className={cn("lg:pointer-events-auto", onDark && "lg:text-white")}>
               <Rise as="p" y={14} className="eyebrow">
                 Diwali edit
               </Rise>
               <RevealText as="h2" delay={80} className="display-xl mt-4 [&_em]:text-inherit lg:mt-5" style={{ fontSize: "var(--fs)", maxWidth: "5.8em" }}>
                 Build Diwali <em>wardrobe</em>
               </RevealText>
-              <Rise as="p" delay={380} className="mt-5 max-w-[40ch] text-pretty text-[16px] leading-relaxed text-ink-2 lg:mt-7">
+              <Rise as="p" delay={380} className={cn("mt-5 max-w-[40ch] text-pretty text-[16px] leading-relaxed text-ink-2 lg:mt-7", onDark && "lg:text-white")}>
                 Seasonal picks, curated by what you will actually wear — start with the feature look, then fill in the rest.
               </Rise>
               <Rise delay={480} className="mt-6 lg:mt-8">
-                <LinkButton href="/edits/festive" size="lg" iconRight={<ArrowRight size={16} />} onClick={() => signal("edit_open", { editId: "festive" })}>
+                <LinkButton href="/edits/festive" size="lg" iconRight={<ArrowRight size={16} />} className={onDark ? "lg:bg-bone lg:text-ink lg:hover:bg-white lg:hover:text-ink" : undefined} onClick={() => signal("edit_open", { editId: "festive" })}>
                   Shop festive
                 </LinkButton>
               </Rise>

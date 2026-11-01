@@ -1,8 +1,8 @@
-// Model photography placeholders: two studio photographs cut into every ratio the layouts use
-// (scripts/placeholders/build.mjs). Files are ordinary image keys under public/img/placeholders/, so
+// The home page's banner pictures (the owner's AI-generated set, cut by scripts/figma/build.mjs). Files are ordinary image keys under public/img/placeholders/, so
 //   <Img imgKey={photo("kurta-set", "3x4")} alt="" sizes={…} ratio="3/4" />
-// works anywhere. Swap a file for a real photograph with the same name and nothing else changes.
-export type PhotoSubject = "kurta-set" | "boucle-suit";
+// works anywhere. "kurta-set" and "boucle-suit" exist in every ratio below; "festive-set" (hero slide 2) in 16x9-copy-left and 4x5; "diwali-band" (the Diwali band) in 16x9-copy-left.
+// Swap a file for another picture with the same name and nothing else changes.
+export type PhotoSubject = "kurta-set" | "boucle-suit" | "festive-set" | "diwali-band";
 export type PhotoRatio = "3x4" | "4x5" | "1x1" | "16x9" | "16x9-copy-left" | "9x16" | "3x2";
 
 export const photo = (subject: PhotoSubject, ratio: PhotoRatio) => `placeholders/${subject}-${ratio}`;

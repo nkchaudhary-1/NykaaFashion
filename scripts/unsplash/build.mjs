@@ -44,6 +44,8 @@ const warn = (key, msg) => warnings.push(`${key}: ${msg}`);
 
 // ── the library ────────────────────────────────────────────────────────────────────────────────────────────────
 const manifest = loadManifest();
+const PLACEHOLDERS = manifest.slots.placeholders ?? PLACEHOLDER_PHOTOS; // a library may re-map the home banners and the pop-ups (manifest.mjs → slots)
+const PROMOS = manifest.slots.promo ?? PROMO_PHOTOS;
 const have = new Map(); // id → photo with an original in the cache
 const missing = new Set();
 for (const [group, ids] of Object.entries(manifest.groups))
@@ -161,12 +163,13 @@ function planLaunch(key, W, H) {
   if (role === "hero-tall") return windowPlan(tallP, group, "front", W, H, tallP === wideP ? 1.15 : 1);
   if (role === "g4") return windowPlan(wideP, group, "land", W, H, 1);
   if (n === undefined) return null;
-  return windowPlan(frames[n % frames.length], group, ["front", "alt", "detail"][n], W, H, 1);
+  const frame = frames[n % frames.length];
+  return windowPlan(frame, group, frame.closeup ? "front" : ["front", "alt", "detail"][n], W, H, 1); // a photo that is already a close-up is used whole
 }
 
 function planPromo(key, W, H) {
   const m = /^promo\/([\w-]+)$/.exec(key);
-  const rule = m && PROMO_PHOTOS[m[1]];
+  const rule = m && PROMOS[m[1]];
   const list = rule ? photosIn(rule[0]) : [];
   if (!list.length) return null;
   return windowPlan(list[rule[1] % list.length], rule[0], "promo", W, H, 1.1);
@@ -175,7 +178,7 @@ function planPromo(key, W, H) {
 /** The home banners (placeholders/<subject>-<ratio>): the copy-left ratio puts the subject right of the copy, 16:9 and 3:2 are whole frames, the rest are portrait or square windows. */
 function planPlaceholder(key, W, H) {
   const m = /^placeholders\/([a-z-]+?)-(3x4|4x5|1x1|16x9-copy-left|16x9|9x16|3x2)$/.exec(key);
-  const rule = m && PLACEHOLDER_PHOTOS[m[1]];
+  const rule = m && PLACEHOLDERS[m[1]];
   const list = rule ? photosIn(rule[0]) : [];
   if (!list.length) return null;
   const photo = list[rule[1] % list.length];

@@ -144,8 +144,9 @@ console.log("trending searches:", TRENDING_SEARCHES.length);
   console.log(`pop-ups: ${promos.length} campaigns (${promos.filter((c) => c.media.type === "video").length} video)`);
 }
 
-// Unsplash photographs (scripts/unsplash): every picture drawn from one must have its photo in the manifest, that photo must have been reported to Unsplash
-// (their API guideline for any photo chosen for use) and be credited on /credits; nothing credited may be unused. Empty until the first build.
+// Pictures cut from a library of photographs (scripts/unsplash, scripts/figma): every picture drawn from one must have its photo in that library's manifest and be credited on /credits;
+// nothing credited may be unused. An Unsplash photo must also have been reported to Unsplash (their API guideline for any photo chosen for use) and link to its page. A picture from the
+// owner's AI-generated set (scripts/figma, credited as "AI-generated") needs its original in scripts/figma/source. Empty until the first build.
 {
   const fs = await import("node:fs");
   const read = (f, fallback) => {
@@ -157,6 +158,7 @@ console.log("trending searches:", TRENDING_SEARCHES.length);
   };
   const meta = read("src/data/generated/image-meta.json", {});
   const manifest = read("scripts/unsplash/manifest.json", { photos: {}, groups: {} });
+  const own = read("scripts/figma/manifest.json", { photos: {}, groups: {} }); // the owner's AI-generated set
   const assigned = read("src/data/generated/photo-assignments.json", {});
   const credits = read("src/data/generated/photo-credits.json", []);
   const keys = Object.keys(assigned);
@@ -164,7 +166,9 @@ console.log("trending searches:", TRENDING_SEARCHES.length);
     const id = assigned[k];
     if (!meta[k]) err(`photo-assignments: ${k} has no entry in image-meta.json`);
     if (!existsSync(resolve(root, "public/img", `${k}.webp`))) err(`photo-assignments: public/img/${k}.webp is missing`);
-    if (!manifest.photos[id]) err(`photo-assignments: ${k} uses photo ${id}, which is not in scripts/unsplash/manifest.json`);
+    if (own.photos[id]) {
+      if (!existsSync(resolve(root, "scripts/figma/source", `${id}.jpg`))) err(`photo ${id}: scripts/figma/source/${id}.jpg is missing`);
+    } else if (!manifest.photos[id]) err(`photo-assignments: ${k} uses photo ${id}, which is in neither scripts/unsplash/manifest.json nor scripts/figma/manifest.json`);
     else if (!manifest.photos[id].tracked) err(`photo ${id} is used on the site but was never reported to Unsplash — run  npm run unsplash:download`);
     else if (!/^https:\/\/images\.unsplash\.com\//.test(manifest.photos[id].raw ?? "")) err(`photo ${id}: not a free Unsplash photograph (${manifest.photos[id].raw})`);
   }
@@ -173,8 +177,13 @@ console.log("trending searches:", TRENDING_SEARCHES.length);
   const creditIds = new Set(credits.map((c) => c.id));
   for (const id of usedIds) if (!creditIds.has(id)) err(`photo ${id} is used on the site but missing from photo-credits.json — run  npm run unsplash:build`);
   for (const id of creditIds) if (!usedIds.has(id)) err(`photo-credits.json credits ${id}, which no picture uses — run  npm run unsplash:build`);
-  for (const c of credits) if (!c.name || !/^https:\/\/unsplash\.com\//.test(c.page ?? "") || !/utm_source=/.test(c.page)) err(`credit ${c.id}: needs the photographer's name and a link to the photo on unsplash.com with the utm tags`);
-  console.log(`unsplash: ${usedIds.size} photographs placed (${keys.length} pictures) · ${Object.keys(manifest.photos).length} picked`);
+  for (const c of credits) {
+    if (own.photos[c.id]) {
+      if (c.name !== "AI-generated") err(`credit ${c.id}: a picture from the owner's set is credited as "AI-generated"`);
+    } else if (!c.name || !/^https:\/\/unsplash\.com\//.test(c.page ?? "") || !/utm_source=/.test(c.page)) err(`credit ${c.id}: needs the photographer's name and a link to the photo on unsplash.com with the utm tags`);
+  }
+  const fromOwn = [...usedIds].filter((id) => own.photos[id]).length;
+  console.log(`photographs: ${usedIds.size} placed (${keys.length} pictures; ${fromOwn} from the owner's AI-generated set) · ${Object.keys(manifest.photos).length} picked on Unsplash`);
 }
 
 // Optional: check generated imagery exists on disk (after rendering).

@@ -18,9 +18,9 @@ import { Wordmark } from "./Wordmark";
 /*
  * The featured-launch banner — the first screen of /new-and-next and of every brand's launch page.
  *
- * ≥1280px: one full-bleed picture (at least the screen under the header) with the copy laid on its calm wall, in two places that no figure ever reaches: the brand,
- * the eyebrow, the headline, the dek and the buttons at the top left (the headline is sized from its own longest line, so any campaign headline fits five columns),
- * and the date with the large countdown at the top right. Below 1280px the picture comes first (4:5 on phones, 16:9 from 600px) and the same blocks follow on a flat
+ * ≥1280px: one full-bleed picture (at least the screen under the header) with the copy laid on its calm wall at the left, where no figure reaches (the campaign pictures put
+ * the subject right of centre): the brand, the eyebrow, the headline (sized from its own longest line, so any campaign headline fits five columns), the dek, the date with
+ * the buttons, then the date with the large countdown beneath them. Below 1280px the picture comes first (4:5 on phones, 16:9 from 600px) and the same blocks follow on a flat
  * panel — in two columns from 1024px. One DOM copy of the text, so the page has one h1: the hub's is its eyebrow ("New & Next · …"), a brand page's is the headline.
  *
  * Everything switches on `isLaunched(launch, time)`: before launch the date, the countdown and "Notify me"; from launch "Now live", the offers' end date and "Shop now".
@@ -83,7 +83,7 @@ export function LaunchBanner({ launch, as }: { launch: BrandLaunch; as: "hub" | 
 
         {/* the copy: a flat panel under the picture, laid on its calm wall from 1280px */}
         <div className="relative bg-bone xl:col-start-1 xl:row-start-1 xl:bg-transparent">
-          <div className={cn("container-x grid-main gap-y-7 pb-10 pt-8 text-ink sm:pb-14 sm:pt-10 xl:content-start xl:gap-y-0 xl:pb-0 xl:pt-[clamp(2.25rem,4.2vw,4.75rem)]", dark && "xl:text-white")}>
+          <div className={cn("container-x grid-main gap-y-7 pb-10 pt-8 text-ink sm:pb-14 sm:pt-10 xl:h-full xl:grid-rows-[auto_auto_auto_1fr] xl:content-start xl:gap-y-0 xl:pb-[clamp(2rem,3.4vw,3.75rem)] xl:pt-[clamp(2.25rem,4.2vw,4.75rem)]", dark && "xl:text-white")}>
             {/* brand, eyebrow, headline */}
             <div className="col-span-4 min-w-0 sm:col-span-12 lg:col-span-7 xl:col-span-5 xl:row-start-1">
               <Rise y={14}>
@@ -119,8 +119,8 @@ export function LaunchBanner({ launch, as }: { launch: BrandLaunch; as: "hub" | 
               </Rise>
             </div>
 
-            {/* the date and the countdown (top right on the wall at 1280px+) */}
-            <div className="col-span-4 min-w-0 sm:col-span-12 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 xl:col-span-4 xl:col-start-9 xl:row-span-1 xl:row-start-1 xl:w-[min(100%,25rem)] xl:justify-self-end xl:pt-1">
+            {/* the date and the countdown (under the buttons, on the wall, at 1280px+: the campaign pictures put the subject on the right) */}
+            <div className="col-span-4 min-w-0 sm:col-span-12 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 xl:col-span-5 xl:col-start-1 xl:row-span-1 xl:row-start-4 xl:mt-10 xl:w-[min(100%,25rem)] xl:self-start xl:justify-self-start">
               <Rise delay={200}>
                 <p className="text-[15px] font-medium sm:text-[16px]">{live ? `Launched ${dateTimeLine(at)}` : dateTimeLine(at)}</p>
                 <p className="mt-1 min-h-[1.4em] text-[13px] text-ink-2 xl:text-inherit">{!live && early !== null ? `Members shop early — from ${whenShort(early)}` : launch.brand.origin ? `From ${launch.brand.origin} · ${launch.brand.category}` : launch.brand.category}</p>

@@ -112,10 +112,10 @@ export const launches: BrandLaunch[] = [
     images: {
       hero: { wide: "launches/vrisa/hero-wide", tall: "launches/vrisa/hero-tall" },
       gallery: [
-        { key: "launches/vrisa/g1", alt: "A zardozi anarkali in marigold, photographed in the studio" },
-        { key: "launches/vrisa/g2", alt: "Close portrait with kundan chandbalis" },
-        { key: "launches/vrisa/g3", alt: "Gota-patti hem detail on a sharara" },
-        { key: "launches/vrisa/g4", alt: "The full look, seated" },
+        { key: "launches/vrisa/g1", alt: "Pearl and kundan chandbali earrings with a zardozi neckline, in profile" },
+        { key: "launches/vrisa/g2", alt: "Banarasi brocade and a bandhani silk dupatta in soft folds" },
+        { key: "launches/vrisa/g3", alt: "The hem of an anarkali in soft motion, with embroidered velvet juttis" },
+        { key: "launches/vrisa/g4", alt: "The full look: a ruby zardozi anarkali in a Jaipur courtyard" },
       ],
     },
     offers: [
@@ -155,10 +155,10 @@ export const launches: BrandLaunch[] = [
     images: {
       hero: { wide: "launches/halden/hero-wide", tall: "launches/halden/hero-tall" },
       gallery: [
-        { key: "launches/halden/g1", alt: "A soft-shouldered linen blazer over a white vest" },
-        { key: "launches/halden/g2", alt: "Portrait in a linen blazer" },
-        { key: "launches/halden/g3", alt: "Pleated wide-leg trousers, detail" },
-        { key: "launches/halden/g4", alt: "The full outfit on a bouclé chair" },
+        { key: "launches/halden/g1", alt: "The soft shoulder of a sand linen blazer, with a tan leather tote" },
+        { key: "launches/halden/g2", alt: "Pleated wide-leg trousers with leather penny loafers" },
+        { key: "launches/halden/g3", alt: "A tan leather tote on a desk beside a white shirt cuff and a notebook" },
+        { key: "launches/halden/g4", alt: "The full outfit: a linen blazer and trousers in a bright office" },
       ],
     },
     offers: [
@@ -193,10 +193,10 @@ export const launches: BrandLaunch[] = [
     images: {
       hero: { wide: "launches/kiln-and-linen/hero-wide", tall: "launches/kiln-and-linen/hero-tall" },
       gallery: [
-        { key: "launches/kiln-and-linen/g1", alt: "A bouclé armchair in warm light" },
-        { key: "launches/kiln-and-linen/g2", alt: "Texture of bouclé and linen" },
-        { key: "launches/kiln-and-linen/g3", alt: "A corner styled with a stoneware vase" },
-        { key: "launches/kiln-and-linen/g4", alt: "The collection in a living room" },
+        { key: "launches/kiln-and-linen/g1", alt: "The texture of an oatmeal bouclé cushion" },
+        { key: "launches/kiln-and-linen/g2", alt: "Three beeswax pillar candles on a ceramic dish" },
+        { key: "launches/kiln-and-linen/g3", alt: "Terracotta plates and bowls on a linen cloth" },
+        { key: "launches/kiln-and-linen/g4", alt: "Stoneware on a wooden table against a plain wall" },
       ],
     },
     offers: [

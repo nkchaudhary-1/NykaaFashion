@@ -1,1 +1,663 @@
-[]
+[
+ {
+  "id": "cat-home",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A terracotta vase of dried grasses on a bench with block-printed cushions",
+  "uses": [
+   "Category pictures"
+  ]
+ },
+ {
+  "id": "cat-kids",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A flat lay of a child's marigold festive kurta set, waistcoat, juttis and sneakers",
+  "uses": [
+   "Category pictures"
+  ]
+ },
+ {
+  "id": "cat-men",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A man in an off-white kurta under a navy Nehru jacket",
+  "uses": [
+   "Category pictures"
+  ]
+ },
+ {
+  "id": "cat-women",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a mustard kurta set with a white dupatta",
+  "uses": [
+   "Category pictures"
+  ]
+ },
+ {
+  "id": "cat-women-sidepanel",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a raspberry kurta and printed dupatta, seated on a wooden stool",
+  "uses": [
+   "Category pictures"
+  ]
+ },
+ {
+  "id": "cider-tall",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A young woman in a lilac cable-knit cardigan, a mini skirt and ankle boots",
+  "uses": [
+   "New & Next · Cider"
+  ]
+ },
+ {
+  "id": "cider-wide",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A young woman in a red knit sweater and a printed pleated skirt, mid-step in a pink room",
+  "uses": [
+   "New & Next · Cider"
+  ]
+ },
+ {
+  "id": "edit-festive",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a maroon chanderi saree with a gold zari border, marigold petals on the floor",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "edit-hidden-gems",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "An artisan's hands pressing a carved wooden block onto indigo ajrakh cloth",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "edit-house-of-nykaa",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a pale yellow cotton dress walking down a sunlit lane",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "edit-luxe",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in an ivory silk kurta set with gold embroidery, holding a tan leather bag",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "edit-new-in",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A man in a sage-green linen shirt leaning on a terrace railing",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "edit-offer",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman holding paper shopping bags beside a rail of neutral clothes",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "edit-responsible",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Yarn dyed with madder, indigo and turmeric hanging on a pole in a sunlit courtyard",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "edit-under-1500",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A couple in everyday cotton clothes laughing as they walk down a lane",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "edit-under-3000",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Three friends laughing together in linen, a printed kurta and a denim shirt dress",
+  "uses": [
+   "Edits"
+  ]
+ },
+ {
+  "id": "halden-d1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "The soft shoulder and lapel of a sand linen blazer with a tan leather tote",
+  "uses": [
+   "New & Next · Halden"
+  ]
+ },
+ {
+  "id": "halden-d2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pleated wide-leg trousers and leather penny loafers",
+  "uses": [
+   "New & Next · Halden"
+  ]
+ },
+ {
+  "id": "halden-d3",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A tan leather tote on a desk beside a white shirt cuff and a notebook",
+  "uses": [
+   "New & Next · Halden"
+  ]
+ },
+ {
+  "id": "halden-tall",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a camel wool-blend coat over a charcoal knit",
+  "uses": [
+   "New & Next · Halden"
+  ]
+ },
+ {
+  "id": "halden-wide",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a sand linen blazer and pleated trousers walking through a bright office",
+  "uses": [
+   "New & Next · Halden"
+  ]
+ },
+ {
+  "id": "hearth-tall",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A lit candle in a glass jar beside a folded wool throw",
+  "uses": [
+   "New & Next · Hearth And Hue"
+  ]
+ },
+ {
+  "id": "hearth-wide",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Lit candles on a coffee table and a chunky wool throw on a sofa",
+  "uses": [
+   "New & Next · Hearth And Hue"
+  ]
+ },
+ {
+  "id": "hm-tall",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A young woman in a white tee, jeans and a denim jacket tied at the waist",
+  "uses": [
+   "New & Next · Hm"
+  ]
+ },
+ {
+  "id": "hm-wide",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A young woman in a denim jacket, white tee and jeans walking down a sunlit street",
+  "uses": [
+   "New & Next · Hm"
+  ]
+ },
+ {
+  "id": "home-band-diwali",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a marigold and maroon kurta holding a lit brass diya, with fairy lights behind her",
+  "uses": [
+   "Home page banners"
+  ]
+ },
+ {
+  "id": "home-hero-coord",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in an oatmeal textured co-ord, jacket and straight trousers, with white sneakers",
+  "uses": [
+   "Home page banners"
+  ]
+ },
+ {
+  "id": "home-hero-festive",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in an emerald silk kurta with a pale gold dupatta and jhumkas",
+  "uses": [
+   "Home page banners"
+  ]
+ },
+ {
+  "id": "home-hero-sale",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in an ivory and rose block-print kurta set with a dupatta, standing in a bright, plain room",
+  "uses": [
+   "Home page banners"
+  ]
+ },
+ {
+  "id": "kiln-d1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "The texture of an oatmeal boucle cushion",
+  "uses": [
+   "New & Next · Kiln And Linen"
+  ]
+ },
+ {
+  "id": "kiln-d2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Three beeswax pillar candles on a ceramic dish",
+  "uses": [
+   "New & Next · Kiln And Linen"
+  ]
+ },
+ {
+  "id": "kiln-d3",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Stacked terracotta plates and bowls on a linen cloth",
+  "uses": [
+   "New & Next · Kiln And Linen"
+  ]
+ },
+ {
+  "id": "kiln-tall",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A stoneware vase of dried grass on a linen-draped table",
+  "uses": [
+   "New & Next · Kiln And Linen"
+  ]
+ },
+ {
+  "id": "kiln-wide",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Glazed stoneware and a folded linen cloth on a wooden table",
+  "uses": [
+   "New & Next · Kiln And Linen"
+  ]
+ },
+ {
+  "id": "popup-delivery",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A hand holding out a kraft-paper parcel at a terracotta door",
+  "uses": [
+   "Pop-ups"
+  ]
+ },
+ {
+  "id": "popup-first-order",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman opening a parcel with a folded printed kurta inside",
+  "uses": [
+   "Pop-ups"
+  ]
+ },
+ {
+  "id": "popup-halden",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A sand linen blazer on a wooden hanger against a pale wall",
+  "uses": [
+   "Pop-ups"
+  ]
+ },
+ {
+  "id": "story-block-print-0",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in an ajrakh-print top and ivory wrap skirt in a courtyard with printed cloth drying",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-block-print-1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A kurta, a wrap skirt and a camp-collar shirt in indigo and madder ajrakh print on a wooden rail, with printing blocks below",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-block-print-2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A sofa corner with Sanganer-print cushions, a shibori cover and a quilted throw",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-diwali-0",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a blush chanderi kurta set lighting a brass lamp, marigold garlands behind her",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-diwali-1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a blush angrakha-style kurta with kundan jhumkas, lighting a diya",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-diwali-2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A brocade potli, meenakari bangles, a temple choker and two lit diyas on raw silk",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-one-dress-0",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a sage-green shirt dress and white sneakers, laughing in a courtyard",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-one-dress-1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Two women in the same sage-green shirt dress, one with a black tote",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-one-dress-2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A sage shirt dress, trousers, suede mules and a long gold chain laid flat on linen",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-quiet-luxe-0",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in an ivory bias-cut silk slip dress and a camel cardigan",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-quiet-luxe-1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A bias-cut silk slip, a pleated midi skirt and a sculpted mule, all in neutral tones",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-quiet-luxe-2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A man in an oatmeal linen jacket, a stone silk shirt and tan loafers, seated on a bench",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-slow-home-0",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A bedroom corner in morning light with linen bedding and a mug on a stool",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-slow-home-1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Block-printed cushions on a sofa, blue-and-white stoneware and an amber candle",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-slow-home-2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A wool throw on an armchair, two glazed mugs and a piped linen cushion",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-wear-less-0",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a white tee and beige trousers buttoning a grey cardigan, a clothes rail behind her",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-wear-less-1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A white tee, stone trousers and an oatmeal cardigan on a wooden valet stand",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "story-wear-less-2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A charcoal turtleneck, a pleated midi skirt and white canvas slip-ons",
+  "uses": [
+   "Style Files stories"
+  ]
+ },
+ {
+  "id": "vrisa-d1",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pearl and kundan chandbali earrings with a zardozi neckline",
+  "uses": [
+   "New & Next · Vrisa"
+  ]
+ },
+ {
+  "id": "vrisa-d2",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Banarasi brocade and a bandhani silk dupatta in soft folds",
+  "uses": [
+   "New & Next · Vrisa"
+  ]
+ },
+ {
+  "id": "vrisa-d3",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "The hem of an anarkali and velvet embroidered juttis on a stone floor",
+  "uses": [
+   "New & Next · Vrisa"
+  ]
+ },
+ {
+  "id": "vrisa-tall",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a powder-blue gota-patti short kurta and wide sharara",
+  "uses": [
+   "New & Next · Vrisa"
+  ]
+ },
+ {
+  "id": "vrisa-wide",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "A woman in a ruby zardozi anarkali with a gold-trimmed dupatta in a Jaipur courtyard",
+  "uses": [
+   "New & Next · Vrisa",
+   "Pop-ups"
+  ]
+ }
+]
