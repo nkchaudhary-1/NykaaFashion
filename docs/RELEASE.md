@@ -4,7 +4,7 @@ Standing instruction from the owner (31 Oct 2026): **whenever something new is c
 
 | | Staging (review) | Production (live prototype) |
 |---|---|---|
-| Address | `https://nykaafashion-neelesh-staging.vercel.app` | `https://nykaafashion-neelesh-design.vercel.app` (also `nykaa-fashion-awards.vercel.app`) |
+| Address | `https://nykaafashion-neelesh-staging.vercel.app` | `https://nykaafashion-neelesh-design.vercel.app` |
 | Git branch | `claude/nykaa-fashion-staging` (and short-lived feature branches off it) | `claude/nykaa-fashion-awards` |
 | Vercel | Preview deployment of the same project, aliased to the staging address | Production deployment |
 | Sign-in | the same named accounts (`SITE_USERS` exists for Preview and Production) | same |
@@ -36,6 +36,7 @@ Standing instruction from the owner (31 Oct 2026): **whenever something new is c
 ## Things worth knowing
 
 * **Vercel Deployment Protection (applies to staging today).** Vercel puts its own login in front of *Preview* deployments (project → Settings → Deployment Protection → Vercel Authentication), and the staging address is a Preview. To open it, sign in to Vercel in that browser as a member of the team; the site's own Login ID / password page follows. To make staging behave like production (reachable by anyone who has the address, protected only by the site's sign-in page) switch *Vercel Authentication* off for the project — that is the owner's decision and has not been changed. Production is not affected either way. (To check a protected preview without a browser, `vercel curl <path> --deployment <url>` works — but it **creates a *Protection Bypass for Automation* secret on the project** the first time it runs; that happened on 31 Oct 2026 while verifying staging. It can be revoked under *Settings → Deployment Protection → Protection Bypass for Automation*.)
+* **Other names for production.** Vercel also gives the production deployment its automatic project names (`nykaa-fashion-awards.vercel.app`, `nykaa-fashion-awards-neelesh6.vercel.app`). They follow the deployment by themselves and the owner does not use them (31 Oct 2026: they want one staging address and one production address, nothing else), so messages to the owner list only the two addresses in the table. Removing them (project → Settings → Domains) would break any link already sent to them: only do it if the owner asks.
 * **Variables.** Anything the app reads must exist in both the Preview and Production environments of the Vercel project. Today: `SITE_USERS` (both), `LOGIN_NOTIFY_URL` and `NEXT_PUBLIC_SITE_URL` (Production only, deliberately).
 * **Images.** Only the owner's two photographs are used until the owner supplies a new set. Staging and production read the same files.
 * **Pictures and the gate.** Staging serves pictures straight from `/img` behind the sign-in cookie, exactly like production (the build sees `SITE_USERS`).
