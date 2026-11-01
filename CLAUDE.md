@@ -15,7 +15,7 @@ Read `PROJECT_STATUS.md` first (decisions, QA log, what is simulated), then `doc
 
 ## Design rules (unchanged)
 
-Only the typeface Inter Display · no shadows, gradients or blur — flat colour · strict 12-column grid (4 on phones) · keep the live Nykaa identity · every simulated flow is labelled · imagery is only the owner's own: the 60 AI-generated key-page pictures from the owner's Figma set (docs/IMAGE_SET.md) and, for product pictures until the product set arrives, crops of the two supplied photographs (no stock-photo fetching).
+Only the typeface Inter Display · no shadows, gradients or blur — flat colour · strict 12-column grid (4 on phones) · keep the live Nykaa identity · every simulated flow is labelled · imagery is only the owner's own: the 190 AI-generated pictures from the owner's Figma set — 60 key-page pictures and 130 product pictures (docs/IMAGE_SET.md); no stock-photo fetching.
 
 ## Keep the record
 

@@ -12,6 +12,9 @@
 // Products share their pool's photos (slots.mjs). A product's front / close / detail views are three windows onto ONE photo, so a gallery shows one garment; each colour
 // variant takes the photo whose centre colour is nearest the variant's colour (a usage penalty spreads photos over neighbouring cards). Windows are placed around each photo's
 // focus point (manifest.mjs), never leave the photo, and are never enlarged beyond 1.5×. Sarees and other Indian wear are never mirrored.
+// A library with a photograph of its own for every product (manifest `slots.products: "own"`, the owner's set) skips all of that: the photograph of product X serves all of X's colour
+// variants and its three views — front, alt, detail — as windows onto it (a model photograph: the whole picture, then the upper and the lower part; an object: the subject filled
+// out, a wider look, a close part), found from where the subject sits (`subjectBox`); never mirrored, never enlarged beyond 1.5×.
 // Wide banners put the subject right of centre (copy is on the left); a photo flagged `extend` gets its plain backdrop continued to make room (the seamless extension the
 // studio photographs use), and every wide banner's copy area is measured: a heading must keep 3:1 contrast against what is behind it.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -21,7 +24,7 @@ import { defById, productById } from "../../src/data/catalog.ts";
 import { extendCanvas, rng } from "../placeholders/lib.mjs";
 import { ASSIGNMENTS_JSON, CACHE, CREDITS_JSON, UTM, exists, originalPath, readJson, root, writeJson } from "./lib.mjs";
 import { loadManifest } from "./manifest.mjs";
-import { H01, clamp, contrastRatio, cropAround, deltaE, hexToRgb, jitter, pinsFor, relLum } from "./crop.mjs";
+import { H01, clamp, contrastRatio, cropAround, deltaE, hexToRgb, jitter, pinsFor, relLum, subjectBox } from "./crop.mjs";
 import { BUDGET_KB, COPY_AREA, FRAMING, LAUNCH_GROUP, PLACEHOLDER_PHOTOS, PROMO_PHOTOS, SCENE_PHOTOS, WIDE_SUBJECT_AT, poolsOf, styleOf, usedFor } from "./slots.mjs";
 
 const IMG = process.env.UNSPLASH_OUT ?? join(root, "public/img");
@@ -46,6 +49,7 @@ const warn = (key, msg) => warnings.push(`${key}: ${msg}`);
 const manifest = loadManifest();
 const PLACEHOLDERS = manifest.slots.placeholders ?? PLACEHOLDER_PHOTOS; // a library may re-map the home banners and the pop-ups (manifest.mjs → slots)
 const PROMOS = manifest.slots.promo ?? PROMO_PHOTOS;
+const OWN_PRODUCTS = manifest.slots.products === "own"; // a photograph per product (the product's id is the photograph's id)
 const have = new Map(); // id → photo with an original in the cache
 const missing = new Set();
 for (const [group, ids] of Object.entries(manifest.groups))
@@ -83,6 +87,13 @@ async function probe(p) {
       n++;
     }
   p.colour = sum.map((v) => v / Math.max(1, n));
+  if (OWN_PRODUCTS && productById[p.id]) {
+    const small = await sharp(file).rotate().resize(116, 144, { fit: "fill", kernel: "lanczos3" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    const found = subjectBox(small.data, small.info.width, small.info.height);
+    const stated = Array.isArray(p.subject); // a manifest may state the box itself (x0, y0, x1, y1 as fractions) where the backdrop fools the search
+    if (!stated) p.subject = found.box;
+    if (!stated && !found.found) warn(p.id, "no subject found against the backdrop — the picture is framed on the centre; state the box in the manifest (subject: [x0, y0, x1, y1])");
+  }
 }
 for (const p of have.values()) await probe(p);
 const focusOf = (p) => p.focus ?? p.auto;
@@ -98,6 +109,12 @@ const usage = {};
 const assign = new Map(); // "<product>/v<n>" → { group, photo }
 for (const prod of Object.values(productById)) {
   const def = defById[prod.id];
+  const own = OWN_PRODUCTS ? have.get(prod.id) : null;
+  if (own) {
+    const group = (def && poolsOf(def)[0]) ?? null; // only for how the pool is framed (a figure or an object)
+    prod.variants.forEach((_, i) => assign.set(`${prod.id}/v${i + 1}`, { group, photo: own, own: true }));
+    continue;
+  }
   const group = def && poolsOf(def).find((g) => photosIn(g).length);
   if (!group) continue;
   const pool = photosIn(group);
@@ -117,6 +134,7 @@ function planProduct(key, W, H) {
   const m = /^products\/([^/]+)\/v(\d+)-(\w+)$/.exec(key);
   const a = m && assign.get(`${m[1]}/v${m[2]}`);
   if (!a) return null;
+  if (a.own) return planOwnProduct(m[1], m[3], a, W, H);
   const style = styleOf(a.group);
   const fr = FRAMING[style.kind][m[3]] ?? FRAMING[style.kind].front;
   const f = focusOf(a.photo);
@@ -126,6 +144,32 @@ function planProduct(key, W, H) {
     zoom: fr.zoom * (1 + jitter(key, "z", 0.04)),
     flip: style.flip && H01(`${m[1]}|${m[2]}|flip`) < 0.5, // the same for all three views, so a gallery is one picture turned or not
   };
+}
+
+/**
+ * The three views of a product from its own photograph. A model (or a flat lay): front = the whole picture, alt = the upper part, detail = the lower part. An object: front = the
+ * subject filled out to about three quarters of the window (never beyond what the photograph's size allows), alt = a wider look at it (the whole picture, or a little closer when
+ * front is already the whole picture), detail = a close part of it, to the left or the right of centre as the product's id decides. Every colour variant of a product takes the same
+ * windows, because they are the same photograph.
+ */
+function planOwnProduct(pid, role, a, W, H) {
+  const p = a.photo;
+  const [x0, y0, x1, y1] = p.subject ?? [0.15, 0.1, 0.85, 0.9];
+  const cx = (x0 + x1) / 2;
+  const cy = (y0 + y1) / 2;
+  const base = { photo: p, group: a.group, role, ratio: W / H, atX: 0.5, atY: 0.5, flip: false };
+  if (styleOf(a.group).kind === "figure") {
+    const fx = clamp(cx, 0.36, 0.64);
+    if (role === "alt") return { ...base, fx, fy: 0.36, zoom: 1.45 };
+    if (role === "detail") return { ...base, fx, fy: 0.72, zoom: 1.45 };
+    return { ...base, fx: 0.5, fy: 0.5, zoom: 1 };
+  }
+  const extent = Math.max(x1 - x0, y1 - y0) + 0.06; // the subject and a little air, as a fraction of the picture (thin straps and handles count for little in the search)
+  const fit = clamp(0.8 / extent, 1, 1.39); // the zoom at which the subject fills about three quarters of the window
+  const side = H01(`${pid}|side`) < 0.5 ? -1 : 1;
+  if (role === "alt") return fit >= 1.2 ? { ...base, fx: 0.5, fy: 0.5, zoom: 1 } : { ...base, fx: cx, fy: cy, zoom: clamp(0.94 / extent, fit + 0.1, 1.39) };
+  if (role === "detail") return { ...base, fx: clamp(cx + side * 0.07, 0.1, 0.9), fy: clamp(cy + 0.05, 0.1, 0.9), zoom: 1.45 };
+  return { ...base, fx: cx, fy: cy, zoom: fit };
 }
 
 function planScene(key, W, H) {

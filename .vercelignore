@@ -7,3 +7,5 @@ tsconfig.tsbuildinfo
 .env*.local
 .cache
 scripts/placeholders/unsplash
+# The owner's original pictures (scripts/figma/source, 21 MB) are the inputs of the picture builder, not of the site: the site serves the cut files in public/img.
+scripts/figma/source

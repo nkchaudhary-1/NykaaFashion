@@ -31,12 +31,31 @@ function byPhotographer(list: Credit[]) {
   return out;
 }
 
+/** The AI-generated set grouped by what the pictures are for (the first words of their "Used in"), in the order a visitor meets them. */
+const FAMILY_ORDER = ["Home page banners", "Category pictures", "Edits", "Style Files stories", "New & Next", "Pop-ups", "Product pictures"];
+function byFamily(list: Credit[]) {
+  const map = new Map<string, Credit[]>();
+  for (const c of list) {
+    const family = c.uses[0].split(" · ")[0];
+    map.set(family, [...(map.get(family) ?? []), c]);
+  }
+  const rank = (f: string) => (FAMILY_ORDER.includes(f) ? FAMILY_ORDER.indexOf(f) : FAMILY_ORDER.length);
+  return [...map.entries()].sort(([a], [b]) => rank(a) - rank(b) || a.localeCompare(b)).map(([name, photos]) => ({ name, username: "", profile: "", photos }));
+}
+/** "Used in …" without repeating the group's own name: "New & Next · Vrisa" under New & Next reads "Vrisa", and "Edits" under Edits says nothing more. */
+const usedIn = (c: Credit, family: string | null) =>
+  c.uses
+    .map((u) => (family && u.startsWith(`${family} · `) ? u.slice(family.length + 3) : u))
+    .filter((u) => u !== family)
+    .join(" · ");
+
 const ext = "link-u inline-flex items-center gap-1.5 text-[14px] font-medium text-ink";
 
 export default function CreditsPage() {
   const list = credits as Credit[];
   const people = byPhotographer(list);
   const generated = list.length > 0 && people.every((p) => p.name === "AI-generated");
+  const groups = generated ? byFamily(list) : people;
   return (
     <>
       <ListingHeader
@@ -57,10 +76,15 @@ export default function CreditsPage() {
               <span className="tabular-nums text-ink">{list.length}</span> {generated ? "pictures" : <>photographs · <span className="tabular-nums text-ink">{people.length}</span> photographers</>}
             </p>
             <div className="mt-6 border-b border-line">
-              {people.map((p) => (
+              {groups.map((p) => (
                 <section key={`${p.username}-${p.name}`} aria-label={p.name} className="grid-main gap-y-4 border-t border-ink py-6 first:border-t-0 sm:py-8">
                   <Col span={{ base: 4, sm: 12, lg: 4 }}>
                     <h2 className="display-sm">{p.name}</h2>
+                    {generated && (
+                      <p className="mt-2 text-[13px] text-ink-3">
+                        <span className="tabular-nums text-ink">{p.photos.length}</span> {p.photos.length === 1 ? "picture" : "pictures"}
+                      </p>
+                    )}
                     {p.profile && (
                       <a href={p.profile} target="_blank" rel="noopener noreferrer" className={`${ext} mt-2`}>
                         {p.username ? `@${p.username}` : "Profile"} on Unsplash <ArrowUpRight size={14} aria-hidden />
@@ -71,7 +95,7 @@ export default function CreditsPage() {
                     {p.photos.map((c) => (
                       <li key={c.id} className="text-[14px] leading-relaxed">
                         <p className="text-ink">{sentence(c.alt)}</p>
-                        <p className="mt-1 text-ink-3">Used in {c.uses.join(" · ")}</p>
+                        {usedIn(c, generated ? p.name : null) && <p className="mt-1 text-ink-3">Used in {usedIn(c, generated ? p.name : null)}</p>}
                         {c.page && (
                           <a href={c.page} target="_blank" rel="noopener noreferrer" className={`${ext} mt-2`}>
                             View photograph <ArrowUpRight size={14} aria-hidden />

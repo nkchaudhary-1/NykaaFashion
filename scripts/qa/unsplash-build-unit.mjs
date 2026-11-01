@@ -8,7 +8,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { defById, productById } from "../../src/data/catalog.ts";
-import { cropAround, deltaE, hexToRgb, pinsFor, where } from "../unsplash/crop.mjs";
+import { cropAround, deltaE, hexToRgb, pinsFor, subjectBox, where } from "../unsplash/crop.mjs";
 import { poolsOf } from "../unsplash/slots.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -37,6 +37,13 @@ console.log("Unsplash build: geometry");
   const labelled = pinsFor({ left: 600, top: 0, width: 960, height: 1200 }, 1800, 1200, [[0.5, 0.4, "lik-01"], [0.95, 0.4, "gaj-01"], [0.62, 0.6]], 3);
   check("a labelled anchor keeps its product, one outside the window is dropped, and no fallback is added when a labelled anchor is in view", labelled.length === 2 && labelled[0].id === "lik-01" && labelled[1].id === undefined && labelled.every((p) => p.source === "anchor"), JSON.stringify(labelled));
   check("colour distance: the same colour is 0, red to blue is large", deltaE([200, 30, 30], [200, 30, 30]) === 0 && deltaE([200, 30, 30], [30, 30, 200]) > 60);
+  // a made-up studio photograph (116 × 144): a softly graded backdrop and one striped subject at a known place
+  const sw = 116, sh = 144, srgb = Buffer.alloc(sw * sh * 3);
+  for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) { const i = (y * sw + x) * 3, g = Math.round((8 * y) / sh); srgb[i] = 236 - g; srgb[i + 1] = 228 - g; srgb[i + 2] = 216 - g; }
+  for (let y = 36; y < 108; y++) for (let x = 35; x < 70; x++) { const i = (y * sw + x) * 3, stripe = (x + y) % 6 < 3 ? 0 : 40; srgb[i] = 150 + stripe; srgb[i + 1] = 40 + stripe; srgb[i + 2] = 60; }
+  const found = subjectBox(srgb, sw, sh);
+  check("subjectBox finds a striped subject on a softly graded backdrop (within 4 % of where it is)", found.found && near(found.box[0], 35 / sw, 0.04) && near(found.box[1], 36 / sh, 0.04) && near(found.box[2], 70 / sw, 0.04) && near(found.box[3], 108 / sh, 0.04), JSON.stringify(found));
+  check("…and says so when there is nothing but backdrop", !subjectBox(Buffer.alloc(sw * sh * 3, 230), sw, sh).found);
 }
 
 // ── fixtures ───────────────────────────────────────────────────────────────────────────────────────────────────
@@ -175,6 +182,35 @@ try {
   const again = JSON.stringify(json("meta.json")["scenes/cat-women"]);
   r = await run(["--only", "scenes/cat-women"]);
   check("building twice gives the same result (deterministic)", JSON.stringify(json("meta.json")["scenes/cat-women"]) === again);
+
+  // the owner's set: one photograph per product (manifest slots.products = "own")
+  console.log("\nUnsplash build: a photograph per product (the owner's set)");
+  {
+    const dress = productById["twd-01"], earrings = productById["gaj-01"];
+    await photo("twd-01", "products", 928, 1152, { fx: 0.5, fy: 0.5, hue: 10 }); // a model: poolsOf → a dress pool, framed as a figure
+    await photo("gaj-01", "products", 928, 1152, { fx: 0.5, fy: 0.5, hue: 45 }); // jewellery: framed as an object
+    const own = join(work, "own");
+    mkdirSync(join(own, "cache", "originals"), { recursive: true });
+    for (const id of ["twd-01", "gaj-01"]) copyFileSync(join(dirs.cache, "originals", `${id}.jpg`), join(own, "cache", "originals", `${id}.jpg`));
+    const ownManifest = join(own, "manifest.json");
+    writeFileSync(ownManifest, JSON.stringify({ photos: { "twd-01": { ...photos["twd-01"], rgb: undefined }, "gaj-01": { ...photos["gaj-01"], rgb: undefined } }, groups: { products: ["twd-01", "gaj-01"] }, slots: { products: "own" } }));
+    copyFileSync(join(root, "src/data/generated/image-meta.json"), join(own, "meta.json"));
+    const ownEnv = { UNSPLASH_MANIFEST: ownManifest, UNSPLASH_OUT: join(own, "img"), UNSPLASH_META: join(own, "meta.json"), UNSPLASH_ASSIGNMENTS: join(own, "assign.json"), UNSPLASH_CREDITS: join(own, "credits.json"), UNSPLASH_CACHE: join(own, "cache") };
+    r = await run(["--only", "products/"], "scripts/unsplash/build.mjs", ownEnv);
+    check("the build with a photograph per product exits cleanly and cuts only the products that have one", r.code === 0 && /cut from 2 photo/.test(r.out), r.err || r.out.slice(-500));
+    const ownPlan = JSON.parse(readFileSync(join(own, "cache", "plan.json"), "utf8"));
+    const keysOf = (p) => Object.keys(ownPlan).filter((k) => k.startsWith(`products/${p.id}/`));
+    check("every colour variant and every view of a product comes from that product's own photograph, never mirrored", [dress, earrings].every((p) => keysOf(p).length >= 3 && keysOf(p).every((k) => ownPlan[k].photo === p.id && ownPlan[k].flip === false)), JSON.stringify(keysOf(dress).map((k) => [k, ownPlan[k].photo])));
+    check("products with no photograph of their own keep the picture they have", !Object.keys(ownPlan).some((k) => k.startsWith("products/") && !/^products\/(twd-01|gaj-01)\//.test(k)));
+    const [df, da, dd] = ["front", "alt", "detail"].map((v) => ownPlan[`products/${dress.id}/v1-${v}`]);
+    check("a model: front is the whole picture, alt the upper part, detail the lower part", df.box[2] > da.box[2] * 1.3 && near(da.box[2], dd.box[2], 2) && da.box[1] < dd.box[1], JSON.stringify([df.box, da.box, dd.box]));
+    const [ef, ea, ed] = ["front", "alt", "detail"].map((v) => ownPlan[`products/${earrings.id}/v1-${v}`]);
+    check("an object: front fills the window with the subject, alt looks wider, detail is a close part", ef.box[2] < ea.box[2] && ed.box[2] < ea.box[2] && ef.box[2] < 800, JSON.stringify([ef.box, ea.box, ed.box]));
+    const front = await sharp(join(own, "img", `products/${dress.id}/v1-front.webp`)).metadata();
+    check("the pictures keep the size the layout declares (1000 × 1250)", front.width === 1000 && front.height === 1250, `${front.width}×${front.height}`);
+    const ownCredits = JSON.parse(readFileSync(join(own, "credits.json"), "utf8"));
+    check("credits say the photographs are used for product pictures, by department and category", ownCredits.some((c) => c.id === "twd-01" && c.uses.some((u) => /^Product pictures · Women › /.test(u))), JSON.stringify(ownCredits.map((c) => [c.id, c.uses])));
+  }
 
   // the pop-up clip, cut from a library photograph instead of the supplied one
   console.log("\nUnsplash build: the pop-up clip from a library photograph");

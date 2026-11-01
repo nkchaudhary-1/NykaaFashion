@@ -62,6 +62,64 @@ export function pinsFor(box, pw, ph, anchors, count, flip = false) {
   return out.slice(0, count);
 }
 
+/**
+ * Where the subject of a studio photograph sits: the box (fractions [x0, y0, x1, y1]) that holds nearly all of what is not backdrop. `rgb` is a raw RGB decode, `w × h`, of the
+ * whole photograph (a small one is enough: 116 × 144). The backdrop is what the outer ring of the picture looks like — smooth, one colour. A pixel belongs to the subject when it
+ * has an edge of its own (fabric, a seam, a rim) or is far from the backdrop colour; stray specks are dropped and the box takes the middle 97 % of what is left on each axis.
+ * A window frame or a plinth in the picture widens the box (the build then zooms less, never more than the subject allows); no subject found gives `found: false` and the centre.
+ */
+export function subjectBox(rgb, w, h) {
+  const px = (x, y, c) => rgb[(y * w + x) * 3 + c];
+  const edge = new Float32Array(w * h);
+  for (let y = 1; y < h - 1; y++)
+    for (let x = 1; x < w - 1; x++) {
+      let e = 0;
+      for (let c = 0; c < 3; c++) e += Math.abs(px(x + 1, y, c) - px(x - 1, y, c)) + Math.abs(px(x, y + 1, c) - px(x, y - 1, c));
+      edge[y * w + x] = e;
+    }
+  const ring = Math.max(2, Math.round(Math.min(w, h) * 0.05));
+  const onRing = (x, y) => x < ring || x >= w - ring || y < ring || y >= h - ring;
+  const median = (list) => list.sort((a, b) => a - b)[Math.floor(list.length / 2)];
+  const back = [0, 1, 2].map((c) => {
+    const v = [];
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (onRing(x, y)) v.push(px(x, y, c));
+    return median(v);
+  });
+  const ringEdges = [];
+  for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) if (onRing(x, y)) ringEdges.push(edge[y * w + x]);
+  ringEdges.sort((a, b) => a - b);
+  const edgeLimit = Math.max(24, (ringEdges[Math.floor(ringEdges.length * 0.9)] ?? 0) * 2.2);
+  const subject = new Uint8Array(w * h);
+  for (let y = 1; y < h - 1; y++)
+    for (let x = 1; x < w - 1; x++) {
+      const away = Math.abs(px(x, y, 0) - back[0]) + Math.abs(px(x, y, 1) - back[1]) + Math.abs(px(x, y, 2) - back[2]);
+      subject[y * w + x] = edge[y * w + x] > edgeLimit || away > 90 ? 1 : 0;
+    }
+  const cols = new Float32Array(w);
+  const rows = new Float32Array(h);
+  let total = 0;
+  for (let y = 1; y < h - 1; y++)
+    for (let x = 1; x < w - 1; x++) {
+      if (!subject[y * w + x]) continue;
+      let near = 0; // a speck has no neighbours
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if ((dx || dy) && subject[(y + dy) * w + x + dx]) near++;
+      if (near < 3) continue;
+      cols[x]++;
+      rows[y]++;
+      total++;
+    }
+  if (total < 40) return { box: [0.15, 0.1, 0.85, 0.9], found: false };
+  const at = (list, share) => {
+    let sum = 0;
+    for (let i = 0; i < list.length; i++) {
+      sum += list[i];
+      if (sum >= total * share) return i;
+    }
+    return list.length - 1;
+  };
+  return { box: [at(cols, 0.015) / w, at(rows, 0.015) / h, (at(cols, 0.985) + 1) / w, (at(rows, 0.985) + 1) / h], found: true };
+}
+
 // ── colour ─────────────────────────────────────────────────────────────────────────────────────────────────────
 export const hexToRgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 const lin = (v) => ((v /= 255) <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);

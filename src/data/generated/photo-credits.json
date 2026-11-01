@@ -1,5 +1,49 @@
 [
  {
+  "id": "aja-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Ajrakh Block-Print Kurta in Indigo & madder, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "aja-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Madder-Dyed Kurta Set in Madder, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "aja-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Ajrakh Wrap Skirt in Indigo & madder, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "aja-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Mulmul Block-Print Shirt in Indigo, on a model",
+  "uses": [
+   "Product pictures · Men › Shirts"
+  ]
+ },
+ {
   "id": "cat-home",
   "name": "AI-generated",
   "username": "",
@@ -176,6 +220,116 @@
   ]
  },
  {
+  "id": "gaj-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Kundan Jhumkas in Ruby & gold, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "gaj-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Meenakari Bangle Stack in Peacock, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "gaj-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Temple Choker in Antique gold, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "gaj-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Mirror-Work Potli in Marigold, product shot",
+  "uses": [
+   "Product pictures · Women › Bags"
+  ]
+ },
+ {
+  "id": "hal-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Soft-Shoulder Linen Blazer in Oat, on a model",
+  "uses": [
+   "Product pictures · Women › Jackets"
+  ]
+ },
+ {
+  "id": "hal-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pleated Wide-Leg Trousers in Oat, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "hal-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Poplin Relaxed Shirt in White, on a model",
+  "uses": [
+   "Product pictures · Women › Tops"
+  ]
+ },
+ {
+  "id": "hal-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Merino Rib Knit Vest in Cream, on a model",
+  "uses": [
+   "Product pictures · Women › Knitwear"
+  ]
+ },
+ {
+  "id": "hal-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Tailored Wool-Blend Coat in Camel, on a model",
+  "uses": [
+   "Product pictures · Women › Jackets"
+  ]
+ },
+ {
+  "id": "hal-06",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Leather Penny Loafers in Tan, product shot",
+  "uses": [
+   "Product pictures · Women › Footwear"
+  ]
+ },
+ {
   "id": "halden-d1",
   "name": "AI-generated",
   "username": "",
@@ -228,6 +382,94 @@
   "alt": "A woman in a sand linen blazer and pleated trousers walking through a bright office",
   "uses": [
    "New & Next · Halden"
+  ]
+ },
+ {
+  "id": "hav-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "High-Rise Straight Jeans in Mid blue, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "hav-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Wide-Leg Jeans in Light wash, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "hav-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Cropped Denim Jacket in Indigo, on a model",
+  "uses": [
+   "Product pictures · Women › Jackets"
+  ]
+ },
+ {
+  "id": "hea-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Amber Glass Soy Candle in Amber, product shot",
+  "uses": [
+   "Product pictures · Home › Candles"
+  ]
+ },
+ {
+  "id": "hea-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Dried-Stem Bud Vase in Oat, product shot",
+  "uses": [
+   "Product pictures · Home › Decor"
+  ]
+ },
+ {
+  "id": "hea-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Wool-Blend Throw in Oat, product shot",
+  "uses": [
+   "Product pictures · Home › Throws"
+  ]
+ },
+ {
+  "id": "hea-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Linen Cushion in Oat, product shot",
+  "uses": [
+   "Product pictures · Home › Cushions"
+  ]
+ },
+ {
+  "id": "hea-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Ceramic Jar Candle in Bone, product shot",
+  "uses": [
+   "Product pictures · Home › Candles"
   ]
  },
  {
@@ -319,6 +561,171 @@
   ]
  },
  {
+  "id": "ind-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Shibori Cotton Shirt in Indigo shibori, on a model",
+  "uses": [
+   "Product pictures · Men › Shirts"
+  ]
+ },
+ {
+  "id": "ind-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Indigo Tie-Dye Maxi Dress in Indigo tie-dye, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "ind-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Indigo Dyed Kurta in Indigo, on a model",
+  "uses": [
+   "Product pictures · Men › Ethnic"
+  ]
+ },
+ {
+  "id": "ind-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Shibori Cushion Cover in Indigo, product shot",
+  "uses": [
+   "Product pictures · Home › Cushions"
+  ]
+ },
+ {
+  "id": "jun-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Fluid Wide-Leg Trousers in Black, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "jun-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Poplin Tie-Neck Blouse in Ivory, on a model",
+  "uses": [
+   "Product pictures · Women › Tops"
+  ]
+ },
+ {
+  "id": "jun-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pleated Midi Skirt in Sage, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "jun-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Rib-Knit Tank in White, on a model",
+  "uses": [
+   "Product pictures · Women › Tops"
+  ]
+ },
+ {
+  "id": "jun-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Tailored Straight Trousers in Navy, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "kil-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Bouclé Cushion Cover Set in Oat, product shot",
+  "uses": [
+   "Product pictures · Home › Cushions"
+  ]
+ },
+ {
+  "id": "kil-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Stonewashed Linen Throw in Flax, product shot",
+  "uses": [
+   "Product pictures · Home › Throws"
+  ]
+ },
+ {
+  "id": "kil-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Hand-Thrown Stoneware Vase in Oat, product shot",
+  "uses": [
+   "Product pictures · Home › Decor"
+  ]
+ },
+ {
+  "id": "kil-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Beeswax Pillar Candle Trio in Honey, product shot",
+  "uses": [
+   "Product pictures · Home › Candles"
+  ]
+ },
+ {
+  "id": "kil-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Terracotta Dinner Set, 12 pc in Terracotta, product shot",
+  "uses": [
+   "Product pictures · Home › Tableware"
+  ]
+ },
+ {
+  "id": "kil-06",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Washed Linen Duvet Cover in Flax, product shot",
+  "uses": [
+   "Product pictures · Home › Throws"
+  ]
+ },
+ {
   "id": "kiln-d1",
   "name": "AI-generated",
   "username": "",
@@ -374,6 +781,600 @@
   ]
  },
  {
+  "id": "kor-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Chikankari Georgette Kurta Set in Ivory, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "kor-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Chikankari Cotton Top in Ivory, on a model",
+  "uses": [
+   "Product pictures · Women › Tops"
+  ]
+ },
+ {
+  "id": "kor-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Chikankari Kurta in Ivory, on a model",
+  "uses": [
+   "Product pictures · Men › Ethnic"
+  ]
+ },
+ {
+  "id": "kor-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Mulmul Chikankari Shirt in Natural, on a model",
+  "uses": [
+   "Product pictures · Men › Shirts"
+  ]
+ },
+ {
+  "id": "lik-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Chanderi Straight Kurta Set in Blush, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "lik-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Flared Kurta with Gota Trim in Marigold, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "lik-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Angrakha Kurta Set in Mulberry, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "lik-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Mulmul Printed Kurta with Palazzo in Poppy, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "lik-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Embroidered Festive Kurta Set in Ruby, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "lit-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Smocked Cotton Dress in Marigold, flat lay",
+  "uses": [
+   "Product pictures · Kids › Girls"
+  ]
+ },
+ {
+  "id": "lit-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Printed Kurta Set in Teal, flat lay",
+  "uses": [
+   "Product pictures · Kids › Boys"
+  ]
+ },
+ {
+  "id": "lit-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Graphic Tee in Tomato, flat lay",
+  "uses": [
+   "Product pictures · Kids › Boys"
+  ]
+ },
+ {
+  "id": "lit-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pleated Skirt in Blush, flat lay",
+  "uses": [
+   "Product pictures · Kids › Girls"
+  ]
+ },
+ {
+  "id": "lit-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Cotton Shirt in Sky, flat lay",
+  "uses": [
+   "Product pictures · Kids › Boys"
+  ]
+ },
+ {
+  "id": "lit-06",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Canvas Sneakers in White, product shot",
+  "uses": [
+   "Product pictures · Kids › Footwear"
+  ]
+ },
+ {
+  "id": "lit-07",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Embroidered Flared Kurta in Fuchsia, flat lay",
+  "uses": [
+   "Product pictures · Kids › Girls"
+  ]
+ },
+ {
+  "id": "lit-08",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Soft Jogger Trousers in Heather grey, flat lay",
+  "uses": [
+   "Product pictures · Kids › Boys"
+  ]
+ },
+ {
+  "id": "loo-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Organic Cotton Tee in Natural, on a model",
+  "uses": [
+   "Product pictures · Men › Tees"
+  ]
+ },
+ {
+  "id": "loo-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Hemp-Blend Shirt in Sand, on a model",
+  "uses": [
+   "Product pictures · Men › Shirts"
+  ]
+ },
+ {
+  "id": "loo-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Linen Straight Trousers in Natural, on a model",
+  "uses": [
+   "Product pictures · Men › Trousers"
+  ]
+ },
+ {
+  "id": "loo-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Recycled-Cotton Cardigan in Oat, on a model",
+  "uses": [
+   "Product pictures · Women › Knitwear"
+  ]
+ },
+ {
+  "id": "maa-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Jamdani-Weave Cotton Saree in Ivory & ink, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "maa-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Handloom Tussar Silk Saree in Mustard, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "maa-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Ikat Cotton Saree in Indigo, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "maa-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Khadi Cotton Saree in Rust, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "mau-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Silk Charmeuse Slip Dress in Bordeaux, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "mau-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Tailored Wool Blazer in Charcoal, on a model",
+  "uses": [
+   "Product pictures · Women › Jackets"
+  ]
+ },
+ {
+  "id": "mau-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pleated Silk Midi Skirt in Olive, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "mir-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Merino Crew Sweater in Camel, on a model",
+  "uses": [
+   "Product pictures · Women › Knitwear"
+  ]
+ },
+ {
+  "id": "mir-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Cable-Knit Cardigan in Ivory, on a model",
+  "uses": [
+   "Product pictures · Women › Knitwear"
+  ]
+ },
+ {
+  "id": "mir-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Rib Turtleneck in Black, on a model",
+  "uses": [
+   "Product pictures · Women › Knitwear"
+  ]
+ },
+ {
+  "id": "mit-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Khurja Ceramic Bowl Set in Oat & blue, product shot",
+  "uses": [
+   "Product pictures · Home › Tableware"
+  ]
+ },
+ {
+  "id": "mit-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Stoneware Bud Vase in Oat, product shot",
+  "uses": [
+   "Product pictures · Home › Decor"
+  ]
+ },
+ {
+  "id": "mit-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Terracotta Amphora Vase in Terracotta, product shot",
+  "uses": [
+   "Product pictures · Home › Decor"
+  ]
+ },
+ {
+  "id": "mit-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Glazed Mug Pair in Cream & rust, product shot",
+  "uses": [
+   "Product pictures · Home › Tableware"
+  ]
+ },
+ {
+  "id": "noo-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Hand-Embroidered Silk Saree in Ivory & gold, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "noo-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Zardozi Kurta Set in Midnight & gold, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "noo-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Embroidered Velvet Jacket in Bottle green, on a model",
+  "uses": [
+   "Product pictures · Women › Jackets"
+  ]
+ },
+ {
+  "id": "nor-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Everyday Crew Tee in White, on a model",
+  "uses": [
+   "Product pictures · Men › Tees"
+  ]
+ },
+ {
+  "id": "nor-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Oxford Button-Down Shirt in Sky, on a model",
+  "uses": [
+   "Product pictures · Men › Shirts"
+  ]
+ },
+ {
+  "id": "nor-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Tapered Chinos in Khaki, on a model",
+  "uses": [
+   "Product pictures · Men › Trousers"
+  ]
+ },
+ {
+  "id": "nor-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Camp-Collar Linen Shirt in Sand, on a model",
+  "uses": [
+   "Product pictures · Men › Shirts"
+  ]
+ },
+ {
+  "id": "nor-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Henley Tee in Oatmeal, on a model",
+  "uses": [
+   "Product pictures · Men › Tees"
+  ]
+ },
+ {
+  "id": "nyk-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Cloud Rib Lounge Tee in Oat, on a model",
+  "uses": [
+   "Product pictures · Women › Tops"
+  ]
+ },
+ {
+  "id": "nyk-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Wide-Leg Modal Lounge Trousers in Oat, on a model",
+  "uses": [
+   "Product pictures · Women › Bottoms"
+  ]
+ },
+ {
+  "id": "nyk-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Waffle-Knit Cardigan in Stone, on a model",
+  "uses": [
+   "Product pictures · Women › Knitwear"
+  ]
+ },
+ {
+  "id": "nyk-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Satin Sleep Shirt in Champagne, on a model",
+  "uses": [
+   "Product pictures · Women › Tops"
+  ]
+ },
+ {
+  "id": "ora-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Linen Suit Jacket in Stone, on a model",
+  "uses": [
+   "Product pictures · Men › Jackets"
+  ]
+ },
+ {
+  "id": "ora-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Mandarin Collar Silk Shirt in Ink, on a model",
+  "uses": [
+   "Product pictures · Men › Shirts"
+  ]
+ },
+ {
+  "id": "ora-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pleated Wool Trousers in Charcoal, on a model",
+  "uses": [
+   "Product pictures · Men › Trousers"
+  ]
+ },
+ {
+  "id": "pip-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Freshwater Pearl Drops in Pearl & gold, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "pip-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Layered Gold-Tone Chain in Gold, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "pip-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Structured Top-Handle Bag in Caramel, product shot",
+  "uses": [
+   "Product pictures · Women › Bags"
+  ]
+ },
+ {
+  "id": "pip-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Sculpted Gold Hoops in Gold, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
   "id": "popup-delivery",
   "name": "AI-generated",
   "username": "",
@@ -404,6 +1405,149 @@
   "alt": "A sand linen blazer on a wooden hanger against a pale wall",
   "uses": [
    "Pop-ups"
+  ]
+ },
+ {
+  "id": "ran-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Block-Print Cushion Cover, Set of 2 in Madder, product shot",
+  "uses": [
+   "Product pictures · Home › Cushions"
+  ]
+ },
+ {
+  "id": "ran-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Jaipur Quilted Throw in Madder & ivory, product shot",
+  "uses": [
+   "Product pictures · Home › Throws"
+  ]
+ },
+ {
+  "id": "ran-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Hand-Block Bedding Set in Indigo, product shot",
+  "uses": [
+   "Product pictures · Home › Throws"
+  ]
+ },
+ {
+  "id": "ran-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Sanganer Cotton Throw in Green & ivory, product shot",
+  "uses": [
+   "Product pictures · Home › Throws"
+  ]
+ },
+ {
+  "id": "rsv-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Sequin Slip Mini in Antique gold, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "rsv-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Satin Corset Top in Wine, on a model",
+  "uses": [
+   "Product pictures · Women › Tops"
+  ]
+ },
+ {
+  "id": "rsv-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Ruched Satin Evening Gown in Emerald, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "rsv-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Block-Heel Satin Sandals in Champagne, product shot",
+  "uses": [
+   "Product pictures · Women › Footwear"
+  ]
+ },
+ {
+  "id": "rsv-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Beaded Potli Bag in Wine, product shot",
+  "uses": [
+   "Product pictures · Women › Bags"
+  ]
+ },
+ {
+  "id": "saa-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Oxidised Silver Jhumkas in Oxidised silver, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "saa-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Silver Kada Pair in Oxidised silver, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "saa-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Silver Temple Necklace in Oxidised silver, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "saa-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Hammered Silver Hoops in Silver, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
   ]
  },
  {
@@ -602,6 +1746,292 @@
   "alt": "A charcoal turtleneck, a pleated midi skirt and white canvas slip-ons",
   "uses": [
    "Style Files stories"
+  ]
+ },
+ {
+  "id": "str-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Court Low Sneaker in White, product shot",
+  "uses": [
+   "Product pictures · Women › Footwear"
+  ]
+ },
+ {
+  "id": "str-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Retro Runner in Grey & orange, product shot",
+  "uses": [
+   "Product pictures · Men › Footwear"
+  ]
+ },
+ {
+  "id": "str-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Chunky Platform Sneaker in White, product shot",
+  "uses": [
+   "Product pictures · Women › Footwear"
+  ]
+ },
+ {
+  "id": "str-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Canvas Slip-On in Navy, product shot",
+  "uses": [
+   "Product pictures · Men › Footwear"
+  ]
+ },
+ {
+  "id": "til-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Zari Brocade Kurta Set in Maroon & gold, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "til-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Banarasi Nehru Jacket in Ink & gold, on a model",
+  "uses": [
+   "Product pictures · Men › Jackets"
+  ]
+ },
+ {
+  "id": "til-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Brocade Potli in Maroon, product shot",
+  "uses": [
+   "Product pictures · Women › Bags"
+  ]
+ },
+ {
+  "id": "til-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Zari-Border Silk Kurta in Ivory, on a model",
+  "uses": [
+   "Product pictures · Men › Ethnic"
+  ]
+ },
+ {
+  "id": "twd-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Poppy Smocked Midi Dress in Madder, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "twd-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Linen Shirt Dress in Sand, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "twd-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Tiered Voile Maxi Dress in Indigo stripe, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "twd-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Bias-Cut Satin Slip Dress in Mulberry, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "twd-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Gingham Wrap Mini in Teal check, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "twd-06",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Puff-Sleeve Polka Midi in Bottle green, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "twd-07",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Rib-Knit Bodycon Midi in Charcoal, on a model",
+  "uses": [
+   "Product pictures · Women › Dresses"
+  ]
+ },
+ {
+  "id": "ves-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pebbled Leather Tote in Cognac, product shot",
+  "uses": [
+   "Product pictures · Women › Bags"
+  ]
+ },
+ {
+  "id": "ves-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Calf-Leather Chelsea Boot in Black, product shot",
+  "uses": [
+   "Product pictures · Women › Footwear"
+  ]
+ },
+ {
+  "id": "ves-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Burnished Leather Sling in Oxblood, product shot",
+  "uses": [
+   "Product pictures · Women › Bags"
+  ]
+ },
+ {
+  "id": "ves-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Sculpted Leather Mule in Bone, product shot",
+  "uses": [
+   "Product pictures · Women › Footwear"
+  ]
+ },
+ {
+  "id": "ves-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Burnished Leather Loafers in Chestnut, product shot",
+  "uses": [
+   "Product pictures · Men › Footwear"
+  ]
+ },
+ {
+  "id": "vri-01",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Zardozi Anarkali Set in Marigold, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "vri-02",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Gota-Patti Sharara Set in Madder, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "vri-03",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Banarasi Brocade Jacket Kurta in Plum, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "vri-04",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Bandhani Silk Dupatta in Peacock, on a model",
+  "uses": [
+   "Product pictures · Women › Indianwear"
+  ]
+ },
+ {
+  "id": "vri-05",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Pearl & Kundan Chandbalis in Gold, product shot",
+  "uses": [
+   "Product pictures · Women › Jewellery"
+  ]
+ },
+ {
+  "id": "vri-06",
+  "name": "AI-generated",
+  "username": "",
+  "profile": "",
+  "page": "",
+  "alt": "Embroidered Velvet Juttis in Madder, product shot",
+  "uses": [
+   "Product pictures · Women › Footwear"
   ]
  },
  {
