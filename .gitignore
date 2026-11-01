@@ -44,3 +44,6 @@ next-env.d.ts
 
 # Unsplash curation caches: search results, thumbnails, contact sheets, downloaded originals (scripts/unsplash)
 /.cache/
+
+# launch video build output (scripts/video/build.sh writes to $OUT, default /tmp)
+/scripts/video/out/
