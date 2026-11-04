@@ -268,6 +268,30 @@ export function TryOn({ garments, provider, maxSessionSeconds = 0, onEvent, onSt
     return () => clearInterval(t);
   }, [still.status]);
   const elapsed = still.status === "rendering" ? Math.max(0, Math.round((Math.max(now, still.startedAt) - still.startedAt) / 1000)) : 0;
+  // Esc leaves the still (or cancels a render) wherever focus is, like fullscreen; and focus follows the photo flow,
+  // because the control the shopper pressed unmounts when the state moves on.
+  useEffect(() => {
+    if (still.status !== "done" && still.status !== "rendering") return;
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        dismissStill();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [still.status, dismissStill]);
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+    const sel =
+      still.status === "done" ? '[data-testid="photo-back"]'
+      : still.status === "rendering" ? '[data-testid="photo-cancel"]'
+      : still.status === "error" ? '[data-testid="photo-retry"]'
+      : document.activeElement === document.body ? '[data-testid="photo-button"]'
+      : null;
+    if (sel) panel.querySelector<HTMLElement>(sel)?.focus({ preventScroll: true });
+  }, [still.status]);
   useEffect(() => {
     if (!photo) return;
     if (still.status === "rendering" && politeRef.current) politeRef.current.textContent = copy.photo.announce.rendering(photo.host);

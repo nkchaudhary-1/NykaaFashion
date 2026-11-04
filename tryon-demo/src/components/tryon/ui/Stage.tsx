@@ -48,6 +48,8 @@ export function Stage({
   const noticeGarment = snap.notice ? garments.find((g) => g.id === snap.notice?.garmentId) : undefined;
   const flow = photo?.flow ?? { status: "idle" as const };
   const stillGarment = flow.status === "done" ? garments.find((g) => g.id === flow.garmentId) : undefined;
+  // Live-tracking chatter (hints, connection, a failed swap) is noise while a rendered still is on screen.
+  const showLiveStatus = !switching && flow.status !== "done";
 
   return (
     <div data-stage data-testid="stage" className="anim-fade absolute inset-0 bg-stage text-on-stage">
@@ -128,7 +130,7 @@ export function Stage({
               <span data-testid="photo-rendering" className="anim-fade inline-flex items-center gap-2 rounded-full bg-black/60 py-1.5 pl-3.5 pr-1.5 text-sm backdrop-blur">
                 <Spinner size={14} />
                 {copy.photo.rendering(photo.host, photo.elapsed)}
-                <Button variant="icon" className="h-8 w-8" onClick={photo.dismiss} aria-label={copy.photo.cancel} title={copy.photo.cancel}>
+                <Button variant="icon" className="h-8 w-8" onClick={photo.dismiss} aria-label={copy.photo.cancel} title={copy.photo.cancel} data-testid="photo-cancel">
                   <CloseIcon width={14} height={14} />
                 </Button>
               </span>
@@ -147,7 +149,7 @@ export function Stage({
             {photo && flow.status === "error" && (
               <span data-testid="photo-error" role="alert" className="anim-fade inline-flex flex-wrap items-center gap-2 rounded-full bg-black/60 py-1.5 pl-3.5 pr-1.5 text-sm backdrop-blur">
                 {flow.message}
-                <Button variant="stage" className="min-h-8 px-3 text-[13px]" onClick={photo.start}>
+                <Button variant="stage" className="min-h-8 px-3 text-[13px]" onClick={photo.start} data-testid="photo-retry">
                   {copy.photo.retry}
                 </Button>
                 <Button variant="icon" className="h-8 w-8" onClick={photo.dismiss} aria-label={copy.close} title={copy.close}>
@@ -161,18 +163,18 @@ export function Stage({
                 {copy.switching(target.name)}
               </span>
             )}
-            {snap.hint && !switching && (
+            {snap.hint && showLiveStatus && (
               <span data-testid="hint" className="anim-fade inline-flex items-center gap-2 rounded-full bg-black/60 px-3.5 py-2 text-sm backdrop-blur">
                 {copy.hints[snap.hint]}
               </span>
             )}
-            {slow && !switching && (
+            {slow && showLiveStatus && (
               <span className="anim-fade inline-flex items-center gap-2 rounded-full bg-black/60 px-3.5 py-2 text-sm backdrop-blur">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-sim" />
                 {copy.degraded}
               </span>
             )}
-            {snap.notice && noticeGarment && !switching && (
+            {snap.notice && noticeGarment && showLiveStatus && (
               <span className="anim-fade inline-flex items-center gap-2 rounded-full bg-black/60 px-3.5 py-2 text-sm backdrop-blur">
                 {copy.switchFailed(noticeGarment.name, applied?.name ?? "the previous piece")}
               </span>
