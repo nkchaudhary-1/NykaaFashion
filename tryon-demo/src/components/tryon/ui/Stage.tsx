@@ -78,24 +78,16 @@ export function Stage({
         </div>
       )}
 
-      {/* The rendered still, over the live view. Mirrored like the live view so it reads as the same mirror. */}
+      {/* The rendered still: above the live video, below the controls, so the garment tray stays usable (picking another
+          garment drops the still). Mirrored like the live view so it reads as the same mirror. */}
       {photo && flow.status === "done" && (
-        <div data-testid="photo-still" className="anim-fade absolute inset-0 z-[15] bg-stage">
+        <div data-testid="photo-still" className="anim-fade absolute inset-0 z-[5] bg-stage">
           {/* eslint-disable-next-line @next/next/no-img-element -- a blob: URL from the shopper's own render, never optimised or stored */}
           <img src={flow.url} alt={copy.photo.alt(stillGarment?.name ?? "the garment")} className="absolute inset-0 h-full w-full -scale-x-100 object-contain" />
-          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/75 to-transparent" />
-          <p className="pad-safe-x absolute left-0 top-[4.5rem] max-w-[70%] rounded-full bg-black/60 px-3.5 py-2 text-[13px] text-on-stage backdrop-blur" data-testid="photo-label">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/75 to-transparent" />
+          <p className="pad-safe-x absolute left-0 top-[4.75rem] max-w-[70%] rounded-full bg-black/60 px-3.5 py-2 text-[13px] text-on-stage backdrop-blur" data-testid="photo-label">
             {copy.photo.label(flow.model, flow.ms)}
           </p>
-          <div className="pad-safe-bottom pad-safe-x absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-2">
-            <Button variant="stage" onClick={photo.dismiss} data-testid="photo-back" data-autofocus>
-              {copy.photo.back}
-            </Button>
-            <Button variant="icon" className="w-auto gap-2 px-4" onClick={photo.start} aria-label={copy.photo.again} title={copy.photo.again}>
-              <CameraIcon width={16} height={16} />
-              <span className="text-sm">{copy.photo.again}</span>
-            </Button>
-          </div>
         </div>
       )}
 
@@ -138,6 +130,17 @@ export function Stage({
                 {copy.photo.rendering(photo.host, photo.elapsed)}
                 <Button variant="icon" className="h-8 w-8" onClick={photo.dismiss} aria-label={copy.photo.cancel} title={copy.photo.cancel}>
                   <CloseIcon width={14} height={14} />
+                </Button>
+              </span>
+            )}
+            {photo && flow.status === "done" && (
+              <span className="anim-fade inline-flex flex-wrap items-center gap-2">
+                <Button variant="stage" onClick={photo.dismiss} data-testid="photo-back" className="min-h-10 px-4 text-sm">
+                  {copy.photo.back}
+                </Button>
+                <Button variant="icon" className="w-auto gap-2 px-4" onClick={photo.start} aria-label={copy.photo.again} title={copy.photo.again}>
+                  <CameraIcon width={16} height={16} />
+                  <span className="text-sm">{copy.photo.again}</span>
                 </Button>
               </span>
             )}
