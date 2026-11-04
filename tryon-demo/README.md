@@ -1,18 +1,23 @@
-# Live AI Virtual Try-On — demo
+# Virtual try-on, on your own hardware — demo
 
-A standalone Next.js demo of **live, camera-based virtual try-on**: a shopper clicks **Try on**, sees the garment on their own moving camera feed, and switches pieces **without the camera restarting**. Built from the PRD "Live AI Virtual Try-On Clothing Site".
+A standalone Next.js demo of **camera-based virtual try-on**: a shopper clicks **Try on**, sees the garment on their own moving camera feed, and switches pieces **without the camera restarting**. Built from the PRD "Live AI Virtual Try-On Clothing Site", then re-scoped around two hard rules:
 
-> **Local / private review only. No public deploy.** Sample products, no cart, no checkout, no accounts, and no video or photo is ever stored.
+1. **No AI vendor, no API key.** Nothing in this project talks to a third-party AI service. Models are open weights running in your browser or on a machine you control.
+2. **Free resources only.** The browser, your own GPU, and free hosting. Where "free" caps quality, the docs say so instead of hiding it.
 
-The try-on panel is the product. The shop around it is a thin frame. The panel is a reusable `<TryOn>` component behind a provider adapter with two engines:
+> **Local / private review first; Vercel later.** Sample products, no cart, no checkout, no accounts, and no video or photo is ever stored.
 
-| | **On-device preview** (default) | **Live AI** (optional) |
+The try-on panel is the product. The shop around it is a thin frame. The panel is a reusable `<TryOn>` component behind a provider adapter:
+
+| | **On-device preview** (default) | **Photo mode** (optional, your own GPU) |
 | --- | --- | --- |
-| What draws the garment | Body tracking in your browser warps a rigged image of the garment onto your shoulders, arms and torso | Decart's Lucy VTON model renders real fabric on your moving body |
-| Follows your movement | Yes: turns, raised arms, crossed arms | Yes |
-| Looks like real fit and drape | **No.** A flat image on your joints, labelled "On-device preview" | Yes |
-| Where your video goes | **Nowhere.** No server, no third-party request, works offline | To Decart over WebRTC |
-| Needs | Nothing | A Decart API key, billed per second |
+| What draws the garment | Body tracking in your browser warps a rigged image of the garment onto your shoulders, arms and torso | FASHN VTON 1.5 (open weights, Apache-2.0) renders a realistic still on a PC you own |
+| Follows your movement | Yes: turns, raised arms, crossed arms | No: hold still, 5–20 s per image |
+| Looks like real fit and drape | **No.** A flat image on your joints, labelled "On-device preview" | Yes, for a still |
+| Where your video goes | **Nowhere.** No server, no third-party request, works offline | One photo to your own machine on your LAN; nothing kept |
+| Needs | Nothing | An NVIDIA GPU with 8 GB+ (see `server/README.md`) |
+
+Where this goes next, including live generative try-on you own, is in [`docs/PLAN_GENERATIVE_TRYON.md`](docs/PLAN_GENERATIVE_TRYON.md).
 
 | Consent, before any camera | On-device preview, arms out | On-device preview, switched |
 | --- | --- | --- |
@@ -30,7 +35,7 @@ npm run dev          # http://localhost:3000
 That's it. **With no key it runs the on-device preview**: your real camera, the garment following your body, and an unmissable **On-device preview** badge. Nothing leaves your browser tab. Camera access needs `https://` or `localhost`.
 
 ```bash
-npm test             # 140 tests: state machine, controller, Decart adapter, warp maths, body mapping, photo client, config, catalogue, contrast
+npm test             # 118 tests: state machine, controller, warp maths, body mapping, photo client, config, catalogue, contrast
 npm run typecheck && npm run lint
 npm run build && npm start
 ```
@@ -62,69 +67,39 @@ in `.env.local`, restart, and the live panel gets **See it properly**: hold stil
 
 The plan for taking this further (dressed clips, then toward real-time) is in [`docs/PLAN_GENERATIVE_TRYON.md`](docs/PLAN_GENERATIVE_TRYON.md).
 
-## Going live (needs a Decart key)
-
-The on-device preview shows the interaction; it can't show real fit. For that, Live mode uses Decart's realtime Virtual Try-On model (`lucy-vton-3.6`) over WebRTC through the official `@decartai/sdk`, which is the model behind the reference video.
-
-1. Create an account and an API key at <https://platform.decart.ai> (new accounts get free credits to test; there is no free-forever production tier).
-2. Copy the env template and put the key in **`.env.local`** (gitignored; never paste a key into chat, a commit, or a `NEXT_PUBLIC_*` variable):
-
-   ```bash
-   cp .env.example .env.local
-   # edit .env.local  ->  DECART_API_KEY=dct_...
-   ```
-
-3. Restart. The **On-device preview** badge disappears and the consent copy switches to the live wording.
-
-**What it costs.** Decart bills per second of active generation. The pricing page lists a VTON realtime model at about **$0.02/sec at 720p** (≈ $1.20/min; `speed:"fast"` is 2×). The pricing page and the model docs disagree on the model name (`lucy-2.1-vton` vs `lucy-vton-3.6`), so **confirm the rate against your own account before quoting a number.** Guardrails ship on by default: sessions end after **180 s** (server-side on the token and client-side in the panel), the panel connects only after consent + camera permission, and Close, a hidden tab, or leaving the page hard-stops everything.
-
-| Env var (server only) | Default | What it does |
-| --- | --- | --- |
-| `DECART_API_KEY` | – | Permanent key. Never leaves the server. Absent → on-device preview. |
-| `TRYON_MODE` | live if keyed, else sim | `sim` forces the on-device preview even with a key (no billing). |
-| `TRYON_MODEL` | `lucy-vton-3.6` | Pinned on purpose; `lucy-vton-3.5` / `lucy-vton-latest` also accepted. |
-| `TRYON_MAX_SESSION_SECONDS` | `180` | Session cap. `0` disables both caps. |
-| `TRYON_FAST` | off | `1` → `speed:"fast"` (lower connect latency, 2× billing). |
-| `TRYON_PHOTO_URL` | – | Your still-image render server. Adds the "See it properly" button. |
-
-The mode is read from server env **at request time**, so one build serves either mode.
-
 ## How it fits together
 
 ```
- page (server)  ──resolveConfig()──▶  mode · model · cap          (never a secret)
+ page (server)  ──resolveConfig()──▶  photoUrl (your own render server, or none)       (never a secret)
       │
  <TryOnDemo> ── garment cards ── ref.tryOn(id) ──▶ <TryOn>        reusable component
                                                        │
                                             TryOnController        camera + session + teardown
                                   pure reducer (machine.ts)  ·  epoch-guarded async
                                                        │
-                 ┌────────────── TryOnProvider ───────┴──────────────┐
-         LocalPoseProvider (default)                          DecartProvider
-         MediaPipe pose + skin segmenter, self-hosted          lazy @decartai/sdk, WebRTC
-         rig: torso TPS + two-bone sleeves, WebGL
-         (falls back to SimulationProvider: fixed silhouette)
-                                                                      │  apiKeyProvider (every connect / reconnect)
-                                                              POST /api/token ──▶ Decart: tokens.create()
-                                                              (server holds dct_ key; returns a ~60 s token)
+                                               TryOnProvider
+                                       LocalPoseProvider (default)
+                            MediaPipe pose + skin segmenter, self-hosted
+                            rig: torso TPS + two-bone sleeves, WebGL
+                            (falls back to SimulationProvider: fixed silhouette)
+
+ "See it properly" ──▶ providers/photo/client.ts ──▶ server/tryon_server.py on your PC (FASHN VTON 1.5)
 ```
 
 - **State machine** (`src/components/tryon/machine.ts`): the PRD's eight states and every transition row, as a pure reducer.
 - **Controller** (`controller.ts`): opens the camera only after consent, discards any async result from a session that was already closed (a late "Allow" after Close is switched straight back off), queues garment swaps (leading edge, last selection wins, always the **complete** garment), and tears down in a fixed order: invalidate async work → stop tracks synchronously → disconnect.
-- **Adapter** (`providers/`): `LocalPoseProvider`, `SimulationProvider` and `DecartProvider` implement one interface, so `<TryOn>` cannot tell them apart. The tracker's maths (`providers/local/tps.ts`, `skin.ts`, `pose-map.ts`) is pure and unit-tested in Node; only `localPose.ts` and `gl-mesh.ts` touch the browser.
-- **Garment switch correctness:** Decart's `set()` replaces the entire state, so `setGarment()` always sends `{prompt, image, enhance:false}` together. This is a test (`tests/decart.test.ts`).
-- **Token route** (`src/app/api/token/route.ts`): mints and returns a token, nothing else. No logging of keys or tokens, same-origin only, 10 s timeout, a server-side session-length cap on the token.
+- **Adapter** (`providers/`): `LocalPoseProvider` and `SimulationProvider` implement one interface, so `<TryOn>` cannot tell them apart; a future generative provider slots in the same way. The tracker's maths (`providers/local/tps.ts`, `skin.ts`, `pose-map.ts`) is pure and unit-tested in Node; only `localPose.ts` and `gl-mesh.ts` touch the browser.
 
 ## Reuse `<TryOn>` in a real storefront
 
 ```tsx
-import { TryOn, DecartProvider, type TryOnHandle } from "@/components/tryon";
+import { TryOn, LocalPoseProvider, type TryOnHandle } from "@/components/tryon";
 
-const provider = useMemo(() => new DecartProvider({ model: "lucy-vton-3.6" }), []);
+const provider = useMemo(() => new LocalPoseProvider(), []);
 const tryOn = useRef<TryOnHandle>(null);
 
 <button onClick={(e) => tryOn.current?.tryOn(product.id, e.currentTarget)}>Try on</button>
-<TryOn ref={tryOn} garments={products} provider={provider} maxSessionSeconds={180} onEvent={track} />
+<TryOn ref={tryOn} garments={products} provider={provider} onEvent={track} />
 ```
 
 `<TryOn>` takes a product list and a provider and runs. It imports nothing from the demo page or the demo's data. To let desktop shoppers drag a card onto it, spread `garmentDragProps(id)` on the card.
@@ -140,9 +115,9 @@ The four sample images are generated by the parent repo's art engine (`scripts/g
 
 ## Privacy, honestly
 
-- **Live mode:** camera frames **are sent to Decart** over WebRTC, transformed by the model, and streamed back. **Processing is not local.** Decart's privacy policy covers streaming session data and permits using it to improve their products. Decart's public docs do not state a frame-retention window for realtime try-on, and this demo does not claim one. **Confirm retention (and any no-training term) with Decart in writing before any non-demo use.**
-- **On-device preview:** no network request carries camera frames; the models themselves are served from this app's own origin. The "stays in this browser tab" wording is only used there, and only because that is true.
-- **This site stores nothing:** no recording, no upload, no saved frames. We do not persist a consent flag either — consent is asked at the start of every camera session, because every session is a new transmission.
+- **On-device preview:** no network request carries camera frames; the models themselves are served from this app's own origin. The QA suite asserts that during a whole session every request is same-origin.
+- **Photo mode:** one camera photo and the garment image go to your own render server on your LAN, which answers and keeps nothing. The button and the footer both say where the photo goes.
+- **This site stores nothing:** no recording, no upload, no saved frames. Consent is asked at the start of every camera session.
 - **Consent is its own step**, before the browser's camera prompt. Browser permission alone is not informed consent.
 - **Kill switch:** Close (×), Esc, leaving the tab, hiding the tab, or unmounting stops every camera track and tears down the session. A "camera on" indicator is visible whenever the camera is active.
 
@@ -150,17 +125,17 @@ The four sample images are generated by the parent repo's art engine (`scripts/g
 
 ```bash
 npm test                                                       # unit + contract tests, no browser
-npm run build && npm start -- -p 3200                          # a build with NO key  (Simulation)
-DECART_API_KEY=dct_dummy npm start -- -p 3201                  # same build, DUMMY key (live UI + token failure path)
-node scripts/qa/checklist.cjs http://localhost:3200 http://localhost:3201 --out qa-output
+npm run build && npm start -- -p 3200                          # the demo
+python3 server/tryon_server.py --mock --port 8010              # a fake render server (optional, for the photo-mode checks)
+TRYON_PHOTO_URL=http://localhost:8010 npm start -- -p 3202     # the demo with photo mode on (optional)
+node scripts/qa/checklist.cjs http://localhost:3200 --photo http://localhost:3202 --out qa-output
 ```
 
-`scripts/qa/checklist.cjs` is the PRD's test checklist as an executable run in headless Chromium with a fake camera (needs Playwright; `npm i --no-save axe-core` adds the accessibility pass; `ffmpeg` enables the tracker checks, which feed a photo of a real person to the fake camera and verify the garment is drawn and switched on the body). The dummy key is rejected by Decart, which is exactly how it proves the failure path without spending anything. See [`docs/TEST_CHECKLIST.md`](docs/TEST_CHECKLIST.md) for results and [`docs/DELIVERY_NOTE.md`](docs/DELIVERY_NOTE.md) for what is and isn't verified.
+`scripts/qa/checklist.cjs` is the PRD's test checklist as an executable run in headless Chromium with a fake camera (needs Playwright; `npm i --no-save axe-core` adds the accessibility pass; `ffmpeg` enables the tracker checks, which feed a photo of a real person to the fake camera and verify the garment is drawn and switched on the body). See [`docs/TEST_CHECKLIST.md`](docs/TEST_CHECKLIST.md) for results and [`docs/DELIVERY_NOTE.md`](docs/DELIVERY_NOTE.md) for what is and isn't verified.
 
 ## Known limits
 
-- **Real model output is unverified here.** No key was available, so lag, drape, arm tracking and live latency have not been observed. See the delivery note's "validate with a key" list.
 - **The on-device preview is an approximation and has only been driven by photos in headless Chromium**, never by a real webcam on a real device. Frame rate on real hardware is unmeasured (expected: smooth on a laptop, usable on a recent phone). Turning sideways narrows the garment but can't show its side; nothing but hands occludes it; the shirt's big sleeve caps read as caps when arms are raised.
-- WebRTC needs a capable device and a decent uplink; a degraded network is a designed state (hint, then error + Retry), not something to hide.
+- **Photo mode has not been run on a real GPU here** (this sandbox has none); the mock server proves the wiring only.
+- **Live, generative try-on you own does not exist yet** and no free or local path reaches it today; the plan document is honest about what each stage costs.
 - iOS Safari needs a real-device pass (fullscreen uses a fixed overlay because iPhone has no element fullscreen).
-- Effectively single-provider for this capability today, which is why it sits behind `TryOnProvider`.

@@ -1,6 +1,18 @@
 # Delivery note — Live AI Virtual Try-On demo
 
-**Status:** two engines behind one panel. The **on-device preview** (default, no key, nothing leaves the browser) is built, rigged and verified with photos of real people in headless Chromium. The **live path** (Decart Lucy VTON) is fully wired but has never run against a real key, so real model output, drape and live latency are **unobserved**. Everything else in the PRD's checklist is verified (see [`TEST_CHECKLIST.md`](TEST_CHECKLIST.md)).
+**Status:** two engines behind one panel, both on hardware the user controls. The **on-device preview** (default, nothing leaves the browser) is built, rigged and verified with photos of real people in headless Chromium. **Photo mode** (a realistic still from FASHN VTON 1.5 on the user's own GPU) is wired and verified against a mock server; a real render is pending the PC install. The Decart path has been **removed** (Change 4).
+
+## Change 4 — Decart removed; two hard rules
+
+**The rules, as stated:** (1) no AI vendor and no API key anywhere in the project; (2) free resources only. Everything that remains satisfies both: open-weight models in the browser or on the user's own machine, free hosting (Vercel Hobby for the tracker; the photo server stays at home).
+
+**What was removed.** `DecartProvider`, the reference-image preparer, the `/api/token` route, the `@decartai/sdk` dependency, the live-mode config (`DECART_API_KEY`, `TRYON_MODE`, `TRYON_MODEL`, `TRYON_MAX_SESSION_SECONDS`, `TRYON_FAST`), the live consent/disclosure copy that named a vendor, the "token" error kind, the live QA checks (L1–L5) and the Decart adapter tests. The component keeps a vendor-neutral consent text for any future provider that streams video elsewhere; none in this project does.
+
+**What replaced the vendor-specific guarantees.** S21 now asserts that during a whole session every network request (page, models, WASM, images) is same-origin. The footer states that no AI service and no API key are involved.
+
+**Where that leaves the "live" goal.** The reference-quality, real-time experience is still only produced by a generative video model on data-centre GPUs. With no vendor and no budget, the honest sequence is in [`PLAN_GENERATIVE_TRYON.md`](PLAN_GENERATIVE_TRYON.md): stills on the 3070 now, dressed clips on free GPU quota next, and a live model only if the project turns into a funded one.
+
+---
 
 ## Change 2 — on-device preview (replaces the fixed-silhouette simulation)
 

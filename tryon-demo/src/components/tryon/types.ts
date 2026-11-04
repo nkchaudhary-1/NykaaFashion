@@ -74,7 +74,6 @@ export type SessionState =
 export type PermissionReason = "denied" | "dismissed" | "no-camera" | "in-use" | "unsupported";
 
 export type TryOnErrorKind =
-  | "token" //        could not mint / fetch a client token (server env, key, network)
   | "connect" //      dial failed
   | "timeout" //      connecting took too long
   | "dropped" //      stream dropped or camera ended mid-session

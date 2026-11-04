@@ -1,10 +1,10 @@
 // Every user-facing string in the try-on panel, in one place. Tone: plain, specific, calm — never cute about the camera.
 //
 // Rules this file enforces (PRD, "UX writing requirements"):
-//  • live mode never implies local processing, and never states a latency figure as a promise
+//  • a provider that streams video elsewhere never implies local processing; no latency figure is ever promised
 //  • the Simulation badge is unmissable and honest — no "demo" euphemism that hides it isn't the real model
 //  • every error that stops the camera says the camera is off, and that is made true in the controller
-import type { PermissionReason, TryOnErrorKind, TryOnMode } from "./types.ts";
+import type { PermissionReason, TryOnErrorKind } from "./types.ts";
 
 export const copy = {
   panelLabel: "Live try-on",
@@ -18,13 +18,14 @@ export const copy = {
 
   consent: {
     title: "We'll use your camera to show the look on you.",
+    // A provider that streams video elsewhere must say so here. None of the providers in this project does.
     live: {
-      body: "Your camera video is sent to Decart, the AI that renders the garment, and streamed back live. We don't record or save anything. You can close it any time to turn the camera off.",
-      note: "Decart's privacy policy allows using content to improve their models.",
+      body: "Your camera video is sent to the try-on service that renders the garment, and streamed back live. We don't record or save anything. You can close it any time to turn the camera off.",
+      note: "",
     },
     sim: {
       body: "This preview runs in your browser. Your camera video stays in this browser tab: it isn't sent anywhere or saved. You can close it any time to turn the camera off.",
-      note: "The garment is placed by on-device tracking, an approximation. Live AI try-on (which sends video to Decart) isn't on in this build.",
+      note: "The garment is placed by on-device tracking, an approximation of how it would sit on you.",
     },
     agree: "Agree & continue",
     decline: "Not now",
@@ -54,7 +55,7 @@ export const copy = {
 
   sim: {
     badge: "Simulation",
-    tooltip: "Preview of the interface. Live AI try-on turns on with a provider key — this isn't the real model output.",
+    tooltip: "Preview of the interface. The garment shape is a placeholder, not a model's output.",
     info: "About this preview",
   },
 
@@ -66,7 +67,7 @@ export const copy = {
     },
     silhouette: {
       badge: "Simulation",
-      tooltip: "Preview of the interface. Live AI try-on turns on with a provider key — this isn't the real model output.",
+      tooltip: "Preview of the interface. The garment shape is a placeholder, not a model's output.",
     },
   },
 
@@ -194,13 +195,6 @@ export function errorCopy(kind: TryOnErrorKind | undefined, opts: { maxSessionSe
         body: "The try-on service ended this session. Your camera's been turned off.",
         action: copy.retry,
       };
-    case "token":
-      return {
-        title: "Couldn't start try-on.",
-        body: "The try-on service didn't give us access. Your camera's been turned off. Try again?",
-        action: copy.retry,
-        detail: "No session token. Check the server key.",
-      };
     case "connect":
     case "unknown":
     default:
@@ -212,22 +206,14 @@ export function errorCopy(kind: TryOnErrorKind | undefined, opts: { maxSessionSe
   }
 }
 
-/** The honest account of what a mode does with the shopper's video, for the page footer. */
-export function disclosure(mode: TryOnMode, opts: { maxSessionSeconds: number; photoHost?: string | null }) {
+/** The honest account of what this build does with the shopper's video, for the page footer. */
+export function disclosure(opts: { photoHost?: string | null }) {
   const photo = opts.photoHost
     ? ` "See it properly" sends one camera photo and the garment image to your own render server at ${opts.photoHost} and shows the result; that server keeps nothing.`
     : "";
-  if (mode === "sim") {
-    return {
-      title: "On-device preview",
-      body: `This build runs entirely in your browser: body tracking places a flat image of the garment on you and follows your movement. It's an approximation, not AI fit or drape, and nothing leaves this browser tab.${photo} Live AI try-on (the real model, rendering fabric on your moving body) requires a provisioned Decart API key (platform.decart.ai) and per-second streaming billing (~$0.02/sec at 720p, to confirm against a live account); with a key in server env the same panel switches to it.`,
-    };
-  }
   return {
-    title: "Live mode",
-    body: `Your camera video is sent to Decart (the model provider) over WebRTC, transformed, and streamed back. Decart's privacy policy covers streaming session data and allows using it to improve their products. We don't know their retention window and don't claim one. This site stores no video or photos.${
-      opts.maxSessionSeconds > 0 ? ` Sessions end after ${opts.maxSessionSeconds} seconds to limit cost.` : ""
-    }${photo}`,
+    title: "On-device preview",
+    body: `This build runs entirely in your browser and on hardware you control: body tracking places a flat image of the garment on you and follows your movement. It's an approximation, not fit or drape, and nothing leaves this browser tab.${photo} No AI service and no API key are involved anywhere in this project.`,
   };
 }
 
