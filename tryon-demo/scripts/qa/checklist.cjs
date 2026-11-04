@@ -123,7 +123,7 @@ const INIT = () => {
         if (window.__states[window.__states.length - 1] !== st) window.__states.push(st);
       }
     }
-  }).observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ["data-state"] });
+  }).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-state"] }); // `document` exists at init-script time; documentElement does not yet
   window.__events = [];
   const dbg = console.debug.bind(console);
   console.debug = (...a) => {
