@@ -1,0 +1,65 @@
+{
+  "jobs": [
+    {
+      "out": "field-bomber",
+      "w": 1000,
+      "h": 1250,
+      "spec": {
+        "kind": "jacket",
+        "style": "bomber",
+        "color": "#6F7152",
+        "bg": "#EFEBE4",
+        "shot": "front",
+        "seed": 11
+      }
+    },
+    {
+      "out": "wave-knit",
+      "w": 1000,
+      "h": 1250,
+      "spec": {
+        "kind": "sweater",
+        "style": "crew",
+        "fabric": "knit",
+        "color": "#F1EADB",
+        "color2": "#2F5D9B",
+        "pattern": "chevron",
+        "bg": "#EFEBE4",
+        "shot": "front",
+        "seed": 23
+      }
+    },
+    {
+      "out": "cloud-knit",
+      "w": 1000,
+      "h": 1250,
+      "spec": {
+        "kind": "sweater",
+        "style": "crew",
+        "fabric": "knit",
+        "color": "#F6F3EC",
+        "bg": "#EFEBE4",
+        "shot": "front",
+        "seed": 37
+      }
+    },
+    {
+      "out": "oxford-stripe",
+      "w": 1000,
+      "h": 1250,
+      "spec": {
+        "kind": "shirt",
+        "collar": "spread",
+        "fit": "regular",
+        "sleeve": "long",
+        "fabric": "cotton",
+        "color": "#F4F1EA",
+        "color2": "#7FA0C9",
+        "pattern": "stripe",
+        "bg": "#EFEBE4",
+        "shot": "front",
+        "seed": 41
+      }
+    }
+  ]
+}
