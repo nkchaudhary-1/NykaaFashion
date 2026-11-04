@@ -1,8 +1,8 @@
 # Plan — generative try-on, self-hosted
 
-*Goal as stated: "build my own virtual live try-on". Two hard rules: no AI vendor and no API key, anywhere; free resources only. This is the plan, staged so each step produces something you can see, with an honest line between what your PC and free GPU quota can do and what needs more.*
+*Goal as stated: "a new approach, exactly how Decart does it", running on your own machine. This is the plan, staged so each step produces something you can see, with an honest line between what your PC can do and what needs a bigger machine.*
 
-## 1. What the reference system does (the target, not a tool)
+## 1. What Decart actually does
 
 Your camera stream goes to their GPUs. A generative video model (Lucy VTON) **redraws every frame**, conditioned on the garment image and a short prompt, and the frames stream back over WebRTC at 20–30 fps, 720p. It generates cloth; it does not move a picture of cloth. That is why fit, folds and crossed arms look right.
 
@@ -46,7 +46,7 @@ Each stage is a shippable state of the same demo panel. Later stages don't repla
 
 - **What you get:** **Record 4 seconds**, wait, play back dressed, with your own movement. Generation, not overlay; not live.
 - **Engine candidates:** MagicTryOn-Turbo or -1.3B (video diffusion on Wan2.1, 50× faster distilled variant). Heavy preprocessing pipeline (DensePose, agnostic masks, captions, line maps). Non-commercial licence: fine for a personal demo, not for a product.
-- **Hardware truth:** on the 3070 this is an experiment that may run at 480p with offloading in minutes per clip, or may not fit. **Free GPU quota** makes it reliable enough for an experiment: Kaggle notebooks (two T4s or a P100, ~30 GPU-hours a week, free), Google Colab's free tier (a T4, sessions that can end without notice), or a Hugging Face Space on ZeroGPU (a shared H200 slice with a daily minute quota). All three are free; all three are batch-only and shut your job down when the quota ends, so they suit "render my clip" and not "serve my site".
+- **Hardware truth:** on the 3070 this is an experiment that may run at 480p with offloading in minutes per clip, or may not fit. A rented GPU (A100/H100, $2–4/hour, your account, your server) makes it reliable: 30 s–2 min per clip, maybe $20–60 for the whole experiment.
 - **I do:** the clip recorder in the panel, the batch server (same shape as the photo server), the preprocessing script, the first evaluation on your garments.
 - **Gate:** quality and time per clip. This is the point where "self-hosted generative try-on on video" either exists or doesn't.
 
@@ -54,19 +54,17 @@ Each stage is a shippable state of the same demo panel. Later stages don't repla
 
 - **Target:** 512p at 5–10 fps with ~1 s latency on a rented H100, in the browser over WebRTC. "Laggy live". Honest, and a real engineering result.
 - **How:** take a video try-on model and make it causal and few-step (the Self-Forcing / CausVid family of techniques: generate frame by frame with a short context, distilled from the full model), plus a streaming inference server.
-- **Needs:** ML engineering time, training runs on 4–8 H100s for days each ($5k–50k across the project at market rates; no free tier covers this), the Stage B pipeline as the base, and a tolerance for things not working for weeks.
-- **Gate:** whether you are building a product company. Under the "free only" rule, Stage C is where the plan stops unless funding appears; the honest free ceiling is Stage B.
+- **Needs:** ML engineering time (training runs on 4–8 H100s for days each, $5k–50k across the project), the Stage B pipeline as the base, and a tolerance for things not working for weeks.
+- **Gate:** whether you are building a product company. Below that line, Stage C is not worth your money.
 
 ### Stage D — Decart-grade
 
 Real-time 720p at 30 fps with their quality is a trained-from-scratch model, a custom inference stack, a GPU fleet, and a team of 10–30. It is what Decart raised money to do. The plan does not pretend otherwise.
 
-## 4. Local first, then Vercel — what runs where
+## 4. What "run it on my local system" means per stage
 
-- **In your browser, now:** the on-device preview. It deploys to Vercel's free Hobby tier unchanged (static files + one dynamic page); set the project's Root Directory to `tryon-demo`. A Vercel URL is public, so keep the demo honest there: tracker only, nothing to spend.
-- **On your PC:** photo mode (Stage A). From a Vercel page it is reachable only through a free tunnel that gives your PC an https address (Cloudflare Tunnel's free tier), with a shared secret added to the server first; otherwise it stays a local-only feature.
-- **On free GPU quota:** Stage B's clips, as notebooks, not as a server.
-- I cannot run anything on your PC from this session (Remote Control didn't expose the folder), so each stage ships as code plus a setup script plus instructions, and Claude Code on the PC can run them with you.
+- **A and B run on the PC** (B possibly on a rented box you control). I cannot run anything on your PC from this session: Remote Control didn't expose the folder. So each stage ships as code plus a setup script plus a prompt you can paste into Claude Code on the PC, which then does the install with you.
+- **C runs on rented GPUs** you own the account for. Your data goes to your rented machine, not a vendor's product.
 
 ## 5. Risks, in the order they'll bite
 
@@ -80,4 +78,4 @@ Real-time 720p at 30 fps with their quality is a trained-from-scratch model, a c
 
 Stage A is cheap, local, Apache-licensed and already half built: it should start now. The real decision is whether Stage B's answer ("self-hosted video try-on exists, slowly") is the goal, or whether live is non-negotiable, in which case the honest options are Decart with a zero-data-retention key, or Stage C as a funded project.
 
-**Recommendation under the two rules:** A now (free, local, Apache-licensed, half-installed on your PC), B as a time-boxed experiment on free GPU quota, and the honest statement that live generative try-on you own is beyond what free resources reach today. The interface, consent design and switching you already have are the part of this that is yours regardless of engine.
+**Recommendation:** A now, B as a time-boxed experiment, decide on C only with B's results in hand.

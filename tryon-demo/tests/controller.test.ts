@@ -344,14 +344,14 @@ describe("failure states", () => {
     r.c.notifyFrame();
     assert.equal(r.state(), "live");
   });
-  it("a provider failure while connecting -> error, camera off, not a hang", async () => {
+  it("a token / provider failure while connecting -> error, camera off, not a hang", async () => {
     const r = rig();
-    r.provider.failConnectWith = new TryOnProviderError("connect", "dial failed");
+    r.provider.failConnectWith = new TryOnProviderError("token", "no token");
     r.c.tryOn("a");
     r.c.agree();
     await settle();
     assert.equal(r.state(), "error");
-    assert.equal(r.snap().error?.kind, "connect");
+    assert.equal(r.snap().error?.kind, "token");
     assert.equal(r.camera.last.allStopped, true);
   });
   it("no first frame in time -> a timeout error, not an endless spinner", async () => {

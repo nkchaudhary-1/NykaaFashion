@@ -1,7 +1,15 @@
 "use client";
 
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { LocalPoseProvider, TryOn, createPhotoRenderer, type TryOnEvent, type TryOnHandle, type TryOnPanelState } from "@/components/tryon";
+import {
+  DecartProvider,
+  LocalPoseProvider,
+  TryOn,
+  createPhotoRenderer,
+  type TryOnEvent,
+  type TryOnHandle,
+  type TryOnPanelState,
+} from "@/components/tryon";
 import { garments } from "@/data/garments";
 import type { TryOnConfig } from "@/lib/config";
 import { GarmentCard, type CardPhase } from "./GarmentCard";
@@ -19,15 +27,20 @@ const finePointer = {
 /** Light instrumentation: only events that answer a question. Logged to the console; wire onEvent to any sink. */
 const logEvent = (e: TryOnEvent) => console.debug("[tryon]", JSON.stringify(e));
 
-/** The demo's one stateful surface: garment cards beside the <TryOn> panel. */
+/**
+ * The demo's one stateful surface: garment cards beside the <TryOn> panel.
+ * The mode (live | simulation) is decided on the server; this only swaps the provider — same component either way.
+ */
 export function TryOnDemo({ config }: { config: TryOnConfig }) {
   const tryOn = useRef<TryOnHandle>(null);
   const [panel, setPanel] = useState<TryOnPanelState>({ state: "idle", garmentId: null, appliedId: null });
   const [dragging, setDragging] = useState<string | null>(null);
   const canDrag = useSyncExternalStore(finePointer.subscribe, finePointer.get, () => false);
 
-  // The only live engine is the on-device tracker: no vendor, no key, nothing leaves the browser.
-  const provider = useMemo(() => new LocalPoseProvider(), []);
+  const provider = useMemo(
+    () => (config.mode === "live" ? new DecartProvider({ model: config.model, fast: config.fast }) : new LocalPoseProvider()),
+    [config.mode, config.model, config.fast],
+  );
   // "See it properly": a still rendered on the shopper's own machine, when a render server is configured.
   const photo = useMemo(() => (config.photoUrl ? createPhotoRenderer(config.photoUrl) : undefined), [config.photoUrl]);
 
@@ -70,6 +83,7 @@ export function TryOnDemo({ config }: { config: TryOnConfig }) {
           ref={tryOn}
           garments={garments}
           provider={provider}
+          maxSessionSeconds={config.mode === "live" ? config.maxSessionSeconds : 0}
           photo={photo}
           onEvent={logEvent}
           onStateChange={setPanel}

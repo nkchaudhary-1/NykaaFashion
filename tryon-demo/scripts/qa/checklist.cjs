@@ -2,15 +2,18 @@
 /* eslint-disable */
 // The PRD's test checklist, executed in headless Chromium with a FAKE camera device.
 //
-//   node scripts/qa/checklist.cjs <url> [--out qa-output] [--person photo.jpg] [--photo <url built with TRYON_PHOTO_URL>]
+//   node scripts/qa/checklist.cjs <simUrl> [<liveUrl>] [--out qa-output] [--person photo.jpg] [--photo <simUrl built with TRYON_PHOTO_URL>]
 //
-//   <url>      a running build of the demo (the on-device preview; no vendor, no key)
-//   --photo    a second running build started with TRYON_PHOTO_URL pointing at `python server/tryon_server.py --mock`
+//   <simUrl>   a running build with NO key            (Simulation mode)
+//   <liveUrl>  a running build with a DUMMY key        (live UI + token route; the dummy key is rejected by Decart,
+//              which is exactly what lets us prove the failure path without spending anything)
 //
 // Needs Playwright (preinstalled in the cloud sandbox; elsewhere: npm i --no-save playwright && npx playwright install chromium).
 // axe-core is optional: npm i --no-save axe-core. The on-device tracker checks (T*) need ffmpeg, to turn a photo of a
 // person into the clip Chromium's fake camera plays; --person supplies the photo, otherwise MediaPipe's public pose
 // test image is downloaded into the output folder.
+//
+// What this CANNOT prove: that real Lucy VTON output renders and tracks arms. That needs a key — see docs/DELIVERY_NOTE.md.
 const { chromium } = require("playwright");
 const fs = require("fs");
 const path = require("path");
@@ -23,9 +26,9 @@ const personIdx = args.indexOf("--person");
 const PERSON = personIdx >= 0 ? args.splice(personIdx, 2)[1] : null;
 const photoIdx = args.indexOf("--photo");
 const PHOTO = photoIdx >= 0 ? args.splice(photoIdx, 2)[1] : null; // a sim build whose TRYON_PHOTO_URL points at `python server/tryon_server.py --mock`
-const [SIM] = args;
+const [SIM, LIVE] = args;
 if (!SIM) {
-  console.error("usage: node scripts/qa/checklist.cjs <url> [--out dir] [--person photo.jpg] [--photo <url>]");
+  console.error("usage: node scripts/qa/checklist.cjs <simUrl> [<liveUrl>] [--out dir]");
   process.exit(2);
 }
 fs.mkdirSync(OUT, { recursive: true });
@@ -66,6 +69,17 @@ const check = async (id, title, fn) => {
 // QA_TRACE=1 prints step markers, to find where a check stalls.
 const T0 = Date.now();
 const trace = (...a) => process.env.QA_TRACE && console.log("      ·", String(Date.now() - T0).padStart(6), ...a);
+// Does any JS chunk the page has loaded contain `marker`? Re-fetched in-page (HTTP cache), returns the URL or null.
+const scriptsContain = (page, marker) =>
+  page.evaluate(async (marker) => {
+    const urls = performance.getEntriesByType("resource").map((e) => e.name).filter((u) => /\/_next\/static\/.*\.js(\?|$)/.test(u));
+    for (const u of urls) {
+      try {
+        if ((await (await fetch(u)).text()).includes(marker)) return u;
+      } catch {}
+    }
+    return null;
+  }, marker);
 const section = (t) => console.log(`\n${t}`);
 const assert = (cond, msg) => {
   if (!cond) throw new Error(msg);
@@ -88,19 +102,30 @@ const INIT = () => {
   };
   g.live = () => g.streams.flatMap((s) => s.getTracks()).filter((t) => t.readyState === "live").length;
   g.endExternally = () => g.streams[g.streams.length - 1].getVideoTracks()[0].dispatchEvent(new Event("ended"));
-  // Every request the page makes, seen from inside the page: the privacy claim is that none leaves this origin.
-  window.__requests = [];
-  try {
-    new PerformanceObserver((list) => {
-      for (const e of list.getEntries()) window.__requests.push(e.name);
-    }).observe({ type: "resource", buffered: true });
-  } catch {}
+  // Record /api/token calls from inside the page. (Playwright's response.text() can hang on these; this cannot.)
+  window.__tokenCalls = [];
   const realFetch = window.fetch.bind(window);
   window.fetch = async (...a) => {
+    const res = await realFetch(...a);
     try {
-      window.__requests.push(String(a[0] && a[0].url ? a[0].url : a[0]));
+      const url = String(a[0] && a[0].url ? a[0].url : a[0]);
+      if (url.includes("/api/token")) {
+        const method = (a[1] && a[1].method) || (a[0] && a[0].method) || "GET";
+        res.clone().text().then((body) => window.__tokenCalls.push({ status: res.status, method, body }));
+      }
     } catch {}
-    return realFetch(...a);
+    return res;
+  };
+  // Record the reference images the live provider prepares (canvas -> JPEG), to prove that step works in a real browser.
+  window.__refs = [];
+  const toBlob = HTMLCanvasElement.prototype.toBlob;
+  HTMLCanvasElement.prototype.toBlob = function (cb, type, q) {
+    const w = this.width;
+    const h = this.height;
+    return toBlob.call(this, (blob) => {
+      window.__refs.push({ type: blob && blob.type, size: blob && blob.size, w, h });
+      cb(blob);
+    }, type, q);
   };
   // Every data-state the panel passes through, in order — transient states (switching) are too short to poll for
   // when MediaPipe is hogging the main thread under software GL.
@@ -235,7 +260,7 @@ async function axeRun(page, label) {
     const text = await page.textContent(PANEL);
     assert(text.includes("We'll use your camera to show the look on you."), "consent title missing");
     assert(text.includes("stays in this browser tab"), "sim consent must say video stays in the tab (and only because that is true)");
-    assert(!/sent to/.test(text), "consent must not say video is sent anywhere: it isn't");
+    assert(!text.includes("sent to Decart, the AI"), "sim consent must not use the live wording");
     assert(await page.evaluate(() => document.activeElement?.hasAttribute("data-autofocus")), "focus did not move to the consent heading");
     await shot(page, "02-desktop-consent");
     await page.getByRole("button", { name: "Not now" }).click();
@@ -573,25 +598,17 @@ async function axeRun(page, label) {
     return `ttff event ${Math.round(live.ttffMs)}ms, switch event ${Math.round(sw.switchMs)}ms (instrumentation only — not shown in sim)`;
   });
 
-  await check("S21", "Nothing leaves the origin: every request during a whole session (page, models, WASM, images) is same-origin", async () => {
+  await check("S21", "Sim never downloads the provider SDK or calls the token route", async () => {
     const page = await open(browser, SIM);
-    const origin = new URL(SIM).origin;
-    const offOrigin = [];
-    page.on("request", (r) => {
-      const u = r.url();
-      if (/^https?:/.test(u) && !u.startsWith(origin)) offOrigin.push(u);
-    });
+    const tokenCalls = [];
+    page.on("request", (r) => r.url().includes("/api/token") && tokenCalls.push(r.url()));
     await goLive(page);
     await page.click('[data-testid="tray-cloud-knit"]');
     await waitState(page, "live");
-    await page.waitForTimeout(800);
-    await page.click('[data-testid="close"]');
-    await waitState(page, "idle");
-    const inPage = (await page.evaluate(() => window.__requests)).filter((u) => /^https?:/.test(u) && !u.startsWith(origin));
-    const all = [...new Set([...offOrigin, ...inPage])];
-    eq(all.length, 0, `requests to other origins: ${all.slice(0, 5).join(", ")}`);
+    await page.waitForTimeout(500);
+    eq(await scriptsContain(page, "LIVEKIT_INITIALIZATION_ERROR"), null, "Decart SDK chunk loaded in Simulation mode");
+    eq(tokenCalls.length, 0, "/api/token calls in Simulation mode");
     await page.context().close();
-    return "page, models, WASM and images all from this origin";
   });
 
   await check("S22", "Touch targets >= 44px on every visible control (desktop layout, idle + live)", async () => {
@@ -896,6 +913,99 @@ async function axeRun(page, label) {
     });
   } else {
     console.log("\n  – photo-mode checks skipped (pass --photo <simUrl> for a build started with TRYON_PHOTO_URL=http://localhost:8010 and `python server/tryon_server.py --mock --port 8010`)");
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  if (LIVE) {
+    section(`LIVE-MODE BUILD with a DUMMY key  ${LIVE}`);
+    const DUMMY = "dct_dummy_key_for_qa_not_a_real_key";
+
+    await check("L1", "Live UI: no Simulation badge, live consent wording names Decart and their training policy, footer says Live", async () => {
+      const page = await open(browser, LIVE);
+      eq((await page.locator(PANEL).getAttribute("data-mode")), "live", "mode");
+      eq(await page.locator('[data-testid="sim-badge"]').count(), 0, "Simulation badge in live mode");
+      await tryOn(page, "field-bomber");
+      await waitState(page, "consent");
+      const text = await page.textContent(PANEL);
+      assert(text.includes("sent to Decart"), "live consent must say video goes to Decart");
+      assert(text.includes("We don't record or save anything"), "consent must state we store nothing");
+      assert(text.includes("privacy policy allows using content to improve their models"), "live consent must carry the policy note");
+      assert(!/stays in this browser tab/.test(text), "live consent must never imply local processing");
+      assert((await page.textContent('[data-testid="disclosure"]')).includes("transformed, and streamed back"), "footer must describe live data flow");
+      await shot(page, "14-live-mode-consent");
+      await page.context().close();
+    });
+
+    await check("L2", "Bad key -> the token route says so, the panel shows an error with the camera OFF (not a hang)", async () => {
+      const page = await open(browser, LIVE);
+      const t0 = Date.now();
+      await tryOn(page, "field-bomber");
+      await waitState(page, "consent");
+      await agree(page);
+      await page.waitForFunction(() => window.__tokenCalls.length >= 1, null, { timeout: 15000 });
+      await waitState(page, "error", 15000);
+      const took = Date.now() - t0;
+      const text = await page.textContent(PANEL);
+      assert(text.includes("Couldn't start try-on.") && text.includes("Your camera's been turned off."), "error copy missing");
+      eq((await gum(page)).live, 0, "camera must be off after a failed start");
+      const [first] = await page.evaluate(() => window.__tokenCalls);
+      eq(first.method, "POST", "token route method");
+      eq(first.status, 502, "token route status for a rejected key");
+      assert(!first.body.includes("dct_") && !first.body.includes(DUMMY), "token route echoed key material");
+      eq(first.body, '{"error":"mint_failed"}', "token route error body");
+      await shot(page, "15-live-mode-error");
+      // Retry is a real retry that mints a fresh token (never reuses a 60-second one), with no reload.
+      await page.getByRole("button", { name: "Retry" }).click();
+      await page.waitForFunction(() => window.__tokenCalls.length >= 2, null, { timeout: 15000 });
+      await waitState(page, "error", 15000);
+      await page.context().close();
+      return `error reached ${took} ms after Try on; Retry minted a fresh token`;
+    });
+
+    await check("L3", "The permanent key never reaches the browser: not in the HTML, not in any JS chunk, not in the token route's answers", async () => {
+      const page = await open(browser, LIVE);
+      await tryOn(page, "field-bomber");
+      await agree(page);
+      await waitState(page, "error", 15000);
+      const html = await page.content();
+      assert(!html.includes(DUMMY), "key in the rendered HTML");
+      const raw = await page.evaluate(async () => (await fetch("/")).text());
+      assert(!raw.includes(DUMMY), "key in the server-rendered HTML / RSC payload");
+      eq(await scriptsContain(page, DUMMY), null, "key found in a JS chunk");
+      eq(await scriptsContain(page, "DECART_API_KEY="), null, "key assignment found in a JS chunk");
+      eq(await scriptsContain(page, "NEXT_PUBLIC_DECART"), null, "NEXT_PUBLIC_DECART* found in a JS chunk");
+      const calls = await page.evaluate(() => window.__tokenCalls);
+      assert(calls.length >= 1 && calls.every((c) => !c.body.includes(DUMMY)), "token route answers must not contain the key");
+      await page.context().close();
+    });
+
+    await check("L4", "Provider SDK is lazy: not downloaded at page load, fetched only once the shopper starts a try-on", async () => {
+      const page = await open(browser, LIVE);
+      eq(await scriptsContain(page, "LIVEKIT_INITIALIZATION_ERROR"), null, "SDK present in the initial page load");
+      await tryOn(page, "field-bomber");
+      await waitState(page, "consent");
+      await page.waitForTimeout(1500);
+      assert(await scriptsContain(page, "LIVEKIT_INITIALIZATION_ERROR"), "SDK chunk never requested after consent was shown (warm-up broken)");
+      await page.context().close();
+    });
+
+    await check("L5", "Reference images are prepared for the model: real JPEGs, plain background, long edge <= 1024, short edge >= 512", async () => {
+      const page = await open(browser, LIVE);
+      await tryOn(page, "field-bomber");
+      await waitState(page, "consent");
+      await page.waitForFunction(() => window.__refs.length >= 4, null, { timeout: 10000 });
+      const refs = await page.evaluate(() => window.__refs);
+      eq(refs.length, 4, "one prepared reference per garment");
+      for (const r of refs) {
+        eq(r.type, "image/jpeg", "reference type");
+        assert(r.size > 5000, `reference suspiciously small: ${r.size} bytes`);
+        assert(Math.max(r.w, r.h) <= 1024 && Math.min(r.w, r.h) >= 512, `reference size ${r.w}x${r.h}`);
+      }
+      await page.context().close();
+      return refs.map((r) => `${r.w}x${r.h} ${(r.size / 1024).toFixed(0)}KB`).join(", ");
+    });
+  } else {
+    console.log("\n  – live-mode checks skipped (pass a second URL: a build started with DECART_API_KEY=<dummy>)");
   }
 
   await browser.close();
