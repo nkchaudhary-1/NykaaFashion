@@ -38,6 +38,17 @@ try {
 // ── harness ──────────────────────────────────────────────────────────────────
 const results = [];
 const ONLY = process.env.ONLY ? process.env.ONLY.split(",") : null;
+// Every browser this run launches, so a failed check can never leak its context: a leaked live page keeps the
+// tracker (MediaPipe under software GL) burning CPU and cascades into timeouts in every later check.
+const BROWSERS = new Set();
+const launch = async (opts) => {
+  const b = await chromium.launch(opts);
+  BROWSERS.add(b);
+  return b;
+};
+const closeLeftovers = async () => {
+  for (const b of BROWSERS) if (b.isConnected()) for (const c of b.contexts()) await c.close().catch(() => {});
+};
 const check = async (id, title, fn) => {
   if (ONLY && !ONLY.includes(id)) return;
   const t0 = Date.now();
@@ -48,6 +59,8 @@ const check = async (id, title, fn) => {
   } catch (e) {
     results.push({ id, title, ok: false, detail: String(e.message || e).split("\n")[0], ms: Date.now() - t0 });
     console.log(`  ✗ ${id}  ${title}\n      ${String(e.message || e).split("\n")[0]}`);
+  } finally {
+    await closeLeftovers();
   }
 };
 // QA_TRACE=1 prints step markers, to find where a check stalls.
@@ -194,7 +207,7 @@ async function axeRun(page, label) {
 }
 
 (async () => {
-  const browser = await chromium.launch({
+  const browser = await launch({
     args: ["--use-fake-device-for-media-stream", "--use-fake-ui-for-media-stream"],
   });
 
@@ -339,8 +352,9 @@ async function axeRun(page, label) {
     await page.waitForSelector(`${PANEL}[data-fullscreen="true"]`);
     await page.click('[data-testid="close"]');
     await waitState(page, "idle");
-    eq(await page.$eval(PANEL, (el) => el.getAttribute("data-fullscreen")), "false", "data-fullscreen after Close");
-    eq(await page.evaluate(() => document.fullscreenElement === null), true, "document.fullscreenElement after Close");
+    // exitFullscreen() is asynchronous: the state flips to idle first, the document follows a frame or two later
+    await page.waitForSelector(`${PANEL}[data-fullscreen="false"]`, { timeout: 5000 }).catch(() => assert(false, "data-fullscreen still true after Close"));
+    await page.waitForFunction(() => document.fullscreenElement === null, null, { timeout: 5000 }).catch(() => assert(false, "document.fullscreenElement still set after Close"));
     eq((await gum(page)).live, 0, "live tracks after Close from fullscreen");
     eq(await page.evaluate(() => document.documentElement.style.overflow), "", "page scroll lock released");
     await page.context().close();
@@ -633,7 +647,7 @@ async function axeRun(page, label) {
 
   // ════════════════════════════════════════════════════════════════════════════
   section("MOBILE (360x740, touch, coarse pointer)");
-  const touchBrowser = await chromium.launch({
+  const touchBrowser = await launch({
     args: [
       "--use-fake-device-for-media-stream",
       "--use-fake-ui-for-media-stream",
@@ -786,7 +800,7 @@ async function axeRun(page, label) {
   }
 
   if (clip) {
-    const trackerBrowser = await chromium.launch({
+    const trackerBrowser = await launch({
       args: ["--use-fake-device-for-media-stream", `--use-file-for-fake-video-capture=${clip}`, "--use-fake-ui-for-media-stream"],
     });
     // Lower chest of the person in the clip. The garment to check with is the WHITE knit: a dark top under an olive
