@@ -256,6 +256,7 @@ export class LocalPoseProvider implements TryOnProvider {
     let raf = 0;
     let frame = 0;
     let live = false;
+    let drawWarned = false;
 
     const setHint = (h: TrackingHint | null) => {
       if (h !== hint) {
@@ -356,18 +357,26 @@ export class LocalPoseProvider implements TryOnProvider {
       }
       setHint(null);
 
-      gl.clear();
-      let fade = 1;
-      if (previous) {
-        fade = Math.min(1, (now - fadeFrom) / FADE_MS);
-        if (fade >= 1) previous = null;
+      try {
+        gl.clear();
+        let fade = 1;
+        if (previous) {
+          fade = Math.min(1, (now - fadeFrom) / FADE_MS);
+          if (fade >= 1) previous = null;
+        }
+        if (previous) {
+          const tp = bodyTargets(previous.anchors, previous.w, previous.h, landmarks, W, H, { sleeve: previous.sleeve });
+          if (tp.ok) drawRig(previous, tp, 1 - fade);
+        }
+        drawRig(current, t, fade);
+        ctx.drawImage(gl.canvas, 0, 0);
+      } catch (err) {
+        // One bad frame must not become a silent camera-only session: say so once, keep going.
+        if (!drawWarned) {
+          drawWarned = true;
+          console.warn("[tryon] garment draw failed", err);
+        }
       }
-      if (previous) {
-        const tp = bodyTargets(previous.anchors, previous.w, previous.h, landmarks, W, H, { sleeve: previous.sleeve });
-        if (tp.ok) drawRig(previous, tp, 1 - fade);
-      }
-      drawRig(current, t, fade);
-      ctx.drawImage(gl.canvas, 0, 0);
 
       // 4. hands that are in front of the torso come back on top (skin pixels only, within a circle around each wrist)
       if (t.hands.length && engine.seg && handsCtx) {

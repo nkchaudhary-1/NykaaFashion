@@ -564,8 +564,9 @@ async function axeRun(page, label) {
   await check("S20", "Provider swap is invisible to the component: sim latency is never invented", async () => {
     const page = await open(browser, SIM);
     await goLive(page);
+    await clearSeen(page);
     await page.click('[data-testid="tray-cloud-knit"]');
-    await waitState(page, "switching");
+    await waitSeen(page, "switching");
     await waitState(page, "live");
     const ev = await events(page);
     const live = ev.find((e) => e.name === "session_live");
@@ -748,6 +749,17 @@ async function axeRun(page, label) {
       { selector, box },
     );
   const colorDist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  /** Poll until the box in `selector` differs from `ref` by more than `min` (the first frames may not carry the garment yet). */
+  const waitColorAway = async (page, selector, box, ref, min, timeout = 20000) => {
+    const t0 = Date.now();
+    let last = ref;
+    while (Date.now() - t0 < timeout) {
+      last = await meanColor(page, selector, box);
+      if (colorDist(last, ref) > min) return last;
+      await page.waitForTimeout(400);
+    }
+    throw new Error(`colour ${last.map(Math.round)} stayed within ${min} of ${ref.map(Math.round)} for ${timeout} ms`);
+  };
 
   await check("T0", "No person in frame (test pattern): the panel asks the shopper to step in, nothing is drawn, close still stops the camera", async () => {
     const page = await open(browser, SIM);
@@ -799,8 +811,9 @@ async function axeRun(page, label) {
       eq(await page.locator('[data-testid="hint"]').count(), 0, "hint shown although a person is in frame");
       eq((await page.textContent('[data-testid="sim-badge"] button')).trim(), "On-device preview", "badge");
       const raw = await meanColor(page, 'video[aria-hidden="true"]', torso);
-      const out = await meanColor(page, '[data-testid="tryon-panel"] video', torso);
-      assert(colorDist(raw, out) > 25, `output torso colour ${out.map(Math.round)} too close to the camera's ${raw.map(Math.round)}: nothing drawn?`);
+      await waitColorAway(page, '[data-testid="tryon-panel"] video', torso, raw, 25).catch((e) => {
+        throw new Error(`nothing drawn on the torso: ${e.message}`);
+      });
       await shot(page, "16-tracker-live");
       await page.context().close();
       return `live ${took} ms after Try on (includes model load)`;
@@ -810,12 +823,13 @@ async function axeRun(page, label) {
       const page = await open(trackerBrowser, SIM);
       await goLive(page);
       await page.waitForTimeout(1200);
-      const before = await meanColor(page, '[data-testid="tryon-panel"] video', torso);
+      const raw = await meanColor(page, 'video[aria-hidden="true"]', torso);
+      const before = await waitColorAway(page, '[data-testid="tryon-panel"] video', torso, raw, 25);
       await page.click('[data-testid="tray-zigzag-knit"]');
       await waitState(page, "live");
-      await page.waitForTimeout(1200);
-      const after = await meanColor(page, '[data-testid="tryon-panel"] video', torso);
-      assert(colorDist(before, after) > 25, `torso colour did not change: ${before.map(Math.round)} -> ${after.map(Math.round)}`);
+      await waitColorAway(page, '[data-testid="tryon-panel"] video', torso, before, 25).catch((e) => {
+        throw new Error(`torso did not change after the switch: ${e.message}`);
+      });
       eq((await gum(page)).calls, 1, "getUserMedia calls");
       eq(await appliedName(page), "Zigzag Knit", "applied garment");
       await shot(page, "17-tracker-switched");
