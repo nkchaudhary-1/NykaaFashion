@@ -148,6 +148,46 @@ export class TryOnController {
     this.dispatch({ type: "DISMISS_NOTICE" });
   }
 
+  /**
+   * One JPEG of the RAW camera (not the rendered output), for a still-image render. Null unless a session is active.
+   * Uses a throwaway <video> so nothing about the live pipeline changes.
+   */
+  async captureFrame(): Promise<Blob | null> {
+    const stream = this.stream;
+    if (!stream || !isActive(this.snap.state) || typeof document === "undefined") return null;
+    const video = document.createElement("video");
+    video.muted = true;
+    video.playsInline = true;
+    video.srcObject = stream;
+    try {
+      await video.play().catch(() => {});
+      if (video.readyState < 2) {
+        await new Promise<void>((resolve) => {
+          video.addEventListener("loadeddata", () => resolve(), { once: true });
+          setTimeout(resolve, 2000);
+        });
+      }
+      // wait for a presented frame so we never grab a black first frame
+      await new Promise<void>((resolve) => {
+        if (typeof video.requestVideoFrameCallback === "function") video.requestVideoFrameCallback(() => resolve());
+        else setTimeout(resolve, 80);
+      });
+      const w = video.videoWidth;
+      const h = video.videoHeight;
+      if (!w || !h) return null;
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return null;
+      ctx.drawImage(video, 0, 0, w, h);
+      return await new Promise<Blob | null>((resolve) => canvas.toBlob((b) => resolve(b), "image/jpeg", 0.92));
+    } finally {
+      video.pause();
+      video.srcObject = null;
+    }
+  }
+
   /** The video element reports every presented frame. Cheap: it only resolves waiters and checks one flag. */
   notifyFrame() {
     if (this.frameWaiters.length) {

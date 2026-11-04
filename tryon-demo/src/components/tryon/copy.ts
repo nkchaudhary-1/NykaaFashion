@@ -77,6 +77,34 @@ export const copy = {
     "shoulders-hidden": "Keep both shoulders in view.",
   },
 
+  /** Still-image render on the shopper's own server ("See it properly"). */
+  photo: {
+    button: "See it properly",
+    hint: (host: string) => `One photo → ${host}`,
+    rendering: (host: string, seconds: number) => `Rendering on ${host}… ${seconds}s`,
+    cancel: "Cancel",
+    back: "Back to live",
+    again: "Render again",
+    label: (model: string, ms: number) =>
+      model === "mock" ? "Mock render — the server has no model loaded" : `Rendered still · ${model} · ${(ms / 1000).toFixed(1)} s on your PC`,
+    alt: (name: string) => `Rendered still of you wearing ${name}`,
+    retry: "Retry",
+    announce: {
+      rendering: (host: string) => `Rendering a still on ${host}.`,
+      done: "Still ready.",
+    },
+    errors: {
+      unreachable: (host: string) => `Couldn't reach your render server at ${host}.`,
+      busy: "Your PC is still rendering the last one.",
+      not_installed: "The render server has no model installed.",
+      bad_request: "The render server rejected the photo.",
+      render_failed: (detail?: string) => `Render failed on your PC${detail ? `: ${detail}` : "."}`,
+      timeout: "The render took too long.",
+      unknown: "Something went wrong on the render server.",
+      capture: "Couldn't take a photo from the camera.",
+    },
+  },
+
   readout: {
     sim: "Latency isn't measured in simulation.",
     firstFrame: "First frame",
@@ -185,18 +213,21 @@ export function errorCopy(kind: TryOnErrorKind | undefined, opts: { maxSessionSe
 }
 
 /** The honest account of what a mode does with the shopper's video, for the page footer. */
-export function disclosure(mode: TryOnMode, opts: { maxSessionSeconds: number }) {
+export function disclosure(mode: TryOnMode, opts: { maxSessionSeconds: number; photoHost?: string | null }) {
+  const photo = opts.photoHost
+    ? ` "See it properly" sends one camera photo and the garment image to your own render server at ${opts.photoHost} and shows the result; that server keeps nothing.`
+    : "";
   if (mode === "sim") {
     return {
       title: "On-device preview",
-      body: "This build runs entirely in your browser: body tracking places a flat image of the garment on you and follows your movement. It's an approximation, not AI fit or drape, and nothing leaves this browser tab. Live AI try-on (the real model, rendering fabric on your moving body) requires a provisioned Decart API key (platform.decart.ai) and per-second streaming billing (~$0.02/sec at 720p, to confirm against a live account); with a key in server env the same panel switches to it.",
+      body: `This build runs entirely in your browser: body tracking places a flat image of the garment on you and follows your movement. It's an approximation, not AI fit or drape, and nothing leaves this browser tab.${photo} Live AI try-on (the real model, rendering fabric on your moving body) requires a provisioned Decart API key (platform.decart.ai) and per-second streaming billing (~$0.02/sec at 720p, to confirm against a live account); with a key in server env the same panel switches to it.`,
     };
   }
   return {
     title: "Live mode",
     body: `Your camera video is sent to Decart (the model provider) over WebRTC, transformed, and streamed back. Decart's privacy policy covers streaming session data and allows using it to improve their products. We don't know their retention window and don't claim one. This site stores no video or photos.${
       opts.maxSessionSeconds > 0 ? ` Sessions end after ${opts.maxSessionSeconds} seconds to limit cost.` : ""
-    }`,
+    }${photo}`,
   };
 }
 

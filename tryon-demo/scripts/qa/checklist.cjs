@@ -2,7 +2,7 @@
 /* eslint-disable */
 // The PRD's test checklist, executed in headless Chromium with a FAKE camera device.
 //
-//   node scripts/qa/checklist.cjs <simUrl> [<liveUrl>] [--out qa-output] [--person photo.jpg]
+//   node scripts/qa/checklist.cjs <simUrl> [<liveUrl>] [--out qa-output] [--person photo.jpg] [--photo <simUrl built with TRYON_PHOTO_URL>]
 //
 //   <simUrl>   a running build with NO key            (Simulation mode)
 //   <liveUrl>  a running build with a DUMMY key        (live UI + token route; the dummy key is rejected by Decart,
@@ -24,6 +24,8 @@ const outIdx = args.indexOf("--out");
 const OUT = outIdx >= 0 ? args.splice(outIdx, 2)[1] : "qa-output";
 const personIdx = args.indexOf("--person");
 const PERSON = personIdx >= 0 ? args.splice(personIdx, 2)[1] : null;
+const photoIdx = args.indexOf("--photo");
+const PHOTO = photoIdx >= 0 ? args.splice(photoIdx, 2)[1] : null; // a sim build whose TRYON_PHOTO_URL points at `python server/tryon_server.py --mock`
 const [SIM, LIVE] = args;
 if (!SIM) {
   console.error("usage: node scripts/qa/checklist.cjs <simUrl> [<liveUrl>] [--out dir]");
@@ -231,6 +233,7 @@ async function axeRun(page, label) {
     assert(await page.locator('[data-testid="sim-badge"]').isVisible(), "Simulation badge not visible");
     eq(await page.locator("video").count(), 0, "video elements at load");
     assert((await page.locator('[data-testid="tryon-panel"]').getAttribute("data-mode")) === "sim", "panel not in sim mode");
+    eq(await page.locator('[data-testid="photo-button"]').count(), 0, "photo button shown with no render server configured");
     await shot(page, "01-desktop-idle");
     assert(page.__errors.length === 0, `console errors: ${page.__errors.join(" | ")}`);
     await page.context().close();
@@ -819,6 +822,61 @@ async function axeRun(page, label) {
       await page.context().close();
     });
     await trackerBrowser.close();
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  if (PHOTO) {
+    section(`PHOTO MODE (sim build with a render server configured)  ${PHOTO}`);
+
+    await check("P1", "'See it properly': one photo to the render server, the still shows over the live view, labelled; Back to live returns", async () => {
+      const page = await open(browser, PHOTO);
+      await goLive(page);
+      const btn = page.locator('[data-testid="photo-button"]');
+      assert(await btn.isVisible(), "photo button missing although a render server is configured");
+      assert((await page.textContent(PANEL)).includes("One photo →"), "the button must say where the photo goes");
+      assert((await page.textContent('[data-testid="disclosure"]')).includes("render server"), "footer must disclose the render server");
+      const posted = [];
+      page.on("request", (r) => r.url().includes("/tryon") && r.method() === "POST" && posted.push(r.url()));
+      await btn.click();
+      await page.waitForSelector('[data-testid="photo-rendering"]', { timeout: 5000 });
+      await page.waitForSelector('[data-testid="photo-still"]', { timeout: 30000 });
+      eq(posted.length, 1, "POST /tryon calls");
+      const label = await page.textContent('[data-testid="photo-label"]');
+      assert(/Mock render/.test(label), `the mock server's answer must be labelled as a mock, got: ${label}`);
+      const src = await page.getAttribute('[data-testid="photo-still"] img', "src");
+      assert(src && src.startsWith("blob:"), "the still is an in-memory blob, not a stored file");
+      eq(await state(page), "live", "the live session keeps running underneath");
+      eq((await gum(page)).live > 0, true, "camera stays on");
+      await shot(page, "18-photo-still");
+      await page.getByRole("button", { name: "Back to live" }).click();
+      eq(await page.locator('[data-testid="photo-still"]').count(), 0, "still dismissed");
+      assert(await btn.isVisible(), "button back");
+      await page.context().close();
+    });
+
+    await check("P2", "Choosing another garment drops the still; Close while rendering cancels cleanly; Esc leaves the still first", async () => {
+      const page = await open(browser, PHOTO);
+      await goLive(page);
+      await page.click('[data-testid="photo-button"]');
+      await page.waitForSelector('[data-testid="photo-still"]', { timeout: 30000 });
+      await page.click('[data-testid="tray-cloud-knit"]');
+      await waitState(page, "live");
+      eq(await page.locator('[data-testid="photo-still"]').count(), 0, "still should go when the garment changes");
+      await page.click('[data-testid="photo-button"]');
+      await page.waitForSelector('[data-testid="photo-still"]', { timeout: 30000 });
+      await page.keyboard.press("Escape");
+      eq(await page.locator('[data-testid="photo-still"]').count(), 0, "Esc dismisses the still");
+      eq(await state(page), "live", "…without closing the session");
+      await page.click('[data-testid="photo-button"]');
+      await page.waitForSelector('[data-testid="photo-rendering"]', { timeout: 5000 });
+      await page.click('[data-testid="close"]');
+      await waitState(page, "idle");
+      eq((await gum(page)).live, 0, "tracks after Close mid-render");
+      assert(page.__errors.length === 0, `console errors: ${page.__errors.join(" | ")}`);
+      await page.context().close();
+    });
+  } else {
+    console.log("\n  – photo-mode checks skipped (pass --photo <simUrl> for a build started with TRYON_PHOTO_URL=http://localhost:8010 and `python server/tryon_server.py --mock --port 8010`)");
   }
 
   // ════════════════════════════════════════════════════════════════════════════

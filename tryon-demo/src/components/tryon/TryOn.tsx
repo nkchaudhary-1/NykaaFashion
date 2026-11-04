@@ -17,6 +17,7 @@ import { TryOnController } from "./controller.ts";
 import { copy, deniedCopy, errorCopy } from "./copy.ts";
 import { TRYON_DRAG_TYPE } from "./drag.ts";
 import { isActive } from "./machine.ts";
+import { PhotoRenderError, type PhotoRenderer } from "./providers/photo/client.ts";
 import type { Garment, SessionState, TryOnEvent, TryOnProvider } from "./types.ts";
 import { ConsentCard, DeniedCard, ErrorCard, IdleCard, RequestingCard } from "./ui/CardStates";
 import { CameraIcon } from "./ui/icons";
@@ -44,9 +45,20 @@ export interface TryOnProps {
   maxSessionSeconds?: number;
   onEvent?: (event: TryOnEvent) => void;
   onStateChange?: (state: TryOnPanelState) => void;
+  /** Optional still-image renderer ("See it properly"): one camera photo → a realistic still, on a server you choose. */
+  photo?: PhotoRenderer;
   className?: string;
   ref?: Ref<TryOnHandle>;
 }
+
+/** The still-image flow, separate from the camera lifecycle: it never touches the live session. */
+export type PhotoFlow =
+  | { status: "idle" }
+  | { status: "rendering"; startedAt: number; garmentId: string }
+  | { status: "done"; url: string; ms: number; model: string; garmentId: string }
+  | { status: "error"; message: string };
+
+const NO_STILL: PhotoFlow = { status: "idle" };
 
 /** Keeps the newest callback without re-subscribing effects to it. */
 function useLatest<T>(value: T) {
@@ -64,7 +76,7 @@ const reducedMotion = () =>
  * <TryOn> — the reusable live try-on panel. It takes a product list and a provider and runs; it has no dependency
  * on the page around it. Drive it with the ref (`tryOn(id)`), or let shoppers drag a card onto it.
  */
-export function TryOn({ garments, provider, maxSessionSeconds = 0, onEvent, onStateChange, className, ref }: TryOnProps) {
+export function TryOn({ garments, provider, maxSessionSeconds = 0, onEvent, onStateChange, photo, className, ref }: TryOnProps) {
   const onStateChangeRef = useLatest(onStateChange);
 
   const controller = useMemo(
@@ -174,6 +186,95 @@ export function TryOn({ garments, provider, maxSessionSeconds = 0, onEvent, onSt
     return () => clearTimeout(t);
   }, [snap.notice, controller]);
 
+  // ── "See it properly": one raw camera frame → the render server → a still over the live view ──
+  const [still, setStill] = useState<PhotoFlow>(NO_STILL);
+  const [now, setNow] = useState(0);
+  const stillRef = useLatest(still);
+  const photoAbort = useRef<AbortController | null>(null);
+  const photoSeq = useRef(0);
+  const dismissStill = useCallback(() => {
+    if (stillRef.current.status === "idle") return;
+    photoSeq.current++;
+    photoAbort.current?.abort();
+    photoAbort.current = null;
+    setStill((prev) => {
+      if (prev.status === "done") URL.revokeObjectURL(prev.url);
+      return NO_STILL;
+    });
+  }, [stillRef]);
+  const startStill = useCallback(async () => {
+    if (!photo) return;
+    const s = controller.getSnapshot();
+    const garment = garments.find((g) => g.id === (s.appliedId ?? s.garmentId));
+    if (!garment || (s.state !== "live" && s.state !== "switching")) return;
+    dismissStill();
+    const seq = ++photoSeq.current;
+    const ac = new AbortController();
+    photoAbort.current = ac;
+    setStill({ status: "rendering", startedAt: Date.now(), garmentId: garment.id });
+    const fail = (message: string) => {
+      if (seq === photoSeq.current) setStill({ status: "error", message });
+    };
+    try {
+      const person = await controller.captureFrame();
+      if (seq !== photoSeq.current) return;
+      if (!person) return fail(copy.photo.errors.capture);
+      const garmentBlob = await (await fetch(garment.image, { signal: ac.signal })).blob();
+      if (seq !== photoSeq.current) return;
+      const result = await photo.render(
+        { person, garment: garmentBlob, category: garment.category ?? "tops", garmentPhotoType: "flat-lay" },
+        ac.signal,
+      );
+      if (seq !== photoSeq.current) return;
+      setStill({ status: "done", url: URL.createObjectURL(result.blob), ms: result.ms, model: result.model, garmentId: garment.id });
+    } catch (err) {
+      if (seq !== photoSeq.current || ac.signal.aborted) return;
+      if (err instanceof PhotoRenderError) {
+        const e = copy.photo.errors;
+        const msg =
+          err.kind === "unreachable" ? e.unreachable(photo.host)
+          : err.kind === "busy" ? e.busy
+          : err.kind === "not_installed" ? e.not_installed
+          : err.kind === "bad_request" ? e.bad_request
+          : err.kind === "render_failed" ? e.render_failed(err.detail)
+          : err.kind === "timeout" ? e.timeout
+          : e.unknown;
+        fail(msg);
+      } else {
+        fail(copy.photo.errors.unknown);
+      }
+    } finally {
+      if (photoAbort.current === ac) photoAbort.current = null;
+    }
+  }, [photo, controller, garments, dismissStill]);
+  // Leaving the session, or choosing another garment, drops the still (or cancels a render in flight).
+  // Driven by the controller's own store events, not by syncing React state in an effect.
+  useEffect(
+    () =>
+      controller.subscribe(() => {
+        const s = controller.getSnapshot();
+        const cur = stillRef.current;
+        if (cur.status === "idle") return;
+        const active = s.state === "live" || s.state === "switching";
+        const sameGarment = cur.status === "error" || cur.garmentId === s.garmentId;
+        if (!active || !sameGarment) dismissStill();
+      }),
+    [controller, stillRef, dismissStill],
+  );
+  useEffect(() => () => dismissStill(), [dismissStill]);
+  useEffect(() => {
+    if (still.status !== "rendering") return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [still.status]);
+  const elapsed = still.status === "rendering" ? Math.max(0, Math.round((Math.max(now, still.startedAt) - still.startedAt) / 1000)) : 0;
+  useEffect(() => {
+    if (!photo) return;
+    if (still.status === "rendering" && politeRef.current) politeRef.current.textContent = copy.photo.announce.rendering(photo.host);
+    if (still.status === "done" && politeRef.current) politeRef.current.textContent = copy.photo.announce.done;
+    if (still.status === "error" && assertiveRef.current) assertiveRef.current.textContent = still.message;
+  }, [still, photo]);
+
   // ── focus: move to the new state's heading when the shopper's action changes the state ──
   const focusPrev = useRef<SessionState>("idle");
   useEffect(() => {
@@ -234,7 +335,8 @@ export function TryOn({ garments, provider, maxSessionSeconds = 0, onEvent, onSt
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key !== "Escape" || snap.state === "idle" || e.defaultPrevented) return;
     e.preventDefault();
-    if (snap.fullscreen) controller.setFullscreen(false);
+    if (still.status === "done" || still.status === "rendering") dismissStill();
+    else if (snap.fullscreen) controller.setFullscreen(false);
     else if (snap.state === "consent") controller.decline();
     else controller.close();
   };
@@ -313,7 +415,15 @@ export function TryOn({ garments, provider, maxSessionSeconds = 0, onEvent, onSt
               onClose={() => controller.close()}
             />
           )}
-          {group === "stage" && <Stage snap={snap} garments={garments} mode={mode} actions={stageActions} />}
+          {group === "stage" && (
+            <Stage
+              snap={snap}
+              garments={garments}
+              mode={mode}
+              actions={stageActions}
+              photo={photo ? { host: photo.host, flow: still, elapsed, start: () => void startStill(), dismiss: dismissStill } : undefined}
+            />
+          )}
         </div>
 
         {/* Status stack: always above the content. The Simulation badge is present whenever this is not the real model. */}

@@ -1,6 +1,6 @@
 # Test checklist — run and ticked
 
-The PRD's "Test checklist (the brief's required tests, concrete)", executed. Every ✅ below is a real assertion in headless Chromium with a **fake camera device**, run by [`scripts/qa/checklist.cjs`](../scripts/qa/checklist.cjs) (33 checks) plus 132 unit tests (`npm test`). A box is only ticked if something *proved* it. Anything that needs a real key or a real device is **left unticked on purpose**.
+The PRD's "Test checklist (the brief's required tests, concrete)", executed. Every ✅ below is a real assertion in headless Chromium with a **fake camera device**, run by [`scripts/qa/checklist.cjs`](../scripts/qa/checklist.cjs) (35 checks) plus 140 unit tests (`npm test`). A box is only ticked if something *proved* it. Anything that needs a real key or a real device is **left unticked on purpose**.
 
 ```bash
 npm run build
@@ -40,6 +40,13 @@ node scripts/qa/checklist.cjs http://localhost:3200 http://localhost:3201 --out 
 - [x] **No person → honest hint, nothing drawn, Close still stops the camera.** T0.
 - [x] **Warp maths and body mapping.** `tps.test.ts` (interpolation, affine reproduction, smoothness, regularisation), `skin.test.ts` (identity, rotation, side offsets, elbow blend, extrapolation), `pose-map.test.ts` (orientation, scale, hanging/raised/unseen arms, proportions, hands-in-front, tilt, smoothing), `garments.test.ts` (part files exist, anchors sane).
 - [ ] Real webcam, real device, frame rate on hardware, phones, sideways poses: **not done**.
+
+## Photo mode (Change 3)
+
+- [x] **"See it properly" sends one photo to the configured render server and shows the labelled still over the live view; Back to live returns.** P1 (against `server/tryon_server.py --mock`): button only when `TRYON_PHOTO_URL` is set (S1 asserts its absence otherwise), the footer and the button name the server, exactly one `POST /tryon`, the still is a `blob:` URL labelled "Mock render", the live session and camera keep running underneath.
+- [x] **Switching garment drops the still; Esc drops it without closing; Close mid-render cancels and stops the camera.** P2.
+- [x] **Client contract.** `photo-client.test.ts`: JSON/base64 body, defaults, error kinds (busy, not installed, bad request, render failed, unreachable, timeout), caller abort passes through, health.
+- [ ] A real FASHN render on the 3070: **not done here** (no GPU in the sandbox).
 
 ## Also verified (beyond the PRD's nine)
 

@@ -30,7 +30,7 @@ npm run dev          # http://localhost:3000
 That's it. **With no key it runs the on-device preview**: your real camera, the garment following your body, and an unmissable **On-device preview** badge. Nothing leaves your browser tab. Camera access needs `https://` or `localhost`.
 
 ```bash
-npm test             # 132 tests: state machine, controller, Decart adapter, warp maths, body mapping, config, catalogue, contrast
+npm test             # 140 tests: state machine, controller, Decart adapter, warp maths, body mapping, photo client, config, catalogue, contrast
 npm run typecheck && npm run lint
 npm run build && npm start
 ```
@@ -49,6 +49,18 @@ Everything runs in the browser, from files served by this app (`public/models/me
 What it deliberately is not: fit, drape, fabric, or occlusion by anything but hands. It is honest about that in the badge, the consent step and the footer. If the models or WebGL fail to load, the panel falls back to the fixed silhouette placeholder, labelled **Simulation**.
 
 **Adding a garment.** The four sample rigs are generated from the parent repo's art engine by `scripts/make-cutouts.mjs` (it renders each piece into its own film, so the body keeps the pixels under the sleeve heads, and measures the anchors). For real photography: cut the photo into the same three transparent parts in Figma, drop them in `public/garments/parts/`, and write the part boxes and anchors into `src/data/garments.ts` as fractions of the full cutout. `npm test` checks they're sane.
+
+## Photo mode: a realistic still on your own GPU
+
+The tracker shows the interaction; it can't show fit. For a real render without any cloud, run the render server on a machine with an NVIDIA GPU (8 GB+), using FASHN VTON 1.5 (Apache-2.0). Setup is in [`server/README.md`](server/README.md). Then:
+
+```
+TRYON_PHOTO_URL=http://192.168.1.50:8000
+```
+
+in `.env.local`, restart, and the live panel gets **See it properly**: hold still, one camera photo and the garment image go to that server, and 5–20 s later the still shows over the live view, labelled with the model and the time it took. The live session keeps running; Esc or "Back to live" returns. Nothing is stored anywhere; the still is an in-memory blob. `python server/tryon_server.py --mock` fakes the server for wiring tests; its results are stamped and labelled "Mock render".
+
+The plan for taking this further (dressed clips, then toward real-time) is in [`docs/PLAN_GENERATIVE_TRYON.md`](docs/PLAN_GENERATIVE_TRYON.md).
 
 ## Going live (needs a Decart key)
 
@@ -73,6 +85,7 @@ The on-device preview shows the interaction; it can't show real fit. For that, L
 | `TRYON_MODEL` | `lucy-vton-3.6` | Pinned on purpose; `lucy-vton-3.5` / `lucy-vton-latest` also accepted. |
 | `TRYON_MAX_SESSION_SECONDS` | `180` | Session cap. `0` disables both caps. |
 | `TRYON_FAST` | off | `1` → `speed:"fast"` (lower connect latency, 2× billing). |
+| `TRYON_PHOTO_URL` | – | Your still-image render server. Adds the "See it properly" button. |
 
 The mode is read from server env **at request time**, so one build serves either mode.
 

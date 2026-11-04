@@ -63,3 +63,13 @@ describe("resolveConfig — model and guardrails", () => {
     assert.equal(resolveConfig({ TRYON_FAST: "true" }).fast, false);
   });
 });
+
+describe("resolveConfig — photo render server", () => {
+  it("is off unless TRYON_PHOTO_URL is a valid http(s) URL", () => {
+    assert.equal(resolveConfig({}).photoUrl, null);
+    assert.equal(resolveConfig({ TRYON_PHOTO_URL: "not a url" }).photoUrl, null);
+    assert.equal(resolveConfig({ TRYON_PHOTO_URL: "ftp://pc:8000" }).photoUrl, null);
+    assert.equal(resolveConfig({ TRYON_PHOTO_URL: "http://192.168.1.50:8000/" }).photoUrl, "http://192.168.1.50:8000");
+    assert.equal(resolveConfig({ TRYON_PHOTO_URL: "https://pc.local/render/" }).photoUrl, "https://pc.local/render");
+  });
+});

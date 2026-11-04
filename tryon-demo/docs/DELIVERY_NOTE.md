@@ -24,7 +24,19 @@
 
 **Known limits.** Flat images on joints: no drape, no fabric, no occlusion except hands. Turning sideways narrows the garment but cannot show its side. The shirt's large sleeve caps read as caps when the arms are raised. Hand overlay depends on the segmenter finding skin at the wrist.
 
-**Next (agreed plan).** A "See it properly" photo mode on your own GPU: an open image try-on model (CatVTON on the RTX 3070) behind a small local server, with a snapshot button in the panel. Realistic stills, nothing leaving your house, not live.
+---
+
+## Change 3 — photo mode: a realistic still on your own GPU ("See it properly")
+
+**Why.** The tracker shows the interaction but cannot show fit, and the screenshots say so. Generation is the only way to a convincing image, and the only generation that runs at home today is still-image try-on. This is Stage A of [`PLAN_GENERATIVE_TRYON.md`](PLAN_GENERATIVE_TRYON.md).
+
+**What it is.** `server/tryon_server.py`, a standard-library Python server that runs FASHN VTON 1.5 (Apache-2.0, ~8 GB VRAM, bf16 on RTX 30-series) on the shopper's own machine, with a `--mock` mode. `providers/photo/client.ts` talks to it (JSON, base64 images, timeouts, error kinds). With `TRYON_PHOTO_URL` set, the live panel gets **See it properly**: `controller.captureFrame()` grabs one raw camera frame, the garment's product image goes with it, and the result shows over the live view as a mirrored, labelled still ("Rendered still · model · N s on your PC", or "Mock render" when the server has no model). The live session keeps running; Esc, "Back to live" or picking another garment drops the still; Close mid-render cancels. The still is an in-memory blob, never stored. The footer and the button both say where the photo goes.
+
+**What was verified.** Mock server: health, a render, bad input, CORS preflight, from this sandbox. Client: 6 unit tests (body shape, error mapping, timeout, abort pass-through, health). Panel: QA checks P1–P2 against the mock server (button present only when configured, one POST per render, labelled mock still, blob URL, live session untouched underneath, garment switch and Esc drop the still, Close mid-render stops the camera cleanly).
+
+**Not verified.** A real render: FASHN has not been run on the user's 3070 (this sandbox has no GPU). Expect the first render to pay the model load unless `--preload` is used; 8 GB is FASHN's stated requirement, so out-of-memory is the first thing to watch for.
+
+**Decisions.** FASHN over CatVTON for the licence (Apache vs non-commercial) at the same VRAM. JSON+base64 over multipart so the server needs no framework (Python's `cgi` is gone in 3.13). The still is shown mirrored so it reads as the same mirror as the live view. The photo flow lives in React state beside the camera state machine, not inside it: it never changes the camera lifecycle.
 
 ---
 
@@ -117,6 +129,11 @@ Change 1 (the demo):
 - `public/garments/*.webp` (4 images) and `scripts/garments.manifest.json` (how they were made)
 - `tests/` — unit tests; `scripts/qa/checklist.cjs` — the executable PRD checklist
 - `README.md`, `.env.example`, `docs/`
+
+Change 3 (photo mode):
+- `server/tryon_server.py`, `server/README.md` — the render server and its PC setup
+- `src/components/tryon/providers/photo/client.ts` (+ `tests/photo-client.test.ts`), `controller.ts` (`captureFrame`), `TryOn.tsx` (photo flow), `ui/Stage.tsx` (button, rendering/error pills, still overlay), `copy.ts`, `types.ts` (`category`), `src/lib/config.ts` (`TRYON_PHOTO_URL`), `scripts/qa/checklist.cjs` P1–P2
+- `docs/PLAN_GENERATIVE_TRYON.md` — the staged plan
 
 Change 2 (on-device preview):
 - `src/components/tryon/providers/local/` — `localPose.ts` (provider), `pose-map.ts` (body mapping), `tps.ts` (thin-plate spline + mesh), `skin.ts` (two-bone sleeves), `gl-mesh.ts` (WebGL)

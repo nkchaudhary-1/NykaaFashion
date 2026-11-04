@@ -2,7 +2,7 @@
 // Sends ONE camera photo plus the garment image, gets a rendered still back. Provider-agnostic shape, so any
 // photo try-on service could sit behind it. Plain TypeScript, unit-tested in Node with a fake fetch.
 
-export type GarmentCategory = "tops" | "bottoms" | "one-pieces";
+import type { GarmentCategory } from "../../types.ts";
 
 export type PhotoHealth = {
   ok: boolean;

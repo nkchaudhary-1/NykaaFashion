@@ -19,7 +19,11 @@ export type Garment = {
   parts?: GarmentParts;
   anchors?: GarmentAnchors;
   sleeve?: "long" | "short" | "none";
+  /** For still-image try-on renders. Default "tops". */
+  category?: GarmentCategory;
 };
+
+export type GarmentCategory = "tops" | "bottoms" | "one-pieces";
 
 /** One transparent image and its box within the full cutout (fractions 0..1). */
 export type GarmentPart = { file: string; x: number; y: number; w: number; h: number };

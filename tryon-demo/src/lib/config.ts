@@ -13,6 +13,8 @@ export type TryOnConfig = {
   maxSessionSeconds: number;
   /** Why we are in Simulation, for the README / logs. Null when live. */
   simReason: "no-key" | "forced" | null;
+  /** Your own still-image render server (server/tryon_server.py), e.g. http://192.168.1.50:8000. Null = no photo mode. */
+  photoUrl: string | null;
 };
 
 type Env = Record<string, string | undefined>;
@@ -38,11 +40,23 @@ export function resolveConfig(env: Env = process.env): TryOnConfig {
     if (Number.isFinite(n) && n >= 0) maxSessionSeconds = Math.min(n, MAX_TOKEN_SESSION_SECONDS);
   }
 
+  let photoUrl: string | null = null;
+  const rawPhoto = env.TRYON_PHOTO_URL?.trim();
+  if (rawPhoto) {
+    try {
+      const u = new URL(rawPhoto);
+      if (u.protocol === "http:" || u.protocol === "https:") photoUrl = u.origin + (u.pathname === "/" ? "" : u.pathname.replace(/\/+$/, ""));
+    } catch {
+      /* not a URL: photo mode stays off */
+    }
+  }
+
   return {
     mode,
     model,
     fast: env.TRYON_FAST?.trim() === "1",
     maxSessionSeconds,
     simReason: mode === "live" ? null : forcedSim ? "forced" : "no-key",
+    photoUrl,
   };
 }

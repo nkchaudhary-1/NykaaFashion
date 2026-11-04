@@ -1,7 +1,15 @@
 "use client";
 
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { DecartProvider, LocalPoseProvider, TryOn, type TryOnEvent, type TryOnHandle, type TryOnPanelState } from "@/components/tryon";
+import {
+  DecartProvider,
+  LocalPoseProvider,
+  TryOn,
+  createPhotoRenderer,
+  type TryOnEvent,
+  type TryOnHandle,
+  type TryOnPanelState,
+} from "@/components/tryon";
 import { garments } from "@/data/garments";
 import type { TryOnConfig } from "@/lib/config";
 import { GarmentCard, type CardPhase } from "./GarmentCard";
@@ -33,6 +41,8 @@ export function TryOnDemo({ config }: { config: TryOnConfig }) {
     () => (config.mode === "live" ? new DecartProvider({ model: config.model, fast: config.fast }) : new LocalPoseProvider()),
     [config.mode, config.model, config.fast],
   );
+  // "See it properly": a still rendered on the shopper's own machine, when a render server is configured.
+  const photo = useMemo(() => (config.photoUrl ? createPhotoRenderer(config.photoUrl) : undefined), [config.photoUrl]);
 
   // "On you" only for what is actually rendered on the shopper; what they just chose but has not landed yet is "Selected".
   const phaseOf = (id: string): CardPhase => {
@@ -74,6 +84,7 @@ export function TryOnDemo({ config }: { config: TryOnConfig }) {
           garments={garments}
           provider={provider}
           maxSessionSeconds={config.mode === "live" ? config.maxSessionSeconds : 0}
+          photo={photo}
           onEvent={logEvent}
           onStateChange={setPanel}
         />

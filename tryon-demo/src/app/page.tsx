@@ -7,7 +7,8 @@ export default async function Page() {
   // The mode comes from server env at request time: a static prerender would bake in whatever the build saw.
   await connection();
   const config = resolveConfig();
-  const note = disclosure(config.mode, { maxSessionSeconds: config.maxSessionSeconds });
+  const photoHost = config.photoUrl ? new URL(config.photoUrl).host : null;
+  const note = disclosure(config.mode, { maxSessionSeconds: config.maxSessionSeconds, photoHost });
 
   return (
     <div className="mx-auto w-full max-w-[1200px] px-4 pb-20 sm:px-6 lg:px-10">
