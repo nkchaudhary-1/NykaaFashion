@@ -8,11 +8,15 @@ export { TryOn } from "./TryOn";
 export type { TryOnHandle, TryOnPanelState, TryOnProps } from "./TryOn";
 export { TRYON_DRAG_TYPE, garmentDragProps } from "./drag.ts";
 export { SimulationProvider } from "./providers/simulation.ts";
+export { LocalPoseProvider } from "./providers/local/localPose.ts";
 export { DecartProvider } from "./providers/decart.ts";
 export type {
   CameraService,
   ConnectOptions,
   Garment,
+  GarmentAnchors,
+  GarmentPart,
+  GarmentParts,
   SessionState,
   TryOnError,
   TryOnEvent,

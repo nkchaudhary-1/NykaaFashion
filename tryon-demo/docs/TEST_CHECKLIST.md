@@ -1,6 +1,6 @@
 # Test checklist — run and ticked
 
-The PRD's "Test checklist (the brief's required tests, concrete)", executed. Every ✅ below is a real assertion in headless Chromium with a **fake camera device**, run by [`scripts/qa/checklist.cjs`](../scripts/qa/checklist.cjs) (30 checks) plus 104 unit tests (`npm test`). A box is only ticked if something *proved* it. Anything that needs a real key is **left unticked on purpose**.
+The PRD's "Test checklist (the brief's required tests, concrete)", executed. Every ✅ below is a real assertion in headless Chromium with a **fake camera device**, run by [`scripts/qa/checklist.cjs`](../scripts/qa/checklist.cjs) (33 checks) plus 132 unit tests (`npm test`). A box is only ticked if something *proved* it. Anything that needs a real key or a real device is **left unticked on purpose**.
 
 ```bash
 npm run build
@@ -26,12 +26,20 @@ node scripts/qa/checklist.cjs http://localhost:3200 http://localhost:3201 --out 
 - [x] **Consent: no camera access before agree; decline → no camera; copy states frames go to Decart + nothing stored.**
   S2 (consent shown, `getUserMedia` count 0; Not now → still 0), S16 (a drop still goes through consent), L1 (live wording names Decart, says "We don't record or save anything", carries Decart's training-policy note, never says "stays in this browser tab").
 - [x] **Simulation: badge visible; not presented as real model output.**
-  S1/S3 (badge present idle and live), S2 (sim consent says video stays in the tab, only because that is true), S20 + sim readout ("Latency isn't measured in simulation": no invented number), S21 (Simulation never downloads the provider SDK and never calls `/api/token`), L1 (no badge in live mode).
+  S1/S3 (badge present idle and live; it now reads **On-device preview**), S2 (consent says video stays in the tab, only because that is true), S20 + readout ("Latency isn't measured in simulation": no invented number), S21 (the no-key build never downloads the provider SDK and never calls `/api/token`), T0 (with no person in frame the panel says so instead of drawing anything), L1 (no badge in live mode).
 - [ ] **Live: real model output renders; latency measured and reported; arms-raised observed.**
   **Not done: needs a Decart key.** Nothing here observes Lucy VTON output. The instrumentation is in place and the live pass is spelled out in [`DELIVERY_NOTE.md`](DELIVERY_NOTE.md).
 - [x] **A11y: keyboard-only run; focus visible; reduced motion; AA contrast.**
   S17 (Tab to Try on → Enter → focus lands on the new state's heading → Agree → Esc closes and stops the camera; visible 2 px+ focus ring), S18 (reduced motion: animations ≈ 0 ms, flow completes), A1 (**axe-core, WCAG 2.1 A/AA + best-practice: zero violations** across idle, consent, denied, live, error), `contrast.test.ts` (17 pairs computed from the real tokens: AA text ≥ 4.5:1, non-text ≥ 3:1), S22/M2 (touch targets ≥ 44 px).
   ⚠ *Automated checks are not a conformance audit; a VoiceOver/NVDA pass is still owed.*
+
+## On-device preview (Change 2)
+
+- [x] **Tracking goes live on a real person and draws the garment on the body.** T1: MediaPipe's public pose photo (arms outstretched) as the fake camera; no "step into frame" hint; the output video's torso region differs from the raw camera's.
+- [x] **Switching changes what is drawn, in place.** T2: torso colour changes after choosing another garment; `getUserMedia` called once.
+- [x] **No person → honest hint, nothing drawn, Close still stops the camera.** T0.
+- [x] **Warp maths and body mapping.** `tps.test.ts` (interpolation, affine reproduction, smoothness, regularisation), `skin.test.ts` (identity, rotation, side offsets, elbow blend, extrapolation), `pose-map.test.ts` (orientation, scale, hanging/raised/unseen arms, proportions, hands-in-front, tilt, smoothing), `garments.test.ts` (part files exist, anchors sane).
+- [ ] Real webcam, real device, frame rate on hardware, phones, sideways poses: **not done**.
 
 ## Also verified (beyond the PRD's nine)
 
@@ -40,6 +48,7 @@ node scripts/qa/checklist.cjs http://localhost:3200 http://localhost:3201 --out 
 - [x] Reference images are real ≥ 512 px JPEGs with a plain background, one per garment (L5), and every garment prompt is 20–30 words and "Substitute/Add" (`garments.test.ts`).
 - [x] One build, two modes, chosen by server env at request time (the two servers above serve the identical build).
 - [x] Typecheck, ESLint and the production build are clean.
+- [x] All earlier S/M/A/L checks still pass with the on-device preview as the default engine (its green-test-pattern path is the "no person" state).
 
 ## Left unticked on purpose (need a key or a device)
 

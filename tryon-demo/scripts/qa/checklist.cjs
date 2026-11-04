@@ -2,23 +2,28 @@
 /* eslint-disable */
 // The PRD's test checklist, executed in headless Chromium with a FAKE camera device.
 //
-//   node scripts/qa/checklist.cjs <simUrl> [<liveUrl>] [--out qa-output]
+//   node scripts/qa/checklist.cjs <simUrl> [<liveUrl>] [--out qa-output] [--person photo.jpg]
 //
 //   <simUrl>   a running build with NO key            (Simulation mode)
 //   <liveUrl>  a running build with a DUMMY key        (live UI + token route; the dummy key is rejected by Decart,
 //              which is exactly what lets us prove the failure path without spending anything)
 //
 // Needs Playwright (preinstalled in the cloud sandbox; elsewhere: npm i --no-save playwright && npx playwright install chromium).
-// axe-core is optional: npm i --no-save axe-core.
+// axe-core is optional: npm i --no-save axe-core. The on-device tracker checks (T*) need ffmpeg, to turn a photo of a
+// person into the clip Chromium's fake camera plays; --person supplies the photo, otherwise MediaPipe's public pose
+// test image is downloaded into the output folder.
 //
 // What this CANNOT prove: that real Lucy VTON output renders and tracks arms. That needs a key — see docs/DELIVERY_NOTE.md.
 const { chromium } = require("playwright");
 const fs = require("fs");
 const path = require("path");
+const { execFileSync } = require("child_process");
 
 const args = process.argv.slice(2);
 const outIdx = args.indexOf("--out");
 const OUT = outIdx >= 0 ? args.splice(outIdx, 2)[1] : "qa-output";
+const personIdx = args.indexOf("--person");
+const PERSON = personIdx >= 0 ? args.splice(personIdx, 2)[1] : null;
 const [SIM, LIVE] = args;
 if (!SIM) {
   console.error("usage: node scripts/qa/checklist.cjs <simUrl> [<liveUrl>] [--out dir]");
@@ -107,6 +112,18 @@ const INIT = () => {
       cb(blob);
     }, type, q);
   };
+  // Every data-state the panel passes through, in order — transient states (switching) are too short to poll for
+  // when MediaPipe is hogging the main thread under software GL.
+  window.__states = [];
+  new MutationObserver((muts) => {
+    for (const m of muts) {
+      const el = m.target;
+      if (el.getAttribute && el.getAttribute("data-testid") === "tryon-panel") {
+        const st = el.getAttribute("data-state");
+        if (window.__states[window.__states.length - 1] !== st) window.__states.push(st);
+      }
+    }
+  }).observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ["data-state"] });
   window.__events = [];
   const dbg = console.debug.bind(console);
   console.debug = (...a) => {
@@ -128,8 +145,14 @@ const INIT = () => {
 };
 
 const PANEL = '[data-testid="tryon-panel"]';
-const state = (page) => page.locator(PANEL).getAttribute("data-state", { timeout: 3000 }).catch(() => "(no panel)");
-const waitState = (page, s, timeout = 15000) =>
+const state = (page) => page.locator(PANEL).getAttribute("data-state", { timeout: 20000 }).catch(() => "(no panel)");
+/** Wait until the panel has PASSED THROUGH state `s` at some point (transient states included). */
+const waitSeen = (page, s, timeout = 30000) =>
+  page.waitForFunction((s) => window.__states.includes(s), s, { timeout }).catch(async () => {
+    throw new Error(`state "${s}" never seen (states: ${JSON.stringify(await page.evaluate(() => window.__states))})`);
+  });
+const clearSeen = (page) => page.evaluate(() => (window.__states = []));
+const waitState = (page, s, timeout = 30000) =>
   page.waitForSelector(`${PANEL}[data-state="${s}"]`, { timeout }).catch(async () => {
     const url = page.url();
     const text = await page.locator("body").innerText({ timeout: 2000 }).then((t) => t.replace(/\s+/g, " ").slice(0, 160)).catch(() => "(no body)");
@@ -252,13 +275,16 @@ async function axeRun(page, label) {
     const page = await open(browser, SIM);
     await goLive(page);
     const before = await gum(page);
+    await clearSeen(page);
     await page.click('[data-testid="tray-zigzag-knit"]');
-    await waitState(page, "switching");
-    // honest card labels mid-swap: the new choice is "Selected", the old one is still what is on screen
-    eq(await page.textContent('[data-testid="pill-zigzag-knit"]'), "Selected", "target pill during swap");
-    eq((await page.textContent('[data-testid="pill-field-bomber"]')).trim(), "On you", "old pill during swap");
-    assert((await page.textContent(PANEL)).includes("Switching to Zigzag Knit…"), "switching copy missing");
-    await shot(page, "04-desktop-switching");
+    await waitSeen(page, "switching");
+    if ((await state(page)) === "switching") {
+      // honest card labels mid-swap: the new choice is "Selected", the old one is still what is on screen
+      eq(await page.textContent('[data-testid="pill-zigzag-knit"]'), "Selected", "target pill during swap");
+      eq((await page.textContent('[data-testid="pill-field-bomber"]')).trim(), "On you", "old pill during swap");
+      assert((await page.textContent(PANEL)).includes("Switching to Zigzag Knit…"), "switching copy missing");
+      await shot(page, "04-desktop-switching");
+    }
     await waitState(page, "live");
     eq(await appliedName(page), "Zigzag Knit", "applied garment");
     const after = await gum(page);
@@ -288,8 +314,9 @@ async function axeRun(page, label) {
   await check("S6", "Second Try on of another garment from the CARD while live is a switch, not a new session", async () => {
     const page = await open(browser, SIM);
     await goLive(page);
+    await clearSeen(page);
     await tryOn(page, "cloud-knit");
-    await waitState(page, "switching");
+    await waitSeen(page, "switching");
     await waitState(page, "live");
     eq(await appliedName(page), "Cloud Knit", "applied garment");
     eq((await gum(page)).calls, 1, "getUserMedia calls");
@@ -461,8 +488,9 @@ async function axeRun(page, label) {
     eq((await gum(page)).calls, 0, "a drop must still go through consent");
     await agree(page);
     await waitState(page, "live");
+    await clearSeen(page);
     await page.locator('[data-testid="card-oxford-stripe"]').dragTo(page.locator(PANEL));
-    await waitState(page, "switching");
+    await waitSeen(page, "switching");
     await waitState(page, "live");
     eq(await appliedName(page), "Oxford Stripe Shirt", "applied after drop-switch");
     await page.context().close();
@@ -649,8 +677,9 @@ async function axeRun(page, label) {
       }),
     );
     for (const c of inView) assert(c.ok && c.w >= 44 && c.h >= 44, `${c.id} not reachable / too small: ${JSON.stringify(c)}`);
+    await clearSeen(page);
     await page.tap('[data-testid="tray-cloud-knit"]');
-    await waitState(page, "switching");
+    await waitSeen(page, "switching");
     await waitState(page, "live");
     eq(await appliedName(page), "Cloud Knit", "tap-switch");
     await page.getByRole("button", { name: "Enter fullscreen" }).tap();
@@ -658,8 +687,9 @@ async function axeRun(page, label) {
     await noOverflow(page);
     await shot(page, "13-mobile-fullscreen");
     // thumbs can still switch from inside fullscreen
+    await clearSeen(page);
     await page.tap('[data-testid="tray-oxford-stripe"]');
-    await waitState(page, "switching");
+    await waitSeen(page, "switching");
     await waitState(page, "live");
     eq(await appliedName(page), "Oxford Stripe Shirt", "switch inside fullscreen");
     await page.tap('[data-testid="close"]');
@@ -690,6 +720,106 @@ async function axeRun(page, label) {
     await page.context().close();
   });
   await touchBrowser.close();
+
+  // ════════════════════════════════════════════════════════════════════════════
+  section("ON-DEVICE TRACKER (sim build, a real person as the fake camera)");
+
+  // Sample the mean colour of a box in a <video>, via a canvas.
+  const meanColor = (page, selector, box) =>
+    page.evaluate(
+      ({ selector, box }) => {
+        const v = document.querySelector(selector);
+        const c = document.createElement("canvas");
+        c.width = v.videoWidth;
+        c.height = v.videoHeight;
+        const g = c.getContext("2d");
+        g.drawImage(v, 0, 0);
+        const x0 = Math.round(box.x * c.width), y0 = Math.round(box.y * c.height);
+        const w = Math.round(box.w * c.width), h = Math.round(box.h * c.height);
+        const d = g.getImageData(x0, y0, w, h).data;
+        let r = 0, gg = 0, b = 0;
+        for (let i = 0; i < d.length; i += 4) { r += d[i]; gg += d[i + 1]; b += d[i + 2]; }
+        const n = d.length / 4;
+        return [r / n, gg / n, b / n];
+      },
+      { selector, box },
+    );
+  const colorDist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+
+  await check("T0", "No person in frame (test pattern): the panel asks the shopper to step in, nothing is drawn, close still stops the camera", async () => {
+    const page = await open(browser, SIM);
+    await goLive(page);
+    await page.waitForSelector('[data-testid="hint"]', { timeout: 10000 });
+    const hint = await page.textContent('[data-testid="hint"]');
+    assert(/Step into the frame/.test(hint), `hint: ${hint}`);
+    eq((await page.textContent('[data-testid="sim-badge"] button')).trim(), "On-device preview", "badge");
+    await page.click('[data-testid="close"]');
+    await waitState(page, "idle");
+    eq((await gum(page)).live, 0, "live tracks after Close");
+    await page.context().close();
+  });
+
+  let clip = null;
+  try {
+    const dir = path.join(OUT, "person");
+    fs.mkdirSync(dir, { recursive: true });
+    let photo = PERSON;
+    if (!photo) {
+      photo = path.join(dir, "pose.jpg");
+      if (!fs.existsSync(photo)) {
+        const res = await fetch("https://storage.googleapis.com/mediapipe-assets/pose.jpg");
+        if (!res.ok) throw new Error(`download ${res.status}`);
+        fs.writeFileSync(photo, Buffer.from(await res.arrayBuffer()));
+      }
+    }
+    clip = path.join(dir, "person-720p.y4m");
+    execFileSync("ffmpeg", ["-v", "error", "-y", "-loop", "1", "-i", photo, "-t", "2", "-r", "15", "-vf",
+      "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=0x8a9aa8", "-pix_fmt", "yuv420p", clip]);
+  } catch (e) {
+    clip = null;
+    console.log(`  – T1–T2 skipped: could not prepare a person clip (${String(e.message || e).split("\n")[0]}). Needs ffmpeg and network, or --person photo.jpg`);
+  }
+
+  if (clip) {
+    const trackerBrowser = await chromium.launch({
+      args: ["--use-fake-device-for-media-stream", `--use-file-for-fake-video-capture=${clip}`, "--use-fake-ui-for-media-stream"],
+    });
+    // torso box of the person in the clip (centre of the frame, below the head)
+    const torso = { x: 0.42, y: 0.42, w: 0.16, h: 0.16 };
+
+    await check("T1", "A person in frame: tracking goes live, no hint, the garment is drawn on the torso (output differs from the camera)", async () => {
+      const page = await open(trackerBrowser, SIM);
+      const t0 = Date.now();
+      await goLive(page);
+      const took = Date.now() - t0;
+      await page.waitForTimeout(1500);
+      eq(await page.locator('[data-testid="hint"]').count(), 0, "hint shown although a person is in frame");
+      eq((await page.textContent('[data-testid="sim-badge"] button')).trim(), "On-device preview", "badge");
+      const raw = await meanColor(page, 'video[aria-hidden="true"]', torso);
+      const out = await meanColor(page, '[data-testid="tryon-panel"] video', torso);
+      assert(colorDist(raw, out) > 25, `output torso colour ${out.map(Math.round)} too close to the camera's ${raw.map(Math.round)}: nothing drawn?`);
+      await shot(page, "16-tracker-live");
+      await page.context().close();
+      return `live ${took} ms after Try on (includes model load)`;
+    });
+
+    await check("T2", "Switching garments changes what is drawn, in place, with no camera restart", async () => {
+      const page = await open(trackerBrowser, SIM);
+      await goLive(page);
+      await page.waitForTimeout(1200);
+      const before = await meanColor(page, '[data-testid="tryon-panel"] video', torso);
+      await page.click('[data-testid="tray-zigzag-knit"]');
+      await waitState(page, "live");
+      await page.waitForTimeout(1200);
+      const after = await meanColor(page, '[data-testid="tryon-panel"] video', torso);
+      assert(colorDist(before, after) > 25, `torso colour did not change: ${before.map(Math.round)} -> ${after.map(Math.round)}`);
+      eq((await gum(page)).calls, 1, "getUserMedia calls");
+      eq(await appliedName(page), "Zigzag Knit", "applied garment");
+      await shot(page, "17-tracker-switched");
+      await page.context().close();
+    });
+    await trackerBrowser.close();
+  }
 
   // ════════════════════════════════════════════════════════════════════════════
   if (LIVE) {

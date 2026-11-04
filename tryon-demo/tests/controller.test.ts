@@ -277,6 +277,16 @@ describe("closing", () => {
     await settle();
     assert.equal(r.state(), "idle");
   });
+  it("Close while connecting aborts the provider's connect signal (no warm-up for a dead session)", async () => {
+    const r = rig();
+    r.c.tryOn("a");
+    r.c.agree();
+    await settle();
+    const signal = r.provider.last.signal;
+    assert.ok(signal && !signal.aborted, "connect receives a live signal");
+    r.c.close();
+    assert.equal(signal!.aborted, true, "aborted synchronously at teardown");
+  });
   it("Close from fullscreen leaves fullscreen AND stops the tracks", async () => {
     const r = rig();
     await goLive(r);

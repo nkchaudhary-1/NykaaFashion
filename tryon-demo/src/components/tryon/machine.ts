@@ -4,6 +4,7 @@ import type {
   CloseReason,
   ConnectionQuality,
   Notice,
+  TrackingHint,
   PermissionReason,
   SessionState,
   TryOnError,
@@ -22,6 +23,8 @@ export interface MachineState {
   /** Reconnecting or otherwise degraded; the panel shows a hint instead of claiming live quality. */
   degraded: boolean;
   quality: ConnectionQuality | null;
+  /** On-device tracking: what the shopper should do (step back, show shoulders). Null when the garment is placed. */
+  hint: TrackingHint | null;
   /** Measured: connect -> first presented frame once the provider reports generating. */
   ttffMs: number | null;
   /** Measured: setGarment() sent -> first presented frame after the provider acknowledged it. */
@@ -38,6 +41,7 @@ export const initialMachineState: MachineState = {
   notice: null,
   degraded: false,
   quality: null,
+  hint: null,
   ttffMs: null,
   switchMs: null,
 };
@@ -57,6 +61,7 @@ export type MachineEvent =
   | { type: "FULLSCREEN"; on: boolean }
   | { type: "DEGRADED"; on: boolean }
   | { type: "QUALITY"; quality: ConnectionQuality }
+  | { type: "HINT"; hint: TrackingHint | null }
   | { type: "DISMISS_NOTICE" };
 
 /** States in which the camera is on and a session exists (or is being set up). */
@@ -161,6 +166,9 @@ export function reduce(s: MachineState, e: MachineEvent): MachineState {
 
     case "QUALITY":
       return isActive(s.state) && s.quality !== e.quality ? { ...s, quality: e.quality } : s;
+
+    case "HINT":
+      return isActive(s.state) && s.hint !== e.hint ? { ...s, hint: e.hint } : s;
 
     case "DISMISS_NOTICE":
       return s.notice ? { ...s, notice: null } : s;

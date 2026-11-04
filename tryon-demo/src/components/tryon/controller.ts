@@ -90,6 +90,7 @@ export class TryOnController {
   private connectTimer: unknown = null;
   private reconnectTimer: unknown = null;
   private capTimer: unknown = null;
+  private abort: AbortController | null = null;
 
   constructor(options: ControllerOptions) {
     this.provider = options.provider;
@@ -98,7 +99,8 @@ export class TryOnController {
     this.onEvent = options.onEvent;
     this.timers = options.timers ?? realTimers;
     this.now = options.now ?? (() => performance.now());
-    this.connectTimeoutMs = options.connectTimeoutMs ?? 20_000;
+    // Live: WebRTC dial + first frame. On-device: first inference on a cold GPU can take a few seconds on weak hardware.
+    this.connectTimeoutMs = options.connectTimeoutMs ?? 30_000;
     this.reconnectGiveUpMs = options.reconnectGiveUpMs ?? 10_000;
     this.frameWaitMs = options.frameWaitMs ?? 5_000;
     this.minSwitchingMs = options.minSwitchingMs ?? 450;
@@ -322,14 +324,17 @@ export class TryOnController {
         }
         this.adoptCamera(stream, epoch);
       }
+      this.abort = typeof AbortController === "function" ? new AbortController() : null;
       const pending = this.provider.connect(this.stream as MediaStream, {
         initialGarment: garment,
+        signal: this.abort?.signal,
         onRemoteStream: guard((s) => {
           this.snap = { ...this.snap, remoteStream: s };
           this.emit();
         }),
         onState: guard((s) => this.onProviderState(s)),
         onQuality: guard((q) => this.dispatchQuality(q)),
+        onHint: guard((h) => this.dispatch({ type: "HINT", hint: h })),
         onError: guard((error) => this.dispatch({ type: "FAIL", error })),
       });
       this.sessionP = pending.catch(() => null);
@@ -496,6 +501,8 @@ export class TryOnController {
   // then disconnect the session. Idempotent.
   private teardown(reason: CloseReason) {
     this.epoch++;
+    this.abort?.abort();
+    this.abort = null;
     this.clearTimer("connectTimer");
     this.clearTimer("reconnectTimer");
     this.clearTimer("capTimer");

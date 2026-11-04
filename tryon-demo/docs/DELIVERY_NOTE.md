@@ -1,6 +1,32 @@
 # Delivery note — Live AI Virtual Try-On demo
 
-**Status:** built end to end and verified in **Simulation**. The **live path is fully wired but has never run against a real Decart key**, so real model output, drape, arm tracking and live latency are **unobserved**. Everything else in the PRD's checklist is verified (see [`TEST_CHECKLIST.md`](TEST_CHECKLIST.md)).
+**Status:** two engines behind one panel. The **on-device preview** (default, no key, nothing leaves the browser) is built, rigged and verified with photos of real people in headless Chromium. The **live path** (Decart Lucy VTON) is fully wired but has never run against a real key, so real model output, drape and live latency are **unobserved**. Everything else in the PRD's checklist is verified (see [`TEST_CHECKLIST.md`](TEST_CHECKLIST.md)).
+
+## Change 2 — on-device preview (replaces the fixed-silhouette simulation)
+
+**Why.** You don't want a model running on Decart's servers. No open-weights model does realistic try-on on live video, and a 30 fps generative model needs a data centre whoever runs it. So the honest local option is body tracking: the garment follows you, it is not fitted to you, and it says so.
+
+**What it is.** `LocalPoseProvider`, the new default when no key is set. MediaPipe Pose (33 landmarks) and a skin segmenter run in the browser from self-hosted files. Each garment is a rig of three transparent images (torso, two sleeves) with anchor points. Per frame: the torso is warped with a thin-plate spline so neck, shoulder seams, sides and hem land on the body, keeping the garment's own width; each sleeve is skinned to a two-bone arm (shoulder tip → elbow → wrist) and drawn in front of or behind the torso by wrist depth; hands crossing the torso are drawn back on top from the skin mask. WebGL + 2D canvas composite it into the panel's video. Switches cross-fade in place; the camera never restarts.
+
+**What was verified** (`scripts/qa/checklist.cjs`, T0–T2, plus 28 unit tests on the warp maths and body mapping):
+- With no person in frame the panel asks the shopper to step in and draws nothing; Close still stops the camera.
+- With a real person (MediaPipe's public pose photo, arms outstretched) the tracker goes live, shows no hint, and the output video differs from the raw camera on the torso; switching garments changes what is drawn with no camera restart.
+- By eye, on two photos (arms out, arms crossed; see `screens/tracker-arms-out.webp`, `screens/tracker-switched.webp`, `screens/tracker-arms-crossed.webp`): the torso keeps its proportions; sleeves follow the arms through 90°; crossed forearms draw in front; hands show through at the wrists; no notch or epaulette at the shoulders.
+
+**What was not verified.** A real webcam on a real device, frame rate on real hardware (headless software GL runs at 1–2 fps, which says nothing), phones, and people turning sideways or sitting. Expect it smooth on a laptop; a recent phone should be usable. First use loads 36 MB of models from your own server.
+
+**Design decisions worth knowing.**
+- A single whole-garment warp was tried first and rejected: with arms out it sheared the torso into a cape, and on garments whose sleeves hang beside the body it folded the image over itself. Rigging (torso + two bones) fixed both.
+- Pixel ownership vs. per-part films: the first split gave the sleeve-head overlap to the sleeve, leaving a notch in the body when the arm rose. The generator now composites each part into its own film inside the art engine, so the body keeps the pixels under the sleeve caps.
+- Scale comes from the shoulder *seams*; the sleeve pivots at its own *tip*, placed relative to the seam at that scale. Deriving scale from the tips shrank everything by a quarter.
+- The torso's hem width comes from the garment, its hem height from the hips. Pinning the hem to the hip joints turned a boxy sweater into a tank top.
+- Labelling: "On-device preview" with a tooltip that says it is not AI fit or drape. The fallback (models or WebGL unavailable) stays "Simulation".
+
+**Known limits.** Flat images on joints: no drape, no fabric, no occlusion except hands. Turning sideways narrows the garment but cannot show its side. The shirt's large sleeve caps read as caps when the arms are raised. Hand overlay depends on the segmenter finding skin at the wrist.
+
+**Next (agreed plan).** A "See it properly" photo mode on your own GPU: an open image try-on model (CatVTON on the RTX 3070) behind a small local server, with a snapshot button in the panel. Realistic stills, nothing leaving your house, not live.
+
+---
 
 ## Measured latency range
 
@@ -82,11 +108,19 @@ The ~30–95 ms figures that appear in the *simulation's* `[tryon]` console even
 
 ## Full change list
 
-All new, under `tryon-demo/`; nothing outside it was modified.
+All under `tryon-demo/`; nothing outside it was modified.
 
+Change 1 (the demo):
 - `src/components/tryon/` — the reusable component: `TryOn.tsx`, `controller.ts`, `machine.ts`, `camera.ts`, `copy.ts`, `drag.ts`, `types.ts`, `providers/{decart,simulation,reference,errors}.ts`, `ui/*`
 - `src/app/` — `page.tsx`, `layout.tsx`, `globals.css`, `api/token/route.ts`
 - `src/components/shop/`, `src/data/garments.ts`, `src/lib/config.ts`
 - `public/garments/*.webp` (4 images) and `scripts/garments.manifest.json` (how they were made)
-- `tests/` — 104 unit tests; `scripts/qa/checklist.cjs` — the executable PRD checklist
+- `tests/` — unit tests; `scripts/qa/checklist.cjs` — the executable PRD checklist
 - `README.md`, `.env.example`, `docs/`
+
+Change 2 (on-device preview):
+- `src/components/tryon/providers/local/` — `localPose.ts` (provider), `pose-map.ts` (body mapping), `tps.ts` (thin-plate spline + mesh), `skin.ts` (two-bone sleeves), `gl-mesh.ts` (WebGL)
+- `public/models/mediapipe/` — self-hosted WASM runtime, pose model, skin segmenter (36 MB)
+- `public/garments/parts/` — 12 rig images; `scripts/make-cutouts.mjs` — generates them and the anchors from the art engine
+- `types.ts` (parts, anchors, hint channel), `machine.ts`/`controller.ts` (hint), `copy.ts` (labels, hints, on-device consent and footer copy), `ui/Stage.tsx` (hint pill), `ui/SimBadge.tsx` (label from the provider), `src/data/garments.ts` (rigs)
+- `tests/tps.test.ts`, `tests/skin.test.ts`, `tests/pose-map.test.ts`; `scripts/qa/checklist.cjs` T0–T2

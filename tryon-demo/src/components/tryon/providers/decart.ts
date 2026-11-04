@@ -130,11 +130,16 @@ export class DecartProvider implements TryOnProvider {
         if (!closed) fn(...a);
       };
 
+    const aborted = () => {
+      if (o.signal?.aborted) throw new DOMException("try-on closed while connecting", "AbortError");
+    };
     try {
       const sdk = await this.sdkModule();
+      aborted();
       const client = sdk.createDecartClient({ apiKeyProvider: this.mintToken });
       const first = o.initialGarment;
       const image = await this.reference(first);
+      aborted(); // never dial (and never mint a token) for a session that was already closed
 
       const rt = await client.realtime.connect(stream, {
         model: sdk.models.realtime(this.model as RealTimeModels),
@@ -181,6 +186,7 @@ export class DecartProvider implements TryOnProvider {
       };
     } catch (err) {
       closed = true;
+      if ((err as { name?: string } | null)?.name === "AbortError") throw err;
       throw classifySdkError(err);
     }
   }

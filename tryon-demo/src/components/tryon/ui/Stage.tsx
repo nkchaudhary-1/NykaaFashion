@@ -93,6 +93,11 @@ export function Stage({
                 {copy.switching(target.name)}
               </span>
             )}
+            {snap.hint && !switching && (
+              <span data-testid="hint" className="anim-fade inline-flex items-center gap-2 rounded-full bg-black/60 px-3.5 py-2 text-sm backdrop-blur">
+                {copy.hints[snap.hint]}
+              </span>
+            )}
             {slow && !switching && (
               <span className="anim-fade inline-flex items-center gap-2 rounded-full bg-black/60 px-3.5 py-2 text-sm backdrop-blur">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-sim" />

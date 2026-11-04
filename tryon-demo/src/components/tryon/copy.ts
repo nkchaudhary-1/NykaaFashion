@@ -23,8 +23,8 @@ export const copy = {
       note: "Decart's privacy policy allows using content to improve their models.",
     },
     sim: {
-      body: "This is a simulation of the live experience. Your camera video stays in this browser tab: it isn't sent anywhere or saved. You can close it any time to turn the camera off.",
-      note: "Live AI try-on sends your video to Decart. This build doesn't.",
+      body: "This preview runs in your browser. Your camera video stays in this browser tab: it isn't sent anywhere or saved. You can close it any time to turn the camera off.",
+      note: "The garment is placed by on-device tracking, an approximation. Live AI try-on (which sends video to Decart) isn't on in this build.",
     },
     agree: "Agree & continue",
     decline: "Not now",
@@ -55,7 +55,26 @@ export const copy = {
   sim: {
     badge: "Simulation",
     tooltip: "Preview of the interface. Live AI try-on turns on with a provider key — this isn't the real model output.",
-    info: "About the simulation",
+    info: "About this preview",
+  },
+
+  /** Badge + tooltip per not-live provider flavour. The badge must be unmissable and honest. */
+  labels: {
+    tracking: {
+      badge: "On-device preview",
+      tooltip: "The garment follows your body using tracking in your browser. It's an approximation, not AI fit or drape. Nothing leaves your device.",
+    },
+    silhouette: {
+      badge: "Simulation",
+      tooltip: "Preview of the interface. Live AI try-on turns on with a provider key — this isn't the real model output.",
+    },
+  },
+
+  /** What the shopper should do so the on-device tracker can place the garment. */
+  hints: {
+    "no-person": "Step into the frame with your shoulders in view.",
+    "too-far": "Come a little closer.",
+    "shoulders-hidden": "Keep both shoulders in view.",
   },
 
   readout: {
@@ -169,8 +188,8 @@ export function errorCopy(kind: TryOnErrorKind | undefined, opts: { maxSessionSe
 export function disclosure(mode: TryOnMode, opts: { maxSessionSeconds: number }) {
   if (mode === "sim") {
     return {
-      title: "Simulation mode",
-      body: "Live AI try-on requires a provisioned Decart API key (platform.decart.ai) and acceptance of per-second streaming billing (~$0.02/sec at 720p, to confirm against a live account). Until a key is configured in server env, this demo runs in Simulation mode: your own camera with a clearly approximate placeholder, not the real model. Nothing leaves this browser tab.",
+      title: "On-device preview",
+      body: "This build runs entirely in your browser: body tracking places a flat image of the garment on you and follows your movement. It's an approximation, not AI fit or drape, and nothing leaves this browser tab. Live AI try-on (the real model, rendering fabric on your moving body) requires a provisioned Decart API key (platform.decart.ai) and per-second streaming billing (~$0.02/sec at 720p, to confirm against a live account); with a key in server env the same panel switches to it.",
     };
   }
   return {

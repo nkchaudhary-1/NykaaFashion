@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { DecartProvider, SimulationProvider, TryOn, type TryOnEvent, type TryOnHandle, type TryOnPanelState } from "@/components/tryon";
+import { DecartProvider, LocalPoseProvider, TryOn, type TryOnEvent, type TryOnHandle, type TryOnPanelState } from "@/components/tryon";
 import { garments } from "@/data/garments";
 import type { TryOnConfig } from "@/lib/config";
 import { GarmentCard, type CardPhase } from "./GarmentCard";
@@ -30,7 +30,7 @@ export function TryOnDemo({ config }: { config: TryOnConfig }) {
   const canDrag = useSyncExternalStore(finePointer.subscribe, finePointer.get, () => false);
 
   const provider = useMemo(
-    () => (config.mode === "live" ? new DecartProvider({ model: config.model, fast: config.fast }) : new SimulationProvider()),
+    () => (config.mode === "live" ? new DecartProvider({ model: config.model, fast: config.fast }) : new LocalPoseProvider()),
     [config.mode, config.model, config.fast],
   );
 

@@ -85,7 +85,16 @@ export class SimulationProvider implements TryOnProvider {
     document.body.appendChild(video);
     await video.play().catch(() => {});
     if (video.readyState < 2) {
-      await new Promise<void>((resolve) => video.addEventListener("loadeddata", () => resolve(), { once: true }));
+      await new Promise<void>((resolve) => {
+        video.addEventListener("loadeddata", () => resolve(), { once: true });
+        o.signal?.addEventListener("abort", () => resolve(), { once: true });
+      });
+    }
+    if (o.signal?.aborted) {
+      video.pause();
+      video.srcObject = null;
+      video.remove();
+      throw new DOMException("try-on closed while connecting", "AbortError");
     }
 
     const longEdge = 1280;

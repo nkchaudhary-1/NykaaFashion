@@ -12,7 +12,46 @@ export type Garment = {
   prompt: string;
   /** Alt text for the product image. Falls back to the name. */
   alt?: string;
+  /**
+   * For the on-device tracker: the garment cut into transparent parts (torso, sleeves; no backdrop, no hanger) and
+   * the anchor points the warp pins to the body, as fractions of the full cutout. See scripts/make-cutouts.mjs.
+   */
+  parts?: GarmentParts;
+  anchors?: GarmentAnchors;
+  sleeve?: "long" | "short" | "none";
 };
+
+/** One transparent image and its box within the full cutout (fractions 0..1). */
+export type GarmentPart = { file: string; x: number; y: number; w: number; h: number };
+export type GarmentParts = {
+  /** Nominal pixel size of the full cutout that the fractions refer to. */
+  size: { w: number; h: number };
+  torso: GarmentPart;
+  sleeveL?: GarmentPart;
+  sleeveR?: GarmentPart;
+};
+
+/** Fractions (0..1) of the full cutout. L/R = viewer's left/right, i.e. the wearer's right/left. */
+export type GarmentAnchors = {
+  neck: Point;
+  shoulderL: Point;
+  shoulderR: Point;
+  sideL: Point;
+  sideR: Point;
+  hemL: Point;
+  hemR: Point;
+  /** Top of each sleeve (the cap apex): the sleeve pivots here. */
+  sleeveTopL: Point;
+  sleeveTopR: Point;
+  elbowL: Point;
+  elbowR: Point;
+  cuffL: Point;
+  cuffR: Point;
+};
+export type Point = { x: number; y: number };
+
+/** What the on-device tracker needs from the shopper, shown by the panel as a hint. */
+export type TrackingHint = "no-person" | "too-far" | "shoulders-hidden";
 
 export type TryOnMode = "live" | "sim";
 
@@ -54,7 +93,11 @@ export interface ConnectOptions {
   onRemoteStream: (stream: MediaStream) => void;
   onState: (state: ProviderState) => void;
   onQuality?: (quality: ConnectionQuality) => void;
+  /** Tracking providers: what the shopper should do so the garment can be placed (null = all good). */
+  onHint?: (hint: TrackingHint | null) => void;
   onError: (error: TryOnError) => void;
+  /** Aborted when the shopper closes while connecting: stop at the next await, don't finish warming up. */
+  signal?: AbortSignal;
 }
 
 export interface TryOnSession {
@@ -66,6 +109,8 @@ export interface TryOnSession {
 
 export interface TryOnProvider {
   readonly mode: TryOnMode;
+  /** How the panel should label a not-live provider. Falls back to the generic "Simulation" badge. */
+  readonly label?: { badge: string; tooltip: string };
   /** Optional warm-up (module + reference images). Must not open the camera or the network connection to the provider. */
   prepare?(garments: Garment[]): void;
   connect(stream: MediaStream, options: ConnectOptions): Promise<TryOnSession>;

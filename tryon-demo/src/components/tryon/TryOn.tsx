@@ -320,7 +320,7 @@ export function TryOn({ garments, provider, maxSessionSeconds = 0, onEvent, onSt
         <div className="pad-safe-top pad-safe-x pointer-events-none absolute left-0 top-0 z-20 flex flex-col items-start gap-2">
           {mode === "sim" && (
             <div className="pointer-events-auto">
-              <SimBadge />
+              <SimBadge label={provider.label} />
             </div>
           )}
           {cameraOn && (
