@@ -269,6 +269,26 @@ input[type="range"] { accent-color: var(--color-ink); }
 html[data-scroll-lock="true"] { overflow: hidden; }
 html[data-scroll-lock="true"] body { padding-right: var(--sbw, 0px); }
 
+/* ── Illustration motion (components/illustrations/DeliveryScene) ──
+   Ground speed ties the layers together: the slope layer moves one 1200px tile (1231px along the hill) per 8.8s
+   = 140px/s, and the 47px-radius tyres turn once per 2.11s (295.3px circumference / 140px/s) so they don't slip.
+   Skyline and clouds are parallax layers. Reduced motion is handled by the global rule above (rest pose). */
+.nfs-wheel { transform-box: fill-box; transform-origin: center; }
+@keyframes nfs-spin { to { transform: rotate(360deg); } }
+@keyframes nfs-slope { to { transform: translate(-1200px, 276px); } }
+@keyframes nfs-far { to { transform: translateX(-1500px); } }
+@keyframes nfs-cloud { to { transform: translateX(-1200px); } }
+@keyframes nfs-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+@keyframes nfs-scarf { 0%, 100% { transform: rotate(-3deg) skewY(0deg); } 50% { transform: rotate(5deg) skewY(-5deg); } }
+@keyframes nfs-bag { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(5deg); } }
+.nfs[data-motion="on"] .nfs-wheel { animation: nfs-spin 2.11s linear infinite; }
+.nfs[data-motion="on"] .nfs-slope { animation: nfs-slope 8.8s linear infinite; }
+.nfs[data-motion="on"] .nfs-far { animation: nfs-far 31s linear infinite; }
+.nfs[data-motion="on"] .nfs-cloud { animation: nfs-cloud 80s linear infinite; }
+.nfs[data-motion="on"] .nfs-bob { animation: nfs-bob 1.1s var(--ease-editorial) infinite; }
+.nfs[data-motion="on"] .nfs-scarf { transform-origin: 436px 244px; animation: nfs-scarf 0.7s ease-in-out infinite; }
+.nfs[data-motion="on"] .nfs-bag { transform-origin: 561px 318px; animation: nfs-bag 1.3s ease-in-out infinite; }
+
 /* ── Reduced motion ───────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
